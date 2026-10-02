@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hôtel Aria — Nice, Place Mozart</title>
+  <meta name="description" content="Hôtel Aria***, hôtel de charme dans un immeuble en pierre de 1890 face au square Mozart, au cœur du quartier des Musiciens à Nice. 30 chambres climatisées dont 4 junior suites.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23292622'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='20' text-anchor='middle' fill='%23d8cbb8'%3EA%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="is-loading">
+
+  <!-- Loader -->
+  <div class="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <div class="loader__word"><span>A</span><span>r</span><span>i</span><span>a</span></div>
+      <div class="loader__meta caption caption--light">
+        <span>Nice — Place Mozart</span>
+        <span class="loader__count">000</span>
+      </div>
+    </div>
+    <div class="loader__bar"></div>
+  </div>
+
+  <!-- Cursor -->
+  <div class="cursor" aria-hidden="true"><div class="cursor__dot"></div></div>
+  <div class="cursor-label" aria-hidden="true"><span>Voir</span></div>
+
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__logo" aria-label="Hôtel Aria, accueil">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="16" r="15"/><path d="M9 23 16 8l7 15M11.5 18h9"/></svg>
+      <span>Hôtel Aria</span>
+    </a>
+    <nav aria-label="Navigation principale">
+      <ul class="nav__links">
+        <li><a href="#hotel" class="roll"><span>L'hôtel</span><span>L'hôtel</span></a></li>
+        <li><a href="#chambres" class="roll"><span>Chambres</span><span>Chambres</span></a></li>
+        <li><a href="#services" class="roll"><span>Services</span><span>Services</span></a></li>
+        <li><a href="#quartier" class="roll"><span>Quartier</span><span>Quartier</span></a></li>
+        <li><a href="#avis" class="roll"><span>Avis</span><span>Avis</span></a></li>
+        <li><a href="#contact" class="roll"><span>Contact</span><span>Contact</span></a></li>
+      </ul>
+    </nav>
+    <div class="nav__right">
+      <a class="nav__cta uline" href="tel:+33493883069">+33 4 93 88 30 69</a>
+      <a class="btn btn--light btn--sm" href="https://www.hotel-aria.fr/" target="_blank" rel="noopener">
+        <span class="btn__label">Réserver</span>
+        <svg class="btn__arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+      </a>
+      <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="menu" id="menu" aria-hidden="true">
+    <ul>
+      <li><a class="serif" href="#hotel">L'hôtel</a></li>
+      <li><a class="serif" href="#chambres">Chambres</a></li>
+      <li><a class="serif" href="#services">Services</a></li>
+      <li><a class="serif" href="#quartier">Quartier</a></li>
+      <li><a class="serif" href="#avis">Avis</a></li>
+      <li><a class="serif" href="#contact">Contact</a></li>
+    </ul>
+    <div class="caption caption--light">15 avenue Auber — 06000 Nice</div>
+  </div>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero" data-cursor-hide>
+      <div class="hero__media">
+        <div class="media media--dark" data-slot="hero.jpg"><img src="assets/images/hero.jpg" alt="Façade de l'Hôtel Aria face au square Mozart, Nice"></div>
+        <div class="hero__overlay"></div>
+      </div>
+      <div class="hero__content">
+        <div class="hero__top">
+          <h1 class="hero__title serif" data-split="lines">Une maison de pierre face au square Mozart</h1>
+          <div class="hero__aside" data-fade>
+            <p>Hôtel de charme trois étoiles installé dans un élégant immeuble en pierre de 1890, au cœur du quartier des Musiciens, à quelques pas de la gare Nice‑Ville.</p>
+            <a class="btn btn--light magnetic" href="#chambres">
+              <span class="btn__label">Découvrir les chambres</span>
+              <svg class="btn__arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="hero__wordmark" data-split="chars" aria-label="Aria">Aria</div>
+        <div class="hero__meta caption caption--light" data-fade>
+          <span>Nice — Côte d'Azur</span>
+          <span class="hero__scroll"><i></i>Défiler</span>
+          <span>Depuis 1890 · <span class="accent">★★★</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" data-marquee>
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item">Place Mozart</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Quartier des Musiciens</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Promenade des Anglais</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Vieux Nice</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Place Masséna</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Avenue Jean Médecin</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTRO -->
+    <section class="section intro" id="hotel">
+      <div class="rule" data-rule></div>
+      <div class="intro__grid">
+        <div class="section__index caption"><span>01</span><span>L'hôtel</span></div>
+        <p class="intro__text" data-split="words" data-scrub-words>
+          Face au square Mozart, dans le calme du quartier des Musiciens, l'Hôtel Aria occupe un bel immeuble en pierre de 1890. Trente chambres climatisées, une bibliothèque, un petit‑déjeuner gourmand et une équipe à votre écoute jour et nuit — Nice se découvre à pied, depuis notre porte.
+        </p>
+      </div>
+      <div class="intro__media">
+        <figure data-parallax="-8">
+          <div class="media reveal-clip" data-slot="facade.jpg" data-cursor="Voir"><img src="assets/images/facade.jpg" alt="L'immeuble en pierre de 1890 de l'Hôtel Aria"></div>
+          <figcaption class="caption"><span>Immeuble en pierre</span><span>1890</span></figcaption>
+        </figure>
+        <figure data-parallax="6">
+          <div class="media reveal-clip" data-slot="square-mozart.jpg" data-cursor="Voir"><img src="assets/images/square-mozart.jpg" alt="Le square Mozart, devant l'hôtel"></div>
+          <figcaption class="caption"><span>Square Mozart</span><span>Devant l'hôtel</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="section" style="padding-top:0">
+      <div class="stats">
+        <div class="stat" data-fade>
+          <span class="caption">Construit en</span>
+          <span class="stat__num" data-count="1890">1890</span>
+          <p>Un immeuble en pierre élégant, face au square Mozart.</p>
+        </div>
+        <div class="stat" data-fade>
+          <span class="caption">Chambres</span>
+          <span class="stat__num" data-count="30">30</span>
+          <p>Toutes climatisées, Wi‑Fi gratuit, TV écran plat et salle de bains moderne.</p>
+        </div>
+        <div class="stat" data-fade>
+          <span class="caption">Junior suites</span>
+          <span class="stat__num" data-count="4">4</span>
+          <p>Deux chambres séparées et une salle de bains, jusqu'à 4 personnes.</p>
+        </div>
+        <div class="stat" data-fade>
+          <span class="caption">Réception</span>
+          <span class="stat__num">24<span class="accent">/</span>7</span>
+          <p>Une équipe présente jour et nuit pour vous accueillir et vous conseiller.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROOMS -->
+    <section class="rooms section--linen" id="chambres">
+      <div class="section__head">
+        <div class="section__index caption"><span>02</span><span>Chambres &amp; suites</span></div>
+        <h2 class="section__title serif" data-split="lines">Trente chambres, deux atmosphères</h2>
+      </div>
+      <div class="rooms__pin">
+        <div class="rooms__track">
+          <div class="room room--intro">
+            <p>Certaines chambres offrent une terrasse avec une jolie vue sur le square Mozart ; d'autres donnent sur l'arrière de l'immeuble et garantissent un calme absolu. Toutes allient style contemporain et confort, au centre de Nice.</p>
+            <span class="caption">Faites défiler →</span>
+          </div>
+
+          <article class="room">
+            <div class="media room__media" data-slot="chambre-terrasse.jpg" data-cursor="Voir"><img src="assets/images/chambre-terrasse.jpg" alt="Chambre avec terrasse sur le square Mozart"></div>
+            <div class="room__body">
+              <span class="room__num">01</span>
+              <h3 class="room__name serif">Chambre terrasse</h3>
+              <p class="room__desc">Une terrasse ouverte sur les arbres du square Mozart, pour un café au soleil de la Riviera.</p>
+              <div class="room__tags"><span class="tag tag--accent">Vue square Mozart</span><span class="tag">Terrasse</span><span class="tag">Climatisation</span></div>
+            </div>
+          </article>
+
+          <article class="room">
+            <div class="media room__media" data-slot="chambre-cour.jpg" data-cursor="Voir"><img src="assets/images/chambre-cour.jpg" alt="Chambre côté cour, au calme"></div>
+            <div class="room__body">
+              <span class="room__num">02</span>
+              <h3 class="room__name serif">Chambre côté calme</h3>
+              <p class="room__desc">Orientée vers l'arrière du bâtiment, pour un sommeil en toute tranquillité au cœur de la ville.</p>
+              <div class="room__tags"><span class="tag">Calme absolu</span><span class="tag">Wi‑Fi gratuit</span><span class="tag">TV écran plat</span></div>
+            </div>
+          </article>
+
+          <article class="room">
+            <div class="media room__media" data-slot="junior-suite.jpg" data-cursor="Voir"><img src="assets/images/junior-suite.jpg" alt="Junior suite de l'Hôtel Aria"></div>
+            <div class="room__body">
+              <span class="room__num">03</span>
+              <h3 class="room__name serif">Junior suite</h3>
+              <p class="room__desc">Deux chambres séparées et une salle de bains : l'espace idéal pour les familles, jusqu'à quatre personnes.</p>
+              <div class="room__tags"><span class="tag tag--accent">Jusqu'à 4 pers.</span><span class="tag">2 chambres</span><span class="tag">Coin salon</span></div>
+            </div>
+          </article>
+
+          <article class="room">
+            <div class="media room__media" data-slot="chambre-classique.jpg" data-cursor="Voir"><img src="assets/images/chambre-classique.jpg" alt="Chambre classique de l'Hôtel Aria"></div>
+            <div class="room__body">
+              <span class="room__num">04</span>
+              <h3 class="room__name serif">Chambre classique</h3>
+              <p class="room__desc">Lumineuse et confortable, avec coin salon, minibar et salle de bains moderne.</p>
+              <div class="room__tags"><span class="tag">Minibar</span><span class="tag">Coin salon</span><span class="tag">Salle de bains</span></div>
+            </div>
+          </article>
+
+          <article class="room">
+            <div class="media room__media" data-slot="chambre-accessible.jpg" data-cursor="Voir"><img src="assets/images/chambre-accessible.jpg" alt="Chambre accessible aux personnes à mobilité réduite"></div>
+            <div class="room__body">
+              <span class="room__num">05</span>
+              <h3 class="room__name serif">Chambre accessible</h3>
+              <p class="room__desc">Une chambre aménagée pour les personnes à mobilité réduite, avec tout le confort de la maison.</p>
+              <div class="room__tags"><span class="tag">PMR</span><span class="tag">Climatisation</span><span class="tag">Wi‑Fi gratuit</span></div>
+            </div>
+          </article>
+        </div>
+        <div class="rooms__progress"><i></i></div>
+      </div>
+    </section>
+
+    <!-- ATMOSPHERE -->
+    <section class="atmo" data-atmo>
+      <div class="atmo__frame">
+        <div class="media media--dark" data-slot="ambiance.jpg"><img src="assets/images/ambiance.jpg" alt="Ambiance de l'Hôtel Aria"></div>
+        <div class="atmo__overlay"></div>
+      </div>
+      <div class="atmo__text">
+        <span class="caption caption--light">Le calme, au centre de Nice</span>
+        <h2 class="atmo__title serif" data-split="lines">Loin du bruit,<br>près de tout</h2>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section services" id="services">
+      <div class="rule" data-rule></div>
+      <div class="section__head">
+        <div class="section__index caption"><span>03</span><span>Services</span></div>
+        <h2 class="section__title serif" data-split="lines">L'art de recevoir</h2>
+      </div>
+      <ul class="services__list" data-preview-list>
+        <li class="service" data-preview="0">
+          <span class="service__num">01</span>
+          <span class="service__name">Petit‑déjeuner</span>
+          <span class="service__desc">Buffet gourmand de produits frais servi chaque matin de 7h à 10h dans une salle lumineuse.</span>
+          <span class="service__icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><path d="M1 8h14M9 2l6 6-6 6"/></svg></span>
+        </li>
+        <li class="service" data-preview="1">
+          <span class="service__num">02</span>
+          <span class="service__name">Bibliothèque</span>
+          <span class="service__desc">Un coin de lecture où se poser avec un livre après une journée sur la Riviera.</span>
+          <span class="service__icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><path d="M1 8h14M9 2l6 6-6 6"/></svg></span>
+        </li>
+        <li class="service" data-preview="2">
+          <span class="service__num">03</span>
+          <span class="service__name">Réception 24h/24</span>
+          <span class="service__desc">Une équipe chaleureuse, plans de la ville et bonnes adresses de restaurants à la clé.</span>
+          <span class="service__icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><path d="M1 8h14M9 2l6 6-6 6"/></svg></span>
+        </li>
+        <li class="service" data-preview="3">
+          <span class="service__num">04</span>
+          <span class="service__name">Confort</span>
+          <span class="service__desc">Climatisation, Wi‑Fi haut débit gratuit, TV écran plat et minibar dans toutes les chambres.</span>
+          <span class="service__icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><path d="M1 8h14M9 2l6 6-6 6"/></svg></span>
+        </li>
+        <li class="service" data-preview="4">
+          <span class="service__num">05</span>
+          <span class="service__name">Parking</span>
+          <span class="service__desc">Parking public directement sous le square Mozart, à 40 mètres de l'hôtel.</span>
+          <span class="service__icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><path d="M1 8h14M9 2l6 6-6 6"/></svg></span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Floating preview for services -->
+    <div class="hover-preview" aria-hidden="true">
+      <div class="media" data-slot="services">
+        <img src="assets/images/petit-dejeuner.jpg" alt="">
+        <img src="assets/images/bibliotheque.jpg" alt="">
+        <img src="assets/images/reception.jpg" alt="">
+        <img src="assets/images/chambre-classique.jpg" alt="">
+        <img src="assets/images/square-mozart.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- MARQUEE DARK -->
+    <div class="marquee marquee--dark" data-marquee data-direction="-1">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item">Pain chaud</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Viennoiseries</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Jus d'orange pressé</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Fromages</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          <span class="marquee__item">Charcuterie</span><svg class="marquee__star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- BREAKFAST & LIBRARY -->
+    <section class="section section--linen">
+      <div class="split">
+        <div class="media split__media" data-slot="petit-dejeuner.jpg" data-cursor="Voir" data-inner-parallax><img src="assets/images/petit-dejeuner.jpg" alt="Le buffet du petit-déjeuner de l'Hôtel Aria"></div>
+        <div class="split__body">
+          <div class="rule" data-rule></div>
+          <div class="section__index caption" style="margin-top:16px"><span>04</span><span>Le matin à l'Aria</span></div>
+          <h2 class="split__title serif" data-split="lines">Un buffet gourmand dans une salle lumineuse</h2>
+          <p class="split__lead" data-fade>Produits frais et de qualité, pain encore chaud et jus d'orange que vous pressez vous‑même : le petit‑déjeuner est l'un des moments préférés de nos hôtes.</p>
+          <ul class="menu-list">
+            <li data-fade><span>Horaires</span><span>Tous les jours, 7h00 — 10h00</span></li>
+            <li data-fade><span>Adulte</span><span>15 € par personne</span></li>
+            <li data-fade><span>Enfant</span><span>7,50 €</span></li>
+            <li data-fade><span>Moins de 5 ans</span><span>Offert</span></li>
+          </ul>
+          <div class="split__secondary">
+            <div data-fade>
+              <div class="media" data-slot="bibliotheque.jpg" data-cursor="Voir"><img src="assets/images/bibliotheque.jpg" alt="La bibliothèque de l'Hôtel Aria"></div>
+              <h3 class="serif">La bibliothèque</h3>
+              <p>Pour se détendre avec un livre, à l'heure qui vous plaît.</p>
+            </div>
+            <div data-fade>
+              <div class="media" data-slot="reception.jpg" data-cursor="Voir"><img src="assets/images/reception.jpg" alt="La réception de l'Hôtel Aria"></div>
+              <h3 class="serif">La réception</h3>
+              <p>Ouverte 24h/24, pour vos arrivées tardives comme vos départs matinaux.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEIGHBOURHOOD -->
+    <section class="section section--dark" id="quartier">
+      <div class="rule" data-rule></div>
+      <div class="section__head">
+        <div class="section__index caption caption--light"><span>05</span><span>Le quartier</span></div>
+        <h2 class="section__title serif" data-split="lines">Nice, à pied depuis notre porte</h2>
+      </div>
+      <ul class="places">
+        <li class="place" data-fade><span class="place__name">Gare Nice‑Ville</span><span class="place__time">Quelques minutes à pied</span></li>
+        <li class="place" data-fade><span class="place__name">Tram Jean Médecin</span><span class="place__time">7 min à pied</span></li>
+        <li class="place" data-fade><span class="place__name">Avenue Jean Médecin</span><span class="place__time">Shopping</span></li>
+        <li class="place" data-fade><span class="place__name">Place Masséna</span><span class="place__time">Au centre</span></li>
+        <li class="place" data-fade><span class="place__name">Promenade des Anglais</span><span class="place__time">10 min à pied</span></li>
+        <li class="place" data-fade><span class="place__name">Vieux Nice</span><span class="place__time">Vieille ville</span></li>
+        <li class="place" data-fade><span class="place__name">Palais des Expositions</span><span class="place__time">Acropolis</span></li>
+      </ul>
+      <div class="map-card">
+        <div data-fade>
+          <span class="caption caption--light">Adresse</span>
+          <p>15 avenue Auber<br>Place Mozart — 06000 Nice</p>
+        </div>
+        <div data-fade>
+          <span class="caption caption--light">Stationnement</span>
+          <p>Parking public sous le square Mozart, à 40 m de l'hôtel.</p>
+        </div>
+        <div data-fade>
+          <span class="caption caption--light">Itinéraire</span>
+          <p><a class="uline" href="https://www.google.com/maps/search/?api=1&query=Hotel+Aria+15+avenue+Auber+Nice" target="_blank" rel="noopener">Ouvrir dans Google Maps ↗</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="section" id="avis">
+      <div class="rule" data-rule></div>
+      <div class="section__head">
+        <div class="section__index caption"><span>06</span><span>Avis de nos hôtes</span></div>
+        <h2 class="section__title serif" data-split="lines">Ce que nos hôtes retiennent</h2>
+      </div>
+
+      <div class="scores">
+        <div class="score" data-fade>
+          <div>
+            <span class="caption">Booking.com</span>
+            <div class="score__value" style="margin-top:12px"><span data-count="8.5" data-decimals="1">8.5</span><small> / 10</small></div>
+          </div>
+          <span class="caption">1 626 avis · Très bien</span>
+        </div>
+        <div class="score" data-fade>
+          <div>
+            <span class="caption">Hotels.com</span>
+            <div class="score__value" style="margin-top:12px"><span data-count="8.6" data-decimals="1">8.6</span><small> / 10</small></div>
+          </div>
+          <span class="caption">Excellent</span>
+        </div>
+      </div>
+
+      <div class="reviews__row">
+        <article class="review" data-fade>
+          <div class="review__top"><span class="accent serif" style="font-size:50px;line-height:.5">“</span><span class="caption">Emplacement</span></div>
+          <h3 class="review__theme">Parfaitement central</h3>
+          <p class="review__body">Un emplacement idéal, au centre mais à l'écart des quartiers bruyants : gare, tram, promenade et centre‑ville se rejoignent à pied.</p>
+          <span class="review__foot">Synthèse des avis clients</span>
+        </article>
+        <article class="review" data-fade>
+          <div class="review__top"><span class="accent serif" style="font-size:50px;line-height:.5">“</span><span class="caption">Accueil</span></div>
+          <h3 class="review__theme">Une équipe chaleureuse</h3>
+          <p class="review__body">Un personnel accueillant et attentionné, toujours prêt à donner un plan, une information utile ou une bonne adresse de restaurant.</p>
+          <span class="review__foot">Synthèse des avis clients</span>
+        </article>
+        <article class="review" data-fade>
+          <div class="review__top"><span class="accent serif" style="font-size:50px;line-height:.5">“</span><span class="caption">Petit‑déjeuner</span></div>
+          <h3 class="review__theme">Le moment du matin</h3>
+          <p class="review__body">Un buffet très apprécié : pain chaud, viennoiseries, fromages, charcuterie et jus d'orange fraîchement pressé par soi‑même.</p>
+          <span class="review__foot">Synthèse des avis clients</span>
+        </article>
+        <article class="review" data-fade>
+          <div class="review__top"><span class="accent serif" style="font-size:50px;line-height:.5">“</span><span class="caption">Chambres</span></div>
+          <h3 class="review__theme">Spacieuses &amp; lumineuses</h3>
+          <p class="review__body">Des chambres propres, bien équipées pour le prix, baignées de lumière naturelle, avec une climatisation efficace.</p>
+          <span class="review__foot">Synthèse des avis clients</span>
+        </article>
+      </div>
+      <p class="caption reviews__note">Notes et tendances relevées sur les plateformes de réservation publiques.</p>
+    </section>
+
+    <!-- CTA / CONTACT -->
+    <section class="cta" id="contact" data-cursor-hide>
+      <div class="cta__media" data-cta-media>
+        <div class="media media--dark" data-slot="contact.jpg"><img src="assets/images/contact.jpg" alt="L'Hôtel Aria à Nice"></div>
+      </div>
+      <div class="cta__overlay"></div>
+      <div class="cta__inner">
+        <span class="caption caption--light">07 — Réservation</span>
+        <h2 class="cta__title serif" data-split="lines">Votre séjour<br>à Nice commence ici</h2>
+        <div class="cta__actions">
+          <a class="btn btn--light magnetic" href="https://www.hotel-aria.fr/" target="_blank" rel="noopener">
+            <span class="btn__label">Réserver en direct</span>
+            <svg class="btn__arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+          </a>
+          <a class="btn btn--light magnetic" href="tel:+33493883069">
+            <span class="btn__label">+33 (0)4 93 88 30 69</span>
+          </a>
+          <a class="btn btn--light magnetic" href="mailto:contact@hotel-aria.fr">
+            <span class="btn__label">contact@hotel-aria.fr</span>
+          </a>
+        </div>
+        <div class="cta__grid">
+          <div><span class="caption caption--light">Adresse</span><p>15 avenue Auber<br>06000 Nice, France</p></div>
+          <div><span class="caption caption--light">Téléphone</span><a class="uline" href="tel:+33493883069">+33 (0)4 93 88 30 69</a></div>
+          <div><span class="caption caption--light">E‑mail</span><a class="uline" href="mailto:contact@hotel-aria.fr">contact@hotel-aria.fr</a></div>
+          <div><span class="caption caption--light">Réception</span><p>Ouverte 24h/24, 7j/7</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__word" data-split="chars" aria-label="Aria">Aria</div>
+    <div class="footer__bar caption caption--light">
+      <span>© Hôtel Aria*** — Nice</span>
+      <span>Place Mozart · Quartier des Musiciens</span>
+      <a href="#top" class="uline" data-scroll-top>Retour en haut ↑</a>
+    </div>
+  </footer>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/vendor/lenis.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
