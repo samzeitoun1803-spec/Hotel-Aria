@@ -3,6 +3,7 @@
    GSAP + ScrollTrigger + Lenis (smooth scroll)
    ========================================================================== */
 (() => {
+  window.ARIA_READY = true;
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -109,6 +110,7 @@
     const lxTo = gsap.quickTo(cursorLabel, 'x', { duration: 0.6, ease: 'power3' });
     const lyTo = gsap.quickTo(cursorLabel, 'y', { duration: 0.6, ease: 'power3' });
     window.addEventListener('mousemove', (e) => {
+      cursor.classList.add('is-ready');
       pos.x = e.clientX; pos.y = e.clientY;
       xTo(pos.x); yTo(pos.y); lxTo(pos.x); lyTo(pos.y);
     });

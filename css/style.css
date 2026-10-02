@@ -59,7 +59,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-body.is-loading { overflow: hidden; }
+.js body.is-loading { overflow: hidden; }
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
@@ -93,8 +93,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   position: fixed; inset: 0; z-index: 1000;
   background: var(--color-midnight-roast);
   color: var(--color-parchment);
-  display: grid; place-items: center;
+  display: none; place-items: center;
 }
+.js .loader { display: grid; }
 .loader__inner { text-align: center; }
 .loader__word {
   font-family: var(--font-sans);
@@ -126,8 +127,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   width: 8px; height: 8px; border-radius: 50%;
   background: var(--color-parchment);
   transform: translate(-50%, -50%);
-  transition: width var(--dur) var(--ease), height var(--dur) var(--ease);
+  opacity: 0;
+  transition: width var(--dur) var(--ease), height var(--dur) var(--ease), opacity var(--dur) var(--ease);
 }
+.cursor.is-ready .cursor__dot { opacity: 1; }
 .cursor-label {
   position: fixed; top: 0; left: 0; z-index: 901;
   pointer-events: none;
@@ -242,7 +245,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .hero__media { position: absolute; inset: 0; }
 .hero__media .media { position: absolute; inset: 0; background: #3a352f; }
-.hero__media img { transform: scale(1.25); }
+.js .hero__media img { transform: scale(1.25); }
 .hero__overlay {
   position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(41, 38, 34, 0.45) 0%, rgba(41, 38, 34, 0.15) 40%, rgba(41, 38, 34, 0.85) 100%);
@@ -333,7 +336,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .intro__media .media:nth-child(1) { aspect-ratio: 4 / 5; }
 .intro__media .media:nth-child(2) { aspect-ratio: 16 / 11; }
 .intro__media figcaption { margin-top: 12px; display: flex; justify-content: space-between; }
-.reveal-clip { clip-path: inset(100% 0 0 0); }
+.js .reveal-clip { clip-path: inset(100% 0 0 0); }
 
 /* ---------- Stats ---------- */
 .stats {
@@ -359,6 +362,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .rooms { padding: var(--section-gap) 0; overflow: hidden; }
 .rooms .section__head { padding-left: var(--gutter); padding-right: var(--gutter); }
 .rooms__pin { position: relative; }
+html:not(.js) .rooms__pin { overflow-x: auto; }
 .rooms__track {
   display: flex; gap: var(--gutter);
   padding: 0 var(--gutter);
