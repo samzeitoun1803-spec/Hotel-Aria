@@ -19,7 +19,7 @@ export function MobileCTA() {
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
 
-    const targets = ['demande', 'agence'].map((id) => document.getElementById(id)).concat(document.querySelector('footer'))
+    const targets = ['demande', 'agence', 'sur-mesure'].map((id) => document.getElementById(id)).concat(document.querySelector('footer'))
     const visible = new Set<Element>()
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)))

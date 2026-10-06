@@ -94,7 +94,9 @@ export function TripProvider({ children }: { children: ReactNode }) {
       setDestinationSlug(null)
       // Laisse le temps à un éventuel dialogue de se refermer avant de défiler.
       window.setTimeout(() => {
-        scrollTo('demande', { offset: -24 })
+        // Bureau : la section (titre à gauche, formulaire à droite). Mobile : directement le formulaire.
+        const desktop = window.matchMedia('(min-width: 1024px)').matches
+        scrollTo(desktop ? 'demande' : 'demande-carte', { offset: desktop ? -24 : -84 })
         window.setTimeout(() => {
           document.getElementById('demande-form')?.focus({ preventScroll: true })
         }, 1300)

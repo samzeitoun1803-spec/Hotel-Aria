@@ -10,7 +10,7 @@ import path from 'node:path'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const outDir = path.join(root, 'node_modules/.prerender')
-const dist = path.join(root, process.argv[2] || 'dist')
+const dist = path.resolve(root, process.argv[2] || 'dist')
 
 await build({
   root,

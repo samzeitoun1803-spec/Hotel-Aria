@@ -7,6 +7,7 @@ import { cn } from '../../lib/cn'
 import { ease } from '../../lib/motion'
 import { budgetLabel, describeDates, describeDestination, describeTravelers, toPayload, upcomingMonths } from '../../lib/trip/format'
 import { sendTripRequest } from '../../lib/trip/transport'
+import { useScrollApi } from '../../lib/scroll'
 import { useTrip } from '../../lib/trip/TripContext'
 import type { DateMode, TripDraft } from '../../lib/trip/types'
 import { stepValidators, type Errors } from '../../lib/trip/validation'
@@ -30,6 +31,8 @@ type Status = 'editing' | 'sending' | 'sent' | 'mail' | 'error'
 
 export function TravelForm() {
   const { draft, update, step, setStep, source, reset, openLegal } = useTrip()
+  const { scrollTo } = useScrollApi()
+  const cardRef = useRef<HTMLDivElement>(null)
   const [dir, setDir] = useState(1)
   const [showErrors, setShowErrors] = useState(false)
   const [status, setStatus] = useState<Status>('editing')
@@ -52,10 +55,17 @@ export function TravelForm() {
     return () => window.clearTimeout(t)
   }, [step])
 
+  // Garde le haut du formulaire visible quand on change d'étape (utile sur mobile).
+  const keepInView = () => {
+    const top = cardRef.current?.getBoundingClientRect().top ?? 0
+    if (top < 72) scrollTo(window.scrollY + top - 84)
+  }
+
   const goTo = (n: number) => {
     setDir(n > step ? 1 : -1)
     setShowErrors(false)
     setStep(n)
+    keepInView()
   }
 
   const next = async () => {
@@ -73,6 +83,7 @@ export function TravelForm() {
     try {
       const res = await sendTripRequest(toPayload(draft, source))
       setStatus(res.kind === 'mail-client' ? 'mail' : 'sent')
+      keepInView()
     } catch {
       setStatus('error')
     }
@@ -106,7 +117,7 @@ export function TravelForm() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-12 border-t border-line pt-6">
+              <div className="mt-12 hidden border-t border-line pt-6 lg:block">
                 <p className="t-meta text-stone">Vous préférez parler ?</p>
                 <a href={agency.phone.href} className="t-h2 mt-3 block hover:text-clay-deep">
                   {agency.phone.display}
@@ -120,7 +131,7 @@ export function TravelForm() {
         </div>
 
         <div className="lg:col-span-7">
-          <div className="relative bg-paper p-5 sm:p-8 md:p-12">
+          <div ref={cardRef} id="demande-carte" className="relative scroll-mt-24 bg-paper p-5 sm:p-8 md:p-12">
             <AnimatePresence mode="wait" initial={false}>
               {status === 'sent' || status === 'mail' ? (
                 <Success key="ok" draft={draft} mail={status === 'mail'} onRestart={restart} />
@@ -220,6 +231,13 @@ export function TravelForm() {
               )}
             </AnimatePresence>
           </div>
+          {/* Mobile : l'alternative téléphone, sous le formulaire */}
+          <p className="mt-6 text-[0.98rem] text-stone lg:hidden">
+            Vous préférez parler ?{' '}
+            <a href={agency.phone.href} className="font-semibold text-ink underline underline-offset-4">
+              {agency.phone.display}
+            </a>
+          </p>
         </div>
       </div>
     </section>
@@ -332,7 +350,7 @@ function Segmented<T extends string>({ value, options, onChange, label }: { valu
           aria-checked={value === v}
           onClick={() => onChange(v)}
           className={cn(
-            'h-11 flex-1 rounded-full px-5 text-[0.95rem] font-medium transition-colors duration-300 sm:flex-none',
+            'h-11 flex-1 whitespace-nowrap rounded-full px-4 text-[0.92rem] font-medium transition-colors duration-300 sm:flex-none sm:px-5 sm:text-[0.95rem]',
             value === v ? 'bg-ink text-ivory' : 'text-ink/75 hover:text-ink',
           )}
         >
@@ -354,8 +372,8 @@ function StepDates({ draft, update, errors }: StepProps) {
         onChange={(v) => update({ dateMode: v })}
         options={[
           ['approx', 'Un mois'],
-          ['exact', 'Des dates précises'],
-          ['flexible', 'Je suis flexible'],
+          ['exact', 'Dates précises'],
+          ['flexible', 'Flexible'],
         ]}
       />
 
@@ -638,15 +656,15 @@ function StepContact({ draft, update, errors, onLegal }: StepProps & { onLegal: 
       </div>
 
       <div>
-        <p className="t-meta mb-4 text-stone">Je préfère être recontacté par</p>
+        <p className="t-meta mb-4 text-stone">Pour la suite, je préfère</p>
         <Segmented
           label="Moyen de contact préféré"
           value={draft.contactPref}
           onChange={(v) => update({ contactPref: v })}
           options={[
-            ['email', 'E-mail'],
-            ['phone', 'Téléphone'],
-            ['agency', 'Rendez-vous à l’agence'],
+            ['email', 'Un e-mail'],
+            ['phone', 'Un appel'],
+            ['agency', 'Passer à l’agence'],
           ]}
         />
       </div>
