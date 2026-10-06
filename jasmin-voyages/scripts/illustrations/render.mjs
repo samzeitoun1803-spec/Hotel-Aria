@@ -9,7 +9,7 @@ import sharp from 'sharp'
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { S } from './lib.mjs'
+import { S, rng } from './lib.mjs'
 import { scenes } from './scenes.mjs'
 
 export const WIDTHS = [640, 1024, 1600, 2400]
@@ -25,7 +25,14 @@ await mkdir(out, { recursive: true })
 if (preview) await mkdir(preview, { recursive: true })
 
 // Grain très léger : évite les aplats en escalier (banding) des grands dégradés.
-const grain = await sharp({ create: { width: S, height: S, channels: 3, background: '#808080', noise: { type: 'gaussian', mean: 128, sigma: 7 } } })
+// Graine fixe : régénérer une scène redonne exactement les mêmes fichiers.
+const noise = Buffer.alloc(S * S * 3)
+const rand = rng(20261006)
+for (let i = 0; i < S * S; i++) {
+  const v = Math.max(0, Math.min(255, Math.round(128 + (rand() + rand() + rand() - 1.5) * 14)))
+  noise[i * 3] = noise[i * 3 + 1] = noise[i * 3 + 2] = v
+}
+const grain = await sharp(noise, { raw: { width: S, height: S, channels: 3 } })
   .png()
   .toBuffer()
 
