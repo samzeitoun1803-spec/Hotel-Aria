@@ -63,7 +63,10 @@ export const emptyDraft: TripDraft = {
 export interface TripRequestPayload {
   source: string
   submittedAt: string
+  /** Résumé lisible, une ligne par information. */
   summary: string
+  /** Les mêmes informations en paires libellé / valeur (tableau d'e-mail, CRM…). */
+  fields: Array<[string, string]>
   contact: { firstName: string; lastName: string; email: string; phone: string; preference: ContactPref }
   trip: {
     destinations: string[]

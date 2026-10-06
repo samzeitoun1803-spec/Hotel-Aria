@@ -1,6 +1,6 @@
 # Jasmin Voyages — informations à fournir pour le site
 
-Sur le site, tout ce qui manque est écrit **« à compléter »** (en couleur terre cuite, souligné en pointillés). Les avis clients de la maquette sont **fictifs** et signalés comme tels.
+Sur le site, tout ce qui manque est écrit **« à compléter »** (en couleur terre cuite, souligné en pointillés). Le site est publiable en l'état : ces mentions se remplacent une par une.
 Voici la liste à remplir avec l'agence. Une fois les réponses reçues, chaque information se met à jour à un seul endroit (indiqué entre crochets).
 
 ## 1. Coordonnées et horaires
@@ -29,7 +29,7 @@ Voici la liste à remplir avec l'agence. Une fois les réponses reçues, chaque 
 
 ## 4. Avis clients
 
-- [ ] **De vrais avis clients, avec leur accord** (ceux de la maquette sont fictifs) : le texte, le prénom et l'initiale du nom, le voyage (destination et mois). *[`src/content/testimonials.ts`]*
+- [ ] **De vrais avis clients, avec leur accord** : le texte, le prénom et l'initiale du nom, le voyage (destination et mois). En attendant, le site affiche « Avis clients — à compléter ». *[`src/content/testimonials.ts`]*
 - [ ] Le **lien vers la fiche Google** de l'agence, si elle existe.
 
 ## 5. Offres à confirmer
@@ -46,5 +46,5 @@ Le site utilise des **illustrations originales**, créées pour l'agence et libr
 
 ## 7. Mise en ligne
 
-- [ ] **Nom de domaine** : existant, ou à acheter (ex. jasmin-voyages.fr).
-- [ ] **Service de réception des demandes** : par défaut, le formulaire ouvre la messagerie du visiteur. Pour recevoir les demandes directement, on peut brancher Formspree (gratuit pour commencer).
+- [ ] **Nom de domaine** : existant, ou à acheter (ex. jasmin-voyages.fr). *[`index.html`, bloc « NOM DE DOMAINE — À COMPLÉTER »]*
+- [ ] **Activer la réception des demandes** : le formulaire envoie les demandes par e-mail à jasmin.voyages@hotmail.fr (service FormSubmit). Après la mise en ligne, faire une demande test : l'agence reçoit un e-mail « Activate Form » sur lequel il faut cliquer une fois. Les demandes suivantes arrivent directement dans la boîte de l'agence.

@@ -25,6 +25,30 @@ const postJson = async (url: string, body: unknown, headers: Record<string, stri
 }
 
 const transports: Record<string, Transport> = {
+  /**
+   * https://formsubmit.co — envoie la demande par e-mail à l'agence, sans compte ni serveur.
+   * À la toute première demande, FormSubmit envoie un e-mail d'activation à l'adresse de l'agence :
+   * il suffit de cliquer sur « Activate Form » pour que les demandes suivantes arrivent.
+   */
+  formsubmit: async (payload) => {
+    const to = env.VITE_FORMSUBMIT_EMAIL || agency.email
+    const body: Record<string, string> = {
+      _subject: `Demande de voyage — ${payload.contact.firstName} ${payload.contact.lastName}`.trim(),
+      _template: 'table',
+      _captcha: 'false',
+    }
+    for (const [k, v] of payload.fields) if (k !== 'E-mail') body[k] = v
+    if (payload.contact.email) body.email = payload.contact.email // adresse de réponse
+    const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(body),
+    })
+    const json = (await res.json().catch(() => ({}))) as { success?: string | boolean; message?: string }
+    if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || `HTTP ${res.status}`)
+    return { kind: 'sent' }
+  },
+
   /** Aucune donnée envoyée — simule un aller-retour réseau. */
   demo: async (payload) => {
     await new Promise((r) => setTimeout(r, 1100))
@@ -74,7 +98,13 @@ const transports: Record<string, Transport> = {
   },
 }
 
-/** En développement : démo. En production sans configuration : mailto (aucune demande perdue). */
-export const transportName = env.VITE_TRIP_TRANSPORT || (env.DEV ? 'demo' : 'mailto')
+/** En développement : démo. En production sans configuration : FormSubmit, e-mail direct à l'agence. */
+export const transportName = env.VITE_TRIP_TRANSPORT || (env.DEV ? 'demo' : 'formsubmit')
+
+/** Service tiers qui transmet les demandes (mentionné dans la politique de confidentialité). */
+export const transportProcessor: string | null =
+  ({ formsubmit: 'FormSubmit (formsubmit.co)', formspree: 'Formspree (formspree.io)', supabase: 'Supabase (supabase.com)' } as Record<string, string>)[
+    transportName
+  ] ?? null
 
 export const sendTripRequest: Transport = (payload) => (transports[transportName] ?? transports.mailto)(payload)

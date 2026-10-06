@@ -52,24 +52,26 @@ export const describeTravelers = (d: TripDraft) => {
 }
 
 export const toPayload = (d: TripDraft, source: string): TripRequestPayload => {
-  const summary = [
-    `Destination : ${describeDestination(d) || '—'}`,
-    `Dates : ${describeDates(d) || '—'}`,
-    `Voyageurs : ${describeTravelers(d)}`,
-    `Budget par personne : ${budgetLabel(d.budget) || '—'}`,
-    `Style : ${[...d.services, ...d.styles].join(', ') || '—'}`,
-    d.message.trim() ? `Message : ${d.message.trim()}` : '',
-    `Contact : ${d.firstName} ${d.lastName} — ${d.email}${d.phone ? ' — ' + d.phone : ''} (préférence : ${
-      { email: 'e-mail', phone: 'téléphone', agency: 'rendez-vous à l’agence' }[d.contactPref]
-    })`,
+  const fields: Array<[string, string]> = [
+    ['Destination', describeDestination(d) || '—'],
+    ['Dates', describeDates(d) || '—'],
+    ['Voyageurs', describeTravelers(d)],
+    ['Budget par personne', budgetLabel(d.budget) || '—'],
+    ['Style', [...d.services, ...d.styles].join(', ') || '—'],
+    ['Message', d.message.trim() || '—'],
+    ['Nom', `${d.firstName} ${d.lastName}`.trim() || '—'],
+    ['E-mail', d.email.trim() || '—'],
+    ['Téléphone', d.phone.trim() || '—'],
+    ['Préférence de contact', { email: 'e-mail', phone: 'téléphone', agency: 'rendez-vous à l’agence' }[d.contactPref]],
+    ['Origine de la demande', source],
   ]
-    .filter(Boolean)
-    .join('\n')
+  const summary = fields.map(([k, v]) => `${k} : ${v}`).join('\n')
 
   return {
     source,
     submittedAt: new Date().toISOString(),
     summary,
+    fields,
     contact: {
       firstName: d.firstName.trim(),
       lastName: d.lastName.trim(),

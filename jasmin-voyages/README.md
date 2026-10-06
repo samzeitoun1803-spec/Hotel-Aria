@@ -52,8 +52,9 @@ Tout ce qui n'était pas vérifiable est écrit **« à compléter »** sur le s
 | Horaires d'ouverture, ligne fixe (illisible sur les photos de l'enseigne) | `src/content/agency.ts` |
 | Mentions légales : raison sociale, SIRET, immatriculation Atout France, garant financier, assurance RC Pro, directeur de publication, hébergeur | `src/content/agency.ts` → `legal` |
 | Réseaux sociaux (affichés « à compléter » tant qu'ils sont vides) | `src/content/agency.ts` → `social` |
-| **Avis clients** — **avis fictifs pour la maquette** (signalés « Avis fictifs — maquette »), à remplacer par de vrais avis avec l'accord des clients, puis passer `reviewsAreFictional` à `false` | `src/content/testimonials.ts` |
-| Nom de domaine : balises `canonical` / `og:url` / `og:image`, sitemap | `index.html`, `public/robots.txt` |
+| **Avis clients** — la section affiche « Avis clients — à compléter » tant que la liste est vide ; ajouter de vrais avis avec l'accord des clients (ou masquer la section avec `showReviews = false`) | `src/content/testimonials.ts` |
+| Nom de domaine : balises `canonical` / `og:url` / `og:image` (l'image de partage `public/og-image.jpg` est prête), sitemap | `index.html`, `public/robots.txt` |
+| Activer la réception des demandes : une demande test après la mise en ligne, puis clic sur le lien d'activation reçu par l'agence | voir « Recevoir les demandes » |
 | Durée de conservation des données | `src/components/overlays/LegalDialog.tsx` |
 
 Informations reprises de la devanture : adresse, **06 63 38 22 00**, **jasmin.voyages@hotmail.fr**, *Avions · Bateaux · Séjours*, partenariat **GNV Elite** et ses lignes (Sicile, Sardaigne, Baléares, Tunisie, Maroc, Albanie). À relire avec l'agence.
@@ -74,7 +75,8 @@ Le formulaire et le module « Votre prochain voyage » envoient la même charge 
 
 | `VITE_TRIP_TRANSPORT` | Effet |
 |---|---|
-| `mailto` *(défaut en production)* | ouvre la messagerie du visiteur, pré-remplie vers jasmin.voyages@hotmail.fr — aucune demande perdue, sans serveur |
+| `formsubmit` *(défaut en production)* | **e-mail direct à l'agence** via [FormSubmit](https://formsubmit.co), sans compte ni serveur, vers `jasmin.voyages@hotmail.fr` (ou `VITE_FORMSUBMIT_EMAIL`). ⚠️ À la première demande reçue, FormSubmit envoie un e-mail d'activation à cette adresse : cliquer sur « Activate Form », une seule fois. |
+| `mailto` | ouvre la messagerie du visiteur, pré-remplie vers l'adresse de l'agence |
 | `formspree` | envoi via [Formspree](https://formspree.io) (`VITE_FORMSPREE_ID`) — recommandé pour démarrer |
 | `api` | `POST` JSON vers votre endpoint ou CRM (`VITE_TRIP_API_URL`) |
 | `supabase` | insertion dans une table Supabase (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_SUPABASE_TABLE`) |

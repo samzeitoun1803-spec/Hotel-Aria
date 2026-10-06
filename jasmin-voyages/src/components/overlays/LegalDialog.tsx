@@ -5,6 +5,7 @@ import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { ease } from '../../lib/motion'
 import { useScrollLock } from '../../lib/scroll'
 import { useTrip, type LegalKind } from '../../lib/trip/TripContext'
+import { transportProcessor } from '../../lib/trip/transport'
 import { Todo } from '../ui/Todo'
 
 export function LegalDialog() {
@@ -117,6 +118,11 @@ function Panel({ kind }: { kind: LegalKind }) {
                 <p>
                   Ces informations servent uniquement à répondre à votre demande et à préparer votre voyage. Elles ne sont ni vendues, ni cédées à des tiers à des fins commerciales.
                 </p>
+                {transportProcessor && (
+                  <p className="mt-3">
+                    Les demandes envoyées depuis le site sont transmises par e-mail à l’agence par l’intermédiaire du service {transportProcessor}.
+                  </p>
+                )}
               </Block>
               <Block title="Durée de conservation">
                 <p>

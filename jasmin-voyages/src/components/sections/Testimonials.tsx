@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
 import { useState, type KeyboardEvent } from 'react'
 import { mapsLinks } from '../../content/agency'
-import { reviewsAreFictional, shortReviews, testimonials } from '../../content/testimonials'
+import { shortReviews, showReviews, testimonials } from '../../content/testimonials'
 import { cn } from '../../lib/cn'
 import { ease } from '../../lib/motion'
 import { Arrow } from '../ui/Arrow'
@@ -9,6 +9,7 @@ import { CircleButton } from '../ui/Button'
 import { MaskText } from '../ui/MaskText'
 import { Reveal } from '../ui/Reveal'
 import { SectionTag } from '../ui/SectionTag'
+import { Todo } from '../ui/Todo'
 
 function Stars({ className }: { className?: string }) {
   return (
@@ -23,6 +24,33 @@ function Stars({ className }: { className?: string }) {
 }
 
 export function Testimonials() {
+  if (!showReviews) return null
+  return testimonials.length ? <Reviews /> : <ReviewsToComplete />
+}
+
+/** Section en attente des vrais avis : propre, sans contenu inventé. */
+function ReviewsToComplete() {
+  return (
+    <section aria-labelledby="avis-titre" data-theme="dark" className="section-y relative overflow-hidden bg-ink text-ivory">
+      <div className="wrap">
+        <SectionTag index="08" tone="dark">
+          Ils sont partis
+        </SectionTag>
+        <MaskText as="h2" id="avis-titre" lines={['Ils en parlent', 'mieux que nous.']} className="t-h1 mt-10 lg:mt-12" />
+        <div className="mt-12 flex flex-col gap-8 border-t border-line-dark pt-8 md:flex-row md:items-end md:justify-between">
+          <p className="max-w-[34rem] text-[1.125rem] leading-[1.6] text-ivory/80">
+            Avis clients — <Todo />
+          </p>
+          <a href={mapsLinks.search} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold text-ivory/85 hover:text-ivory">
+            Lire les avis sur Google <Arrow direction="up-right" />
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Reviews() {
   const [[index, dir], setState] = useState<[number, number]>([0, 1])
   const n = testimonials.length
   const go = (delta: number) => setState(([i]) => [(i + delta + n) % n, delta])
@@ -44,11 +72,6 @@ export function Testimonials() {
           <SectionTag index="08" tone="dark">
             Ils sont partis
           </SectionTag>
-          {reviewsAreFictional && (
-            <p className="t-meta rounded-full border border-dashed border-ivory/30 px-3.5 py-2 text-[0.68rem] text-ivory/70">
-              Avis fictifs — maquette
-            </p>
-          )}
         </div>
         <MaskText as="h2" id="avis-titre" lines={['Ils en parlent', 'mieux que nous.']} className="t-h1 mt-10 lg:mt-12" />
 
@@ -120,6 +143,7 @@ export function Testimonials() {
         </div>
 
         {/* Bandeau d'avis courts */}
+        {shortReviews.length > 0 && (
         <ul className="mt-20 grid gap-x-12 gap-y-12 md:grid-cols-3 lg:mt-24">
           {shortReviews.map((r, i) => (
             <li key={r.author}>
@@ -134,6 +158,7 @@ export function Testimonials() {
             </li>
           ))}
         </ul>
+        )}
       </div>
     </section>
   )
