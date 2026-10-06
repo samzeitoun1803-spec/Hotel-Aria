@@ -82,7 +82,11 @@ export function ProjectGallery({ items }: { items: GalleryItem[] }) {
                 {item.isPlaceholder ? " (photographie à venir)" : ""}
               </span>
               <span className="proj-hover" aria-hidden="true">
-                <span className="proj-media" data-parallax>
+                {/* Parallaxe réservée aux photographies : les compositions provisoires restent fixes et entières */}
+                <span
+                  className={cn("proj-media", item.isPlaceholder && "proj-media-static")}
+                  data-parallax={item.isPlaceholder ? undefined : ""}
+                >
                   {item.media}
                 </span>
               </span>

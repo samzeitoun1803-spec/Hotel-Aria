@@ -149,7 +149,7 @@ Les polices sont auto-hébergées via `next/font/local`, sans aucun appel à Goo
 - **Eyebrow à nœud** : un nœud sur le rail, une dérivation de 20 px, puis le label en capitales.
 - **Ligne éditoriale** (services) : numéro, titre, description et glyphe schématique propre à chaque service.
 - **Champ à contour actif** : au focus, le filet crème devient cobalt après le passage d'une impulsion.
-- **Figure à masque** : rayon de 22 px, révélation par clip-path, parallaxe de ±5 %.
+- **Figure à masque** : rayon de 22 px, révélation par clip-path, parallaxe de ±5 % sur les photographies (les compositions provisoires restent fixes).
 - **Cartouche** : bande de métadonnées vérifiées, dans le hero et le footer.
 
 ---

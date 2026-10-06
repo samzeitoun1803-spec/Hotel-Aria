@@ -2146,6 +2146,9 @@ html:not(.motion) .fig-branch::before {
   position: absolute;
   inset: -5% 0;
 }
+.proj-media-static {
+  inset: 0;
+}
 .proj-media > svg,
 .proj-media .art-svg,
 .proj-img {
@@ -2187,27 +2190,26 @@ html:not(.motion) .fig-branch::before {
   grid-column: 2;
 }
 
-/* Tablette : le format portrait reste décalé, comme sur grand écran, au lieu d'occuper toute la largeur */
-@media (min-width: 640px) and (max-width: 1023px) {
-  .proj-offset {
-    justify-self: end;
-    width: 68%;
-  }
-}
-
-@media (min-width: 1024px) {
+/* Dès la tablette, les deux premières réalisations sont côte à côte, au même niveau */
+@media (min-width: 768px) {
   .proj-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: 24px;
     row-gap: 0;
-    align-items: start;
+    align-items: stretch;
   }
   .proj-wide {
     grid-column: 1 / span 8;
   }
+  /* Même hauteur d'image que sa voisine : le cadre occupe la hauteur laissée par la légende */
   .proj-offset {
     grid-column: 9 / span 4;
-    margin-top: clamp(140px, 16vw, 240px);
+    display: flex;
+    flex-direction: column;
+  }
+  .proj-offset .proj-frame {
+    flex: 1;
+    aspect-ratio: auto;
   }
   .proj-full {
     grid-column: 1 / -1;
