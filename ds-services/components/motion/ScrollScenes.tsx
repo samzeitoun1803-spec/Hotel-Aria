@@ -5,7 +5,10 @@ import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { onLenis } from "@/lib/lenis-store";
 import { HEAD } from "@/lib/motion";
-import { setupScene } from "./scenes";
+import { createScene, type Scene } from "./scenes";
+
+/** Durée maximale d'une tâche de préparation : au-delà, on rend la main au navigateur. */
+const TASK_BUDGET_MS = 8;
 
 declare global {
   interface Window {
@@ -16,7 +19,7 @@ declare global {
 /**
  * Animations liées au scroll — chargées après l'intro (voir MotionLayer).
  *  1. relie Lenis à ScrollTrigger ;
- *  2. prépare chaque section [data-scene] à son approche, une par tâche ;
+ *  2. prépare chaque section [data-scene] à son approche, par tâches de quelques millisecondes ;
  *  3. porte la tête d'impulsion de « la colonne ».
  */
 export function ScrollScenes() {
@@ -38,16 +41,24 @@ export function ScrollScenes() {
     };
   }, []);
 
-  /* Mise en scène paresseuse, section par section */
+  /* Mise en scène paresseuse, section par section, étape par étape */
   useEffect(() => {
-    const contexts = new Map<HTMLElement, gsap.Context>();
+    const scenes = new Map<HTMLElement, Scene>();
     const queue: HTMLElement[] = [];
     let timer = 0;
 
     const drain = () => {
       timer = 0;
-      const next = queue.shift();
-      if (next && !contexts.has(next)) contexts.set(next, setupScene(next));
+      const start = performance.now();
+      while (queue.length && performance.now() - start < TASK_BUDGET_MS) {
+        const el = queue[0];
+        let scene = scenes.get(el);
+        if (!scene) {
+          scene = createScene(el);
+          scenes.set(el, scene);
+        }
+        if (scene.next()) queue.shift();
+      }
       if (queue.length) timer = window.setTimeout(drain, 0);
     };
 
@@ -68,8 +79,8 @@ export function ScrollScenes() {
     return () => {
       window.clearTimeout(timer);
       io.disconnect();
-      contexts.forEach((ctx, el) => {
-        ctx.revert();
+      scenes.forEach((scene, el) => {
+        scene.context.revert();
         el.removeAttribute("data-scene-ready");
       });
     };

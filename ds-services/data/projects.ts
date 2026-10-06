@@ -18,7 +18,7 @@ export type Project = {
   id: string;
   title: string;
   category: string;
-  /** Lieu du chantier — à confirmer */
+  /** Lieu du chantier, tel que confirmé par DS SERVICES */
   location: string | null;
   year: number | null;
   image: { src: string; width: number; height: number } | null;
@@ -34,7 +34,7 @@ export const projects: Project[] = [
     id: "realisation-01",
     title: "Réalisation à documenter",
     category: "Installation électrique",
-    location: "Nice", // placeholder — à confirmer
+    location: null,
     year: null,
     image: null,
     alt: "",
@@ -46,7 +46,7 @@ export const projects: Project[] = [
     id: "realisation-02",
     title: "Réalisation à documenter",
     category: "Rénovation électrique",
-    location: "Nice", // placeholder — à confirmer
+    location: null,
     year: null,
     image: null,
     alt: "",
@@ -58,7 +58,7 @@ export const projects: Project[] = [
     id: "realisation-03",
     title: "Réalisation à documenter",
     category: "Mise à niveau",
-    location: "Nice", // placeholder — à confirmer
+    location: null,
     year: null,
     image: null,
     alt: "",

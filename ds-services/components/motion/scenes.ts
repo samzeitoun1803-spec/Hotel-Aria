@@ -3,9 +3,9 @@ import { HEAD } from "@/lib/motion";
 
 /**
  * Mise en scène d'une section.
- * Appelée paresseusement par ScrollScenes, section par section, à l'approche de
- * l'écran : le travail (découpage des titres, création des déclencheurs) est
- * réparti en petites tâches au lieu d'un long blocage au chargement.
+ * Préparée paresseusement par ScrollScenes à l'approche de l'écran, une étape à la fois :
+ * le travail (découpage des titres, création des déclencheurs) est réparti en tâches
+ * de quelques millisecondes au lieu d'un long blocage.
  *
  * Les sections déclarent leurs intentions par attributs (data-reveal, data-rail,
  * data-node, data-roll…) ; sans JavaScript ou avec « réduire les animations »,
@@ -14,14 +14,41 @@ import { HEAD } from "@/lib/motion";
 
 const COBALT = "#2545FF";
 
-export function setupScene(root: HTMLElement): gsap.Context {
-  return gsap.context(() => {
-    const q = <T extends Element = HTMLElement>(sel: string) => {
-      const found = Array.from(root.querySelectorAll<T>(sel));
-      return root.matches(sel) ? [root as unknown as T, ...found] : found;
-    };
+type Query = <T extends Element = HTMLElement>(sel: string) => T[];
+type Step = (q: Query) => void;
 
-    /* ── La colonne : le segment passe sous tension au passage du point de contact ── */
+export type Scene = {
+  context: gsap.Context;
+  /** Exécute l'étape suivante ; renvoie vrai quand la section est entièrement prête. */
+  next: () => boolean;
+};
+
+/**
+ * Prépare une section étape par étape (voir ScrollScenes : chaque tâche s'arrête
+ * après quelques millisecondes, le navigateur reste disponible pour l'utilisateur).
+ */
+export function createScene(root: HTMLElement): Scene {
+  const context = gsap.context(() => {}, root);
+  const q: Query = <T extends Element = HTMLElement>(sel: string) => {
+    const found = Array.from(root.querySelectorAll<T>(sel));
+    return root.matches(sel) ? [root as unknown as T, ...found] : found;
+  };
+  let index = 0;
+  return {
+    context,
+    next() {
+      const step = STEPS[index++];
+      if (step) context.add(() => step(q));
+      if (index < STEPS.length) return false;
+      root.dataset.sceneReady = "";
+      return true;
+    },
+  };
+}
+
+const STEPS: Step[] = [
+  /* ── La colonne : le segment passe sous tension au passage du point de contact ── */
+  (q) =>
     q("[data-rail]").forEach((rail) => {
       const live = rail.querySelector(".rail-live");
       if (!live) return;
@@ -34,9 +61,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
           scrollTrigger: { trigger: rail, start: `top ${HEAD}`, end: `bottom ${HEAD}`, scrub: true },
         },
       );
-    });
+    }),
 
-    /* ── Nœuds : s'allument quand le courant les atteint ── */
+  /* ── Nœuds : s'allument quand le courant les atteint ── */
+  (q) =>
     q("[data-node]").forEach((node) => {
       ScrollTrigger.create({
         trigger: node,
@@ -44,9 +72,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
         onEnter: () => node.classList.add("is-live"),
         onLeaveBack: () => node.classList.remove("is-live"),
       });
-    });
+    }),
 
-    /* ── Dérivations : une impulsion parcourt le filet à l'arrivée du courant ── */
+  /* ── Dérivations : une impulsion parcourt le filet à l'arrivée du courant ── */
+  (q) =>
     q("[data-sweep]").forEach((item) => {
       ScrollTrigger.create({
         trigger: item,
@@ -54,10 +83,11 @@ export function setupScene(root: HTMLElement): gsap.Context {
         once: true,
         onEnter: () => item.classList.add("is-swept"),
       });
-    });
+    }),
 
-    /* ── Titres : révélation ligne par ligne, par masque ;
-          les mots signature reçoivent ensuite l'énergie (cobalt → couleur finale). ── */
+  /* ── Titres : révélation ligne par ligne, par masque ;
+        les mots signature reçoivent ensuite l'énergie (cobalt → couleur finale). ── */
+  (q) =>
     q("[data-reveal='lines']").forEach((el) => {
       SplitText.create(el, {
         type: "lines",
@@ -78,9 +108,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
           return tl;
         },
       });
-    });
+    }),
 
-    /* ── Signature isolée : balayage cobalt de gauche à droite, puis stabilisation ── */
+  /* ── Signature isolée : balayage cobalt de gauche à droite, puis stabilisation ── */
+  (q) =>
     q("[data-reveal='energize']").forEach((el) => {
       const finalColor = getComputedStyle(el).color;
       gsap
@@ -92,9 +123,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
         )
         .to(el, { color: finalColor, duration: 0.9, ease: "power2.out" }, "-=0.25");
       gsap.set(el, { visibility: "visible" });
-    });
+    }),
 
-    /* ── Apparitions simples ── */
+  /* ── Apparitions simples ── */
+  (q) =>
     q("[data-reveal='fade']").forEach((el) => {
       gsap.fromTo(
         el,
@@ -107,10 +139,11 @@ export function setupScene(root: HTMLElement): gsap.Context {
           scrollTrigger: { trigger: el, start: "top 88%", once: true },
         },
       );
-    });
+    }),
 
-    /* ── Section navy : les mots s'allument au fil de la lecture.
-          Point de départ à 38 % d'opacité : le texte reste lisible (contraste ≥ 3:1). ── */
+  /* ── Section navy : les mots s'allument au fil de la lecture.
+        Point de départ à 38 % d'opacité : le texte reste lisible (contraste ≥ 3:1). ── */
+  (q) =>
     q("[data-reveal='words']").forEach((el) => {
       SplitText.create(el, {
         type: "words",
@@ -130,9 +163,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
           );
         },
       });
-    });
+    }),
 
-    /* ── Ligne qui traverse lentement une section ── */
+  /* ── Ligne qui traverse lentement une section ── */
+  (q) =>
     q("[data-traverse]").forEach((el) => {
       const track = el.querySelector(".traverse-track");
       const section = el.closest("section") ?? el;
@@ -146,9 +180,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
           scrollTrigger: { trigger: section, start: "top 70%", end: "bottom 30%", scrub: 0.6 },
         },
       );
-    });
+    }),
 
-    /* ── Réalisations : masque, parallaxe à peine perceptible ── */
+  /* ── Réalisations : masque, parallaxe à peine perceptible ── */
+  (q) =>
     q("[data-reveal='figure']").forEach((fig) => {
       gsap.fromTo(
         fig,
@@ -173,9 +208,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
           },
         );
       }
-    });
+    }),
 
-    /* ── Repères : compteurs à rouleaux ── */
+  /* ── Repères : compteurs à rouleaux ── */
+  (q) =>
     q("[data-roll]").forEach((el) => {
       const cols = el.querySelectorAll(".roll-col");
       gsap.set(cols, { y: 0, yPercent: 0 });
@@ -186,9 +222,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
         ease: "power4.inOut",
         scrollTrigger: { trigger: el, start: "top 86%", once: true },
       });
-    });
+    }),
 
-    /* ── Frise 2014 → aujourd'hui ── */
+  /* ── Frise 2014 → aujourd'hui ── */
+  (q) =>
     q("[data-timeline]").forEach((el) => {
       const live = el.querySelector(".tl-live");
       const track = el.querySelector(".tl-pulse-track");
@@ -209,9 +246,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
         })
         .fromTo(live, { scaleX: 0 }, { scaleX: 1, ease: "none" }, 0)
         .fromTo(track, { xPercent: 0 }, { xPercent: 100, ease: "none" }, 0);
-    });
+    }),
 
-    /* ── Plan de Nice : tracé à l'entrée ── */
+  /* ── Plan de Nice : tracé à l'entrée ── */
+  (q) =>
     q("[data-map]").forEach((el) => {
       ScrollTrigger.create({
         trigger: el,
@@ -219,9 +257,10 @@ export function setupScene(root: HTMLElement): gsap.Context {
         once: true,
         onEnter: () => el.classList.add("is-drawn"),
       });
-    });
+    }),
 
-    /* ── Animations d'ambiance : seulement quand l'élément est à l'écran ── */
+  /* ── Animations d'ambiance : seulement quand l'élément est à l'écran ── */
+  (q) =>
     q("[data-map], [data-onscreen]").forEach((el) => {
       ScrollTrigger.create({
         trigger: el,
@@ -229,8 +268,5 @@ export function setupScene(root: HTMLElement): gsap.Context {
         end: "bottom top",
         onToggle: (self) => el.classList.toggle("is-onscreen", self.isActive),
       });
-    });
-
-    root.dataset.sceneReady = "";
-  }, root);
-}
+    }),
+];

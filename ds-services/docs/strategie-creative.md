@@ -202,7 +202,7 @@ Les polices sont auto-hébergées via `next/font/local`, sans aucun appel à Goo
 4. **Une confiance démontrée** : adresse, SIREN, date de création, gérant. Tout est vérifiable.
 5. **Un retour d'état clair** : chargement (l'impulsion boucle autour du bouton), succès (le circuit se ferme : « ✓ Demande envoyée »), erreur (le circuit s'ouvre, avec un message et la possibilité de réessayer).
 6. **Anti-spam invisible** : champ piège, piège temporel, limite de débit côté serveur.
-7. **Prévu pour la suite** : dès que `company.phone` est renseigné, un bouton « Appeler » apparaît automatiquement (hero mobile, contact, menu).
+7. **Prévu pour la suite** : dès que `company.phone` est renseigné, un bouton « Appeler » apparaît automatiquement (barre collante mobile, section contact, menu, pied de page).
 
 ---
 

@@ -3254,6 +3254,7 @@ html.motion .footer-wire.is-onscreen .footer-wire-pulse {
   z-index: 45;
   display: flex;
   justify-content: center;
+  gap: 8px;
   pointer-events: none;
   transform: translateY(150%);
   transition: transform 0.65s var(--ease-current);
@@ -3263,6 +3264,9 @@ html.motion .footer-wire.is-onscreen .footer-wire-pulse {
 }
 .sticky-cta .btn {
   pointer-events: auto;
+}
+.sticky-cta .btn-light {
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
 }
 @media (min-width: 768px) {
   .sticky-cta {

@@ -3,15 +3,18 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { phoneHref } from "@/data/company";
 import { cn } from "@/lib/cn";
 
 /**
  * CTA collant discret (mobile) : apparaît une fois le hero passé,
  * s'efface pendant la lecture de la section contact et du pied de page.
+ * Dès que le téléphone est renseigné (data/company.ts), « Appeler » s'y ajoute.
  */
 export function StickyCta() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
+  const tel = phoneHref();
 
   const onHome = pathname === "/";
 
@@ -48,6 +51,11 @@ export function StickyCta() {
 
   return (
     <div className={cn("sticky-cta", shown && "is-visible")} inert={!shown}>
+      {tel ? (
+        <Button href={tel} variant="light" size="sm" icon={null} magnetic={false}>
+          Appeler
+        </Button>
+      ) : null}
       <Button href="/#contact" size="sm" magnetic={false}>
         Demander un devis
       </Button>

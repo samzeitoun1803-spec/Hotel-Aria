@@ -95,7 +95,9 @@ export function ProjectGallery({ items }: { items: GalleryItem[] }) {
             <figcaption className="proj-caption">
               <span className="proj-index tabular-nums">{String(i + 1).padStart(2, "0")}</span>
               <span className="proj-cat">{item.category}</span>
-              <span className="proj-meta">{[item.location, item.year].filter(Boolean).join(" · ")}</span>
+              <span className="proj-meta">
+                {item.isPlaceholder ? "À documenter" : [item.location, item.year].filter(Boolean).join(" · ")}
+              </span>
             </figcaption>
           </figure>
         ))}
