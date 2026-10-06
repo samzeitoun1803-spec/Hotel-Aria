@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { agency, mapsLinks } from '../../content/agency'
 import { useNiceTime } from '../../hooks/useNiceTime'
+import { isDemo } from '../../lib/demo'
 import { useTrip } from '../../lib/trip/TripContext'
 import { Arrow } from '../ui/Arrow'
 import { PillButton, PillLink } from '../ui/Button'
@@ -94,7 +95,7 @@ export function Agency() {
           </div>
 
           <div className="lg:col-span-6">
-            <Reveal className="lg:sticky lg:top-28" delay={0.1}>
+            <Reveal className="lg:sticky lg:top-[calc(7rem+var(--demo-bar))]" delay={0.1}>
               <NiceMap />
             </Reveal>
           </div>
@@ -134,9 +135,12 @@ function NiceMap() {
       <figcaption className="mt-4 flex flex-wrap items-center justify-between gap-4">
         <span className="t-meta text-stone">{live ? 'Carte interactive — Google Maps' : `Plan stylisé — ${agency.coordinates.label}`}</span>
         <span className="flex gap-5">
-          <button type="button" onClick={() => setLive((v) => !v)} className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold">
-            {live ? 'Revenir au plan' : 'Afficher la carte interactive'}
-          </button>
+          {/* Maquette : pas de carte intégrée (la page de présentation n'autorise pas les cadres externes). */}
+          {!isDemo && (
+            <button type="button" onClick={() => setLive((v) => !v)} className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold">
+              {live ? 'Revenir au plan' : 'Afficher la carte interactive'}
+            </button>
+          )}
           <a href={mapsLinks.search} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold">
             Google Maps <Arrow direction="up-right" />
           </a>

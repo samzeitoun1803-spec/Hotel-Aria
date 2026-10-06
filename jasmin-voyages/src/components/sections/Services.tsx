@@ -49,7 +49,7 @@ export function Services() {
         <div className="mt-16 grid gap-10 lg:mt-24 lg:grid-cols-12 lg:gap-8">
           {/* La carte argile — l'offre mise en avant, unique sur la page */}
           <div className="lg:col-span-5">
-            <Reveal className="lg:sticky lg:top-28">
+            <Reveal className="lg:sticky lg:top-[calc(7rem+var(--demo-bar))]">
               <article className="relative flex min-h-[420px] flex-col justify-between overflow-hidden bg-clay p-8 text-paper md:min-h-[520px] md:p-[53px_59px]">
                 <div className="flex items-start justify-between gap-6">
                   <p className="t-meta text-paper/80">{featuredType.kicker}</p>

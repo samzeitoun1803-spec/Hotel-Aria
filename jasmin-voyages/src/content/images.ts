@@ -12,6 +12,8 @@
  * `tone` : trois couleurs (ombre, milieu, lumière) affichées pendant le chargement.
  */
 
+import { isDemo } from '../lib/demo'
+
 export interface SiteImage {
   /** Chemin de base sans extension si `widths` est fourni (→ `${src}-${w}.webp`), sinon fichier complet ou URL. */
   src: string
@@ -26,12 +28,14 @@ export interface SiteImage {
 }
 
 const W = [640, 1024, 1600, 2400] as const
-const ill = (name: string) => ({ src: `/images/${name}`, widths: W })
+/** Dossier public des illustrations ; chemin relatif pour la maquette, servie depuis n'importe quelle adresse. */
+const dir = isDemo ? './images/' : '/images/'
+const ill = (name: string) => ({ src: `${dir}${name}`, widths: W })
 
 export const images = {
   hero: {
     ...ill('hero'),
-    portrait: '/images/heroPortrait',
+    portrait: `${dir}heroPortrait`,
     alt: 'Illustration : au-dessus d’une mer de nuages à l’heure dorée, les Alpes au loin, vues depuis le hublot',
     tone: ['#4f6c80', '#d6c8b0', '#f3cf9f'],
     focus: '50% 50%',

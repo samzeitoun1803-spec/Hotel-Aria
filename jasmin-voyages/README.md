@@ -87,6 +87,13 @@ Un champ piège anti-robots est inclus ; le consentement RGPD est demandé à la
 
 ---
 
+## Maquette cliquable
+
+`npm run maquette` produit une version de présentation du site, en une seule page autonome : `dist-maquette/maquette.html` (CSS, JavaScript et polices intégrés), avec ses illustrations dans `dist-maquette/images/`.
+Un bandeau « Maquette » reste affiché en permanence, les avis sont des exemples signalés comme fictifs (`src/content/demoReviews.ts`), les formulaires n'envoient rien et la carte Google n'est pas intégrée. Le site en ligne (`npm run build`) n'est pas concerné.
+
+---
+
 ## Technique
 
 - **React 19, TypeScript, Vite, Tailwind CSS 4, Framer Motion, Lenis** (défilement fluide).

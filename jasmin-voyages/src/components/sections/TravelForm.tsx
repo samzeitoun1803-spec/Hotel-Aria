@@ -4,6 +4,7 @@ import { agency } from '../../content/agency'
 import { destinations } from '../../content/destinations'
 import { budgetOptions, durationOptions, serviceOptions, styleOptions } from '../../content/options'
 import { cn } from '../../lib/cn'
+import { demoFormNote, isDemo } from '../../lib/demo'
 import { ease } from '../../lib/motion'
 import { budgetLabel, describeDates, describeDestination, describeTravelers, toPayload, upcomingMonths } from '../../lib/trip/format'
 import { sendTripRequest } from '../../lib/trip/transport'
@@ -105,7 +106,7 @@ export function TravelForm() {
     <section id="demande" aria-labelledby="demande-titre" className="section-y relative bg-ivory">
       <div className="wrap grid gap-14 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-28">
+          <div className="lg:sticky lg:top-[calc(7rem+var(--demo-bar))]">
             <SectionTag index="09">Demande de voyage</SectionTag>
             <MaskText as="h2" id="demande-titre" lines={['Parlez-nous', 'de votre prochain', 'voyage.']} className="t-h1 mt-8" />
             <Reveal delay={0.1}>
@@ -224,6 +225,7 @@ export function TravelForm() {
                       )}
                     </PillButton>
                   </div>
+                  {isDemo && <p className="mt-4 text-right text-[0.85rem] text-stone">{demoFormNote}</p>}
                   <p className="sr-only" aria-live="polite">
                     Étape {step + 1} sur 6 : {STEPS[step].short}
                   </p>
@@ -724,7 +726,7 @@ function Success({ draft, mail, onRestart }: { draft: TripDraft; mail: boolean; 
             <path d="M2.5 7.4 5.6 10.3 11.5 3.8" fill="none" stroke="currentColor" strokeWidth="1.8" />
           </svg>
         </span>
-        {mail ? 'Demande prête' : 'Demande envoyée'}
+        {mail ? 'Demande prête' : isDemo ? 'Envoi simulé' : 'Demande envoyée'}
       </p>
       <h3 ref={ref} tabIndex={-1} className="t-h1 mt-8 outline-none">
         Votre voyage
@@ -734,7 +736,9 @@ function Success({ draft, mail, onRestart }: { draft: TripDraft; mail: boolean; 
       <p className="t-lead mt-6 max-w-[34rem] text-stone">
         {mail
           ? `Merci ${draft.firstName}. Votre messagerie vient de s’ouvrir avec votre demande : envoyez le message pour qu’il nous parvienne.`
-          : `Merci ${draft.firstName}. Un conseiller étudie votre demande et vous recontacte ${how}.`}
+          : isDemo
+            ? `Merci ${draft.firstName}. Maquette : aucune demande n’a été transmise. Sur le site en ligne, elle arrive directement chez ${agency.name}, et un conseiller vous recontacte ${how}.`
+            : `Merci ${draft.firstName}. Un conseiller étudie votre demande et vous recontacte ${how}.`}
       </p>
 
       <dl className="mt-10 border-t border-line">

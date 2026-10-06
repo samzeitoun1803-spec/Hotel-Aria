@@ -237,10 +237,18 @@
    Décrite en CSS pour être juste dès le premier affichage (pré-rendu).
    --fs : taille du mot-symbole · --p : ouverture du hublot (0 → 1), pilotée au défilement. */
 
+/* Hauteur du bandeau de la maquette (DemoBanner) : 0 sur le site en ligne. */
+:root {
+  --demo-bar: 0px;
+}
+:root:has([data-demo-bar]) {
+  --demo-bar: calc(2rem + env(safe-area-inset-top, 0px));
+}
+
 .hero-stage {
   --fs: 19vw;
   --pad: 1.25rem;
-  --win-top: 5.5rem;
+  --win-top: calc(5.5rem + var(--demo-bar));
   --win-w: min(44vw, 30svh);
   --win-h: calc(var(--win-w) / 0.68);
   --win-left: calc(100% - var(--pad) - var(--win-w));
@@ -248,15 +256,15 @@
 @media (min-width: 768px) {
   .hero-stage {
     --pad: 2rem;
-    --win-top: calc(5.5rem + 4svh);
+    --win-top: calc(5.5rem + 4svh + var(--demo-bar));
   }
 }
 @media (min-width: 1024px) {
   .hero-stage {
     --fs: min(15.6vw, 30svh);
     --pad: 3rem;
-    --win-top: 13svh;
-    --win-h: calc(87svh - 2rem - var(--fs) * 1.36);
+    --win-top: calc(13svh + var(--demo-bar));
+    --win-h: calc(87svh - 2rem - var(--fs) * 1.36 - var(--demo-bar));
     --win-w: calc(var(--win-h) * 0.68);
     --win-left: calc(var(--pad) + var(--fs) * 1.45);
   }

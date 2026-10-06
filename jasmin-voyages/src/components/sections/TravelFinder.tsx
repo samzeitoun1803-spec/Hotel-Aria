@@ -3,6 +3,7 @@ import { useMemo, useState, type FormEvent, type ReactNode } from 'react'
 import { destinations, type Mood, type Region } from '../../content/destinations'
 import { budgetFromAmount, monthNames, monthShort, moodOptions, regionOptions } from '../../content/options'
 import { cn } from '../../lib/cn'
+import { demoFormNote, isDemo } from '../../lib/demo'
 import { ease } from '../../lib/motion'
 import { euros, nextOccurrence, toPayload } from '../../lib/trip/format'
 import { sendTripRequest } from '../../lib/trip/transport'
@@ -78,7 +79,7 @@ export function TravelFinder() {
       <div className="wrap grid gap-14 lg:grid-cols-12 lg:gap-8">
         {/* Colonne gauche : titre + esquisse vivante */}
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-28">
+          <div className="lg:sticky lg:top-[calc(7rem+var(--demo-bar))]">
             <SectionTag index="03">Sur mesure</SectionTag>
             <MaskText as="h2" id="finder-titre" lines={['Votre prochain', 'voyage commence', 'ici.']} className="t-h1 mt-8" />
             <p className="mt-6 max-w-[26rem] text-stone">Quatre questions, trente secondes. Un conseiller s’occupe du reste.</p>
@@ -324,7 +325,9 @@ function QuickRequest({ draft, onRefine }: { draft: Partial<TripDraft>; onRefine
         <p className="mt-3 max-w-[32rem] text-stone">
           {state === 'mail'
             ? 'Votre messagerie s’est ouverte avec votre esquisse : il ne reste qu’à envoyer le message.'
-            : 'Un conseiller vous recontacte personnellement pour en parler.'}
+            : isDemo
+              ? 'Maquette : rien n’a été transmis. Sur le site en ligne, un conseiller vous recontacte personnellement pour en parler.'
+              : 'Un conseiller vous recontacte personnellement pour en parler.'}
         </p>
         <TextLink as="button" onClick={onRefine} className="mt-6">
           Compléter ma demande
@@ -394,6 +397,7 @@ function QuickRequest({ draft, onRefine }: { draft: Partial<TripDraft>; onRefine
       <p className="mt-5 text-[0.8rem] leading-relaxed text-stone">
         En envoyant, vous acceptez d’être recontacté au sujet de cette demande. Vos informations ne sont utilisées que pour vous répondre.
       </p>
+      {isDemo && <p className="mt-2 text-[0.85rem] text-stone">{demoFormNote}</p>}
     </form>
   )
 }

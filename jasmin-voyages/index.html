@@ -13,6 +13,10 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <script>
       document.documentElement.classList.add('js')
+      // Filet de sécurité : si le JavaScript ne démarre pas, le contenu masqué pour les animations réapparaît.
+      window.__jvFallback = setTimeout(function () {
+        document.documentElement.classList.remove('js')
+      }, 6000)
     </script>
 
     <!-- NOM DE DOMAINE — À COMPLÉTER : remplacez VOTRE-DOMAINE.fr puis retirez ce commentaire.

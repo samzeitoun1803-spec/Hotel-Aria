@@ -1,4 +1,5 @@
 import { MotionConfig } from 'framer-motion'
+import { DemoBanner } from './components/overlays/DemoBanner'
 import { DestinationDialog } from './components/overlays/DestinationDialog'
 import { LegalDialog } from './components/overlays/LegalDialog'
 import { MobileCTA } from './components/overlays/MobileCTA'
@@ -15,6 +16,7 @@ import { TravelFinder } from './components/sections/TravelFinder'
 import { TravelForm } from './components/sections/TravelForm'
 import { WhyJasmin } from './components/sections/WhyJasmin'
 import { Cursor } from './components/ui/Cursor'
+import { isDemo } from './lib/demo'
 import { ScrollProvider } from './lib/scroll'
 import { TripProvider } from './lib/trip/TripContext'
 
@@ -23,6 +25,7 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <ScrollProvider>
         <TripProvider>
+          {isDemo && <DemoBanner />}
           <a
             href="#contenu"
             className="fixed left-3 top-3 z-[100] -translate-y-24 rounded-full bg-ink px-5 py-3 font-semibold text-ivory transition-transform focus:translate-y-0"

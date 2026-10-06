@@ -1,6 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+  /** '1' : mode maquette (voir src/lib/demo.ts) */
+  readonly VITE_DEMO?: '1' | ''
   readonly VITE_TRIP_TRANSPORT?: 'demo' | 'mailto' | 'formsubmit' | 'formspree' | 'api' | 'supabase' | ''
   readonly VITE_FORMSUBMIT_EMAIL?: string
   readonly VITE_FORMSPREE_ID?: string

@@ -1,7 +1,9 @@
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
 import { useState, type KeyboardEvent } from 'react'
 import { mapsLinks } from '../../content/agency'
-import { shortReviews, showReviews, testimonials } from '../../content/testimonials'
+import { demoShortReviews, demoTestimonials } from '../../content/demoReviews'
+import { shortReviews, showReviews, testimonials, type Testimonial } from '../../content/testimonials'
+import { isDemo } from '../../lib/demo'
 import { cn } from '../../lib/cn'
 import { ease } from '../../lib/motion'
 import { Arrow } from '../ui/Arrow'
@@ -25,7 +27,15 @@ function Stars({ className }: { className?: string }) {
 
 export function Testimonials() {
   if (!showReviews) return null
-  return testimonials.length ? <Reviews /> : <ReviewsToComplete />
+  if (testimonials.length) return <Reviews items={testimonials} short={shortReviews} />
+  // Maquette : avis d'exemple, toujours signalés comme fictifs.
+  if (isDemo) return <Reviews items={demoTestimonials} short={demoShortReviews} fictional />
+  return <ReviewsToComplete />
+}
+
+/** Mention portée par chaque avis d'exemple de la maquette. */
+function FictionalTag() {
+  return <span className="t-meta rounded-full border border-dashed border-ivory/35 px-2.5 py-1 text-[0.62rem] text-ivory/70">Avis fictif</span>
 }
 
 /** Section en attente des vrais avis : propre, sans contenu inventé. */
@@ -50,11 +60,11 @@ function ReviewsToComplete() {
   )
 }
 
-function Reviews() {
+function Reviews({ items, short, fictional }: { items: Testimonial[]; short: Testimonial[]; fictional?: boolean }) {
   const [[index, dir], setState] = useState<[number, number]>([0, 1])
-  const n = testimonials.length
+  const n = items.length
   const go = (delta: number) => setState(([i]) => [(i + delta + n) % n, delta])
-  const t = testimonials[index]
+  const t = items[index]
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.x < -60) go(1)
@@ -72,8 +82,16 @@ function Reviews() {
           <SectionTag index="08" tone="dark">
             Ils sont partis
           </SectionTag>
+          {fictional && (
+            <p className="t-meta rounded-full border border-dashed border-ivory/30 px-3.5 py-2 text-[0.68rem] text-ivory/70">Avis fictifs — maquette</p>
+          )}
         </div>
         <MaskText as="h2" id="avis-titre" lines={['Ils en parlent', 'mieux que nous.']} className="t-h1 mt-10 lg:mt-12" />
+        {fictional && (
+          <p className="mt-6 max-w-[36rem] text-[1rem] leading-[1.55] text-ivory/70">
+            Exemples rédigés pour la maquette : ce ne sont pas de vrais clients. Le site en ligne affichera de vrais avis, avec l’accord des clients.
+          </p>
+        )}
 
         <div className="mt-12 grid gap-12 lg:mt-16 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-1">
@@ -113,6 +131,7 @@ function Reviews() {
                     <span className="font-semibold">{t.author}</span>
                     <span aria-hidden className="h-px w-6 bg-ivory/30" />
                     <span className="text-ivory/60">{t.trip}</span>
+                    {fictional && <FictionalTag />}
                   </figcaption>
                 </motion.figure>
               </AnimatePresence>
@@ -131,7 +150,7 @@ function Reviews() {
                 </p>
               </div>
               <div className="flex gap-1.5" aria-hidden>
-                {testimonials.map((_, i) => (
+                {items.map((_, i) => (
                   <span key={i} className={cn('h-[2px] transition-all duration-700 ease-[var(--ease-expo)]', i === index ? 'w-10 bg-ivory' : 'w-4 bg-ivory/25')} />
                 ))}
               </div>
@@ -143,16 +162,19 @@ function Reviews() {
         </div>
 
         {/* Bandeau d'avis courts */}
-        {shortReviews.length > 0 && (
+        {short.length > 0 && (
         <ul className="mt-20 grid gap-x-12 gap-y-12 md:grid-cols-3 lg:mt-24">
-          {shortReviews.map((r, i) => (
+          {short.map((r, i) => (
             <li key={r.author}>
               <Reveal delay={i * 0.08} className="border-t border-line-dark pt-6">
                 <Stars />
                 <p className="mt-5 text-[1.125rem] leading-[1.5] text-ivory/90">« {r.quote} »</p>
-                <p className="mt-5 text-[0.95rem]">
-                  <span className="font-semibold">{r.author}</span>
-                  <span className="text-mist"> — {r.trip}</span>
+                <p className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.95rem]">
+                  <span>
+                    <span className="font-semibold">{r.author}</span>
+                    <span className="text-mist"> — {r.trip}</span>
+                  </span>
+                  {fictional && <FictionalTag />}
                 </p>
               </Reveal>
             </li>

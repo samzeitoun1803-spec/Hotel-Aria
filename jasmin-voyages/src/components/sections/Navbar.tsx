@@ -40,7 +40,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="a-drop fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 md:px-5 md:pt-4" style={{ animationDelay: '0.5s' }}>
+      <header className="a-drop fixed inset-x-0 top-[var(--demo-bar)] z-50 flex justify-center px-3 pt-3 md:px-5 md:pt-4" style={{ animationDelay: '0.5s' }}>
         <nav
           aria-label="Navigation principale"
           className={cn(

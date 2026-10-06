@@ -94,7 +94,7 @@ export function Hero() {
         {/* ── Texte : le mot-symbole passe devant le paysage ── */}
         <motion.div
           style={reduced ? undefined : { opacity: textOpacity, y: textY, pointerEvents: textPointer, visibility: textVisibility }}
-          className="relative z-20 flex h-full w-full flex-col px-[var(--pad)] pb-5 pt-[5.5rem] md:pt-28 lg:pb-8"
+          className="relative z-20 flex h-full w-full flex-col px-[var(--pad)] pb-5 pt-[calc(5.5rem+var(--demo-bar))] md:pt-[calc(7rem+var(--demo-bar))] lg:pb-8"
         >
           <div className="flex items-start justify-between gap-8">
             <div className="a-fade t-meta max-w-[44vw] space-y-1.5 text-stone lg:max-w-[12rem] xl:max-w-none" style={delay(0.9)}>

@@ -75,7 +75,7 @@ export function JourneySteps() {
         <div className="wrap grid grid-cols-12 gap-8 pb-[12vh]">
           {/* Image épinglée */}
           <div className="col-span-6">
-            <div className="sticky top-0 flex h-svh items-center py-[10vh]">
+            <div className="sticky top-0 flex h-svh items-center pb-[10vh] pt-[calc(10vh+var(--demo-bar))]">
               <div className="relative h-full w-full overflow-hidden">
                 <AnimatePresence initial={false}>
                   <motion.div

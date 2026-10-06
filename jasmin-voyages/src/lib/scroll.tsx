@@ -37,6 +37,8 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
         const el = document.getElementById(target)
         if (!el) return
         y = el.getBoundingClientRect().top + window.scrollY
+        // Maquette : le bandeau fixe en haut de l'écran
+        y -= document.querySelector<HTMLElement>('[data-demo-bar]')?.offsetHeight ?? 0
       }
       y += offset
       // Une image plus tard : laisse un menu ou un dialogue libérer le défilement d'abord.
@@ -48,7 +50,13 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
           window.scrollTo({ top: y, behavior: opts.immediate || reduced ? 'auto' : 'smooth' })
         }
       })
-      if (typeof target === 'string') history.replaceState(null, '', `#${target}`)
+      if (typeof target === 'string') {
+        try {
+          history.replaceState(null, '', `#${target}`)
+        } catch {
+          /* page affichée dans un cadre isolé : l'adresse ne change pas, sans importance */
+        }
+      }
     },
     [reduced],
   )

@@ -84,7 +84,7 @@ export function DestinationGallery() {
       style={pinned ? { height: `calc(${dist}px + 100svh)` } : undefined}
     >
       <div className={cn(pinned ? 'sticky top-0 flex h-svh flex-col overflow-hidden' : 'section-y')}>
-        <div className={cn('wrap flex items-center justify-between', pinned ? 'pt-28' : '')}>
+        <div className={cn('wrap flex items-center justify-between', pinned ? 'pt-[calc(7rem+var(--demo-bar))]' : '')}>
           <SectionTag index="02" tone="dark">
             Destinations
           </SectionTag>
