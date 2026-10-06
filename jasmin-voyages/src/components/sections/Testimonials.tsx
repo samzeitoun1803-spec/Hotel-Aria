@@ -1,12 +1,26 @@
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
 import { useState, type KeyboardEvent } from 'react'
 import { mapsLinks } from '../../content/agency'
-import { testimonials, testimonialsPending } from '../../content/testimonials'
+import { reviewsAreFictional, shortReviews, testimonials } from '../../content/testimonials'
 import { cn } from '../../lib/cn'
 import { ease } from '../../lib/motion'
 import { Arrow } from '../ui/Arrow'
 import { CircleButton } from '../ui/Button'
+import { MaskText } from '../ui/MaskText'
+import { Reveal } from '../ui/Reveal'
 import { SectionTag } from '../ui/SectionTag'
+
+function Stars({ className }: { className?: string }) {
+  return (
+    <span className={cn('flex gap-1 text-clay-soft', className)} role="img" aria-label="5 étoiles sur 5">
+      {Array.from({ length: 5 }, (_, i) => (
+        <svg key={i} viewBox="0 0 20 20" className="h-4 w-4" aria-hidden>
+          <path d="M10 1.8l2.47 5.18 5.68.66-4.2 3.88 1.13 5.6L10 14.3l-5.08 2.82 1.13-5.6-4.2-3.88 5.68-.66z" fill="currentColor" />
+        </svg>
+      ))}
+    </span>
+  )
+}
 
 export function Testimonials() {
   const [[index, dir], setState] = useState<[number, number]>([0, 1])
@@ -30,17 +44,15 @@ export function Testimonials() {
           <SectionTag index="08" tone="dark">
             Ils sont partis
           </SectionTag>
-          {testimonialsPending && (
-            <p className="t-meta rounded-full border border-dashed border-clay-soft/60 px-3.5 py-2 text-[0.68rem] text-clay-soft">
-              Avis clients à compléter — avec l’accord des clients
+          {reviewsAreFictional && (
+            <p className="t-meta rounded-full border border-dashed border-ivory/30 px-3.5 py-2 text-[0.68rem] text-ivory/70">
+              Avis fictifs — maquette
             </p>
           )}
         </div>
-        <h2 id="avis-titre" className="sr-only">
-          Avis de voyageurs
-        </h2>
+        <MaskText as="h2" id="avis-titre" lines={['Ils en parlent', 'mieux que nous.']} className="t-h1 mt-10 lg:mt-12" />
 
-        <div className="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-12 lg:gap-8">
+        <div className="mt-12 grid gap-12 lg:mt-16 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-1">
             <span aria-hidden className="block font-display text-[6rem] font-bold leading-[0.6] text-clay-soft lg:text-[8rem]">
               “
@@ -48,7 +60,7 @@ export function Testimonials() {
           </div>
 
           <div className="lg:col-span-10" tabIndex={0} onKeyDown={onKey} aria-label="Avis — utilisez les flèches gauche et droite" role="group">
-            <div className="relative min-h-[300px] md:min-h-[340px]">
+            <div className="relative min-h-[340px] md:min-h-[380px]">
               <AnimatePresence mode="wait" custom={dir} initial={false}>
                 <motion.figure
                   key={index}
@@ -70,7 +82,8 @@ export function Testimonials() {
                   transition={{ duration: 0.7, ease: ease.expo }}
                   aria-live="polite"
                 >
-                  <blockquote className={`font-display text-[clamp(1.9rem,3.8vw,3.5rem)] font-bold leading-[1.08] tracking-[-0.035em]${testimonialsPending ? ' text-ivory/55' : ''}`}>
+                  <Stars className="mb-7" />
+                  <blockquote className="font-display text-[clamp(1.9rem,3.8vw,3.5rem)] font-bold leading-[1.08] tracking-[-0.035em]">
                     {t.quote}
                   </blockquote>
                   <figcaption className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -105,6 +118,22 @@ export function Testimonials() {
             </div>
           </div>
         </div>
+
+        {/* Bandeau d'avis courts */}
+        <ul className="mt-20 grid gap-x-12 gap-y-12 md:grid-cols-3 lg:mt-24">
+          {shortReviews.map((r, i) => (
+            <li key={r.author}>
+              <Reveal delay={i * 0.08} className="border-t border-line-dark pt-6">
+                <Stars />
+                <p className="mt-5 text-[1.125rem] leading-[1.5] text-ivory/90">« {r.quote} »</p>
+                <p className="mt-5 text-[0.95rem]">
+                  <span className="font-semibold">{r.author}</span>
+                  <span className="text-mist"> — {r.trip}</span>
+                </p>
+              </Reveal>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )

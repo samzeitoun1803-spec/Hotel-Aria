@@ -52,7 +52,7 @@ Tout ce qui n'était pas vérifiable est écrit **« à compléter »** sur le s
 | Horaires d'ouverture, ligne fixe (illisible sur les photos de l'enseigne) | `src/content/agency.ts` |
 | Mentions légales : raison sociale, SIRET, immatriculation Atout France, garant financier, assurance RC Pro, directeur de publication, hébergeur | `src/content/agency.ts` → `legal` |
 | Réseaux sociaux (affichés « à compléter » tant qu'ils sont vides) | `src/content/agency.ts` → `social` |
-| **Avis clients** — emplacements « à compléter », à remplacer par de vrais avis (avec l'accord des clients), puis passer `testimonialsPending` à `false` | `src/content/testimonials.ts` |
+| **Avis clients** — **avis fictifs pour la maquette** (signalés « Avis fictifs — maquette »), à remplacer par de vrais avis avec l'accord des clients, puis passer `reviewsAreFictional` à `false` | `src/content/testimonials.ts` |
 | Nom de domaine : balises `canonical` / `og:url` / `og:image`, sitemap | `index.html`, `public/robots.txt` |
 | Durée de conservation des données | `src/components/overlays/LegalDialog.tsx` |
 
