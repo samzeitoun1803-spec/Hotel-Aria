@@ -28,3 +28,9 @@ export const PULSE_SPEED = 820;
 
 export const MOTION_QUERY = "(prefers-reduced-motion: no-preference)";
 export const FINE_POINTER_QUERY = "(hover: hover) and (pointer: fine)";
+
+/** L'utilisateur accepte les animations. Côté client uniquement. */
+export const motionAllowed = () => window.matchMedia(MOTION_QUERY).matches;
+
+/** Souris ou pavé tactile : survols, curseur, aimantation. Côté client uniquement. */
+export const finePointer = () => window.matchMedia(FINE_POINTER_QUERY).matches;

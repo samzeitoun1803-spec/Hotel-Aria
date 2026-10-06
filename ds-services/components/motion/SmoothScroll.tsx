@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { scrollToTarget, setLenis } from "@/lib/lenis-store";
-import { MOTION_QUERY } from "@/lib/motion";
+import { motionAllowed } from "@/lib/motion";
 
 /**
  * Smooth scroll (Lenis) et gestion des ancres :
@@ -15,7 +15,7 @@ export function SmoothScroll() {
   useEffect(() => {
     let lenis: Lenis | null = null;
 
-    if (window.matchMedia(MOTION_QUERY).matches) {
+    if (motionAllowed()) {
       // Boucle d'animation propre à Lenis : GSAP n'est chargé qu'ensuite (MotionLayer),
       // et ScrollScenes se branche alors sur l'événement « scroll ».
       lenis = new Lenis({ lerp: 0.115, smoothWheel: true, wheelMultiplier: 0.95, autoRaf: true });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { FINE_POINTER_QUERY, MOTION_QUERY } from "@/lib/motion";
+import { finePointer, motionAllowed } from "@/lib/motion";
 
 /**
  * Interactions du circuit du hero (le dessin lui-même est rendu côté serveur) :
@@ -45,7 +45,7 @@ export function HeroCircuit({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const root = rootRef.current;
-    if (!root || !window.matchMedia(MOTION_QUERY).matches) return;
+    if (!root || !motionAllowed()) return;
 
     const svgs = Array.from(root.querySelectorAll<SVGSVGElement>("svg[data-variant]"));
     const visibleSvg = () => svgs.find((s) => s.getBoundingClientRect().width > 0) ?? null;
@@ -75,7 +75,7 @@ export function HeroCircuit({ children }: { children: ReactNode }) {
         { duration: 800, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
       );
     };
-    const hits = window.matchMedia(FINE_POINTER_QUERY).matches
+    const hits = finePointer()
       ? Array.from(root.querySelectorAll<SVGCircleElement>(".hc-hit"))
       : [];
     hits.forEach((h) => h.addEventListener("pointerenter", onEnter));

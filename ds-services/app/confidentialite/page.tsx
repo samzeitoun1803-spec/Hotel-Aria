@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { Missing } from "@/components/ui/Missing";
-import { company } from "@/data/company";
+import { company, companyFieldLabels } from "@/data/company";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -39,20 +39,33 @@ export default function Confidentialite() {
       <h2>Destinataires</h2>
       <p>
         Les données sont destinées à {company.name} et ne sont ni vendues ni cédées. Elles transitent par le
-        prestataire technique chargé de l’acheminement des messages : <Missing label="Prestataire d'envoi des messages" />.
+        prestataire technique chargé de l’acheminement des messages :{" "}
+        {company.messageProvider ?? <Missing label={companyFieldLabels.messageProvider} />}.
       </p>
 
       <h2>Durée de conservation</h2>
-      <p>
-        Le temps nécessaire au traitement de votre demande, puis trois ans au plus à compter du dernier contact,
-        durée de référence recommandée par la CNIL pour les données de prospects. <Missing label="Durée à valider par DS SERVICES" />
-      </p>
+      {company.dataRetention ? (
+        <p>{company.dataRetention}</p>
+      ) : (
+        <p>
+          Le temps nécessaire au traitement de votre demande, puis trois ans au plus à compter du dernier contact,
+          durée de référence recommandée par la CNIL pour les données de prospects.{" "}
+          <Missing label={companyFieldLabels.dataRetention} />
+        </p>
+      )}
 
       <h2>Vos droits</h2>
       <p>
         Vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation, d’opposition et de
         portabilité. Pour l’exercer, écrivez à{" "}
-        {company.email ? company.email : <Missing label="E-mail de contact" />} ou par courrier au {company.address}.
+        {company.email ? (
+          <a href={`mailto:${company.email}`} className="link-inline">
+            {company.email}
+          </a>
+        ) : (
+          <Missing label={companyFieldLabels.email} />
+        )}{" "}
+        ou par courrier au {company.address}.
       </p>
       <p>
         Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL
@@ -68,7 +81,7 @@ export default function Confidentialite() {
 
       <h2>Hébergement</h2>
       <p>
-        Le site est hébergé par : <Missing label="Hébergeur" />.
+        Le site est hébergé par : {company.host ?? <Missing label={companyFieldLabels.host} />}.
       </p>
     </LegalPage>
   );

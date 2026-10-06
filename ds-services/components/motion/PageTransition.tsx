@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { motionAllowed } from "@/lib/motion";
 
 /**
  * Transition d'entrée entre pages (navigations client uniquement).
@@ -15,7 +16,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     const el = ref.current;
     // Montage initial (< 2 s après le début du chargement) : pas de transition.
     if (!el || performance.now() < 2000) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!motionAllowed()) return;
     el.animate(
       [
         { opacity: 0, transform: "translateY(14px)" },

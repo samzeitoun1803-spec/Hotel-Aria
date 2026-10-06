@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { MOTION_QUERY } from "@/lib/motion";
+import { motionAllowed } from "@/lib/motion";
 
 /* Le moteur d'animation (GSAP, ScrollTrigger, SplitText) vit dans un fragment séparé. */
 const ScrollScenes = dynamic(() => import("./ScrollScenes").then((m) => m.ScrollScenes), { ssr: false });
@@ -19,7 +19,7 @@ export function MotionLayer() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!window.matchMedia(MOTION_QUERY).matches) return;
+    if (!motionAllowed()) return;
     const events = ["wheel", "touchstart", "pointerdown", "keydown", "scroll"] as const;
     let idleId = 0;
     let timer = 0;

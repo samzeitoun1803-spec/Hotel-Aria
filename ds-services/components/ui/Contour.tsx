@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
-import { MOTION_QUERY } from "@/lib/motion";
+import { motionAllowed } from "@/lib/motion";
 
 export type ContourHandle = {
   /** Fait courir une impulsion autour du contour. `loop` : en continu (chargement). */
@@ -62,7 +62,7 @@ export function Contour({ radius, segment = 0.28, maxSegment = 120, className, r
       pulse: ({ loop = false } = {}) => {
         const rect = rectRef.current;
         const P = perimeter.current;
-        if (!rect || !P || !window.matchMedia(MOTION_QUERY).matches) return null;
+        if (!rect || !P || !motionAllowed()) return null;
         const seg = Math.min(P * segment, maxSegment);
         rect.style.strokeDasharray = `${seg} ${P}`;
         return rect.animate(

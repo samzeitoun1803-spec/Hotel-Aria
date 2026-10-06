@@ -41,6 +41,10 @@ export type Company = {
   host: string | null;
   /** Concepteur du site (crédits) */
   credits: string | null;
+  /** Prestataire qui achemine les messages du formulaire, ex. « Resend » (confidentialité) */
+  messageProvider: string | null;
+  /** Durée de conservation des demandes, validée par DS SERVICES (confidentialité) */
+  dataRetention: string | null;
 };
 
 export const company: Company = {
@@ -70,6 +74,8 @@ export const company: Company = {
   vatNumber: null,
   host: null,
   credits: null,
+  messageProvider: null,
+  dataRetention: null,
 };
 
 /** Libellés lisibles des champs à compléter (utilisés par le script de contrôle). */
@@ -80,6 +86,8 @@ export const companyFieldLabels: Partial<Record<keyof Company, string>> = {
   vatNumber: "N° de TVA intracommunautaire",
   host: "Hébergeur du site",
   credits: "Crédits (concepteur du site)",
+  messageProvider: "Prestataire d'envoi du formulaire",
+  dataRetention: "Durée de conservation des demandes",
 };
 
 /** Lien `tel:` normalisé, ou null si le numéro n'est pas encore fourni. */

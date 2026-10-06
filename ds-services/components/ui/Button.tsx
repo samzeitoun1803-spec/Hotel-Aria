@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useImperativeHandle, useRef, type MouseEventHandler, type ReactNode, type Ref } from "react";
 import { cn } from "@/lib/cn";
-import { FINE_POINTER_QUERY, MOTION_QUERY } from "@/lib/motion";
+import { finePointer, motionAllowed } from "@/lib/motion";
 import { Contour, type ContourHandle } from "./Contour";
 import { Icon, type IconName } from "./Icon";
 
@@ -73,7 +73,7 @@ export function Button({
   useEffect(() => {
     const el = rootRef.current;
     if (!el || !magnetic) return;
-    if (!window.matchMedia(FINE_POINTER_QUERY).matches || !window.matchMedia(MOTION_QUERY).matches) return;
+    if (!finePointer() || !motionAllowed()) return;
     let raf = 0;
     const onMove = (e: PointerEvent) => {
       const b = el.getBoundingClientRect();

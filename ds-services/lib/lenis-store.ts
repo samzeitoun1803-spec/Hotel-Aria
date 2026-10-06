@@ -1,4 +1,5 @@
 import type Lenis from "lenis";
+import { motionAllowed } from "./motion";
 
 /**
  * Accès partagé à l'instance Lenis (smooth scroll), sans contexte React :
@@ -46,8 +47,7 @@ export function scrollToTarget(
   target: HTMLElement | number,
   opts: { immediate?: boolean; onComplete?: () => void } = {},
 ) {
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const immediate = opts.immediate || reduce;
+  const immediate = opts.immediate || !motionAllowed();
   const top =
     typeof target === "number" ? target : target.getBoundingClientRect().top + window.scrollY;
 

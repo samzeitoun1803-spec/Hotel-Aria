@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { FINE_POINTER_QUERY, MOTION_QUERY } from "@/lib/motion";
+import { finePointer, motionAllowed } from "@/lib/motion";
 
 type CursorState = "default" | "link" | "project" | "service" | "hidden";
 
@@ -30,7 +30,7 @@ export function Cursor() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (!window.matchMedia(FINE_POINTER_QUERY).matches || !window.matchMedia(MOTION_QUERY).matches) return;
+    if (!finePointer() || !motionAllowed()) return;
 
     const root = document.documentElement;
     root.classList.add("has-cursor");

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "check:content": "node scripts/check-content.mjs",
+    "check:content": "node --no-warnings scripts/check-content.mjs",
     "qa:screens": "node scripts/qa-screens.mjs",
     "og": "node scripts/generate-og.mjs",
     "qa:flows": "node scripts/qa-flows.mjs"
