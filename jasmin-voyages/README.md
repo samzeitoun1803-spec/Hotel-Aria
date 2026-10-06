@@ -44,28 +44,27 @@ Barre d'action fixe sur mobile (« Créer mon voyage » + appel direct), menu pl
 
 ## À compléter avant la mise en ligne
 
-Tout ce qui n'était pas vérifiable a été laissé **vide et signalé** sur le site (soulignement en pointillés, mention « à compléter »). Rien n'a été inventé.
+Tout ce qui n'était pas vérifiable est écrit **« à compléter »** sur le site (en terre cuite, souligné en pointillés). Rien n'a été inventé.
+👉 **[`A-COMPLETER.md`](A-COMPLETER.md)** : la liste des informations à demander à l'agence, prête à transmettre.
 
 | Quoi | Où |
 |---|---|
 | Horaires d'ouverture, ligne fixe (illisible sur les photos de l'enseigne) | `src/content/agency.ts` |
 | Mentions légales : raison sociale, SIRET, immatriculation Atout France, garant financier, assurance RC Pro, directeur de publication, hébergeur | `src/content/agency.ts` → `legal` |
-| Réseaux sociaux (affichés « à venir » tant qu'ils sont vides) | `src/content/agency.ts` → `social` |
-| **Avis clients** — exemples fictifs, à remplacer par de vrais avis (avec l'accord des clients), puis passer `testimonialsAreDemo` à `false` | `src/content/testimonials.ts` |
+| Réseaux sociaux (affichés « à compléter » tant qu'ils sont vides) | `src/content/agency.ts` → `social` |
+| **Avis clients** — emplacements « à compléter », à remplacer par de vrais avis (avec l'accord des clients), puis passer `testimonialsPending` à `false` | `src/content/testimonials.ts` |
 | Nom de domaine : balises `canonical` / `og:url` / `og:image`, sitemap | `index.html`, `public/robots.txt` |
 | Durée de conservation des données | `src/components/overlays/LegalDialog.tsx` |
 
 Informations reprises de la devanture : adresse, **06 63 38 22 00**, **jasmin.voyages@hotmail.fr**, *Avions · Bateaux · Séjours*, partenariat **GNV Elite** et ses lignes (Sicile, Sardaigne, Baléares, Tunisie, Maroc, Albanie). À relire avec l'agence.
 
-### Photos
+### Images
 
-Toutes les photos sont centralisées dans `src/content/images.ts`. Par défaut elles pointent vers Unsplash (licence libre), redimensionnées à la volée.
-**Je n'ai pas pu afficher ces photos pendant la conception** (accès réseau restreint) : vérifiez que chaque image correspond bien à sa destination, ou mieux, remplacez-les par vos propres photos :
+Le site utilise **14 illustrations originales**, créées pour Jasmin Voyages (style affiche de voyage, palette du site) : le hero vu du hublot, les 8 destinations, les 4 étapes du voyage et les croisières. Elles sont libres de droits.
 
-1. déposer les fichiers dans `public/images/` (JPG ou WebP, 2000 px de large, ~300 Ko) ;
-2. remplacer `src` par `'/images/japon.jpg'` dans `images.ts`.
-
-Chaque photo a un aplat de couleurs (`tone`) affiché pendant le chargement ou si l'image manque : la page reste composée dans tous les cas.
+- Fichiers : `public/images/<nom>-<largeur>.webp` (640, 1024, 1600 et 2400 px, servis en `srcset`).
+- Source : `scripts/illustrations/` (dessin vectoriel généré par code). Pour modifier une scène puis la régénérer : `npm run illustrations` (ou `npm run illustrations japon` pour une seule).
+- Pour mettre une **vraie photo** à la place : la déposer dans `public/images/`, puis dans `src/content/images.ts` remplacer `src` par `'/images/ma-photo.jpg'` et retirer `widths`.
 
 ---
 
@@ -93,7 +92,7 @@ Un champ piège anti-robots est inclus ; le consentement RGPD est demandé à la
 - Entrée du hero en **animations CSS** (aucune attente du JavaScript) ; géométrie du hublot décrite en CSS (`.hero-stage` dans `src/index.css`), pilotée au défilement par une seule variable `--p`.
 - Données structurées `TravelAgency` (schema.org), balises Open Graph, `robots.txt`.
 - Accessibilité : lien d'évitement, navigation clavier complète, focus visibles, dialogues avec piège de focus et fermeture par Échap, libellés et erreurs reliés aux champs, contrastes AA, `prefers-reduced-motion` respecté.
-- Lighthouse (build de production, servi compressé) : **mobile 93 / 100 / 96 / 100**, **bureau 100 / 100 / 96 / 100** (performance / accessibilité / bonnes pratiques / SEO). Le 96 vient uniquement des photos Unsplash bloquées dans l'environnement de test.
+- Lighthouse (build de production, servi compressé) : **mobile 91–93 / 100 / 100 / 100**, **bureau 100 / 100 / 100 / 100** (performance / accessibilité / bonnes pratiques / SEO).
 
 ```
 src/

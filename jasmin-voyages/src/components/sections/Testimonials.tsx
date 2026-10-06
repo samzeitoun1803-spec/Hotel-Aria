@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
 import { useState, type KeyboardEvent } from 'react'
 import { mapsLinks } from '../../content/agency'
-import { testimonials, testimonialsAreDemo } from '../../content/testimonials'
+import { testimonials, testimonialsPending } from '../../content/testimonials'
 import { cn } from '../../lib/cn'
 import { ease } from '../../lib/motion'
 import { Arrow } from '../ui/Arrow'
@@ -30,9 +30,9 @@ export function Testimonials() {
           <SectionTag index="08" tone="dark">
             Ils sont partis
           </SectionTag>
-          {testimonialsAreDemo && (
-            <p className="t-meta rounded-full border border-dashed border-ivory/35 px-3.5 py-2 text-[0.68rem] text-ivory/80">
-              Exemples de démonstration — à remplacer par de vrais avis clients
+          {testimonialsPending && (
+            <p className="t-meta rounded-full border border-dashed border-clay-soft/60 px-3.5 py-2 text-[0.68rem] text-clay-soft">
+              Avis clients à compléter — avec l’accord des clients
             </p>
           )}
         </div>
@@ -70,7 +70,7 @@ export function Testimonials() {
                   transition={{ duration: 0.7, ease: ease.expo }}
                   aria-live="polite"
                 >
-                  <blockquote className="font-display text-[clamp(1.9rem,3.8vw,3.5rem)] font-bold leading-[1.08] tracking-[-0.035em]">
+                  <blockquote className={`font-display text-[clamp(1.9rem,3.8vw,3.5rem)] font-bold leading-[1.08] tracking-[-0.035em]${testimonialsPending ? ' text-ivory/55' : ''}`}>
                     {t.quote}
                   </blockquote>
                   <figcaption className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-1">

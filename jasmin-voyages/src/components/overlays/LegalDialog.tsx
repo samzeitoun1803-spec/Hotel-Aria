@@ -5,6 +5,7 @@ import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { ease } from '../../lib/motion'
 import { useScrollLock } from '../../lib/scroll'
 import { useTrip, type LegalKind } from '../../lib/trip/TripContext'
+import { Todo } from '../ui/Todo'
 
 export function LegalDialog() {
   const { legal } = useTrip()
@@ -14,7 +15,7 @@ export function LegalDialog() {
 
 /** Valeur connue, ou libellé « à compléter » bien visible. */
 function V({ children }: { children: string | null }) {
-  return children ? <>{children}</> : <span className="todo">à compléter</span>
+  return children ? <>{children}</> : <Todo />
 }
 
 function Panel({ kind }: { kind: LegalKind }) {
@@ -97,7 +98,7 @@ function Panel({ kind }: { kind: LegalKind }) {
               </Block>
               <Block title="Propriété intellectuelle">
                 <p>
-                  Les textes, la mise en page et l’identité visuelle de ce site sont la propriété de {agency.name}. Les photographies sont utilisées sous licence de leurs auteurs respectifs.
+                  Les textes, la mise en page et l’identité visuelle de ce site sont la propriété de {agency.name}. Les illustrations ont été créées spécialement pour {agency.name}.
                 </p>
               </Block>
             </>

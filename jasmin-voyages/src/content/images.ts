@@ -1,111 +1,107 @@
 /**
- * Photographies du site — SOURCE UNIQUE.
+ * Images du site — SOURCE UNIQUE.
  *
- * Par défaut, les images pointent vers Unsplash (licence libre, hotlink autorisé) :
- * elles sont redimensionnées à la volée (srcset) par le composant <Photo />.
+ * Les illustrations sont originales, créées pour Jasmin Voyages par
+ * scripts/illustrations/ (aucun droit à payer, aucune image externe).
+ * Elles sont servies depuis /public/images/ en quatre largeurs (srcset).
  *
- * Pour utiliser vos propres photos : déposez-les dans /public/images/
- * puis remplacez `src` par '/images/mon-fichier.jpg'.
+ * Pour utiliser une vraie photo à la place :
+ *   1. déposez-la dans /public/images/ (JPG ou WebP, ~2000 px de large) ;
+ *   2. remplacez `src` par '/images/ma-photo.jpg' et supprimez `widths`.
  *
- * `tone` : trois couleurs (ombre, milieu, lumière) utilisées pour un aplat
- * atmosphérique pendant le chargement — ou si une image ne charge pas.
- * Le site reste ainsi composé, même hors-ligne.
+ * `tone` : trois couleurs (ombre, milieu, lumière) affichées pendant le chargement.
  */
 
 export interface SiteImage {
+  /** Chemin de base sans extension si `widths` est fourni (→ `${src}-${w}.webp`), sinon fichier complet ou URL. */
   src: string
+  /** Largeurs disponibles (fichiers `${src}-${w}.webp`). */
+  widths?: readonly number[]
+  /** Variante cadrée pour les écrans en portrait (mêmes largeurs que `src`). */
+  portrait?: string
   alt: string
   tone: readonly [string, string, string]
   /** object-position CSS, ex. '50% 30%' */
   focus?: string
 }
 
-const u = (id: string) => `https://images.unsplash.com/${id}`
+const W = [640, 1024, 1600, 2400] as const
+const ill = (name: string) => ({ src: `/images/${name}`, widths: W })
 
 export const images = {
   hero: {
-    src: u('photo-1436491865332-7a61a109cc05'),
-    alt: "Vue depuis un hublot : l'aile d'un avion au-dessus des nuages, dans une lumière dorée",
-    tone: ['#2c3a44', '#9fb3bd', '#efe3cf'],
+    ...ill('hero'),
+    portrait: '/images/heroPortrait',
+    alt: 'Illustration : au-dessus d’une mer de nuages à l’heure dorée, les Alpes au loin, vues depuis le hublot',
+    tone: ['#4f6c80', '#d6c8b0', '#f3cf9f'],
     focus: '50% 50%',
   },
-  manifesto: {
-    src: u('photo-1507525428034-b723cf961d3e'),
-    alt: "Plage déserte au bord d'une mer turquoise",
-    tone: ['#1f4a54', '#79b2b0', '#efe6d4'],
-  },
   japon: {
-    src: u('photo-1493976040374-85c8e12f0c0e'),
-    alt: 'Ruelle de Kyoto menant à la pagode Yasaka, au crépuscule',
-    tone: ['#2a2630', '#8a6464', '#e7c7b5'],
-    focus: '50% 40%',
+    ...ill('japon'),
+    alt: 'Illustration : le mont Fuji au crépuscule, une pagode et un cerisier en fleurs au bord d’un lac',
+    tone: ['#28232f', '#9c6c75', '#e9bfa3'],
   },
   bali: {
-    src: u('photo-1537996194471-e657df975ab4'),
-    alt: 'Temple balinais au bord de l’eau, entouré de végétation',
-    tone: ['#1b2a21', '#4f6b49', '#cdbd8c'],
+    ...ill('bali'),
+    alt: 'Illustration : rizières en terrasses, palmiers et porte de temple balinaise devant le volcan Agung',
+    tone: ['#3d532c', '#73914f', '#ecdfb8'],
   },
   tanzanie: {
-    src: u('photo-1516426122078-c23e76319801'),
-    alt: 'Savane africaine au lever du jour, faune sauvage à l’horizon',
-    tone: ['#2b2016', '#9a6a3b', '#e6c48e'],
+    ...ill('tanzanie'),
+    alt: 'Illustration : coucher de soleil sur la savane, un acacia, deux girafes et le Kilimandjaro',
+    tone: ['#1d120b', '#c27d4f', '#f2c37c'],
   },
   maldives: {
-    src: u('photo-1514282401047-d79a71a590e8'),
-    alt: 'Villas sur pilotis au-dessus d’un lagon turquoise aux Maldives',
-    tone: ['#0f2a33', '#2f8087', '#c3e5dd'],
+    ...ill('maldives'),
+    alt: 'Illustration : villas sur pilotis reliées par un ponton au-dessus d’un lagon turquoise',
+    tone: ['#2c7f8e', '#5fbcb8', '#e6efe6'],
   },
   newYork: {
-    src: u('photo-1496442226666-8d4d0e62e6e9'),
-    alt: 'Gratte-ciel de Manhattan, New York',
-    tone: ['#13171c', '#3e4b57', '#cfd2d3'],
+    ...ill('newYork'),
+    alt: 'Illustration : la skyline de Manhattan au crépuscule, reflétée dans l’East River',
+    tone: ['#121824', '#2a3546', '#e6bf95'],
   },
   grece: {
-    src: u('photo-1570077188670-e3a8d69ac5ff'),
-    alt: 'Maisons blanches et dômes bleus d’Oia, à Santorin',
-    tone: ['#182a3b', '#4e7ea5', '#eef0ec'],
+    ...ill('grece'),
+    alt: 'Illustration : maisons blanches et dômes bleus de Santorin au-dessus de la caldeira, un voilier',
+    tone: ['#183554', '#4e7ea6', '#eef0ec'],
   },
   maroc: {
-    src: u('photo-1489749798305-4fea3ae63d43'),
-    alt: 'Dunes du désert marocain dans la lumière du soir',
-    tone: ['#2b1810', '#a4532f', '#ebbd8d'],
+    ...ill('maroc'),
+    alt: 'Illustration : dunes du Sahara au coucher du soleil et une caravane de dromadaires',
+    tone: ['#7a372a', '#c97646', '#f3c48c'],
   },
   costaRica: {
-    src: u('photo-1432405972618-c60b0225b8f9'),
-    alt: 'Cascade au cœur d’une forêt tropicale luxuriante',
-    tone: ['#0f1f17', '#2e5e3e', '#a9c48f'],
+    ...ill('costaRica'),
+    alt: 'Illustration : le volcan Arenal, la forêt tropicale et une cascade',
+    tone: ['#14301f', '#2f5a43', '#e8ead6'],
   },
   // Étapes « Vous rêvez → Vous profitez »
   stepDream: {
-    src: u('photo-1488646953014-85cb44e25828'),
-    alt: 'Carnet, carte et appareil photo préparés pour un voyage',
-    tone: ['#2c2620', '#8f7a63', '#e8dccb'],
+    ...ill('stepDream'),
+    alt: 'Illustration : la baie des Anges la nuit, les lumières de Nice, un croissant de lune',
+    tone: ['#0c1322', '#2c3a58', '#5a5068'],
   },
   stepDesign: {
-    src: u('photo-1476514525535-07fb3b4ae5f1'),
-    alt: 'Lac de montagne aux eaux turquoise entouré de sommets',
-    tone: ['#1c2b2c', '#4d7f7a', '#d9e2d6'],
+    ...ill('stepDesign'),
+    alt: 'Illustration : lac de montagne, forêt de sapins et sommets enneigés en reflet',
+    tone: ['#203436', '#6d8486', '#e2e7dc'],
   },
   stepDepart: {
-    src: u('photo-1436491865332-7a61a109cc05'),
-    alt: "Aile d'avion au-dessus des nuages",
-    tone: ['#2c3a44', '#9fb3bd', '#efe3cf'],
+    ...ill('stepDepart'),
+    alt: 'Illustration : un avion s’éloigne dans le ciel de l’aube au-dessus de la mer',
+    tone: ['#1f2b3a', '#6f8ca4', '#f6d6b0'],
   },
   stepEnjoy: {
-    src: u('photo-1469474968028-56623f02e42e'),
-    alt: 'Paysage de montagne au coucher du soleil',
-    tone: ['#2a2420', '#a2714a', '#efd2a6'],
+    ...ill('stepEnjoy'),
+    alt: 'Illustration : coucher de soleil sur une plage, palmiers, transats et parasol',
+    tone: ['#2a1d22', '#cf7a5f', '#f6c78f'],
   },
-  // Univers de voyage (aperçus au survol)
-  surMesure: {
-    src: u('photo-1501785888041-af3ef285b470'),
-    alt: 'Lac de montagne paisible au petit matin',
-    tone: ['#1d2a30', '#5f8590', '#e3e3d8'],
-  },
+  // Univers de voyage
   croisieres: {
-    src: u('photo-1505228395891-9a51e7e86bf6'),
-    alt: 'Vagues vues du ciel sur une mer turquoise',
-    tone: ['#0f3340', '#3f8f9c', '#d4ece6'],
+    ...ill('croisieres'),
+    alt: 'Illustration : un ferry illuminé au crépuscule sur la Méditerranée',
+    tone: ['#161d2c', '#56647c', '#f2d0a6'],
   },
 } satisfies Record<string, SiteImage>
 

@@ -4,6 +4,7 @@ import { useScrollApi } from '../../lib/scroll'
 import { useTrip } from '../../lib/trip/TripContext'
 import { Arrow } from '../ui/Arrow'
 import { MaskText } from '../ui/MaskText'
+import { Todo } from '../ui/Todo'
 import { navLinks } from './Navbar'
 
 export function Footer() {
@@ -86,8 +87,8 @@ export function Footer() {
                       {name} <Arrow direction="up-right" />
                     </a>
                   ) : (
-                    <span className="text-[1.25rem] text-mist" title="Profil à renseigner dans src/content/agency.ts">
-                      {name} <span className="todo text-[0.8rem]">à venir</span>
+                    <span className="text-[1.25rem] text-mist">
+                      {name} <Todo className="text-[0.85rem]" />
                     </span>
                   )}
                 </li>

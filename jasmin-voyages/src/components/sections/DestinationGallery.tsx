@@ -217,7 +217,7 @@ function DestinationPanel({
         className="absolute inset-0"
         imgClassName="scale-[1.02] transition-transform duration-[1400ms] ease-[var(--ease-expo)] group-hover:scale-[1.08] group-focus-visible:scale-[1.08]"
       />
-      <span aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,18,20,0.35)_0%,rgba(12,18,20,0)_30%,rgba(12,18,20,0.1)_55%,rgba(12,18,20,0.78)_100%)]" />
+      <span aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,18,20,0.38)_0%,rgba(12,18,20,0)_26%,rgba(12,18,20,0.18)_48%,rgba(12,18,20,0.88)_100%)]" />
 
       <span aria-hidden className="t-meta absolute inset-x-5 top-5 z-[2] flex items-center justify-between text-ivory/85 md:inset-x-6 md:top-6">
         <span className="tabular">{String(index + 1).padStart(2, '0')}</span>

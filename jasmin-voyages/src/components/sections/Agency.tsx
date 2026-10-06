@@ -8,6 +8,7 @@ import { PillButton, PillLink } from '../ui/Button'
 import { MaskText } from '../ui/MaskText'
 import { Reveal } from '../ui/Reveal'
 import { SectionTag } from '../ui/SectionTag'
+import { Todo } from '../ui/Todo'
 
 export function Agency() {
   const { startRequest } = useTrip()
@@ -46,10 +47,14 @@ export function Agency() {
                 <a href={agency.phone.href} className="mt-3 block font-semibold hover:text-clay-deep">
                   {agency.phone.display}
                 </a>
-                {agency.landline && (
+                {agency.landline ? (
                   <a href={agency.landline.href} className="block font-semibold hover:text-clay-deep">
                     {agency.landline.display}
                   </a>
+                ) : (
+                  <p className="text-stone">
+                    Fixe : <Todo />
+                  </p>
                 )}
                 <a href={`mailto:${agency.email}`} className="mt-1 block break-all text-stone hover:text-ink">
                   {agency.email}
@@ -68,9 +73,7 @@ export function Agency() {
                   </dl>
                 ) : (
                   <p className="mt-3">
-                    <span className="todo" title="Information à compléter dans src/content/agency.ts">
-                      Horaires à compléter
-                    </span>
+                    <Todo />
                   </p>
                 )}
               </div>

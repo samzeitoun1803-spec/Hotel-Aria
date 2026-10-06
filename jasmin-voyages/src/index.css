@@ -501,10 +501,14 @@ input[type='date'].field::-webkit-calendar-picker-indicator {
   border-color: var(--color-clay-deep);
 }
 
-/* Placeholder : information à compléter par l'agence */
+/* Information à compléter par l'agence : bien visible à la relecture */
 .todo {
+  color: var(--color-clay-deep);
   border-bottom: 1px dashed currentColor;
-  opacity: 0.75;
+  font-weight: 500;
+}
+[data-theme='dark'] .todo {
+  color: var(--color-clay-soft);
 }
 
 /* Soulignement qui se redessine au survol */
