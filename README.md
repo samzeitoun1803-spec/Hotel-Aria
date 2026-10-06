@@ -1,5 +1,7 @@
 # Hôtel Aria — Nice
 
+> Ce dépôt contient aussi **[`jasmin-voyages/`](jasmin-voyages/)** : le site de l'agence Jasmin Voyages (Nice), en React + TypeScript — voir son [README](jasmin-voyages/README.md).
+
 Site vitrine animé de l'Hôtel Aria*** (15 avenue Auber, Place Mozart, Nice).
 
 - **Direction artistique** : toile parchemin `#d8cbb8`, serif fin en capitales (Cormorant Garamond 300), sans‑serif Satoshi 500, accent safran `#d49653` unique, angles vifs et filets d'1 px.

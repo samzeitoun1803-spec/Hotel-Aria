@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# À compléter une fois le nom de domaine connu :
+# Sitemap: https://www.VOTRE-DOMAINE.fr/sitemap.xml

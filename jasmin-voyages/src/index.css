@@ -1,0 +1,573 @@
+@import 'tailwindcss';
+@import 'lenis/dist/lenis.css';
+
+/* ──────────────────────────────────────────────────────────────
+   JASMIN VOYAGES — Design system
+   Encre, ivoire, sable. Une seule note chaude : l'argile,
+   héritée de l'orange de la devanture de la rue Trachel.
+   ────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Couleurs */
+  --color-ink: #0c1214; /* Encre — quasi-noir, sous-ton bleu-vert (clin d'œil à la façade) */
+  --color-ink-2: #121a1d; /* Bande sombre surélevée */
+  --color-ink-3: #1a2427; /* Panneaux sur fond sombre */
+  --color-ivory: #f6f2eb; /* Fond principal */
+  --color-paper: #fbf9f5; /* Cartes, formulaires */
+  --color-sand: #ece4d7; /* Transitions entre sections */
+  --color-sand-2: #e1d6c4;
+  --color-clay: #b85c3c; /* Argile — accent unique */
+  --color-clay-deep: #9c4a2e; /* Argile pour texte fin sur clair (AA) */
+  --color-clay-soft: #d9a084;
+  --color-stone: #66625a; /* Texte secondaire sur clair (AA sur ivoire et sable) */
+  --color-mist: #a29f98; /* Texte secondaire sur sombre (AA) */
+  --color-line: #dcd3c5; /* Filets sur clair */
+  --color-line-dark: #2a3437; /* Filets sur sombre */
+  --color-sky: #dde5e6; /* Ciel d'aube — hero uniquement */
+
+  /* Typographie — une seule famille, deux optiques */
+  --font-display: 'Inter Tight Variable', 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Mouvement */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* Rayons */
+  --radius-pill: 1000px;
+  --radius-deco: 45px;
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-size: 1.0625rem;
+    line-height: 1.61;
+    overflow-x: clip;
+  }
+
+  @media (min-width: 768px) {
+    body {
+      font-size: 1.125rem;
+    }
+  }
+
+  ::selection {
+    background: var(--color-clay);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+/* ── Échelle typographique ────────────────────────────────────── */
+
+@utility t-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(4.1rem, 18.4vw, 21rem);
+  line-height: 0.84;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+@utility t-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 8.6vw, 8.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.042em;
+}
+
+@utility t-h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5.6vw, 5.25rem);
+  line-height: 0.94;
+  letter-spacing: -0.038em;
+}
+
+@utility t-h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 3.7vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.032em;
+}
+
+@utility t-h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.55rem, 2.3vw, 2.3rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+@utility t-h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4375rem;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+@utility t-lead {
+  font-size: clamp(1.15rem, 1.5vw, 1.375rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+@utility t-body {
+  font-size: 1.0625rem;
+  line-height: 1.61;
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+  }
+}
+
+@utility t-small {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+@utility t-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility t-meta {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Mise en page ─────────────────────────────────────────────── */
+
+@utility wrap {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+  @media (min-width: 1024px) {
+    padding-inline: 3rem;
+  }
+}
+
+@utility section-y {
+  padding-block: 6.5rem;
+  @media (min-width: 1024px) {
+    padding-block: 9.5rem;
+  }
+}
+
+/* Grain photographique, très léger */
+@utility grain {
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.11;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Masque pour les révélations ligne par ligne */
+@utility line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ── Hero : géométrie du hublot ───────────────────────────────────
+   Décrite en CSS pour être juste dès le premier affichage (pré-rendu).
+   --fs : taille du mot-symbole · --p : ouverture du hublot (0 → 1), pilotée au défilement. */
+
+.hero-stage {
+  --fs: 19vw;
+  --pad: 1.25rem;
+  --win-top: 5.5rem;
+  --win-w: min(44vw, 30svh);
+  --win-h: calc(var(--win-w) / 0.68);
+  --win-left: calc(100% - var(--pad) - var(--win-w));
+}
+@media (min-width: 768px) {
+  .hero-stage {
+    --pad: 2rem;
+    --win-top: calc(5.5rem + 4svh);
+  }
+}
+@media (min-width: 1024px) {
+  .hero-stage {
+    --fs: min(15.6vw, 30svh);
+    --pad: 3rem;
+    --win-top: 13svh;
+    --win-h: calc(87svh - 2rem - var(--fs) * 1.36);
+    --win-w: calc(var(--win-h) * 0.68);
+    --win-left: calc(var(--pad) + var(--fs) * 1.45);
+  }
+}
+.hero-slot {
+  position: absolute;
+  top: var(--win-top);
+  left: var(--win-left);
+  width: var(--win-w);
+  height: var(--win-h);
+  border-radius: 999px;
+}
+.hero-window {
+  --k: calc(1 - var(--p, 0));
+  clip-path: inset(
+    calc(var(--win-top) * var(--k)) calc((100% - var(--win-left) - var(--win-w)) * var(--k))
+      calc((100% - var(--win-top) - var(--win-h)) * var(--k)) calc(var(--win-left) * var(--k)) round calc(var(--win-w) / 2 * var(--k))
+  );
+}
+
+/* ── Entrées CSS (jouées dès le premier affichage, sans attendre le JavaScript) ── */
+@keyframes rise {
+  from {
+    transform: translateY(108%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes shade {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-101%);
+  }
+}
+@keyframes settle {
+  from {
+    transform: scale(1.14);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes ring {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.a-rise {
+  animation: rise 1.1s var(--ease-expo) both;
+}
+.a-fade {
+  animation: fade 1.2s ease both;
+}
+.a-fade-up {
+  animation: fade-up 1.1s var(--ease-expo) both;
+}
+.a-shade {
+  animation: shade 1.5s var(--ease-quart) both;
+}
+.a-settle {
+  animation: settle 2.6s var(--ease-expo) both;
+}
+.a-ring {
+  animation: ring 1.6s var(--ease-expo) both;
+}
+.a-drop {
+  animation: drop 1s var(--ease-expo) both;
+}
+
+/* ── Sans JavaScript : tout reste lisible ──────────────────────────
+   Les révélations au défilement partent d'un état masqué (styles en ligne) ;
+   la classe .js est posée dans <head> avant le premier affichage. */
+html:not(.js) [data-mask-line],
+html:not(.js) [data-reveal] {
+  transform: none !important;
+  opacity: 1 !important;
+}
+.photo-img {
+  transition: opacity 1.2s var(--ease-expo);
+}
+.js .photo-img:not(.is-loaded) {
+  opacity: 0;
+}
+
+/* ── Composants natifs stylés ─────────────────────────────────── */
+
+/* Curseur de budget */
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+  --fill: 30%;
+}
+.range::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--color-ink) var(--fill), var(--color-line) var(--fill));
+}
+.range::-moz-range-track {
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--color-ink) var(--fill), var(--color-line) var(--fill));
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -12px;
+  border-radius: 999px;
+  background: var(--color-ink);
+  border: 6px solid var(--color-paper);
+  box-shadow: 0 0 0 1px var(--color-ink);
+  transition: transform 0.3s var(--ease-expo);
+}
+.range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--color-ink);
+  border: 6px solid var(--color-paper);
+  box-shadow: 0 0 0 1px var(--color-ink);
+}
+.range:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+.range:focus-visible {
+  outline: none;
+}
+.range:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 1px var(--color-ink),
+    0 0 0 4px var(--color-clay);
+}
+.range:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 0 0 1px var(--color-ink),
+    0 0 0 4px var(--color-clay);
+}
+
+/* Champs de formulaire : un filet, pas de boîte */
+.field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.85rem 0 0.75rem;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+  border-radius: 0;
+  transition: border-color 0.3s var(--ease-expo);
+}
+.field::placeholder {
+  color: color-mix(in srgb, var(--color-stone) 75%, transparent);
+}
+.field:hover {
+  border-bottom-color: color-mix(in srgb, var(--color-ink) 45%, var(--color-line));
+}
+.field:focus {
+  outline: none;
+  border-bottom-color: var(--color-ink);
+}
+.field[aria-invalid='true'] {
+  border-bottom-color: var(--color-clay-deep);
+}
+select.field {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 2rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%230c1214' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+}
+input[type='date'].field::-webkit-calendar-picker-indicator {
+  opacity: 0.55;
+  cursor: pointer;
+}
+
+/* Case à cocher */
+.check {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 30%, transparent);
+  background: var(--color-paper) center / 0.85rem no-repeat;
+  cursor: pointer;
+  transition:
+    background-color 0.25s,
+    border-color 0.25s;
+}
+.check:hover {
+  border-color: var(--color-ink);
+}
+.check:checked {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2.5 7.4 5.6 10.3 11.5 3.8' fill='none' stroke='%23f6f2eb' stroke-width='1.8'/%3E%3C/svg%3E");
+}
+.check[aria-invalid='true'] {
+  border-color: var(--color-clay-deep);
+}
+
+/* Placeholder : information à compléter par l'agence */
+.todo {
+  border-bottom: 1px dashed currentColor;
+  opacity: 0.75;
+}
+
+/* Soulignement qui se redessine au survol */
+@keyframes redraw {
+  0% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  49.9% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  50% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+.group:hover .u-line,
+.group:focus-visible .u-line {
+  animation: redraw 0.9s var(--ease-quart);
+}
+
+/* Pastille de localisation qui respire */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.pulse-ring {
+  animation: pulse-ring 2.4s var(--ease-expo) infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin {
+  animation: spin 0.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-mask-line],
+  [data-reveal] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
