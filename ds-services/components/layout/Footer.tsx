@@ -116,7 +116,7 @@ export function Footer() {
             <span className="whitespace-nowrap">
               SIREN <span className="tabular-nums">{company.siren}</span>
             </span>{" "}
-            · <span className="whitespace-nowrap">{company.registry}</span>
+            <span className="whitespace-nowrap">· {company.registry}</span>
           </p>
           <p>Électricité &amp; rénovation · {company.city}</p>
         </div>
