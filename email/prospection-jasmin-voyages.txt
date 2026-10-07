@@ -1,0 +1,32 @@
+OBJET (au choix) :
+- Maquette pour Jasmin Voyages
+- Une idée pour le site de Jasmin Voyages
+
+----------------------------------------------------------------
+
+Bonjour {{Prénom}},
+
+En regardant le site de Jasmin Voyages, j'ai eu envie de voir à quoi il pourrait ressembler avec une version plus moderne, pensée pour donner envie de réserver.
+
+J'ai donc préparé une maquette, spécialement pour votre agence :
+{{LIEN_MAQUETTE}}
+
+Est-ce que ça vous dirait que je vous la présente en 10 minutes, par téléphone ou dans vos locaux ?
+
+Bien à vous,
+
+Samuel Zeitoun
+Création de sites internet
+07 69 26 74 77
+
+----------------------------------------------------------------
+RELANCE (J+4, en réponse au même fil) :
+
+Bonjour {{Prénom}},
+
+Je me permets de remonter mon message : avez-vous eu l'occasion de jeter un œil à la maquette ?
+
+Si le sujet n'est pas d'actualité, dites-le-moi simplement, je ne vous relancerai pas.
+
+Bien à vous,
+Samuel

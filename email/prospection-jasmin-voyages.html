@@ -1,196 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="x-apple-disable-message-reformatting">
-<meta name="color-scheme" content="light dark">
-<title>Votre nouveau site est prêt</title>
-<!--
-  EMAIL DE PROSPECTION — à remplacer avant envoi :
-    {{PRENOM}}             → prénom du destinataire (ou supprimer)
-    {{LIEN_PRESENTATION}}  → URL de la présentation globale
-    {{LIEN_MAQUETTE}}      → URL de la maquette Jasmin Voyages
-  Les animations sont un bonus : tout le contenu reste visible et cliquable
-  dans les clients qui ne les supportent pas (Gmail, Outlook Windows).
--->
-<style>
-  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,.7)} 70%{box-shadow:0 0 0 10px rgba(34,197,94,0)} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0)} }
-  @keyframes shine { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
-  @keyframes flow  { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
-  @keyframes load  { 0%{width:8%} 60%{width:100%} 100%{width:100%} }
-  @keyframes nudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(4px)} }
-
-  body{margin:0;padding:0;background:#0b1020;}
-  a{text-decoration:none;}
-  .dot{animation:pulse 1.8s infinite;}
-  .bar{background:linear-gradient(90deg,#6366f1,#22d3ee,#a855f7,#6366f1);background-size:300% 300%;animation:flow 6s ease infinite;}
-  .grad-text{background:linear-gradient(90deg,#818cf8,#22d3ee,#c084fc);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:flow 5s ease infinite;}
-  .mock{animation:float 4s ease-in-out infinite;}
-  .caret{animation:blink 1s step-end infinite;}
-  .progress{animation:load 3s ease-out infinite;}
-  .btn-main{background:linear-gradient(110deg,#6366f1 0%,#6366f1 40%,#a5b4fc 50%,#6366f1 60%,#6366f1 100%);background-size:200% 100%;animation:shine 3s linear infinite;}
-  .arrow{display:inline-block;animation:nudge 1.2s ease-in-out infinite;}
-  .btn-main:hover,.btn-ghost:hover{filter:brightness(1.15);}
-
-  @media (max-width:620px){
-    .container{width:100%!important;}
-    .px{padding-left:22px!important;padding-right:22px!important;}
-    .h1{font-size:26px!important;line-height:32px!important;}
-    .stack{display:block!important;width:100%!important;}
-    .stack-gap{padding-top:12px!important;}
-  }
-</style>
+<title>Maquette pour Jasmin Voyages</title>
+<!-- Remplacer {{Prénom}} et {{LIEN_MAQUETTE}} avant envoi. -->
 </head>
-<body style="margin:0;padding:0;background:#0b1020;">
-
-<!-- Pré-header (texte d'aperçu dans la boîte de réception) -->
-<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
-  J'ai déjà conçu la maquette de votre futur site — 30 secondes pour la voir.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;
+<body style="margin:0;padding:16px;background:#ffffff;">
+<div style="max-width:560px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#222222;">
+<p>Bonjour {{Prénom}},</p>
+<p>En regardant le site de Jasmin Voyages, j'ai eu envie de voir à quoi il pourrait ressembler avec une version plus moderne, pensée pour donner envie de réserver.</p>
+<p>J'ai donc préparé une maquette, spécialement pour votre agence&nbsp;:<br>
+<a href="{{LIEN_MAQUETTE}}" style="color:#1a56db;">Voir la maquette Jasmin Voyages</a></p>
+<p>Est-ce que ça vous dirait que je vous la présente en 10&nbsp;minutes, par téléphone ou dans vos locaux&nbsp;?</p>
+<p>Bien à vous,</p>
+<p style="margin-bottom:0;"><strong>Samuel Zeitoun</strong><br>
+<span style="color:#666666;">Création de sites internet</span><br>
+<a href="tel:+33769267477" style="color:#666666;text-decoration:none;">07 69 26 74 77</a></p>
 </div>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0b1020;">
-<tr><td align="center" style="padding:28px 12px;">
-
-  <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background:#111831;border-radius:18px;overflow:hidden;border:1px solid #1f2a4d;">
-
-    <!-- Barre animée -->
-    <tr><td class="bar" height="4" style="height:4px;line-height:4px;font-size:0;background:#6366f1;">&nbsp;</td></tr>
-
-    <!-- Statut -->
-    <tr><td class="px" style="padding:26px 40px 0 40px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px;color:#94a3b8;letter-spacing:.5px;">
-      <span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;vertical-align:middle;"></span>
-      &nbsp;<span style="vertical-align:middle;">STATUT&nbsp;: maquette déployée &middot; prête à être présentée</span>
-    </td></tr>
-
-    <!-- Titre -->
-    <tr><td class="px" style="padding:18px 40px 0 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-      <h1 class="h1" style="margin:0;font-size:32px;line-height:38px;font-weight:800;color:#f8fafc;">
-        Bonjour {{PRENOM}},<br>
-        votre nouveau site <span class="grad-text" style="color:#818cf8;">existe déjà.</span><span class="caret" style="color:#22d3ee;font-weight:400;">|</span>
-      </h1>
-      <p style="margin:16px 0 0 0;font-size:16px;line-height:26px;color:#cbd5e1;">
-        J'ai pris le temps d'analyser votre agence et votre présence en ligne. Plutôt qu'un long discours commercial, j'ai fait plus simple&nbsp;: <strong style="color:#f8fafc;">j'ai conçu la maquette de votre futur site.</strong>
-      </p>
-    </td></tr>
-
-    <!-- Aperçu maquette (navigateur) -->
-    <tr><td class="px" style="padding:28px 40px 0 40px;">
-      <a href="{{LIEN_MAQUETTE}}" target="_blank" style="display:block;">
-      <table role="presentation" class="mock" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0b1020;border:1px solid #2a3766;border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(99,102,241,.25);">
-        <tr><td style="padding:10px 14px;background:#161f3d;border-bottom:1px solid #2a3766;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:11px;color:#64748b;">
-          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#ef4444;"></span>
-          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#f59e0b;"></span>
-          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#22c55e;"></span>
-          &nbsp;&nbsp;🔒 jasmin-voyages.fr
-        </td></tr>
-        <tr><td style="height:3px;line-height:3px;font-size:0;background:#161f3d;">
-          <div class="progress" style="height:3px;width:100%;background:#22d3ee;"></div>
-        </td></tr>
-        <tr><td align="center" style="padding:34px 20px;background:linear-gradient(135deg,#1e1b4b 0%,#0e7490 100%);background-color:#1e1b4b;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-          <div style="font-size:11px;letter-spacing:3px;color:#a5f3fc;text-transform:uppercase;">Maquette Premium</div>
-          <div style="font-size:26px;font-weight:800;color:#ffffff;margin-top:6px;">Jasmin Voyages</div>
-          <div style="font-size:14px;color:#e0e7ff;margin-top:6px;">Cliquez pour explorer la maquette&nbsp;<span class="arrow">→</span></div>
-        </td></tr>
-      </table>
-      </a>
-    </td></tr>
-
-    <!-- CTA principaux -->
-    <tr><td class="px" style="padding:28px 40px 0 40px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td class="stack" width="50%" style="padding-right:6px;">
-            <a href="{{LIEN_MAQUETTE}}" target="_blank" class="btn-main" style="display:block;background:#6366f1;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;text-align:center;padding:16px 12px;border-radius:10px;">
-              ▶&nbsp; Voir ma maquette
-            </a>
-          </td>
-          <td class="stack stack-gap" width="50%" style="padding-left:6px;">
-            <a href="{{LIEN_PRESENTATION}}" target="_blank" class="btn-ghost" style="display:block;background:#111831;border:1px solid #3b4a80;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;text-align:center;padding:15px 12px;border-radius:10px;">
-              Voir la présentation&nbsp;<span class="arrow">→</span>
-            </a>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-
-    <!-- Ce que ça change -->
-    <tr><td class="px" style="padding:32px 40px 0 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-      <p style="margin:0 0 14px 0;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px;color:#22d3ee;letter-spacing:1px;">// CE QUE CE SITE EST CONÇU POUR FAIRE</p>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td style="padding:10px 0;border-top:1px solid #1f2a4d;font-size:15px;line-height:22px;color:#cbd5e1;">
-          <span style="color:#a5b4fc;font-weight:700;">01&nbsp;&nbsp;</span><strong style="color:#f8fafc;">Inspirer confiance</strong> dès la première seconde
-        </td></tr>
-        <tr><td style="padding:10px 0;border-top:1px solid #1f2a4d;font-size:15px;line-height:22px;color:#cbd5e1;">
-          <span style="color:#a5b4fc;font-weight:700;">02&nbsp;&nbsp;</span><strong style="color:#f8fafc;">Transformer vos visiteurs en clients</strong> grâce à un parcours pensé conversion
-        </td></tr>
-        <tr><td style="padding:10px 0;border-top:1px solid #1f2a4d;border-bottom:1px solid #1f2a4d;font-size:15px;line-height:22px;color:#cbd5e1;">
-          <span style="color:#a5b4fc;font-weight:700;">03&nbsp;&nbsp;</span><strong style="color:#f8fafc;">Rapide, 100&nbsp;% mobile</strong> et optimisé pour Google
-        </td></tr>
-      </table>
-      <p style="margin:16px 0 0 0;font-size:14px;line-height:22px;color:#94a3b8;">
-        C'est une première proposition&nbsp;: l'idée est ensuite de l'adapter à votre image, vos besoins et vos objectifs.
-      </p>
-    </td></tr>
-
-    <!-- Bloc rendez-vous -->
-    <tr><td class="px" style="padding:30px 40px 0 40px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0f1a3a;border:1px solid #2a3766;border-radius:14px;">
-        <tr><td style="padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-          <p style="margin:0;font-size:18px;line-height:26px;font-weight:700;color:#f8fafc;">⏱ 15 minutes pour vous la présenter&nbsp;?</p>
-          <p style="margin:8px 0 18px 0;font-size:15px;line-height:23px;color:#cbd5e1;">
-            Dans vos locaux ou par téléphone, je vous explique chaque choix. Sans engagement.
-          </p>
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td class="stack" width="50%" style="padding-right:6px;">
-                <a href="mailto:samzeitoun1803@gmail.com?subject=Ok%20pour%20un%20RDV%20-%20maquette%20Jasmin%20Voyages&amp;body=Bonjour%20Samuel%2C%0A%0AJe%20suis%20disponible%20%3A%20" style="display:block;background:#22c55e;color:#052e16;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;font-weight:800;text-align:center;padding:14px 10px;border-radius:10px;">
-                  ✉&nbsp; Je réserve 15 min
-                </a>
-              </td>
-              <td class="stack stack-gap" width="50%" style="padding-left:6px;">
-                <a href="tel:+33769267477" style="display:block;background:transparent;border:1px solid #22c55e;color:#86efac;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;text-align:center;padding:13px 10px;border-radius:10px;">
-                  📞&nbsp; 07 69 26 74 77
-                </a>
-              </td>
-            </tr>
-          </table>
-        </td></tr>
-      </table>
-    </td></tr>
-
-    <!-- Signature -->
-    <tr><td class="px" style="padding:30px 40px 0 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td valign="middle" style="padding-right:14px;">
-            <div class="bar" style="width:46px;height:46px;border-radius:12px;background:#6366f1;color:#ffffff;font-size:17px;font-weight:800;line-height:46px;text-align:center;">SZ</div>
-          </td>
-          <td valign="middle" style="font-size:14px;line-height:20px;color:#94a3b8;">
-            <strong style="color:#f8fafc;font-size:15px;">Samuel Zeitoun</strong><br>
-            Création de sites internet sur mesure<br>
-            <a href="tel:+33769267477" style="color:#a5b4fc;">07 69 26 74 77</a>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-
-    <!-- P.S. -->
-    <tr><td class="px" style="padding:24px 40px 34px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:22px;color:#94a3b8;">
-      <strong style="color:#e2e8f0;">P.S.</strong> La maquette est déjà en ligne, elle n'attend que vous&nbsp;:
-      <a href="{{LIEN_MAQUETTE}}" target="_blank" style="color:#22d3ee;font-weight:600;">jetez-y un œil en 30 secondes&nbsp;<span class="arrow">→</span></a>
-    </td></tr>
-
-    <tr><td class="bar" height="4" style="height:4px;line-height:4px;font-size:0;background:#6366f1;">&nbsp;</td></tr>
-  </table>
-
-  <p style="margin:16px 0 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;color:#475569;">
-    Vous ne souhaitez plus recevoir de message de ma part&nbsp;? <a href="mailto:samzeitoun1803@gmail.com?subject=D%C3%A9sinscription" style="color:#64748b;text-decoration:underline;">Répondez simplement «&nbsp;stop&nbsp;»</a>.
-  </p>
-
-</td></tr>
-</table>
 </body>
 </html>
