@@ -1,0 +1,124 @@
+<title>Vaultr Couleurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: une colonne de lecture, puis une grille de palettes (1 à 2 colonnes),
+   chaque carte = mini écran de coffre + rôles de couleurs + pourquoi. */
+:root{
+  --bg:#F3F2EE; --fg:#16181D; --muted:#5E626C; --line:#DDDBD4; --card:#FFFFFF; --mark:#B8860B;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111317;--fg:#ECEDEF;--muted:#9A9FAA;--line:#2A2E36;--card:#181B21;--mark:#F5B82E;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111317;--fg:#ECEDEF;--muted:#9A9FAA;--line:#2A2E36;--card:#181B21;--mark:#F5B82E;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:32px 64px}
+h1{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:120%;font-size:clamp(32px,6vw,52px);line-height:1;margin:0 0 12px;letter-spacing:-.02em;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-stretch:112%;font-size:22px;margin:0;text-wrap:balance}
+.lead{max-width:68ch;color:var(--muted);margin:0 0 28px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:36px}
+.rule{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-width:0}
+.rule b{display:block;font-family:var(--display);font-stretch:108%;font-size:15px;margin-bottom:4px}
+.rule p{margin:0;font-size:14px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr));gap:20px}
+.pal{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;display:grid;grid-template-columns:200px 1fr;gap:18px;min-width:0}
+.pal.reco{border:2px solid var(--mark)}
+@media (max-width:560px){.pal{grid-template-columns:1fr}.mini{margin:0 auto}}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.pal.reco .tag{color:var(--mark)}
+.info{min-width:0;display:flex;flex-direction:column;gap:10px}
+.info p{margin:0;font-size:14px;color:var(--muted)}
+.sw{display:flex;flex-direction:column;gap:6px}
+.sw div{display:flex;align-items:center;gap:10px;font-size:13px}
+.sw i{width:22px;height:22px;border-radius:6px;flex:none;border:1px solid #0002}
+.sw code{font-size:12px;color:var(--muted);margin-left:auto;font-variant-numeric:tabular-nums}
+.ref{font-size:12px;color:var(--muted)}
+
+/* mini écran : couleurs passées par variables locales */
+.mini{width:200px;max-width:100%;border-radius:22px;padding:14px 12px;background:var(--m-bg);color:var(--m-fg);display:flex;flex-direction:column;gap:10px;font-family:var(--body);box-shadow:0 10px 30px #0003}
+.mini .brand{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:125%;font-size:16px}
+.mini .brand span{color:var(--m-acc)}
+.mini .ring{position:relative;display:grid;place-items:center}
+.mini svg{width:140px;height:140px}
+.mini .amt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.mini .amt b{font-family:var(--display);font-weight:900;font-style:italic;font-size:24px;color:var(--m-money)}
+.mini .amt span{font-size:10px;color:var(--m-muted)}
+.mini .task{background:var(--m-panel);border-radius:12px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.mini .task b{font-family:var(--display);font-style:italic;font-weight:900;color:var(--m-money)}
+.mini .ok{font-size:10px;font-weight:700;color:var(--m-gain)}
+.mini .lost{font-size:10px;font-weight:700;color:var(--m-loss)}
+.mini .cta{background:var(--m-cta);color:var(--m-cta-fg);border-radius:10px;padding:9px;text-align:center;font-weight:700;font-size:12px}
+.foot{margin-top:36px;max-width:68ch;color:var(--muted);font-size:14px}
+.foot a{color:var(--fg)}
+</style>
+
+<div class="wrap">
+  <h1>Les couleurs de Vaultr</h1>
+  <p class="lead">Quatre palettes appliquées au même écran du coffre, plus la version actuelle pour comparer. Chacune s'inspire d'un secteur qui a beaucoup testé ses couleurs : les casinos, les sites de paris sportifs et les applis bancaires.</p>
+
+  <div class="rules">
+    <div class="rule"><b>Le contraste compte plus que la couleur</b><p>Un bouton attire l'œil parce qu'il est le seul de sa couleur à l'écran (effet Von Restorff). On réserve donc une couleur aux actions.</p></div>
+    <div class="rule"><b>Règle 60 / 30 / 10</b><p>60 % de fond, 30 % de surfaces, 10 % d'accent. Les casinos et les applis de paris suivent tous ce schéma.</p></div>
+    <div class="rule"><b>Or = récompense, vert = gain</b><p>Les casinos utilisent l'or pour ce qui a de la valeur et le vert pour « gagné ». Le rouge sert à l'urgence et à l'excitation.</p></div>
+    <div class="rule"><b>Bleu = confiance</b><p>Les banques et les applis de paiement utilisent le bleu pour rassurer, utile quand on demande aux gens de déposer de l'argent.</p></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <p class="foot">Sources : <a href="https://www.ibtimes.co.uk/ux-high-stakes-how-interface-design-impacts-risk-perception-online-gambling-1737380">IBTimes, UX et jeux d'argent</a> · <a href="https://www.psu.com/news/color-psychology-makes-for-better-gameplay/">PSU, couleurs et jeu</a> · <a href="https://weandthecolor.com/color-psychology-in-fintech-branding-how-the-right-palette-builds-user-trust/209146">WE AND THE COLOR, couleurs des fintechs</a> · <a href="https://windmill.digital/psychology-of-color-in-financial-app-design/">Windmill, couleurs des applis financières</a> · <a href="https://www.switas.com/glossary/von-restorff-effect">Effet Von Restorff</a>. La plupart de ces sources sont des analyses de designers, pas des études scientifiques : ce sont des conventions bien établies, pas des lois exactes.</p>
+</div>
+
+<script>
+const P = [
+  { id: "A", name: "Coffre d'or", tag: "★ Ma recommandation", reco: true,
+    why: "Le bleu nuit des banques pour la confiance (on dépose de l'argent), l'or des casinos pour la récompense. L'or colle au nom : c'est ce qu'on garde dans un coffre-fort. Le vert ne sert qu'à « validé », le rouge qu'à « perdu ».",
+    ref: "Inspiré des casinos haut de gamme et des cartes bancaires premium.",
+    c: { bg: "#0B1020", panel: "#161D33", fg: "#F4F1E8", muted: "#8C93A8", acc: "#F5B82E", money: "#F5B82E", cta: "#F5B82E", ctaFg: "#0B1020", gain: "#3DDC84", loss: "#FF5A5F" },
+    roles: [["Fond", "bg"], ["Surfaces", "panel"], ["Or : argent et actions", "acc"], ["Validé", "gain"], ["Perdu", "loss"]] },
+  { id: "B", name: "Jackpot", tag: "Style casino",
+    why: "Noir, or et rouge : le trio exact des machines à sous et des casinos en ligne. Très excitant et très « argent », mais l'appli risque d'avoir l'air d'un site de jeux, ce qui peut freiner les coachs et les stores.",
+    ref: "Inspiré des casinos en ligne et des machines à sous.",
+    c: { bg: "#0A0A0A", panel: "#1A1614", fg: "#FFFFFF", muted: "#9A938C", acc: "#FFC83D", money: "#FFC83D", cta: "#E5243B", ctaFg: "#FFFFFF", gain: "#2ED47A", loss: "#E5243B" },
+    roles: [["Fond", "bg"], ["Surfaces", "panel"], ["Or : argent", "acc"], ["Rouge : actions", "cta"], ["Validé", "gain"]] },
+  { id: "C", name: "Adrénaline", tag: "Style paris sportifs",
+    why: "Noir et rouge vif, l'univers des grandes applis de paris sportifs : énergie et urgence maximales. Inconvénient : le rouge veut aussi dire « perdu », donc il faut une autre couleur pour signaler l'argent non récupéré.",
+    ref: "Inspiré des applis de paris sportifs.",
+    c: { bg: "#0D0D0F", panel: "#1C1C21", fg: "#FFFFFF", muted: "#9B9BA5", acc: "#FF2D3D", money: "#FFFFFF", cta: "#FF2D3D", ctaFg: "#FFFFFF", gain: "#2EE59D", loss: "#FF9F1C" },
+    roles: [["Fond", "bg"], ["Surfaces", "panel"], ["Rouge : actions", "acc"], ["Validé", "gain"], ["Perdu (orange)", "loss"]] },
+  { id: "D", name: "Confiance", tag: "Style banque mobile",
+    why: "Fond blanc comme tu le voulais au départ, bleu électrique des applis de paiement, vert pour l'argent récupéré. Le plus rassurant et le plus « sérieux », mais le moins excitant des quatre.",
+    ref: "Inspiré des néobanques et des applis de paiement.",
+    c: { bg: "#F5F7FB", panel: "#FFFFFF", fg: "#0E1A2B", muted: "#667085", acc: "#2F6BFF", money: "#12B76A", cta: "#2F6BFF", ctaFg: "#FFFFFF", gain: "#12B76A", loss: "#F04438" },
+    roles: [["Fond", "bg"], ["Surfaces", "panel"], ["Bleu : actions", "acc"], ["Vert : argent", "money"], ["Perdu", "loss"]] },
+  { id: "0", name: "Actuelle", tag: "Pour comparer",
+    why: "Noir et vert clair : très sportif et énergique, proche des marques de fitness. Le vert dit « argent récupéré », mais il n'évoque ni la récompense comme l'or, ni la confiance comme le bleu.",
+    ref: "La version de la maquette aujourd'hui.",
+    c: { bg: "#0B0D0A", panel: "#1C2219", fg: "#F1F6EC", muted: "#93A08C", acc: "#C6FF4D", money: "#C6FF4D", cta: "#C6FF4D", ctaFg: "#0B0D0A", gain: "#C6FF4D", loss: "#FF5C4D" },
+    roles: [["Fond", "bg"], ["Surfaces", "panel"], ["Vert clair : argent et actions", "acc"], ["Perdu", "loss"]] }
+];
+const C = 2 * Math.PI * 52;
+document.getElementById("grid").innerHTML = P.map(p => {
+  const c = p.c;
+  const vars = `--m-bg:${c.bg};--m-panel:${c.panel};--m-fg:${c.fg};--m-muted:${c.muted};--m-acc:${c.acc};--m-money:${c.money};--m-cta:${c.cta};--m-cta-fg:${c.ctaFg};--m-gain:${c.gain};--m-loss:${c.loss}`;
+  return `<article class="pal ${p.reco ? "reco" : ""}">
+    <div class="mini" style="${vars}" aria-label="Aperçu de la palette ${p.name}">
+      <div class="brand">VAULT<span>R</span></div>
+      <div class="ring"><svg viewBox="0 0 140 140" aria-hidden="true">
+        <circle cx="70" cy="70" r="52" fill="none" stroke="${c.panel}" stroke-width="11"/>
+        <circle cx="70" cy="70" r="52" fill="none" stroke="${c.money}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * .62}" transform="rotate(-90 70 70)"/>
+      </svg><div class="amt"><b>18,75 €</b><span>récupérés sur 50 €</span></div></div>
+      <div class="task"><span>15 pompes<br><span class="ok">✓ Validé</span></span><b>+3 €</b></div>
+      <div class="task"><span>Gainage<br><span class="lost">2,50 € perdus</span></span><b>+1,25 €</b></div>
+      <div class="cta">📸 Envoyer une preuve</div>
+    </div>
+    <div class="info">
+      <div><span class="tag">${p.id === "0" ? "" : "Option " + p.id + " · "}${p.tag}</span><h2>${p.name}</h2></div>
+      <p>${p.why}</p>
+      <div class="sw">${p.roles.map(([l, k]) => `<div><i style="background:${c[k]}"></i>${l}<code>${c[k]}</code></div>`).join("")}</div>
+      <span class="ref">${p.ref}</span>
+    </div>
+  </article>`;
+}).join("");
+</script>
