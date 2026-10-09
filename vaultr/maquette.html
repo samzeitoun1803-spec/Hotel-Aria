@@ -176,6 +176,44 @@ input[type=range]{width:100%;accent-color:var(--volt)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* ---------- Encaissement : animation quand le sportif reçoit de l'argent ---------- */
+.cele{position:absolute;inset:0;z-index:70;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 42%,#1d2b10 0%,#0B0D0Af0 62%);animation:fade .25s ease both;overflow:hidden}
+.cele-rays{position:absolute;left:50%;top:42%;width:900px;height:900px;margin:-450px 0 0 -450px;background:repeating-conic-gradient(from 0deg,#C6FF4D1c 0deg 9deg,transparent 9deg 22deg);border-radius:50%;animation:rays 9s linear infinite;mask-image:radial-gradient(circle,#000 0 30%,transparent 62%);-webkit-mask-image:radial-gradient(circle,#000 0 30%,transparent 62%)}
+@keyframes rays{to{transform:rotate(360deg)}}
+.cele-card{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:320px;animation:celeIn .7s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes celeIn{from{transform:scale(.4) translateY(40px);opacity:0}}
+.cele-vault{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;background:var(--volt);color:var(--ink);box-shadow:0 0 0 10px #C6FF4D22,0 0 60px #C6FF4D88;animation:celeDial 1.1s cubic-bezier(.3,1.4,.4,1) both .1s}
+.cele-vault svg{width:60px;height:60px}
+@keyframes celeDial{from{transform:rotate(-260deg) scale(.6)}}
+.cele-amt{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:122%;font-size:68px;line-height:1;color:var(--volt);font-variant-numeric:tabular-nums;text-shadow:0 0 30px #C6FF4D88;letter-spacing:-.02em}
+.cele-lines{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--fg);max-height:120px;overflow:auto}
+.cele-lines span{color:var(--muted)}
+.cele .btn{margin-top:10px}
+.cele.out .cele-card{animation:celeOut .45s cubic-bezier(.6,0,.4,1) both}
+.cele.out{animation:fadeOut .45s ease both .15s}
+@keyframes celeOut{to{transform:translateY(-120px) scale(.3);opacity:0}}
+@keyframes fadeOut{to{opacity:0}}
+.rain{position:absolute;top:-30px;z-index:1;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#EFFFC2,var(--volt) 55%,#7DB800);box-shadow:0 0 10px #C6FF4D88;display:grid;place-items:center;font:900 12px/1 var(--display);color:var(--ink);pointer-events:none}
+.vault.boom .ring{filter:drop-shadow(0 0 22px #C6FF4D)}
+
+/* ---------- Divers app ---------- */
+.icon-btn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line);color:var(--muted)}
+.icon-btn svg{width:18px;height:18px}
+.top-right{display:flex;align-items:center;gap:8px}
+.mode-pill{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:#FFC94D;border-radius:999px;padding:3px 8px}
+.empty{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{padding:7px 12px;border-radius:10px;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{border-color:var(--volt);color:var(--volt);background:var(--volt-dim)}
+.check{display:flex;gap:8px;align-items:center;font-size:14px}
+.check input{accent-color:var(--volt);width:18px;height:18px}
+.err{color:var(--loss);font-size:13px;min-height:1em}
+.del{color:var(--muted);font-size:18px;line-height:1;padding:4px 6px}
+.edit-task{grid-template-columns:1fr 84px auto}
+.loading{display:grid;place-items:center;height:100%;color:var(--muted)}
+.copy{display:flex;gap:8px;align-items:center}
+.copy code{flex:1;min-width:0;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;color:var(--volt);overflow:hidden;text-overflow:ellipsis}
 </style>
 
 <div class="stage">
@@ -201,73 +239,143 @@ input[type=range]{width:100%;accent-color:var(--volt)}
 
     <header class="top">
       <div class="brand">VAULT<span>R</span></div>
-      <div class="role-switch" id="roleSwitch" role="group" aria-label="Changer de vue" hidden>
-        <button type="button" data-role="athlete">Sportif</button>
-        <button type="button" data-role="coach">Coach</button>
+      <div class="top-right">
+        <span class="mode-pill" id="demoPill" hidden>Démo</span>
+        <div class="role-switch" id="roleSwitch" role="group" aria-label="Changer de compte de démo" hidden>
+          <button type="button" data-role="athlete">Léa</button>
+          <button type="button" data-role="coach">Karim</button>
+        </div>
+        <button type="button" class="icon-btn" id="settingsBtn" aria-label="Réglages" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        </button>
       </div>
     </header>
-    <main id="main"></main>
+    <main id="main"><div class="loading">Ouverture du coffre…</div></main>
     <nav class="tabbar" id="tabbar" hidden></nav>
   </div>
 
   <aside class="side">
     <h1>Ton effort <span>te rembourse.</span></h1>
-    <p>Maquette interactive de Vaultr. Les paiements sont simulés et aucune vraie somme n'est utilisée.</p>
-    <p class="demo-tip">Pour voir la boucle complète : en <b>Coach</b>, valide un exercice de Léa. Repasse en <b>Sportif</b> et regarde son coffre se remplir.</p>
-    <p><button class="btn small" type="button" id="resetBtn">Réinitialiser la démo</button></p>
+    <p id="sideMode">Les paiements sont simulés : aucune vraie somme n'est débitée.</p>
+    <p class="demo-tip" id="sideTip">Ouvre Vaultr sur deux téléphones : l'un en sportif, l'autre en coach. Quand le coach valide un exercice, le sportif reçoit son argent en direct.</p>
   </aside>
 </div>
 
 <script>
 (() => {
-  const STORE = "vaultr-demo-v1";
-  const euro = n => { const v = Math.round(n * 100) / 100; return v.toLocaleString("fr-FR", { minimumFractionDigits: Number.isInteger(v) ? 0 : 2, maximumFractionDigits: 2 }) + " €"; };
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const uid = () => Math.random().toString(36).slice(2, 9);
+  /* =====================================================================
+     Outils
+     ===================================================================== */
+  const euro = n => { const v = Math.round((n || 0) * 100) / 100; return v.toLocaleString("fr-FR", { minimumFractionDigits: Number.isInteger(v) ? 0 : 2, maximumFractionDigits: 2 }) + " €"; };
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const rid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  const initials = n => (n || "?").trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase() || "?";
+  const first = n => (n || "").trim().split(/\s+/)[0] || "";
+  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const lsGet = k => { try { return localStorage.getItem(k); } catch { return null; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+  const now = () => Date.now();
+  const monthName = () => new Date().toLocaleDateString("fr-FR", { month: "long" });
+  const daysLeft = () => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate() - d.getDate(); };
+  const cleanHandle = h => (h || "").toLowerCase().replace(/^@/, "").replace(/[^a-z0-9._]/g, "").slice(0, 20);
+  const earned = t => t.earned ?? t.value * t.done;            // argent déjà rendu sur cet exercice (acquis)
+  const recovered = p => (p?.tasks || []).reduce((a, t) => a + earned(t), 0);
+  const left = t => Math.max(0, t.target - t.done);              // séances encore à valider
+  const SPORTS = ["Remise en forme", "Musculation", "Course à pied", "Yoga & mobilité", "Boxe", "Pilates", "Natation", "Autre"];
 
-  const COACHES = [
-    { id: "karim", name: "Karim Benali", tag: "@karim.fit", city: "Nice", sport: "Remise en forme", price: 150, rating: 4.9, clients: 18, initials: "KB" },
-    { id: "ines", name: "Inès Morel", tag: "@ines.yoga", city: "Nice", sport: "Yoga & mobilité", price: 120, rating: 4.8, clients: 22, initials: "IM" },
-    { id: "theo", name: "Théo Garnier", tag: "@theo.run", city: "Nice", sport: "Course à pied", price: 90, rating: 4.7, clients: 31, initials: "TG" },
-    { id: "nadia", name: "Nadia Haddad", tag: "@nadia.boxe", city: "Antibes", sport: "Boxe", price: 160, rating: 5.0, clients: 12, initials: "NH" },
-    { id: "lucas", name: "Lucas Petit", tag: "@lucas.muscu", city: "Cannes", sport: "Musculation", price: 140, rating: 4.6, clients: 25, initials: "LP" },
-    { id: "jade", name: "Jade Rossi", tag: "@jade.pilates", city: "Nice", sport: "Pilates", price: 110, rating: 4.9, clients: 16, initials: "JR" }
-  ];
+  /* =====================================================================
+     Base locale pour le mode démo (même interface que la vraie base)
+     ===================================================================== */
+  const DEMO_KEY = "vaultr-demo-v2";
+  function demoSeed() {
+    const t0 = now() - 86400000 * 9;
+    const P = {};
+    const coach = (id, name, handle, city, sport, price) => P["profiles/" + id] = { role: "coach", name, handle, city, sport, price, boostedUntil: 0, pro: false, createdAt: t0 };
+    coach("demo_karim", "Karim Benali", "karim.fit", "Nice", "Remise en forme", 150);
+    coach("demo_ines", "Inès Morel", "ines.yoga", "Nice", "Yoga & mobilité", 120);
+    coach("demo_theo", "Théo Garnier", "theo.run", "Nice", "Course à pied", 90);
+    coach("demo_nadia", "Nadia Haddad", "nadia.boxe", "Antibes", "Boxe", 160);
+    coach("demo_jade", "Jade Rossi", "jade.pilates", "Nice", "Pilates", 110);
+    const ath = (id, name, handle, goal) => P["profiles/" + id] = { role: "athlete", name, handle, city: "Nice", goal, createdAt: t0 };
+    ath("demo_lea", "Léa Martin", "lea.run", "Remise en forme");
+    ath("demo_tom", "Tom Lefèvre", "tom.l", "Perte de poids");
+    ath("demo_yanis", "Yanis Cohen", "yanis.c", "Prise de muscle");
+    const task = (name, detail, value, done, diff, weak) => ({ id: rid(), name, detail, value, target: 8, done, earned: value * done, diff, weak });
+    P["programs/demo_lea"] = { athleteId: "demo_lea", coachId: "demo_karim", mise: 50, coachFee: 150, createdAt: t0, tasks: [
+      task("Course 15 min", "Échauffement inclus", 2, 3, 1, false),
+      task("15 pompes", "Ton point faible 😈", 3, 3, 3, true),
+      task("Gainage 3 × 1 min", "Planche ventrale", 1.25, 3, 2, false)] };
+    P["programs/demo_tom"] = { athleteId: "demo_tom", coachId: "demo_karim", mise: 30, coachFee: 150, createdAt: t0, tasks: [
+      task("Marche rapide 30 min", "", 1.5, 6, 1, false), task("20 squats", "", 2.25, 6, 2, true)] };
+    P["programs/demo_yanis"] = { athleteId: "demo_yanis", coachId: "demo_karim", mise: 80, coachFee: 150, createdAt: t0, tasks: [
+      task("Développé couché 4 × 10", "", 5, 2, 3, true), task("Tractions 3 × 8", "", 5, 2, 3, false)] };
+    const ev = (aid, label, amount, ago) => P["events/" + rid()] = { athleteId: aid, coachId: "demo_karim", label, amount, ts: now() - ago };
+    ev("demo_lea", "Mise + coaching du mois (simulé)", -200, 86400000 * 9);
+    ["Course 15 min", "15 pompes", "Gainage 3 × 1 min"].forEach((n, i) => [7, 4, 2].forEach(d => ev("demo_lea", n + " validé", [2, 3, 1.25][i], 86400000 * d + i * 60000)));
+    return P;
+  }
+  function makeLocalDb() {
+    let data; try { data = JSON.parse(lsGet(DEMO_KEY)); } catch {} if (!data) data = demoSeed();
+    const listeners = new Set();
+    const emit = () => { lsSet(DEMO_KEY, JSON.stringify(data)); setTimeout(() => listeners.forEach(fn => fn()), 0); };
+    const clone = v => JSON.parse(JSON.stringify(v));
+    const snap = path => ({ id: path.split("/").pop(), exists: path in data, data: () => (path in data ? clone(data[path]) : undefined), metadata: { fromCache: false, hasPendingWrites: false } });
+    const parent = p => p.slice(0, p.lastIndexOf("/"));
+    const test = (x, op, v) => op === "==" ? x === v : op === "!=" ? x !== v : op === "in" ? v.includes(x) : op === ">" ? x > v : op === "<" ? x < v : true;
+    function query(col, filters = [], order = null, lim = null) {
+      const run = () => {
+        let docs = Object.keys(data).filter(p => parent(p) === col).map(snap).filter(s => filters.every(([f, op, v]) => test(s.data()[f], op, v)));
+        if (order) { const [f, d] = order; docs.sort((a, b) => { const x = a.data()[f], y = b.data()[f]; return (x > y ? 1 : x < y ? -1 : 0) * (d === "desc" ? -1 : 1); }); }
+        if (lim) docs = docs.slice(0, lim);
+        return { docs, size: docs.length, empty: !docs.length, docChanges: () => [], metadata: { fromCache: false, hasPendingWrites: false } };
+      };
+      return {
+        where: (f, op, v) => query(col, [...filters, [f, op, v]], order, lim),
+        orderBy: (f, d = "asc") => query(col, filters, [f, d], lim),
+        limit: n => query(col, filters, order, n),
+        get: async () => run(),
+        onSnapshot(next) { const fn = () => next(run()); listeners.add(fn); setTimeout(fn, 0); return () => listeners.delete(fn); }
+      };
+    }
+    const docRef = path => ({
+      id: path.split("/").pop(), path,
+      get: async () => snap(path),
+      set: async v => { data[path] = clone(v); emit(); },
+      update: async v => { if (!(path in data)) throw { code: "invalid_argument", message: "absent" }; data[path] = { ...data[path], ...clone(v) }; emit(); },
+      delete: async () => { delete data[path]; emit(); },
+      onSnapshot(next) { const fn = () => next(snap(path)); listeners.add(fn); setTimeout(fn, 0); return () => listeners.delete(fn); }
+    });
+    return {
+      doc: docRef,
+      collection: col => Object.assign(query(col), { path: col, doc: id => docRef(col + "/" + (id || rid())), add: async v => { const r = docRef(col + "/" + rid()); await r.set(v); return r; } }),
+      reset() { data = demoSeed(); for (const k of Object.keys(localStorage || {})) if (k.startsWith("vaultr-seen-demo")) try { localStorage.removeItem(k); } catch {} emit(); }
+    };
+  }
 
-  const fresh = () => ({
-    role: null,
+  /* =====================================================================
+     État de l'appli
+     ===================================================================== */
+  const A = {
+    mode: "loading",          // loading | live | demo | blocked
+    blockedWhy: "",
+    db: null, liveDb: null, user: null,
+    myId: null, suggestedName: "",
+    demoAs: lsGet("vaultr-demo-as") || "demo_lea",
+    profile: undefined,       // undefined = pas encore chargé, null = pas de profil
+    coaches: [], athletes: {},
+    program: undefined, proofsAth: [], events: [],
+    clients: [], proofsCoach: [],
     tab: { athlete: "vault", coach: "clients" },
-    mise: 50, coachFee: 150, daysLeft: 12,
-    tasks: [
-      { id: "t1", name: "Course 15 min", detail: "Échauffement inclus", value: 2, target: 8, done: 3, diff: 1, weak: false },
-      { id: "t2", name: "15 pompes", detail: "Ton point faible 😈", value: 3, target: 8, done: 3, diff: 3, weak: true },
-      { id: "t3", name: "Gainage 3 × 1 min", detail: "Planche ventrale", value: 1.25, target: 8, done: 3, diff: 2, weak: false }
-    ],
-    proofs: [],
-    history: [
-      { label: "Séance du 2 oct. validée", amount: 6.25, type: "in" },
-      { label: "Séance du 28 sept. validée", amount: 6.25, type: "in" },
-      { label: "Séance du 25 sept. validée", amount: 6.25, type: "in" },
-      { label: "Mise d'octobre", amount: -50, type: "out" },
-      { label: "Coaching d'octobre · Karim", amount: -150, type: "out" }
-    ],
-    added: [], boosted: false, pro: false,
-    coachFilter: "Tous", coachQuery: "", openClient: null
-  });
-
-  let S, lastKey = "";
-  try { S = JSON.parse(localStorage.getItem(STORE)) || fresh(); } catch { S = fresh(); }
-  let lastVault = 0;
-  const save = () => { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch {} };
-
-  const recovered = () => S.tasks.reduce((a, t) => a + t.value * t.done, 0);
-  const planned = () => S.tasks.reduce((a, t) => a + t.value * t.target, 0);
-  const pendingProofs = () => S.proofs.filter(p => p.status === "pending");
-
+    openClient: null, coachFilter: "Tous", coachQuery: "",
+    onboardRole: null, busy: false
+  };
+  let unsubs = [], roleSubs = [], subscribedRole = null;
   const $main = document.getElementById("main");
   const $tabbar = document.getElementById("tabbar");
   const $phone = document.getElementById("phone");
   const $switch = document.getElementById("roleSwitch");
+  const $settings = document.getElementById("settingsBtn");
+  const $pill = document.getElementById("demoPill");
 
   const ICONS = {
     vault: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="12" r="4"/><path d="M12 8v1M12 15v1M8 12h1M15 12h1"/></svg>',
@@ -277,8 +385,11 @@ input[type=range]{width:100%;accent-color:var(--volt)}
     proof: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>',
     pro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>'
   };
+  const VAULT_ICON = '<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="25" fill="none" stroke="currentColor" stroke-width="5"/><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><line x1="30" y1="30" x2="30" y2="14"/><line x1="30" y1="30" x2="44" y2="38"/><line x1="30" y1="30" x2="16" y2="38"/></g><circle cx="30" cy="30" r="6" fill="currentColor"/></svg>';
 
-  /* ---------------- Effets ---------------- */
+  /* =====================================================================
+     Effets : toast, pièces, compteur, encaissement
+     ===================================================================== */
   function toast(msg) {
     document.querySelectorAll(".toast").forEach(t => t.remove());
     const t = document.createElement("div");
@@ -286,7 +397,7 @@ input[type=range]{width:100%;accent-color:var(--volt)}
     $phone.appendChild(t); setTimeout(() => t.remove(), 2700);
   }
   function coinBurst(fromEl, amount) {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reduced()) return;
     const pr = $phone.getBoundingClientRect();
     const r = fromEl ? fromEl.getBoundingClientRect() : { left: pr.left + pr.width / 2, top: pr.top + pr.height / 2, width: 0, height: 0 };
     const x0 = r.left - pr.left + r.width / 2, y0 = r.top - pr.top + r.height / 2;
@@ -304,68 +415,322 @@ input[type=range]{width:100%;accent-color:var(--volt)}
       ], { duration: 1100 + Math.random() * 300, easing: "cubic-bezier(.3,.7,.3,1)" }).onfinish = () => c.remove();
     }
   }
-  function countUp(el, from, to) {
+  function countUp(el, from, to, dur = 900, sign = "") {
     if (!el) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || from === to) { el.textContent = euro(to); return; }
-    const t0 = performance.now(), dur = 900;
-    const step = now => {
-      const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = euro(from + (to - from) * e);
-      if (p < 1) requestAnimationFrame(step);
-    };
+    if (reduced() || from === to) { el.textContent = sign + euro(to); return; }
+    const t0 = performance.now();
+    const step = t => { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3); el.textContent = sign + euro(from + (to - from) * e); if (p < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
   }
 
-  /* ---------------- Coquille ---------------- */
-  function setRole(role) { S.role = role; save(); render(); }
-  $switch.addEventListener("click", e => { const b = e.target.closest("button[data-role]"); if (b) { S.openClient = null; setRole(b.dataset.role); } });
-  document.getElementById("resetBtn").addEventListener("click", () => { S = fresh(); lastVault = 0; save(); render(); toast("Démo réinitialisée"); });
-
-  function renderTabs() {
-    const tabs = S.role === "athlete"
-      ? [["vault", "Mon coffre", ICONS.vault], ["coach", "Coach", ICONS.coach], ["wallet", "Paiements", ICONS.wallet]]
-      : [["clients", "Clients", ICONS.clients], ["proofs", "Preuves", ICONS.proof], ["pro", "Visibilité", ICONS.pro]];
-    const cur = S.tab[S.role];
-    const nPend = pendingProofs().length;
-    $tabbar.innerHTML = tabs.map(([id, label, ic]) =>
-      `<button type="button" data-tab="${id}" ${id === cur ? 'aria-current="page"' : ""}>${ic}${label}${id === "proofs" && nPend ? `<span class="badge">${nPend}</span>` : ""}</button>`).join("");
+  // Écran plein « tu as reçu de l'argent » : pluie de pièces + montant qui grimpe + encaissement.
+  let cele = null;
+  function celebrate(amount, lines) {
+    if (amount <= 0) return;
+    if (cele) { // un autre gain arrive pendant l'écran : on additionne
+      const from = cele.total; cele.total += amount; cele.lines.push(...lines);
+      countUp(cele.el.querySelector(".cele-amt"), from, cele.total, 600, "+");
+      cele.el.querySelector(".cele-lines").innerHTML = cele.lines.slice(-4).map(l => `<div>${esc(l)}</div>`).join("");
+      rain(cele.el, 14); return;
+    }
+    const el = document.createElement("div");
+    el.className = "cele"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Argent récupéré");
+    el.innerHTML = `<div class="cele-rays"></div>
+      <div class="cele-card">
+        <div class="cele-vault">${VAULT_ICON}</div>
+        <div class="eyebrow" style="color:var(--volt)">Argent récupéré</div>
+        <div class="cele-amt">+0 €</div>
+        <div class="cele-lines">${lines.slice(-4).map(l => `<div>${esc(l)}</div>`).join("")}</div>
+        <button type="button" class="btn primary wide" data-cele-ok>Encaisser dans mon coffre</button>
+      </div>`;
+    $phone.appendChild(el);
+    cele = { el, total: amount, lines: [...lines] };
+    setTimeout(() => countUp(el.querySelector(".cele-amt"), 0, amount, 1100, "+"), 250);
+    rain(el, 36);
+    try { if (navigator.userActivation?.hasBeenActive) navigator.vibrate?.([30, 50, 30, 50, 60]); } catch {}
+    el.querySelector("[data-cele-ok]").focus({ preventScroll: true });
+    el.addEventListener("click", e => { if (e.target.closest("[data-cele-ok]")) closeCele(); });
   }
-  $tabbar.addEventListener("click", e => {
-    const b = e.target.closest("button[data-tab]"); if (!b) return;
-    S.tab[S.role] = b.dataset.tab; S.openClient = null; save(); render(); $main.scrollTop = 0;
-  });
+  function rain(host, n) {
+    if (reduced()) return;
+    const w = $phone.clientWidth, h = $phone.clientHeight;
+    for (let i = 0; i < n; i++) {
+      const c = document.createElement("div");
+      c.className = "rain"; c.textContent = "€";
+      c.style.left = Math.random() * (w - 24) + "px";
+      host.appendChild(c);
+      const rot = (Math.random() * 2 - 1) * 540, drift = (Math.random() * 2 - 1) * 60;
+      c.animate([
+        { transform: "translate(0,0) rotate(0) scale(.8)", opacity: 0 },
+        { opacity: 1, offset: .1 },
+        { transform: `translate(${drift}px,${h + 60}px) rotate(${rot}deg) scale(1.1)`, opacity: 1 }
+      ], { duration: 1400 + Math.random() * 1300, delay: Math.random() * 900, easing: "cubic-bezier(.4,.1,.7,1)", fill: "both" }).onfinish = () => c.remove();
+    }
+  }
+  function closeCele() {
+    if (!cele) return;
+    const { el, total } = cele; cele = null;
+    el.classList.add("out");
+    setTimeout(() => {
+      el.remove();
+      if (A.profile?.role === "athlete") {
+        if (A.tab.athlete !== "vault") { A.tab.athlete = "vault"; render(); }
+        const box = document.getElementById("vaultBox");
+        if (box) { coinBurst(box, total); box.classList.add("boom"); setTimeout(() => box.classList.remove("boom"), 1200); }
+      }
+    }, 450);
+  }
+
+  /* =====================================================================
+     Démarrage : vrai compte (base partagée) ou démo
+     ===================================================================== */
+  async function boot() {
+    const use = window.claude?.use?.bind(window.claude);
+    let db = null, user = null;
+    if (use) { try { [db, user] = await Promise.all([use("db"), use("user")]); } catch {} }
+    if (db && user) {
+      const me = await user.me();
+      A.liveDb = db; A.user = user;
+      if (!me.id) { A.mode = "blocked"; A.blockedWhy = "signin"; return render(); }
+      const canWrite = await user.can("data.write");
+      if (canWrite === false) { A.mode = "blocked"; A.blockedWhy = "write"; return render(); }
+      A.liveId = me.id; A.suggestedName = me.name || "";
+      if (lsGet("vaultr-mode") === "demo") return startDemo();
+      return startLive();
+    }
+    startDemo();
+  }
+  function startLive() {
+    A.mode = "live"; A.db = A.liveDb; A.myId = A.liveId; lsSet("vaultr-mode", "live");
+    resetData(); subscribeBase(); render();
+  }
+  function startDemo() {
+    A.mode = "demo"; A.db = A.demoDb || (A.demoDb = makeLocalDb()); lsSet("vaultr-mode", "demo");
+    A.myId = A.demoAs; resetData(); subscribeBase(); render();
+  }
+  function resetData() {
+    unsubs.forEach(u => u()); roleSubs.forEach(u => u()); unsubs = []; roleSubs = []; subscribedRole = null;
+    Object.assign(A, { profile: undefined, coaches: [], athletes: {}, program: undefined, proofsAth: [], events: [], clients: [], proofsCoach: [], openClient: null, onboardRole: null });
+    seenTs = null; lastVault = null;
+  }
+  const onErr = e => { if (e?.code === "revoked") { A.mode = "blocked"; A.blockedWhy = "revoked"; render(); } };
+  function subscribeBase() {
+    const db = A.db;
+    unsubs.push(db.doc("profiles/" + A.myId).onSnapshot(s => {
+      A.profile = s.exists ? { id: s.id, ...s.data() } : null;
+      if (A.profile?.role !== subscribedRole) subscribeRole(A.profile?.role || null);
+      schedule();
+    }, onErr));
+    unsubs.push(db.collection("profiles").where("role", "==", "coach").onSnapshot(q => {
+      A.coaches = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule();
+    }, onErr));
+  }
+  function subscribeRole(role) {
+    roleSubs.forEach(u => u()); roleSubs = []; subscribedRole = role;
+    const db = A.db, id = A.myId;
+    if (role === "athlete") {
+      roleSubs.push(db.doc("programs/" + id).onSnapshot(s => { A.program = s.exists ? s.data() : null; schedule(); }, onErr));
+      roleSubs.push(db.collection("proofs").where("athleteId", "==", id).onSnapshot(q => { A.proofsAth = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
+      roleSubs.push(db.collection("events").where("athleteId", "==", id).orderBy("ts", "desc").limit(40).onSnapshot(q => {
+        A.events = q.docs.map(d => ({ id: d.id, ...d.data() })); checkNewMoney(); schedule();
+      }, onErr));
+    } else if (role === "coach") {
+      roleSubs.push(db.collection("programs").where("coachId", "==", id).onSnapshot(q => { A.clients = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
+      roleSubs.push(db.collection("profiles").where("role", "==", "athlete").onSnapshot(q => { A.athletes = Object.fromEntries(q.docs.map(d => [d.id, { id: d.id, ...d.data() }])); schedule(); }, onErr));
+      roleSubs.push(db.collection("proofs").where("coachId", "==", id).onSnapshot(q => { A.proofsCoach = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.ts - a.ts); schedule(); }, onErr));
+    }
+  }
+
+  // Détecte l'argent reçu depuis la dernière visite (même appli fermée) et lance l'encaissement.
+  let seenTs = null;
+  function checkNewMoney() {
+    const key = `vaultr-seen-${A.mode}-${A.myId}`;
+    const newest = A.events.reduce((m, e) => Math.max(m, e.ts || 0), 0);
+    if (seenTs === null) {
+      const stored = lsGet(key);
+      seenTs = stored !== null ? +stored : newest; // premier passage sur cet appareil : on ne fête pas l'historique
+      if (stored === null) lsSet(key, String(seenTs));
+    }
+    const fresh = A.events.filter(e => e.amount > 0 && e.ts > seenTs).sort((a, b) => a.ts - b.ts);
+    if (!fresh.length) return;
+    seenTs = Math.max(seenTs, newest); lsSet(key, String(seenTs));
+    const coach = A.coaches.find(c => c.id === fresh[0].coachId);
+    const who = first(coach?.name) || "Ton coach";
+    celebrate(fresh.reduce((a, e) => a + e.amount, 0), fresh.map(e => `${who} a validé : ${e.label.replace(/ validé.*$/, "")} · +${euro(e.amount)}`));
+  }
+
+  /* =====================================================================
+     Actions (écrivent dans la base, la vue suit toute seule)
+     ===================================================================== */
+  async function guard(fn, okMsg) {
+    if (A.busy) return; A.busy = true;
+    try { await fn(); if (okMsg) toast(okMsg); }
+    catch (e) {
+      const c = e?.code;
+      toast(c === "quota_exceeded" ? "L'espace de stockage de Vaultr est plein." : c === "resource_exhausted" ? "Trop d'actions d'un coup, réessaie dans un instant." : c === "invalid_argument" ? "Action refusée : tu n'as pas le droit de modifier ces données." : "Ça n'a pas marché. Vérifie ta connexion et réessaie.");
+    } finally { A.busy = false; }
+  }
+  const progRef = aid => A.db.doc("programs/" + aid);
+
+  async function createProfile(f) {
+    const handle = cleanHandle(f.handle);
+    if (!f.name.trim()) throw { ui: "Indique ton prénom et ton nom." };
+    if (handle.length < 3) throw { ui: "Ton @tag doit faire au moins 3 caractères (lettres, chiffres, point)." };
+    const taken = await A.db.collection("profiles").where("handle", "==", handle).limit(2).get();
+    if (taken.docs.some(d => d.id !== A.myId)) throw { ui: `Le tag @${handle} est déjà pris.` };
+    const base = { role: f.role, name: f.name.trim().slice(0, 40), handle, city: f.city.trim().slice(0, 40), createdAt: now() };
+    await A.db.doc("profiles/" + A.myId).set(f.role === "coach"
+      ? { ...base, sport: f.sport, price: Math.max(0, Math.round(+f.price || 0)), boostedUntil: 0, pro: false }
+      : { ...base, goal: f.goal });
+  }
+  async function addCoach(c) {
+    const ref = progRef(A.myId), s = await ref.get();
+    if (s.exists) await ref.update({ coachId: c.id, coachFee: c.price || 0 });
+    else await ref.set({ athleteId: A.myId, coachId: c.id, mise: 0, coachFee: c.price || 0, tasks: [], createdAt: now() });
+  }
+  async function setMise(v) {
+    const p = A.program;
+    const tasks = (p.tasks || []).map(t => ({ ...t }));
+    const restOld = Math.max(0, p.mise - recovered(p)), restNew = Math.max(0, v - recovered(p));
+    if (p.mise > 0 && tasks.length) fitBudget(tasks, tasks.map(t => restOld ? t.value * restNew / restOld : t.value), v).forEach((x, i) => tasks[i].value = x);
+    await progRef(A.myId).update({ mise: v, tasks });
+    await A.db.collection("events").add({ athleteId: A.myId, coachId: p.coachId, label: `Mise ${euro(v)} + coaching ${euro(p.coachFee)} (simulé)`, amount: -(v + (p.coachFee || 0)), ts: now() });
+  }
+  async function sendProof(taskId, img) {
+    const p = A.program, t = p.tasks.find(x => x.id === taskId);
+    await A.db.collection("proofs").add({ athleteId: A.myId, coachId: p.coachId, taskId, taskName: t?.name || "", value: t?.value || 0, img, status: "pending", ts: now() });
+  }
+  async function validateTask(aid, taskId, viaProof) {
+    const s = await progRef(aid).get(); if (!s.exists) return null;
+    const p = s.data(), tasks = p.tasks.map(t => ({ ...t })), t = tasks.find(x => x.id === taskId);
+    if (!t || t.done >= t.target) return null;
+    t.earned = Math.round((earned(t) + t.value) * 100) / 100; t.done++;
+    await progRef(aid).update({ tasks });
+    await A.db.collection("events").add({ athleteId: aid, coachId: A.myId, label: `${t.name} validé${viaProof ? " (preuve)" : ""}`, amount: t.value, ts: now() });
+    return t;
+  }
+  async function reviewProof(pr, ok) {
+    if (ok) await validateTask(pr.athleteId, pr.taskId, true);
+    await A.db.doc("proofs/" + pr.id).update({ status: ok ? "ok" : "ko", reviewedAt: now() });
+  }
+
+  // Arrondit au centime et met le reste éventuel sur le point faible (ou le premier exercice)
+  // L'argent déjà rendu est acquis : on ne répartit que ce qui reste de la mise sur les séances restantes.
+  const planned = tasks => tasks.reduce((a, t) => a + earned(t) + t.value * left(t), 0);
+  function fitBudget(tasks, vals, budget) {
+    vals = vals.map(v => Math.max(0, Math.round(v * 100) / 100));
+    const open = tasks.map((t, i) => i).filter(i => left(tasks[i]) > 0);
+    if (!open.length) return vals;
+    const k = open.find(i => tasks[i].weak) ?? open[0];
+    const gap = budget - tasks.reduce((a, t, i) => a + earned(t) + vals[i] * left(t), 0);
+    vals[k] = Math.max(0, Math.round((vals[k] + gap / left(tasks[k])) * 100) / 100);
+    return vals;
+  }
+  const budgetOk = (tasks, budget) => Math.abs(planned(tasks) - budget) <= .1;
+  function aiSplit(tasks, budget) {
+    const rest = Math.max(0, budget - recovered({ tasks }));
+    const w = tasks.map(t => t.diff * (t.weak ? 1.6 : 1));
+    const denom = tasks.reduce((a, t, i) => a + w[i] * left(t), 0) || 1;
+    return fitBudget(tasks, tasks.map((t, i) => left(t) ? rest * w[i] / denom : t.value), budget);
+  }
+
+  /* =====================================================================
+     Rendu
+     ===================================================================== */
+  let rafQueued = false, lastKey = "", lastVault = null;
+  function schedule() { if (!rafQueued) { rafQueued = true; requestAnimationFrame(() => { rafQueued = false; render(); }); } }
 
   function render() {
-    const has = !!S.role;
-    $switch.hidden = !has; $tabbar.hidden = !has;
-    $switch.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.role === S.role)));
-    if (!has) { $main.innerHTML = viewWelcome().replace("screen ENTER", "screen enter"); lastKey = ""; return; }
-    renderTabs();
-    const v = S.tab[S.role];
-    const views = {
-      athlete: { vault: viewVault, coach: viewFindCoach, wallet: viewWallet },
-      coach: { clients: viewClients, proofs: viewProofs, pro: viewPro }
-    };
-    const key = S.role + v + (S.openClient || "");
-    $main.innerHTML = views[S.role][v]().replace("screen ENTER", key !== lastKey ? "screen enter" : "screen");
+    const role = A.profile?.role;
+    const ready = A.mode === "live" || A.mode === "demo";
+    $pill.hidden = A.mode !== "demo";
+    $switch.hidden = A.mode !== "demo";
+    $switch.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.role === "athlete" ? "demo_lea" : "demo_karim") === A.myId)));
+    $settings.hidden = !ready || !A.profile;
+    $tabbar.hidden = !ready || !role;
+
+    let html, key;
+    if (A.mode === "loading") { html = `<div class="loading">Ouverture du coffre…</div>`; key = "loading"; }
+    else if (A.mode === "blocked") { html = viewBlocked(); key = "blocked"; }
+    else if (A.profile === undefined) { html = `<div class="loading">Chargement de ton compte…</div>`; key = "loading"; }
+    else if (!A.profile) { html = viewOnboard(); key = "onboard" + (A.onboardRole || ""); }
+    else {
+      renderTabs(role);
+      const v = A.tab[role];
+      const views = { athlete: { vault: viewVault, coach: viewFindCoach, wallet: viewWallet }, coach: { clients: viewClients, proofs: viewProofs, pro: viewPro } };
+      html = views[role][v](); key = A.mode + A.myId + role + v + (A.openClient || "");
+    }
+
+    // garde la saisie en cours (un autre téléphone peut déclencher un rendu pendant qu'on tape)
+    const act = document.activeElement, actId = $main.contains(act) ? act.id : null;
+    const sel = actId && "selectionStart" in act ? [act.selectionStart, act.selectionEnd] : null;
+    const kept = {}; $main.querySelectorAll("input[id],select[id],textarea[id]").forEach(i => kept[i.id] = i.type === "checkbox" ? i.checked : i.value);
+    const keepScroll = key === lastKey ? $main.scrollTop : 0;
+
+    $main.innerHTML = html.replace("screen ENTER", key !== lastKey ? "screen enter" : "screen");
+    if (key === lastKey) {
+      for (const [id, v] of Object.entries(kept)) { const i = document.getElementById(id); if (i && i.type !== "file") { if (i.type === "checkbox") i.checked = v; else i.value = v; } }
+      $main.scrollTop = keepScroll;
+    }
+    if (actId) { const i = document.getElementById(actId); if (i) { i.focus({ preventScroll: true }); if (sel) try { i.setSelectionRange(...sel); } catch {} } }
     lastKey = key;
     afterRender();
   }
 
-  /* ---------------- Accueil : choix du profil ---------------- */
-  function viewWelcome() {
+  function renderTabs(role) {
+    const tabs = role === "athlete"
+      ? [["vault", "Mon coffre", ICONS.vault], ["coach", "Coach", ICONS.coach], ["wallet", "Paiements", ICONS.wallet]]
+      : [["clients", "Clients", ICONS.clients], ["proofs", "Preuves", ICONS.proof], ["pro", "Visibilité", ICONS.pro]];
+    const cur = A.tab[role], nPend = A.proofsCoach.filter(p => p.status === "pending").length;
+    $tabbar.innerHTML = tabs.map(([id, label, ic]) =>
+      `<button type="button" data-tab="${id}" ${id === cur ? 'aria-current="page"' : ""}>${ic}${label}${id === "proofs" && nPend ? `<span class="badge">${nPend}</span>` : ""}</button>`).join("");
+  }
+
+  /* ---------- Accès impossible ---------- */
+  function viewBlocked() {
+    const msg = {
+      signin: "Connecte-toi à ton compte Claude pour utiliser Vaultr avec tes vraies données.",
+      write: "Tu peux voir Vaultr, mais pas encore l'utiliser : demande au propriétaire de te donner l'accès « Éditeur » (ou « Contributeur ») depuis le menu Partager.",
+      revoked: "Ton accès à Vaultr a changé. Recharge la page."
+    }[A.blockedWhy] || "";
     return `<section class="screen ENTER">
+      <p class="hero-line">Presque<br><em>prêt.</em></p>
+      <div class="card"><p style="margin:0">${msg}</p></div>
+      <button type="button" class="btn primary wide" data-act="demo-on">Essayer la démo en attendant</button>
+    </section>`;
+  }
+
+  /* ---------- Inscription ---------- */
+  function viewOnboard() {
+    const r = A.onboardRole;
+    if (!r) return `<section class="screen ENTER">
       <p class="hero-line">Mets de l'argent en jeu.<br><em>Récupère-le</em> en t'entraînant.</p>
       <p class="muted">Tu paies ton coach ici, tu ajoutes une mise pour te motiver. Chaque exercice validé par ton coach te rend une partie de ta mise.</p>
       <div class="role-pick">
         <button type="button" class="role-card" data-pick="athlete"><b>Je suis sportif</b><span>Je veux me remettre au sport, perdre du poids ou progresser.</span></button>
         <button type="button" class="role-card" data-pick="coach"><b>Je suis coach</b><span>Je suis mes clients, je crée leurs exercices et je valide leurs séances.</span></button>
       </div>
-      <p class="note">Maquette : tu peux passer d'un profil à l'autre à tout moment avec le bouton en haut à droite.</p>
+      ${A.mode === "live" ? `<button type="button" class="btn ghost small" data-act="demo-on" style="align-self:flex-start">Juste essayer la démo</button>` : ""}
+    </section>`;
+    const coach = r === "coach";
+    return `<section class="screen ENTER">
+      <button type="button" class="btn small ghost" data-act="onboard-back" style="align-self:flex-start">← Retour</button>
+      <h2>${coach ? "Ton profil coach" : "Ton profil sportif"}</h2>
+      <form id="onboardForm" class="card" novalidate>
+        <div class="field"><label for="obName">Prénom et nom</label><input type="text" id="obName" autocomplete="name" maxlength="40" value="${esc(A.suggestedName)}" placeholder="Ex. Léa Martin"></div>
+        <div class="field"><label for="obHandle">Ton @tag (pour qu'on te retrouve)</label><input type="text" id="obHandle" maxlength="21" autocapitalize="off" placeholder="${coach ? "ex. karim.fit" : "ex. lea.run"}"></div>
+        <div class="field"><label for="obCity">Ville</label><input type="text" id="obCity" maxlength="40" placeholder="Ex. Nice"></div>
+        ${coach ? `
+        <div class="field"><label for="obSport">Spécialité</label><select id="obSport">${SPORTS.map(s => `<option>${esc(s)}</option>`).join("")}</select></div>
+        <div class="field"><label for="obPrice">Prix du coaching (€ / mois)</label><input type="number" id="obPrice" min="0" step="5" value="150"></div>`
+        : `<div class="field"><label for="obGoal">Ton objectif</label><select id="obGoal">${["Remise en forme", "Perte de poids", "Prise de muscle", "Endurance", "Bien-être"].map(s => `<option>${s}</option>`).join("")}</select></div>`}
+        <div class="err" id="obErr" role="alert"></div>
+        <button type="submit" class="btn primary wide">Créer mon compte</button>
+      </form>
     </section>`;
   }
 
-  /* ---------------- Sportif : coffre ---------------- */
+  /* ---------- Sportif : coffre ---------- */
   function vaultSVG(pct) {
     const C = 2 * Math.PI * 96;
     const ticks = Array.from({ length: 36 }, (_, i) => {
@@ -374,290 +739,304 @@ input[type=range]{width:100%;accent-color:var(--volt)}
     }).join("");
     return `<svg viewBox="0 0 240 240" aria-hidden="true">
       <g class="ticks door" id="door" style="transform:rotate(${pct * 180}deg)">${ticks}</g>
-      <g>
-        <circle cx="120" cy="120" r="96" class="ring-bg"/>
-        <circle cx="120" cy="120" r="96" class="ring" id="ring" transform="rotate(-90 120 120)" style="stroke-dasharray:${C};stroke-dashoffset:${C * (1 - pct)}"/>
-      </g>
+      <g><circle cx="120" cy="120" r="96" class="ring-bg"/>
+      <circle cx="120" cy="120" r="96" class="ring" id="ring" transform="rotate(-90 120 120)" style="stroke-dasharray:${C};stroke-dashoffset:${C * (1 - pct)}"/></g>
     </svg>`;
   }
+  const myCoach = () => A.coaches.find(c => c.id === A.program?.coachId);
   function viewVault() {
-    const rec = recovered(), pct = Math.min(1, lastVault / S.mise);
-    const remaining = Math.max(0, S.mise - rec);
-    const coach = COACHES[0];
-    return `<section class="screen ENTER">
-      <div class="split"><div><div class="eyebrow">Octobre · ${S.daysLeft} jours restants</div><h2>Salut Léa 👋</h2></div>
-        <span class="chip volt">Coach : ${esc(coach.name.split(" ")[0])}</span></div>
-      <div class="vault" id="vaultBox">
-        ${vaultSVG(pct)}
-        <div class="vault-center"><div class="amount" id="recAmount">${euro(lastVault)}</div><div class="of">récupérés sur ${euro(S.mise)}</div></div>
-      </div>
+    const me = A.profile, p = A.program, coach = myCoach();
+    const hello = `<div class="split"><div><div class="eyebrow">${esc(monthName())} · ${daysLeft()} jours restants</div><h2>Salut ${esc(first(me.name))} 👋</h2></div>
+      ${coach ? `<span class="chip volt">Coach : ${esc(first(coach.name))}</span>` : ""}</div>`;
+    if (p === undefined) return `<section class="screen ENTER">${hello}<div class="loading" style="height:200px">Chargement…</div></section>`;
+    if (!p || !p.coachId) return `<section class="screen ENTER">${hello}
+      <div class="vault" id="vaultBox">${vaultSVG(0)}<div class="vault-center"><div class="amount">0 €</div><div class="of">ton coffre est vide</div></div></div>
+      <div class="card empty"><h3>Ajoute ton coach pour commencer</h3><p class="muted" style="margin:0">Trouve un coach sur Vaultr, ou ajoute le tien avec son @tag.</p>
+      <button type="button" class="btn primary" data-goto="coach">Trouver mon coach</button></div></section>`;
+    if (!p.mise) return `<section class="screen ENTER">${hello}
+      <div class="vault" id="vaultBox">${vaultSVG(0)}<div class="vault-center"><div class="amount">0 €</div><div class="of">aucune mise ce mois-ci</div></div></div>
+      <div class="card empty"><h3>Choisis ta mise du mois</h3><p class="muted" style="margin:0">Mets en jeu la somme que tu veux. ${esc(first(coach?.name) || "Ton coach")} la répartit sur tes exercices, et chaque exercice validé te la rend.</p>
+      <button type="button" class="btn primary" data-open="mise">Choisir ma mise</button></div></section>`;
+    const rec = recovered(p), shown = lastVault ?? rec, pct = Math.min(1, shown / p.mise);
+    const tasks = p.tasks || [];
+    return `<section class="screen ENTER">${hello}
+      <div class="vault" id="vaultBox">${vaultSVG(pct)}
+        <div class="vault-center"><div class="amount" id="recAmount">${euro(shown)}</div><div class="of">récupérés sur ${euro(p.mise)}</div></div></div>
       <div class="vault-stats">
-        <div class="stat"><b>${euro(S.mise)}</b><span>Ma mise</span></div>
-        <div class="stat"><b id="leftAmount">${euro(remaining)}</b><span>Encore à gagner</span></div>
-        <div class="stat"><b>${S.tasks.reduce((a, t) => a + t.done, 0)}</b><span>Exercices validés</span></div>
+        <div class="stat"><b>${euro(p.mise)}</b><span>Ma mise</span></div>
+        <div class="stat"><b>${euro(Math.max(0, p.mise - rec))}</b><span>Encore à gagner</span></div>
+        <div class="stat"><b>${tasks.reduce((a, t) => a + t.done, 0)}</b><span>Exercices validés</span></div>
       </div>
-      <div class="split"><h2>Ma séance du jour</h2><span class="muted" style="font-size:13px">fixée par ${esc(coach.name.split(" ")[0])}</span></div>
-      <div class="list">${S.tasks.map(taskAthlete).join("")}</div>
+      <div class="split"><h2>Mes exercices</h2><span class="muted" style="font-size:13px">fixés par ${esc(first(coach?.name) || "ton coach")}</span></div>
+      ${tasks.length ? `<div class="list">${tasks.map(taskAthlete).join("")}</div>`
+        : `<div class="card"><h3>${esc(first(coach?.name) || "Ton coach")} prépare ton programme</h3><p class="muted" style="margin:0">Tes exercices et leur valeur apparaîtront ici dès qu'il les aura créés.</p></div>`}
       <p class="note">À la fin du mois, l'argent des exercices non validés <b>reste à Vaultr</b>. C'est la règle du jeu, alors ne lâche rien.</p>
     </section>`;
   }
   function taskAthlete(t) {
-    const pend = S.proofs.find(p => p.taskId === t.id && p.status === "pending");
+    const pend = A.proofsAth.find(x => x.taskId === t.id && x.status === "pending");
+    const refused = !pend && A.proofsAth.filter(x => x.taskId === t.id).sort((a, b) => b.ts - a.ts)[0]?.status === "ko";
     const full = t.done >= t.target;
     return `<div class="task ${t.weak ? "weak" : ""}">
       <div style="min-width:0"><div class="name">${esc(t.name)}</div>
-        <div class="meta"><span>${esc(t.detail)}</span><span class="num">${t.done}/${t.target} séances</span></div></div>
+        <div class="meta">${t.detail ? `<span>${esc(t.detail)}</span>` : ""}<span class="num">${t.done}/${t.target} séances</span></div></div>
       <div class="price">+${euro(t.value)}</div>
       <div class="bar"><i style="width:${(t.done / t.target) * 100}%"></i></div>
       <div class="task-actions">
         ${full ? `<span class="chip volt">Objectif du mois atteint ✓</span>`
         : pend ? `<span class="chip wait">Preuve envoyée · en attente du coach</span>`
-        : `<label class="btn small"><input type="file" accept="image/*,video/*" data-proof="${t.id}" hidden>📸 Envoyer une preuve</label>
-           <span class="chip">ou validation en séance par le coach</span>`}
+        : `${refused ? `<span class="chip loss">Preuve refusée, renvoie-en une</span>` : ""}
+           <label class="btn small"><input type="file" accept="image/*" data-proof="${esc(t.id)}" hidden>📸 Envoyer une preuve</label>
+           <span class="chip">ou validation en séance</span>`}
       </div>
     </div>`;
   }
 
-  /* ---------------- Sportif : trouver un coach ---------------- */
-  function sortedCoaches() {
-    return COACHES.map(c => ({ ...c, boosted: c.id === "karim" && S.boosted }))
-      .sort((a, b) => (b.boosted - a.boosted) || b.rating - a.rating);
-  }
+  /* ---------- Sportif : trouver un coach ---------- */
   function coachListHTML() {
-    const q = S.coachQuery.trim().toLowerCase().replace(/^@/, "");
-    const list = sortedCoaches().filter(c =>
-      (S.coachFilter === "Tous" || c.sport === S.coachFilter) &&
-      (!q || [c.name, c.tag, c.city, c.sport].join(" ").toLowerCase().includes(q)));
-    return list.length ? list.map(coachCard).join("") : `<p class="note">Aucun coach trouvé. Essaie un autre sport ou tape le tag exact de ton coach, par exemple <b>@theo.run</b>.</p>`;
-  }
-  function viewFindCoach() {
-    const sports = ["Tous", "Remise en forme", "Course à pied", "Yoga & mobilité", "Boxe", "Musculation", "Pilates"];
-    const me = COACHES[0];
-    return `<section class="screen ENTER">
-      <div class="eyebrow">Mon coach</div>
-      <div class="card">
-        <div class="row"><div class="avatar volt">${me.initials}</div>
-          <div class="grow"><h3>${me.name}</h3><div class="muted" style="font-size:13px">${me.tag} · ${me.sport} · ${me.city}</div></div>
-          <span class="chip volt">Actif</span></div>
-        <div class="split"><span class="muted">Coaching mensuel</span><b class="num">${euro(S.coachFee)} / mois</b></div>
-      </div>
-      <h2>Trouver un coach</h2>
-      <div class="search"><input id="coachSearch" type="search" placeholder="Nom, ville, sport ou @tag" value="${esc(S.coachQuery)}" aria-label="Rechercher un coach"></div>
-      <div class="tabs-inline" id="sportFilter">${sports.map(s => `<button type="button" data-sport="${esc(s)}" aria-pressed="${s === S.coachFilter}">${esc(s)}</button>`).join("")}</div>
-      <div class="list" id="coachList">${coachListHTML()}</div>
-      <p class="note">Ton coach n'est pas sur Vaultr ? Il peut s'inscrire en profil coach gratuitement. Un ami qui joue ce rôle aussi : ajoute-le avec son <b>@tag</b>.</p>
-    </section>`;
+    const q = cleanHandle(A.coachQuery) || A.coachQuery.trim().toLowerCase();
+    const list = A.coaches.filter(c => c.id !== A.myId)
+      .map(c => ({ ...c, boosted: (c.boostedUntil || 0) > now() }))
+      .filter(c => (A.coachFilter === "Tous" || c.sport === A.coachFilter) &&
+        (!q || [c.name, c.handle, c.city, c.sport].join(" ").toLowerCase().includes(q)))
+      .sort((a, b) => (b.boosted - a.boosted) || (b.pro - a.pro) || a.name.localeCompare(b.name));
+    if (!list.length) return `<p class="note">${A.coaches.filter(c => c.id !== A.myId).length ? "Aucun coach ne correspond. Essaie un autre sport ou le @tag exact de ton coach." : "Aucun coach inscrit pour l'instant. Invite ton coach à créer son profil Vaultr, puis cherche son @tag ici."}</p>`;
+    return list.map(coachCard).join("");
   }
   function coachCard(c) {
-    const mine = c.id === "karim", added = S.added.includes(c.id);
+    const mine = c.id === A.program?.coachId;
     return `<div class="card">
-      <div class="row"><div class="avatar ${c.boosted ? "volt" : ""}">${c.initials}</div>
-        <div class="grow"><h3>${c.name}</h3><div class="muted" style="font-size:13px">${c.tag} · ${c.city}</div></div>
-        <div class="price" style="font-size:16px">${c.price} €<span class="muted" style="font:500 11px var(--body)"> /mois</span></div></div>
+      <div class="row"><div class="avatar ${c.boosted ? "volt" : ""}">${esc(initials(c.name))}</div>
+        <div class="grow"><h3>${esc(c.name)}</h3><div class="muted" style="font-size:13px">@${esc(c.handle)}${c.city ? " · " + esc(c.city) : ""}</div></div>
+        <div class="price" style="font-size:16px">${euro(c.price || 0)}<span class="muted" style="font:500 11px var(--body)"> /mois</span></div></div>
       <div class="row" style="flex-wrap:wrap;gap:6px">
-        ${c.boosted ? `<span class="chip volt">⚡ Mis en avant</span>` : ""}
-        <span class="chip">${c.sport}</span><span class="chip">★ ${c.rating.toLocaleString("fr-FR")}</span><span class="chip">${c.clients} clients</span>
+        ${c.boosted ? `<span class="chip volt">⚡ Mis en avant</span>` : ""}${c.pro ? `<span class="chip">PRO</span>` : ""}
+        <span class="chip">${esc(c.sport || "Coach")}</span>
       </div>
       ${mine ? `<span class="chip volt" style="align-self:flex-start">C'est ton coach</span>`
-        : `<button type="button" class="btn small ${added ? "" : "primary"}" data-add="${c.id}" ${added ? "disabled" : ""}>${added ? "Demande envoyée" : "Ajouter ce coach"}</button>`}
+        : `<button type="button" class="btn small primary" data-add="${esc(c.id)}">${A.program?.coachId ? "Choisir ce coach à la place" : "Choisir ce coach"}</button>`}
     </div>`;
   }
-
-  /* ---------------- Sportif : paiements ---------------- */
-  function viewWallet() {
+  function viewFindCoach() {
+    const me = myCoach();
+    const sports = ["Tous", ...new Set(A.coaches.map(c => c.sport).filter(Boolean))];
     return `<section class="screen ENTER">
-      <div class="eyebrow">Octobre</div><h2>Mon mois</h2>
+      ${me ? `<div class="eyebrow">Mon coach</div>
       <div class="card">
-        <div class="split"><span>Coaching · Karim</span><b class="num">${euro(S.coachFee)}</b></div>
-        <div class="split"><span>Ma mise de motivation</span><b class="num" style="color:var(--volt)">${euro(S.mise)}</b></div>
+        <div class="row"><div class="avatar volt">${esc(initials(me.name))}</div>
+          <div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">@${esc(me.handle)} · ${esc(me.sport || "")}${me.city ? " · " + esc(me.city) : ""}</div></div>
+          <span class="chip volt">Actif</span></div>
+        <div class="split"><span class="muted">Coaching mensuel</span><b class="num">${euro(A.program.coachFee)} / mois</b></div>
+      </div>` : ""}
+      <h2>Trouver un coach</h2>
+      <div class="search"><input id="coachSearch" type="search" placeholder="Nom, ville, sport ou @tag" value="${esc(A.coachQuery)}" aria-label="Rechercher un coach"></div>
+      ${sports.length > 2 ? `<div class="tabs-inline" id="sportFilter">${sports.map(s => `<button type="button" data-sport="${esc(s)}" aria-pressed="${s === A.coachFilter}">${esc(s)}</button>`).join("")}</div>` : ""}
+      <div class="list" id="coachList">${coachListHTML()}</div>
+      <p class="note">Ton coach n'est pas sur Vaultr ? Envoie-lui le lien de l'appli : il crée son profil coach gratuitement, et tu le retrouves avec son <b>@tag</b>. Un ami peut aussi jouer ce rôle.</p>
+    </section>`;
+  }
+
+  /* ---------- Sportif : paiements ---------- */
+  function viewWallet() {
+    const p = A.program, coach = myCoach(), rec = recovered(p);
+    return `<section class="screen ENTER">
+      <div class="eyebrow">${esc(monthName())}</div><h2>Mon mois</h2>
+      ${p?.coachId ? `<div class="card">
+        <div class="split"><span>Coaching · ${esc(first(coach?.name) || "coach")}</span><b class="num">${euro(p.coachFee)}</b></div>
+        <div class="split"><span>Ma mise de motivation</span><b class="num" style="color:var(--volt)">${euro(p.mise)}</b></div>
         <div class="hr"></div>
-        <div class="split"><b>Total payé</b><b class="num" style="font-size:20px">${euro(S.coachFee + S.mise)}</b></div>
-        <button type="button" class="btn primary wide" data-open="mise">Changer ma mise pour novembre</button>
+        <div class="split"><b>Total du mois</b><b class="num" style="font-size:20px">${euro((p.coachFee || 0) + (p.mise || 0))}</b></div>
+        <button type="button" class="btn primary wide" data-open="mise">${p.mise ? "Changer ma mise" : "Choisir ma mise"}</button>
       </div>
       <div class="vault-stats">
-        <div class="stat"><b style="color:var(--volt)">${euro(recovered())}</b><span>Récupérés</span></div>
-        <div class="stat"><b>${euro(Math.max(0, S.mise - recovered()))}</b><span>En jeu</span></div>
+        <div class="stat"><b style="color:var(--volt)">${euro(rec)}</b><span>Récupérés</span></div>
+        <div class="stat"><b>${euro(Math.max(0, (p.mise || 0) - rec))}</b><span>En jeu</span></div>
         <div class="stat loss"><b>0 €</b><span>Perdus (fin de mois)</span></div>
       </div>
       <div class="card">
-        <div class="split"><h3>Mon solde Vaultr</h3><b class="num" style="color:var(--volt)">${euro(recovered())}</b></div>
-        <p class="muted" style="margin:0;font-size:13px">L'argent récupéré peut servir à payer ton prochain mois, ou être retiré sur ton compte bancaire.</p>
-        <div class="row"><button type="button" class="btn small primary" data-act="reuse">Utiliser pour novembre</button><button type="button" class="btn small" data-act="withdraw">Retirer</button></div>
-      </div>
+        <div class="split"><h3>Mon solde Vaultr</h3><b class="num" style="color:var(--volt)">${euro(rec)}</b></div>
+        <p class="muted" style="margin:0;font-size:13px">L'argent récupéré peut payer ton prochain mois, ou être retiré sur ton compte bancaire. Les paiements sont simulés pour l'instant.</p>
+        <div class="row"><button type="button" class="btn small primary" data-act="reuse">Utiliser pour le mois prochain</button><button type="button" class="btn small" data-act="withdraw">Retirer</button></div>
+      </div>` : `<div class="card"><h3>Pas encore de coach</h3><p class="muted" style="margin:0">Choisis ton coach pour voir ton mois et tes paiements ici.</p><button type="button" class="btn primary" data-goto="coach">Trouver mon coach</button></div>`}
       <h2>Historique</h2>
-      <div class="list" id="history">${S.history.map(h => `<div class="split" style="padding:4px 2px"><span>${esc(h.label)}</span><b class="num" style="color:${h.type === "in" ? "var(--volt)" : "var(--fg)"}">${h.amount > 0 ? "+" : "−"}${euro(Math.abs(h.amount))}</b></div>`).join("")}</div>
-      <button type="button" class="btn small ghost" data-act="reset" style="align-self:flex-start">Réinitialiser la démo</button>
+      ${A.events.length ? `<div class="list">${A.events.map(h => `<div class="split" style="padding:4px 2px"><span>${esc(h.label)}<br><span class="muted" style="font-size:12px">${new Date(h.ts).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</span></span><b class="num" style="color:${h.amount > 0 ? "var(--volt)" : "var(--fg)"}">${h.amount > 0 ? "+" : "−"}${euro(Math.abs(h.amount))}</b></div>`).join("")}</div>`
+        : `<p class="muted">Rien pour l'instant.</p>`}
     </section>`;
   }
   function sheetMise() {
-    let v = S.mise;
-    openSheet(`<div class="grab"></div><h2>Ma mise de novembre</h2>
-      <p class="muted" style="margin:0">Choisis combien tu veux mettre en jeu, en plus du coaching. Ton coach répartit cette somme sur tes exercices.</p>
+    const p = A.program, minV = Math.max(10, Math.ceil(recovered(p) / 5) * 5); let v = Math.max(minV, p.mise || 50);
+    openSheet(`<div class="grab"></div><h2>Ma mise de ${esc(monthName())}</h2>
+      <p class="muted" style="margin:0">Combien tu mets en jeu, en plus du coaching ? Ton coach répartit cette somme sur tes exercices.</p>
       <div class="big-amount" id="miseVal">${euro(v)}</div>
-      <input id="miseRange" type="range" min="10" max="200" step="5" value="${v}" aria-label="Montant de la mise">
-      <div class="presets">${[20, 50, 100, 150].map(p => `<button type="button" class="btn small" data-preset="${p}">${p} €</button>`).join("")}</div>
-      <div class="note">Total du mois : <b id="miseTotal">${euro(S.coachFee + v)}</b> (coaching ${euro(S.coachFee)} + mise). Les montants non validés à la fin du mois restent à Vaultr.</div>
+      <input id="miseRange" type="range" min="${minV}" max="300" step="5" value="${v}" aria-label="Montant de la mise">
+      <div class="presets">${[20, 50, 100, 150].filter(x => x >= minV).map(x => `<button type="button" class="btn small" data-preset="${x}">${x} €</button>`).join("")}</div>
+      ${recovered(p) ? `<p class="muted" style="margin:0;font-size:12px">Minimum ${euro(minV)} : tu as déjà récupéré ${euro(recovered(p))} ce mois-ci.</p>` : ""}
+      <div class="note">Total du mois : <b id="miseTotal">${euro((p.coachFee || 0) + v)}</b> (coaching ${euro(p.coachFee)} + mise). Les montants non validés à la fin du mois restent à Vaultr.</div>
       <button type="button" class="btn primary wide" id="miseOk">Confirmer (paiement simulé)</button>`, sh => {
       const r = sh.querySelector("#miseRange"), out = sh.querySelector("#miseVal"), tot = sh.querySelector("#miseTotal");
-      const set = n => { v = n; r.value = n; out.textContent = euro(n); tot.textContent = euro(S.coachFee + n); out.classList.remove("pop"); void out.offsetWidth; out.classList.add("pop"); };
+      const set = n => { v = n; r.value = n; out.textContent = euro(n); tot.textContent = euro((p.coachFee || 0) + n); out.classList.remove("pop"); void out.offsetWidth; out.classList.add("pop"); };
       r.addEventListener("input", () => set(+r.value));
       sh.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => set(+b.dataset.preset)));
-      sh.querySelector("#miseOk").addEventListener("click", () => {
-        const ratio = v / S.mise;
-        fitBudget(S.tasks, S.tasks.map(t => t.value * ratio), v).forEach((x, i) => S.tasks[i].value = x);
-        S.mise = v; save(); closeSheet(); render(); toast(`Mise réglée à ${euro(v)}. Les exercices ont été recalculés.`);
-      });
+      sh.querySelector("#miseOk").addEventListener("click", () => { closeSheet(); guard(() => setMise(v), `Mise réglée à ${euro(v)}.`); });
     });
   }
 
-  /* ---------------- Coach : clients ---------------- */
-  const OTHER_CLIENTS = [
-    { name: "Tom Lefèvre", initials: "TL", mise: 30, rec: 24, goal: "Perte de poids" },
-    { name: "Yanis Cohen", initials: "YC", mise: 80, rec: 22, goal: "Prise de muscle" }
-  ];
+  /* ---------- Coach : clients ---------- */
+  const athleteName = id => A.athletes[id]?.name || "Sportif";
   function viewClients() {
-    if (S.openClient === "lea") return viewClientLea();
-    const rec = recovered();
-    const row = (c, live) => `<button type="button" class="card" style="text-align:left" ${live ? 'data-client="lea"' : 'data-client="static"'}>
-        <div class="row"><div class="avatar ${live ? "volt" : ""}">${c.initials}</div>
-          <div class="grow"><h3>${c.name}</h3><div class="muted" style="font-size:13px">${c.goal}</div></div>
-          <div style="text-align:right"><div class="price" style="font-size:17px">${euro(c.rec)}</div><div class="muted num" style="font-size:11px">sur ${euro(c.mise)}</div></div></div>
-        <div class="bar"><i style="width:${Math.min(100, (c.rec / c.mise) * 100)}%"></i></div>
-      </button>`;
+    if (A.openClient) return viewClient(A.openClient);
+    const cl = A.clients;
+    const pend = A.proofsCoach.filter(p => p.status === "pending").length;
     return `<section class="screen ENTER">
-      <div class="eyebrow">Coach Karim · Octobre</div><h2>Mes clients</h2>
+      <div class="eyebrow">Coach ${esc(first(A.profile.name))} · ${esc(monthName())}</div><h2>Mes clients</h2>
       <div class="vault-stats">
-        <div class="stat"><b>3</b><span>Clients actifs</span></div>
-        <div class="stat"><b>${euro(S.coachFee + 120 + 140)}</b><span>Coaching du mois</span></div>
-        <div class="stat"><b>${pendingProofs().length}</b><span>Preuves à voir</span></div>
+        <div class="stat"><b>${cl.length}</b><span>Clients</span></div>
+        <div class="stat"><b>${euro(cl.reduce((a, c) => a + (c.coachFee || 0), 0))}</b><span>Coaching / mois</span></div>
+        <div class="stat"><b>${pend}</b><span>Preuves à voir</span></div>
       </div>
-      <div class="list">
-        ${row({ name: "Léa Martin", initials: "LM", mise: S.mise, rec, goal: "Remise en forme" }, true)}
-        ${OTHER_CLIENTS.map(c => row(c, false)).join("")}
-      </div>
-      <p class="note">Tes clients t'ajoutent avec ton tag <b>@karim.fit</b>. Le coaching t'est versé chaque mois, sans commission pendant le lancement.</p>
+      ${cl.length ? `<div class="list">${cl.map(c => {
+        const rec = recovered(c), a = A.athletes[c.id];
+        return `<button type="button" class="card" style="text-align:left" data-client="${esc(c.id)}">
+          <div class="row"><div class="avatar volt">${esc(initials(a?.name))}</div>
+            <div class="grow"><h3>${esc(athleteName(c.id))}</h3><div class="muted" style="font-size:13px">${esc(a?.goal || "")}${!c.mise ? " · mise pas encore choisie" : !c.tasks?.length ? " · programme à créer" : ""}</div></div>
+            <div style="text-align:right"><div class="price" style="font-size:17px">${euro(rec)}</div><div class="muted num" style="font-size:11px">sur ${euro(c.mise)}</div></div></div>
+          <div class="bar"><i style="width:${c.mise ? Math.min(100, (rec / c.mise) * 100) : 0}%"></i></div>
+        </button>`; }).join("")}</div>`
+        : `<div class="card empty"><h3>Pas encore de client</h3><p class="muted" style="margin:0">Tes clients te trouvent dans « Trouver un coach » ou avec ton tag :</p>${copyTag()}</div>`}
     </section>`;
   }
-  function viewClientLea() {
+  const copyTag = () => `<div class="copy" style="width:100%"><code id="myTag">@${esc(A.profile.handle)}</code><button type="button" class="btn small" data-act="copy-tag">Copier</button></div>`;
+  function viewClient(aid) {
+    const c = A.clients.find(x => x.id === aid);
+    if (!c) { A.openClient = null; return viewClients(); }
+    const a = A.athletes[aid], tasks = c.tasks || [];
     return `<section class="screen ENTER">
       <button type="button" class="btn small ghost" data-back style="align-self:flex-start">← Mes clients</button>
-      <div class="row"><div class="avatar volt">LM</div><div class="grow"><h2>Léa Martin</h2><div class="muted" style="font-size:13px">@lea.run · mise ${euro(S.mise)} · ${euro(recovered())} récupérés</div></div></div>
-      <div class="split"><h2>Séance d'aujourd'hui</h2><button type="button" class="btn small" data-open="program">Modifier le programme</button></div>
-      <p class="muted" style="margin:0;font-size:13px">En séance avec Léa ? Valide chaque exercice réalisé. L'argent lui est rendu immédiatement.</p>
-      <div class="list">${S.tasks.map(t => {
+      <div class="row"><div class="avatar volt">${esc(initials(a?.name))}</div><div class="grow"><h2>${esc(athleteName(aid))}</h2><div class="muted" style="font-size:13px">@${esc(a?.handle || "")} · mise ${euro(c.mise)} · ${euro(recovered(c))} récupérés</div></div></div>
+      <div class="split"><h2>Exercices</h2><button type="button" class="btn small" data-open="program">${tasks.length ? "Modifier le programme" : "Créer le programme"}</button></div>
+      ${!c.mise ? `<p class="note">${esc(first(a?.name) || "Ton client")} n'a pas encore choisi sa mise. Tu peux déjà créer ses exercices : leur valeur sera calculée quand il aura choisi.</p>` : ""}
+      ${tasks.length ? `<p class="muted" style="margin:0;font-size:13px">En séance ? Valide chaque exercice réalisé : l'argent est rendu tout de suite.</p>
+      <div class="list">${tasks.map(t => {
         const full = t.done >= t.target;
         return `<div class="task ${t.weak ? "weak" : ""}">
           <div style="min-width:0"><div class="name">${esc(t.name)}</div><div class="meta"><span class="num">${t.done}/${t.target} séances</span>${t.weak ? `<span class="chip volt">Point faible</span>` : ""}</div></div>
           <div class="price">${euro(t.value)}</div>
           <div class="bar"><i style="width:${(t.done / t.target) * 100}%"></i></div>
           <div class="task-actions">${full ? `<span class="chip volt">Objectif du mois atteint ✓</span>`
-            : `<button type="button" class="btn small primary" data-validate="${t.id}">✓ Valider · rendre ${euro(t.value)}</button>`}</div>
-        </div>`; }).join("")}</div>
+            : `<button type="button" class="btn small primary" data-validate="${esc(t.id)}" ${t.value > 0 ? "" : "disabled"}>✓ Valider · rendre ${euro(t.value)}</button>`}</div>
+        </div>`; }).join("")}</div>` : ""}
     </section>`;
   }
-  function validateTask(id, btn, viaProof) {
-    const t = S.tasks.find(x => x.id === id); if (!t || t.done >= t.target) return;
-    t.done++;
-    S.history.unshift({ label: `${t.name} validé${viaProof ? " (preuve)" : ""}`, amount: t.value, type: "in" });
-    save(); coinBurst(btn, t.value);
-    toast(`+${euro(t.value)} rendus à Léa 💸`);
-    render();
-  }
 
-  /* ---------------- Coach : programme + IA ---------------- */
-  // Arrondit au centime et met le reste éventuel sur le point faible (ou le dernier exercice)
-  function fitBudget(tasks, vals, budget) {
-    vals = vals.map(v => Math.round(v * 100) / 100);
-    const k = Math.max(0, tasks.findIndex(t => t.weak));
-    const left = budget - tasks.reduce((a, t, i) => a + vals[i] * t.target, 0);
-    vals[k] = Math.round((vals[k] + left / tasks[k].target) * 100) / 100;
-    return vals;
-  }
-  const budgetOk = (tasks, budget) => Math.abs(tasks.reduce((a, t) => a + t.value * t.target, 0) - budget) <= .1;
-  function aiSplit(tasks, budget) {
-    const w = tasks.map(t => t.diff * (t.weak ? 1.6 : 1));
-    const denom = tasks.reduce((a, t, i) => a + w[i] * t.target, 0) || 1;
-    const vals = tasks.map((t, i) => Math.max(.25, Math.floor((budget * w[i] / denom) * 4) / 4));
-    // le reste éventuel va sur le point faible (ou le dernier exercice)
-    let left = budget - tasks.reduce((a, t, i) => a + vals[i] * t.target, 0);
-    const k = Math.max(0, tasks.findIndex(t => t.weak));
-    const order = [k, ...tasks.map((_, i) => i).filter(i => i !== k)];
-    for (const i of order) {
-      while (left >= tasks[i].target * .25 - 1e-9) { vals[i] += .25; left -= tasks[i].target * .25; }
-    }
-    return fitBudget(tasks, vals, budget);
-  }
-  function sheetProgram() {
-    const draft = S.tasks.map(t => ({ ...t }));
+  /* ---------- Coach : programme + répartition IA ---------- */
+  function sheetProgram(aid) {
+    const c = A.clients.find(x => x.id === aid); if (!c) return;
+    const budget = c.mise || 0;
+    const draft = (c.tasks || []).map(t => ({ ...t }));
     const body = () => {
-      const tot = draft.reduce((a, t) => a + t.value * t.target, 0);
-      const ok = budgetOk(draft, S.mise);
-      return `<div class="grab"></div><h2>Programme d'octobre · Léa</h2>
-        <p class="muted" style="margin:0">Répartis la mise de ${euro(S.mise)} sur les exercices. Mets plus d'argent sur ce que Léa aime le moins faire.</p>
-        <button type="button" class="btn wide" id="aiBtn">⚡ Répartir avec l'IA</button>
+      const tot = planned(draft);
+      const ok = !budget || budgetOk(draft, budget);
+      return `<div class="grab"></div><h2>Programme · ${esc(first(athleteName(aid)))}</h2>
+        <p class="muted" style="margin:0">${budget ? `Répartis la mise de ${euro(budget)} sur les exercices. Mets plus d'argent sur ce que ${esc(first(athleteName(aid)))} aime le moins.` : "Ajoute les exercices du mois. Leur valeur sera calculée quand la mise sera choisie."}</p>
+        ${budget && draft.length ? `<button type="button" class="btn wide" id="aiBtn">⚡ Répartir automatiquement</button>` : ""}
         ${draft.map((t, i) => `<div class="edit-task">
-          <div><b>${esc(t.name)}</b><div class="meta">${t.target} séances · difficulté ${"●".repeat(t.diff)}${"○".repeat(3 - t.diff)} ${t.weak ? "· point faible" : ""}</div></div>
-          <input type="number" min="0" step="0.05" value="${t.value}" data-val="${i}" aria-label="Valeur de ${esc(t.name)} en euros">
+          <div><b>${esc(t.name)}</b><div class="meta">${t.target} séances · difficulté ${"●".repeat(t.diff)}${"○".repeat(3 - t.diff)}${t.weak ? " · point faible" : ""}${t.done ? ` · ${euro(earned(t))} déjà rendus` : ""}</div></div>
+          <input type="number" min="0" step="0.05" value="${t.value}" data-val="${i}" aria-label="Valeur de ${esc(t.name)} en euros" ${budget && left(t) ? "" : "disabled"}>
+          <button type="button" class="del" data-del="${i}" aria-label="Supprimer ${esc(t.name)}" ${t.done ? "disabled" : ""}>×</button>
         </div>`).join("")}
-        <div class="field"><label for="newTask">Ajouter un exercice</label>
-          <div class="search"><input type="text" id="newTask" placeholder="Ex. 20 squats"><button type="button" class="btn small" id="addTask">Ajouter</button></div></div>
-        <div class="budget ${ok ? "ok" : "ko"}"><span>Total réparti</span><span class="num">${euro(tot)} / ${euro(S.mise)}</span></div>
-        <button type="button" class="btn primary wide" id="progOk" ${ok ? "" : "disabled"}>${ok ? "Enregistrer le programme" : tot > S.mise ? `Retire ${euro(tot - S.mise)} pour enregistrer` : `Il reste ${euro(S.mise - tot)} à répartir`}</button>`;
+        <div class="card" style="gap:10px;padding:12px">
+          <div class="field"><label for="ntName">Nouvel exercice</label><input type="text" id="ntName" maxlength="40" placeholder="Ex. 20 squats"></div>
+          <div class="row" style="flex-wrap:wrap">
+            <div class="field" style="flex:1;min-width:110px"><label for="ntTarget">Séances / mois</label><input type="number" id="ntTarget" min="1" max="31" value="8"></div>
+            <div class="field" style="flex:1;min-width:110px"><label for="ntDiff">Difficulté</label><select id="ntDiff"><option value="1">Facile</option><option value="2" selected>Moyen</option><option value="3">Dur</option></select></div>
+          </div>
+          <label class="check"><input type="checkbox" id="ntWeak"> Point faible (vaut plus cher)</label>
+          <button type="button" class="btn small" id="addTask">Ajouter l'exercice</button>
+        </div>
+        ${budget ? `<div class="budget ${ok ? "ok" : "ko"}"><span>Total réparti</span><span class="num">${euro(ok ? budget : tot)} / ${euro(budget)}</span></div>` : ""}
+        <button type="button" class="btn primary wide" id="progOk" ${ok && draft.length ? "" : "disabled"}>${!draft.length ? "Ajoute au moins un exercice" : ok ? "Enregistrer le programme" : tot > budget ? `Retire ${euro(tot - budget)} pour enregistrer` : `Il reste ${euro(budget - tot)} à répartir`}</button>`;
     };
     openSheet(body(), function wire(sh) {
-      const rerender = () => { sh.innerHTML = body(); wire(sh); };
+      const rerender = () => { const st = sh.scrollTop; sh.innerHTML = body(); wire(sh); sh.scrollTop = st; };
       sh.querySelectorAll("[data-val]").forEach(inp => inp.addEventListener("change", () => { draft[+inp.dataset.val].value = Math.max(0, +inp.value || 0); rerender(); }));
-      sh.querySelector("#aiBtn").addEventListener("click", e => {
-        const vals = aiSplit(draft, S.mise); draft.forEach((t, i) => t.value = vals[i]);
-        rerender(); toast("L'IA a réparti la mise selon la difficulté et les points faibles");
-      });
+      sh.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { draft.splice(+b.dataset.del, 1); rerender(); }));
+      sh.querySelector("#aiBtn")?.addEventListener("click", () => { aiSplit(draft, budget).forEach((v, i) => draft[i].value = v); rerender(); toast("Mise répartie selon la difficulté et les points faibles"); });
       sh.querySelector("#addTask").addEventListener("click", () => {
-        const name = sh.querySelector("#newTask").value.trim(); if (!name) return;
-        draft.push({ id: uid(), name, detail: "Ajouté par ton coach", value: 0, target: 8, done: 0, diff: 2, weak: false });
+        const name = sh.querySelector("#ntName").value.trim(); if (!name) { sh.querySelector("#ntName").focus(); return; }
+        draft.push({ id: rid(), name: name.slice(0, 40), detail: "", value: 0, target: Math.min(31, Math.max(1, +sh.querySelector("#ntTarget").value || 8)), done: 0, earned: 0, diff: +sh.querySelector("#ntDiff").value, weak: sh.querySelector("#ntWeak").checked });
+        if (budget) aiSplit(draft, budget).forEach((v, i) => draft[i].value = v);
         rerender();
       });
-      sh.querySelector("#progOk").addEventListener("click", () => { S.tasks = draft; save(); closeSheet(); render(); toast("Programme enregistré. Léa le voit déjà."); });
+      sh.querySelector("#progOk").addEventListener("click", () => { closeSheet(); guard(() => progRef(aid).update({ tasks: draft }), "Programme enregistré. Ton client le voit déjà."); });
     });
   }
 
-  /* ---------------- Coach : preuves ---------------- */
+  /* ---------- Coach : preuves ---------- */
   function viewProofs() {
-    const pend = pendingProofs();
+    const pend = A.proofsCoach.filter(p => p.status === "pending");
+    const done = A.proofsCoach.filter(p => p.status !== "pending").slice(0, 6);
     return `<section class="screen ENTER">
       <div class="eyebrow">À distance</div><h2>Preuves à vérifier</h2>
-      ${pend.length ? pend.map(p => {
-        const t = S.tasks.find(x => x.id === p.taskId) || { name: "Exercice", value: 0 };
-        return `<div class="card">
-          <div class="split"><div><h3>Léa · ${esc(t.name)}</h3><div class="muted" style="font-size:12px">Envoyée ${esc(p.when)}</div></div><div class="price">${euro(t.value)}</div></div>
-          ${p.img ? `<img class="proof-img" src="${p.img}" alt="Preuve envoyée par Léa pour ${esc(t.name)}">` : `<div class="proof-img">🎥 ${esc(p.fileName)}</div>`}
-          <div class="row"><button type="button" class="btn small primary" data-approve="${p.id}" style="flex:1">✓ Valider · rendre ${euro(t.value)}</button><button type="button" class="btn small" data-reject="${p.id}">Refuser</button></div>
-        </div>`; }).join("")
-      : `<div class="card"><h3>Rien à vérifier pour l'instant</h3><p class="muted" style="margin:0">Quand un client t'envoie une photo ou une vidéo d'un exercice, elle apparaît ici. Pour essayer : passe en vue <b>Sportif</b> et touche « Envoyer une preuve ».</p></div>`}
+      ${pend.length ? pend.map(p => `<div class="card">
+          <div class="split"><div><h3>${esc(first(athleteName(p.athleteId)))} · ${esc(p.taskName)}</h3><div class="muted" style="font-size:12px">Envoyée le ${new Date(p.ts).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</div></div><div class="price">${euro(p.value)}</div></div>
+          ${p.img ? `<img class="proof-img" src="${esc(p.img)}" alt="Preuve envoyée pour ${esc(p.taskName)}">` : `<div class="proof-img">Pas d'image</div>`}
+          <div class="row"><button type="button" class="btn small primary" data-approve="${esc(p.id)}" style="flex:1">✓ Valider · rendre ${euro(p.value)}</button><button type="button" class="btn small" data-reject="${esc(p.id)}">Refuser</button></div>
+        </div>`).join("")
+      : `<div class="card"><h3>Rien à vérifier</h3><p class="muted" style="margin:0">Quand un client t'envoie une photo d'un exercice, elle apparaît ici en direct.</p></div>`}
+      ${done.length ? `<h2>Déjà traitées</h2><div class="list">${done.map(p => `<div class="split" style="padding:4px 2px"><span>${esc(first(athleteName(p.athleteId)))} · ${esc(p.taskName)}</span><span class="chip ${p.status === "ok" ? "volt" : "loss"}">${p.status === "ok" ? "Validée" : "Refusée"}</span></div>`).join("")}</div>` : ""}
     </section>`;
   }
 
-  /* ---------------- Coach : visibilité / Pro ---------------- */
+  /* ---------- Coach : visibilité / Pro ---------- */
   function viewPro() {
+    const me = A.profile, boosted = (me.boostedUntil || 0) > now();
+    const daysB = boosted ? Math.ceil((me.boostedUntil - now()) / 86400000) : 0;
     return `<section class="screen ENTER">
       <div class="eyebrow">Mon profil coach</div>
-      <div class="card"><div class="row"><div class="avatar volt">KB</div><div class="grow"><h3>Karim Benali</h3><div class="muted" style="font-size:13px">@karim.fit · Remise en forme · Nice</div></div>${S.pro ? `<span class="chip volt">PRO</span>` : ""}</div></div>
+      <div class="card"><div class="row"><div class="avatar volt">${esc(initials(me.name))}</div><div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">${esc(me.sport || "")}${me.city ? " · " + esc(me.city) : ""} · ${euro(me.price || 0)}/mois</div></div>${me.pro ? `<span class="chip volt">PRO</span>` : ""}</div>
+        ${copyTag()}</div>
       <div class="card">
         <div class="split"><h3>⚡ Booster ma visibilité</h3><b class="num">9,90 €</b></div>
-        <p class="muted" style="margin:0;font-size:14px">Apparais en tête de « Trouver un coach » à Nice pendant 30 jours, avec le badge « Mis en avant ». Paiement unique, sans abonnement.</p>
-        <button type="button" class="btn ${S.boosted ? "" : "primary"} wide" data-act="boost">${S.boosted ? "Boost actif · encore 30 jours" : "Booster pour 30 jours"}</button>
+        <p class="muted" style="margin:0;font-size:14px">Apparais en tête de « Trouver un coach » pendant 30 jours, avec le badge « Mis en avant ». Paiement unique, sans abonnement.</p>
+        <button type="button" class="btn ${boosted ? "" : "primary"} wide" data-act="boost" ${boosted ? "disabled" : ""}>${boosted ? `Boost actif · encore ${daysB} jour${daysB > 1 ? "s" : ""}` : "Booster pour 30 jours (simulé)"}</button>
       </div>
       <div class="card">
         <div class="split"><h3>Vaultr Pro</h3><b class="num">14,90 € / mois</b></div>
         <ul class="muted" style="margin:0;padding-left:18px;font-size:14px">
-          <li>Programmes complets générés par l'IA</li><li>Bibliothèque de programmes réutilisables</li><li>Statistiques de régularité de tes clients</li><li>Clients illimités (5 en version gratuite)</li></ul>
-        <button type="button" class="btn ${S.pro ? "" : "primary"} wide" data-act="pro">${S.pro ? "Pro activé" : "Passer Pro (simulé)"}</button>
+          <li>Programmes complets générés par l'IA</li><li>Bibliothèque de programmes réutilisables</li><li>Statistiques de régularité de tes clients</li><li>Badge PRO dans la recherche</li></ul>
+        <button type="button" class="btn ${me.pro ? "" : "primary"} wide" data-act="pro">${me.pro ? "Arrêter Pro (simulé)" : "Passer Pro (simulé)"}</button>
       </div>
       <p class="note">Côté sportif, Vaultr reste sans abonnement.</p>
-      <button type="button" class="btn small ghost" data-act="reset" style="align-self:flex-start">Réinitialiser la démo</button>
     </section>`;
   }
 
-  /* ---------------- Feuilles ---------------- */
+  /* ---------- Réglages ---------- */
+  function sheetSettings() {
+    const me = A.profile;
+    openSheet(`<div class="grab"></div><h2>Mon compte</h2>
+      <div class="card"><div class="row"><div class="avatar volt">${esc(initials(me.name))}</div><div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">@${esc(me.handle)} · ${me.role === "coach" ? "Coach" : "Sportif"}</div></div></div></div>
+      ${A.mode === "live" ? `
+        <button type="button" class="btn wide" data-s="switch">Passer en profil ${me.role === "coach" ? "sportif" : "coach"}</button>
+        <button type="button" class="btn wide ghost" data-s="demo">Essayer la démo (Léa et Karim)</button>`
+      : `<p class="note">Tu es dans la <b>démo</b> : les données restent sur cet appareil.</p>
+        ${A.liveDb ? `<button type="button" class="btn primary wide" data-s="live">Utiliser mon vrai compte</button>` : ""}
+        <button type="button" class="btn wide ghost" data-s="reset">Remettre la démo à zéro</button>`}
+      <p class="muted" style="margin:0;font-size:12px">Paiements simulés : aucune vraie somme n'est débitée.</p>`, sh => {
+      sh.addEventListener("click", e => {
+        const b = e.target.closest("[data-s]"); if (!b) return;
+        const s = b.dataset.s; closeSheet();
+        if (s === "demo") { startDemo(); toast("Mode démo : tu peux passer de Léa à Karim en haut"); }
+        if (s === "live") { startLive(); }
+        if (s === "reset") { A.demoDb.reset(); resetData(); subscribeBase(); toast("Démo remise à zéro"); }
+        if (s === "switch") guard(async () => {
+          const role = me.role === "coach" ? "athlete" : "coach";
+          await A.db.doc("profiles/" + A.myId).update(role === "coach" ? { role, sport: me.sport || SPORTS[0], price: me.price ?? 150, boostedUntil: me.boostedUntil || 0, pro: !!me.pro } : { role, goal: me.goal || "Remise en forme" });
+        }, "Profil changé");
+      });
+    });
+  }
+
+  /* ---------- Feuilles ---------- */
   function openSheet(html, wire) {
     closeSheet();
     const w = document.createElement("div"); w.className = "sheet-wrap"; w.id = "sheetWrap";
@@ -666,87 +1045,115 @@ input[type=range]{width:100%;accent-color:var(--volt)}
     $phone.appendChild(w); wire && wire(w.querySelector(".sheet"));
   }
   function closeSheet() { document.getElementById("sheetWrap")?.remove(); }
-  document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { closeSheet(); closeCele(); } });
 
-  /* ---------------- Événements ---------------- */
+  /* =====================================================================
+     Après rendu : animation du coffre, recherche
+     ===================================================================== */
   function afterRender() {
     const el = document.getElementById("recAmount");
-    const now = recovered();
-    if (el && now !== lastVault) {
-      const from = lastVault, pct = Math.min(1, now / S.mise), C = 2 * Math.PI * 96;
-      lastVault = now;
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        const ring = document.getElementById("ring"); if (ring) ring.style.strokeDashoffset = C * (1 - pct);
-        const door = document.getElementById("door"); if (door) door.style.transform = `rotate(${pct * 180}deg)`;
-        countUp(el, from, now); el.classList.add("pop");
-        if (now > from) coinBurst(document.getElementById("vaultBox"), now - from);
-      }));
+    if (el && A.program?.mise) {
+      const now_ = recovered(A.program);
+      if (lastVault === null) lastVault = 0; // le coffre se remplit à l'ouverture
+      if (now_ !== lastVault) {
+        const from = lastVault, pct = Math.min(1, now_ / A.program.mise), C = 2 * Math.PI * 96;
+        lastVault = now_;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const ring = document.getElementById("ring"); if (ring) ring.style.strokeDashoffset = C * (1 - pct);
+          const door = document.getElementById("door"); if (door) door.style.transform = `rotate(${pct * 180}deg)`;
+          countUp(el, from, now_); el.classList.add("pop");
+        }));
+      }
     }
     const s = document.getElementById("coachSearch");
-    if (s) s.addEventListener("input", () => {
-      S.coachQuery = s.value; save();
-      document.getElementById("coachList").innerHTML = coachListHTML();
-    });
+    if (s && !s.dataset.wired) { s.dataset.wired = "1"; s.addEventListener("input", () => { A.coachQuery = s.value; document.getElementById("coachList").innerHTML = coachListHTML(); }); }
+    const f = document.getElementById("onboardForm");
+    if (f && !f.dataset.wired) {
+      f.dataset.wired = "1";
+      f.addEventListener("submit", async e => {
+        e.preventDefault();
+        const g = id => document.getElementById(id)?.value || "";
+        const err = document.getElementById("obErr"); err.textContent = "";
+        const btn = f.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Création…";
+        try { await createProfile({ role: A.onboardRole, name: g("obName"), handle: g("obHandle"), city: g("obCity"), sport: g("obSport"), price: g("obPrice"), goal: g("obGoal") }); toast("Compte créé. Bienvenue sur Vaultr !"); }
+        catch (x) { const e2 = document.getElementById("obErr"); if (e2) e2.textContent = x?.ui || "Impossible de créer le compte. Réessaie."; const b = document.querySelector("#onboardForm button[type=submit]"); if (b) { b.disabled = false; b.textContent = "Créer mon compte"; } }
+      });
+    }
   }
 
-  $main.addEventListener("click", e => {
-    const t = e.target.closest("button, [data-client]"); if (!t) return;
-    const d = t.dataset;
-    if (d.pick) { setRole(d.pick); toast(d.pick === "athlete" ? "Bienvenue Léa ! Voici ton coffre." : "Bienvenue Karim ! Voici tes clients."); return; }
-    if (d.sport) { S.coachFilter = d.sport; save(); render(); return; }
-    if (d.add) { S.added.push(d.add); save(); render(); toast("Demande envoyée au coach"); return; }
-    if (d.open === "mise") return sheetMise();
-    if (d.open === "program") return sheetProgram();
-    if (d.client === "lea") { S.openClient = "lea"; save(); render(); $main.scrollTop = 0; return; }
-    if (d.client === "static") { toast("Client de démonstration : ouvre Léa pour tester la validation"); return; }
-    if ("back" in d) { S.openClient = null; save(); render(); return; }
-    if (d.validate) return validateTask(d.validate, t, false);
-    if (d.approve) {
-      const p = S.proofs.find(x => x.id === d.approve); if (!p) return;
-      p.status = "ok"; return validateTask(p.taskId, t, true);
-    }
-    if (d.reject) {
-      const p = S.proofs.find(x => x.id === d.reject); if (p) p.status = "ko";
-      save(); render(); toast("Preuve refusée. Léa peut en renvoyer une autre."); return;
-    }
-    if (d.act === "reset") { S = fresh(); lastVault = 0; save(); render(); toast("Démo réinitialisée"); return; }
-    if (d.act === "boost") { S.boosted = !S.boosted; save(); render(); toast(S.boosted ? "Boost activé : tu es en tête à Nice ⚡" : "Boost désactivé"); return; }
-    if (d.act === "pro") { S.pro = !S.pro; save(); render(); toast(S.pro ? "Vaultr Pro activé" : "Retour à la version gratuite"); return; }
-    if (d.act === "reuse") { toast(`${euro(recovered())} seront déduits de ton paiement de novembre`); return; }
-    if (d.act === "withdraw") { toast(`Retrait de ${euro(recovered())} demandé (simulé)`); return; }
+  /* =====================================================================
+     Événements
+     ===================================================================== */
+  $switch.addEventListener("click", e => {
+    const b = e.target.closest("button[data-role]"); if (!b || A.mode !== "demo") return;
+    const id = b.dataset.role === "athlete" ? "demo_lea" : "demo_karim";
+    if (id === A.myId) return;
+    A.demoAs = id; lsSet("vaultr-demo-as", id); A.myId = id; resetData(); subscribeBase(); render();
+  });
+  $settings.addEventListener("click", sheetSettings);
+  $tabbar.addEventListener("click", e => {
+    const b = e.target.closest("button[data-tab]"); if (!b) return;
+    A.tab[A.profile.role] = b.dataset.tab; A.openClient = null; render(); $main.scrollTop = 0;
   });
 
+  $main.addEventListener("click", e => {
+    const t = e.target.closest("button, [data-client]"); if (!t || t.disabled) return;
+    const d = t.dataset;
+    if (d.pick) { A.onboardRole = d.pick; render(); return; }
+    if (d.act === "onboard-back") { A.onboardRole = null; render(); return; }
+    if (d.act === "demo-on") { startDemo(); return; }
+    if (d.goto) { A.tab.athlete = d.goto; render(); return; }
+    if (d.sport) { A.coachFilter = d.sport; render(); return; }
+    if (d.add) { const c = A.coaches.find(x => x.id === d.add); if (c) guard(() => addCoach(c), `${first(c.name)} est maintenant ton coach`); return; }
+    if (d.open === "mise") return sheetMise();
+    if (d.open === "program") return sheetProgram(A.openClient);
+    if (d.client) { A.openClient = d.client; render(); $main.scrollTop = 0; return; }
+    if ("back" in d) { A.openClient = null; render(); return; }
+    if (d.validate) return guard(async () => { const task = await validateTask(A.openClient, d.validate, false); if (task) { coinBurst(t, task.value); toast(`+${euro(task.value)} rendus à ${first(athleteName(A.openClient))} 💸`); } });
+    if (d.approve) { const p = A.proofsCoach.find(x => x.id === d.approve); if (p) guard(async () => { await reviewProof(p, true); coinBurst(t, p.value); }, `+${euro(p?.value)} rendus 💸`); return; }
+    if (d.reject) { const p = A.proofsCoach.find(x => x.id === d.reject); if (p) guard(() => reviewProof(p, false), "Preuve refusée. Ton client peut en renvoyer une."); return; }
+    if (d.act === "boost") return guard(() => A.db.doc("profiles/" + A.myId).update({ boostedUntil: now() + 30 * 86400000 }), "Boost activé : tu es en tête de la recherche ⚡");
+    if (d.act === "pro") return guard(() => A.db.doc("profiles/" + A.myId).update({ pro: !A.profile.pro }), A.profile.pro ? "Retour à la version gratuite" : "Vaultr Pro activé");
+    if (d.act === "reuse") return toast(`${euro(recovered(A.program))} seront déduits de ton prochain mois (simulé)`);
+    if (d.act === "withdraw") return toast(`Retrait de ${euro(recovered(A.program))} demandé (simulé)`);
+    if (d.act === "copy-tag") {
+      const txt = "@" + A.profile.handle;
+      Promise.resolve().then(() => navigator.clipboard.writeText(txt)).then(() => toast("Tag copié")).catch(() => {
+        const c = document.getElementById("myTag"); const r = document.createRange(); r.selectNodeContents(c); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Tag sélectionné, copie-le");
+      });
+    }
+  });
+
+  // Envoi d'une photo comme preuve : réduite pour rester légère
   $main.addEventListener("change", e => {
     const inp = e.target.closest("input[data-proof]"); if (!inp || !inp.files[0]) return;
     const f = inp.files[0], taskId = inp.dataset.proof;
-    const push = img => {
-      S.proofs.push({ id: uid(), taskId, img, fileName: f.name, status: "pending", when: "à l'instant" });
-      try { save(); } catch {}
-      render(); toast("Preuve envoyée à Karim 📸");
-    };
-    if (f.type.startsWith("image/")) {
-      // réduit la photo pour la garder légère dans la démo
-      const r = new FileReader();
-      r.onload = () => {
-        const im = new Image();
-        im.onload = () => {
-          const c = document.createElement("canvas"), k = Math.min(1, 640 / Math.max(im.width, im.height));
-          c.width = im.width * k; c.height = im.height * k;
+    if (!f.type.startsWith("image/")) { toast("Envoie une photo (les vidéos arrivent bientôt)."); return; }
+    const r = new FileReader();
+    r.onload = () => {
+      const im = new Image();
+      im.onload = () => {
+        let side = 720, q = .7, url;
+        do {
+          const c = document.createElement("canvas"), k = Math.min(1, side / Math.max(im.width, im.height));
+          c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
           c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
-          push(c.toDataURL("image/jpeg", .7));
-        };
-        im.onerror = () => push(null);
-        im.src = r.result;
+          url = c.toDataURL("image/jpeg", q); side *= .8; q -= .1;
+        } while (url.length > 180000 && q > .2);
+        guard(() => sendProof(taskId, url), "Preuve envoyée à ton coach 📸");
       };
-      r.readAsDataURL(f);
-    } else push(null);
+      im.onerror = () => toast("Cette image n'a pas pu être lue.");
+      im.src = r.result;
+    };
+    r.readAsDataURL(f);
   });
 
-  /* ---------------- Démarrage ---------------- */
-  lastVault = 0; // le coffre se remplit à l'ouverture de l'appli
-  render();
+  /* =====================================================================
+     Lancement
+     ===================================================================== */
   const splash = document.getElementById("splash");
-  setTimeout(() => splash.classList.add("open"), matchMedia("(prefers-reduced-motion: reduce)").matches ? 300 : 1700);
+  setTimeout(() => splash.classList.add("open"), reduced() ? 300 : 1700);
   setTimeout(() => splash.remove(), 3000);
+  boot();
 })();
 </script>
