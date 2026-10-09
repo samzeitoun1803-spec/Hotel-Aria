@@ -223,6 +223,35 @@ input[type=range]{width:100%;accent-color:var(--volt)}
 .vid-play{position:absolute;inset:auto 12px 12px auto;display:inline-flex;align-items:center;gap:8px;background:#0B0D0Ae6;border:1px solid var(--volt);color:var(--volt);border-radius:999px;padding:8px 14px 8px 8px;font-weight:700;font-size:13px}
 .vid-play span{width:26px;height:26px;border-radius:50%;background:var(--volt);color:var(--ink);display:grid;place-items:center;font-size:11px}
 video.proof-img{background:#000;object-fit:contain}
+
+/* ---------- Messagerie ---------- */
+.chat-screen{gap:0;min-height:100%}
+.chat-head{position:sticky;top:-4px;margin-top:-4px;z-index:2;display:flex;align-items:center;gap:12px;padding:8px 0 12px;background:var(--ink);border-bottom:1px solid var(--line)}
+.chat-head .avatar{width:40px;height:40px}
+.msgs{flex:1;display:flex;flex-direction:column;gap:6px;padding:14px 0 10px}
+.day{display:flex;justify-content:center;margin:10px 0 4px}
+.day span{font-size:11px;font-weight:600;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.bubble{max-width:80%;padding:8px 11px 6px;border-radius:16px;font-size:15px;line-height:1.35;animation:bub .25s cubic-bezier(.2,1.3,.4,1) both;overflow-wrap:anywhere}
+.bubble.them{align-self:flex-start;background:var(--panel-2);border-bottom-left-radius:5px}
+.bubble.me{align-self:flex-end;background:var(--volt);color:var(--ink);border-bottom-right-radius:5px}
+.bubble .meta{display:flex;justify-content:flex-end;gap:4px;font-size:10px;opacity:.65;margin-top:2px;font-variant-numeric:tabular-nums}
+.bubble .ticks{letter-spacing:-3px;padding-right:3px}
+.bubble .ticks.seen{opacity:1;font-weight:900}
+@keyframes bub{from{transform:translateY(6px) scale(.96);opacity:0}}
+.seen-line{align-self:flex-end;font-size:11px;color:var(--muted);margin-top:-2px}
+.chat-empty{margin:auto;text-align:center;color:var(--fg);padding:40px 10px;line-height:1.6}
+.composer{position:sticky;bottom:-24px;margin-bottom:-24px;display:flex;gap:8px;align-items:center;padding:10px 0 34px;background:var(--ink)}
+.composer input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:11px 16px}
+.composer input::placeholder{color:var(--muted)}
+.send{width:44px;height:44px;flex:none;border-radius:50%;background:var(--volt);color:var(--ink);display:grid;place-items:center;transition:transform .12s}
+.send:active{transform:scale(.9)}
+.send svg{width:20px;height:20px}
+.chat-row{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 4px;border-bottom:1px solid var(--line);width:100%}
+.chat-row .preview{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-row.unread .preview{color:var(--fg);font-weight:600}
+.chat-row .dot{width:10px;height:10px;border-radius:50%;background:var(--volt);flex:none;box-shadow:0 0 8px #C6FF4D}
+.chat-list{gap:0}
+.chat-row .grow{flex:1;min-width:0}
 </style>
 </head>
 <body>
@@ -297,7 +326,7 @@ video.proof-img{background:#000;object-fit:contain}
   /* =====================================================================
      Base locale pour le mode démo (même interface que la vraie base)
      ===================================================================== */
-  const DEMO_KEY = "vaultr-demo-v2";
+  const DEMO_KEY = "vaultr-demo-v3";
   function demoSeed() {
     const t0 = now() - 86400000 * 9;
     const P = {};
@@ -322,12 +351,22 @@ video.proof-img{background:#000;object-fit:contain}
       task("Développé couché 4 × 10", "", 5, 2, 3, true), task("Tractions 3 × 8", "", 5, 2, 3, false)] };
     const ev = (aid, label, amount, ago) => P["events/" + rid()] = { athleteId: aid, coachId: "demo_karim", label, amount, ts: now() - ago };
     ev("demo_lea", "Mise + coaching du mois (simulé)", -200, 86400000 * 9);
+    const chat = (aid, msgs) => {
+      const id = aid + "__demo_karim"; let last = null;
+      msgs.forEach(([from, text, ago]) => { const m = { from, text, ts: now() - ago }; P[`chats/${id}/messages/${rid()}`] = m; last = m; });
+      P["chats/" + id] = { athleteId: aid, coachId: "demo_karim", lastMsg: last.text, lastFrom: last.from, lastTs: last.ts, readBy: { demo_karim: last.from === "demo_karim" ? last.ts : 0, [aid]: last.ts } };
+    };
+    const H = 3600000;
+    chat("demo_lea", [["demo_karim", "Salut Léa ! J'ai mis ton programme d'octobre en ligne 💪", 50 * H], ["demo_lea", "Top merci ! Les pompes à 3 €, t'es dur 😅", 49 * H], ["demo_karim", "C'est ton point faible, donc c'est là que ça paie 😈", 48.5 * H], ["demo_lea", "Je t'envoie la vidéo de ma série ce soir", 3 * H], ["demo_karim", "Parfait, je valide dès que je la reçois 👌", 2.8 * H]]);
+    chat("demo_tom", [["demo_karim", "Tom, on décale la séance de jeudi à vendredi ?", 30 * H], ["demo_tom", "Ok pour vendredi 18h ! Je pourrai faire les squats à la maison mercredi ?", 1 * H]]);
     ["Course 15 min", "15 pompes", "Gainage 3 × 1 min"].forEach((n, i) => [7, 4, 2].forEach(d => ev("demo_lea", n + " validé", [2, 3, 1.25][i], 86400000 * d + i * 60000)));
     return P;
   }
   function makeLocalDb() {
     let data; try { data = JSON.parse(lsGet(DEMO_KEY)); } catch {} if (!data) data = demoSeed();
     const listeners = new Set();
+    const isObj = v => v && typeof v === "object" && !Array.isArray(v);
+    const deepMerge = (a, b) => { const o = { ...a }; for (const [k, v] of Object.entries(b)) o[k] = isObj(v) && isObj(o[k]) ? deepMerge(o[k], v) : v; return o; };
     const emit = () => { lsSet(DEMO_KEY, JSON.stringify(data)); setTimeout(() => listeners.forEach(fn => fn()), 0); };
     const clone = v => JSON.parse(JSON.stringify(v));
     const snap = path => ({ id: path.split("/").pop(), exists: path in data, data: () => (path in data ? clone(data[path]) : undefined), metadata: { fromCache: false, hasPendingWrites: false } });
@@ -352,7 +391,7 @@ video.proof-img{background:#000;object-fit:contain}
       id: path.split("/").pop(), path,
       get: async () => snap(path),
       set: async v => { data[path] = clone(v); emit(); },
-      update: async v => { if (!(path in data)) throw { code: "invalid_argument", message: "absent" }; data[path] = { ...data[path], ...clone(v) }; emit(); },
+      update: async v => { if (!(path in data)) throw { code: "invalid_argument", message: "absent" }; data[path] = deepMerge(data[path], clone(v)); emit(); },
       delete: async () => { delete data[path]; emit(); },
       onSnapshot(next) { const fn = () => next(snap(path)); listeners.add(fn); setTimeout(fn, 0); return () => listeners.delete(fn); },
       collection: sub => colRef(path + "/" + sub)
@@ -378,6 +417,7 @@ video.proof-img{background:#000;object-fit:contain}
     coaches: [], athletes: {},
     program: undefined, proofsAth: [], events: [],
     clients: [], proofsCoach: [],
+    chats: [], chat: null, msgs: [], chatWith: null,   // messagerie
     tab: { athlete: "vault", coach: "clients" },
     openClient: null, coachFilter: "Tous", coachQuery: "",
     onboardRole: null, busy: false
@@ -396,6 +436,7 @@ video.proof-img{background:#000;object-fit:contain}
     wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M3 7l12-4 2 4"/><circle cx="16.5" cy="13.5" r="1.5"/></svg>',
     clients: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5 6.5-5s5.5 1.5 6.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.5 0 4 1.5 4.5 4"/></svg>',
     proof: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>',
+    chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg>',
     pro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>'
   };
   const VAULT_ICON = '<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="25" fill="none" stroke="currentColor" stroke-width="5"/><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><line x1="30" y1="30" x2="30" y2="14"/><line x1="30" y1="30" x2="44" y2="38"/><line x1="30" y1="30" x2="16" y2="38"/></g><circle cx="30" cy="30" r="6" fill="currentColor"/></svg>';
@@ -523,7 +564,8 @@ video.proof-img{background:#000;object-fit:contain}
   }
   function resetData() {
     unsubs.forEach(u => u()); roleSubs.forEach(u => u()); unsubs = []; roleSubs = []; subscribedRole = null;
-    Object.assign(A, { profile: undefined, coaches: [], athletes: {}, program: undefined, proofsAth: [], events: [], clients: [], proofsCoach: [], openClient: null, onboardRole: null });
+    Object.assign(A, { profile: undefined, coaches: [], athletes: {}, program: undefined, proofsAth: [], events: [], clients: [], proofsCoach: [], openClient: null, onboardRole: null, chats: [], chat: null, msgs: [], chatWith: null });
+    closeChatSub(); prevChatTs = {};
     seenTs = null; lastVault = null;
   }
   const onErr = e => { if (e?.code === "revoked") { A.mode = "blocked"; A.blockedWhy = "revoked"; render(); } };
@@ -542,7 +584,11 @@ video.proof-img{background:#000;object-fit:contain}
     roleSubs.forEach(u => u()); roleSubs = []; subscribedRole = role;
     const db = A.db, id = A.myId;
     if (role === "athlete") {
-      roleSubs.push(db.doc("programs/" + id).onSnapshot(s => { A.program = s.exists ? s.data() : null; schedule(); }, onErr));
+      roleSubs.push(db.doc("programs/" + id).onSnapshot(s => {
+        A.program = s.exists ? s.data() : null;
+        if (A.program?.coachId) openChatSub(chatId(id, A.program.coachId)); else closeChatSub();
+        schedule();
+      }, onErr));
       roleSubs.push(db.collection("proofs").where("athleteId", "==", id).onSnapshot(q => { A.proofsAth = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
       roleSubs.push(db.collection("events").where("athleteId", "==", id).orderBy("ts", "desc").limit(40).onSnapshot(q => {
         A.events = q.docs.map(d => ({ id: d.id, ...d.data() })); checkNewMoney(); schedule();
@@ -551,6 +597,16 @@ video.proof-img{background:#000;object-fit:contain}
       roleSubs.push(db.collection("programs").where("coachId", "==", id).onSnapshot(q => { A.clients = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
       roleSubs.push(db.collection("profiles").where("role", "==", "athlete").onSnapshot(q => { A.athletes = Object.fromEntries(q.docs.map(d => [d.id, { id: d.id, ...d.data() }])); schedule(); }, onErr));
       roleSubs.push(db.collection("proofs").where("coachId", "==", id).onSnapshot(q => { A.proofsCoach = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.ts - a.ts); schedule(); }, onErr));
+      roleSubs.push(db.collection("chats").where("coachId", "==", id).onSnapshot(q => {
+        A.chats = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.lastTs || 0) - (a.lastTs || 0));
+        // notification quand un client écrit dans une autre conversation
+        for (const c of A.chats) {
+          const before = prevChatTs[c.id];
+          if (before !== undefined && c.lastTs > before && c.lastFrom !== A.myId && !viewingChat(c.id)) toast(`💬 ${first(athleteName(c.athleteId))} : ${c.lastMsg}`);
+          prevChatTs[c.id] = c.lastTs || 0;
+        }
+        schedule();
+      }, onErr));
     }
   }
 
@@ -571,6 +627,52 @@ video.proof-img{background:#000;object-fit:contain}
     const who = first(coach?.name) || "Ton coach";
     celebrate(fresh.reduce((a, e) => a + e.amount, 0), fresh.map(e => `${who} a validé : ${e.label.replace(/ validé.*$/, "")} · +${euro(e.amount)}`));
   }
+
+  /* =====================================================================
+     Messagerie coach ⇄ client : chats/<sportif>__<coach>/messages/*
+     ===================================================================== */
+  const chatId = (aid, cid) => aid + "__" + cid;
+  let chatSub = null, prevChatTs = {}, markingRead = false;
+  function closeChatSub() { if (chatSub) { chatSub.unsubs.forEach(u => u()); chatSub = null; } A.chat = null; A.msgs = []; }
+  function openChatSub(id) {
+    if (chatSub?.id === id) return;
+    closeChatSub();
+    const sub = chatSub = { id, unsubs: [], baseline: null };
+    sub.unsubs.push(A.db.doc("chats/" + id).onSnapshot(s => { if (chatSub !== sub) return; A.chat = s.exists ? { id, ...s.data() } : null; schedule(); }, onErr));
+    sub.unsubs.push(A.db.collection(`chats/${id}/messages`).orderBy("ts", "desc").limit(120).onSnapshot(q => {
+      if (chatSub !== sub) return;
+      A.msgs = q.docs.map(d => ({ id: d.id, ...d.data() })).reverse();
+      const newest = A.msgs.length ? A.msgs[A.msgs.length - 1] : null;
+      if (sub.baseline !== null && newest && newest.ts > sub.baseline && newest.from !== A.myId && !viewingChat(id) && A.profile?.role === "athlete")
+        toast(`💬 ${first(myCoach()?.name) || "Ton coach"} : ${newest.text}`);
+      sub.baseline = newest?.ts || 0;
+      schedule();
+    }, onErr));
+  }
+  function viewingChat(id) {
+    const role = A.profile?.role;
+    if (role === "athlete") return A.tab.athlete === "chat" && !!A.program && chatId(A.myId, A.program.coachId) === id;
+    if (role === "coach") return A.tab.coach === "chat" && !!A.chatWith && chatId(A.chatWith, A.myId) === id;
+    return false;
+  }
+  async function sendMessage(text) {
+    const role = A.profile.role;
+    const aid = role === "athlete" ? A.myId : A.chatWith, cid = role === "athlete" ? A.program.coachId : A.myId;
+    const id = chatId(aid, cid), ts = now();
+    await A.db.collection(`chats/${id}/messages`).add({ from: A.myId, text, ts });
+    const meta = { athleteId: aid, coachId: cid, lastMsg: text.slice(0, 120), lastFrom: A.myId, lastTs: ts };
+    const ref = A.db.doc("chats/" + id);
+    if ((await ref.get()).exists) await ref.update({ ...meta, readBy: { [A.myId]: ts } });
+    else await ref.set({ ...meta, readBy: { [A.myId]: ts } });
+  }
+  async function markRead() {
+    const c = A.chat; if (!c || markingRead || !viewingChat(c.id)) return;
+    if ((c.readBy?.[A.myId] || 0) >= (c.lastTs || 0)) return;
+    markingRead = true;
+    try { await A.db.doc("chats/" + c.id).update({ readBy: { [A.myId]: c.lastTs } }); } catch {} finally { markingRead = false; }
+  }
+  const unreadIn = (msgs, readTs) => msgs.filter(m => m.from !== A.myId && m.ts > (readTs || 0)).length;
+  const chatUnread = c => c.lastFrom !== A.myId && (c.lastTs || 0) > (c.readBy?.[A.myId] || 0);
 
   /* =====================================================================
      Actions (écrivent dans la base, la vue suit toute seule)
@@ -695,8 +797,8 @@ video.proof-img{background:#000;object-fit:contain}
     else {
       renderTabs(role);
       const v = A.tab[role];
-      const views = { athlete: { vault: viewVault, coach: viewFindCoach, wallet: viewWallet }, coach: { clients: viewClients, proofs: viewProofs, pro: viewPro } };
-      html = views[role][v](); key = A.mode + A.myId + role + v + (A.openClient || "");
+      const views = { athlete: { vault: viewVault, chat: viewChatAthlete, coach: viewFindCoach, wallet: viewWallet }, coach: { clients: viewClients, chat: viewChatsCoach, proofs: viewProofs, pro: viewPro } };
+      html = views[role][v](); key = A.mode + A.myId + role + v + (A.openClient || "") + (v === "chat" ? A.chatWith || "" : "");
     }
 
     // garde la saisie en cours (un autre téléphone peut déclencher un rendu pendant qu'on tape)
@@ -717,11 +819,15 @@ video.proof-img{background:#000;object-fit:contain}
 
   function renderTabs(role) {
     const tabs = role === "athlete"
-      ? [["vault", "Mon coffre", ICONS.vault], ["coach", "Coach", ICONS.coach], ["wallet", "Paiements", ICONS.wallet]]
-      : [["clients", "Clients", ICONS.clients], ["proofs", "Preuves", ICONS.proof], ["pro", "Visibilité", ICONS.pro]];
-    const cur = A.tab[role], nPend = A.proofsCoach.filter(p => p.status === "pending").length;
+      ? [["vault", "Mon coffre", ICONS.vault], ["chat", "Messages", ICONS.chat], ["coach", "Coach", ICONS.coach], ["wallet", "Paiements", ICONS.wallet]]
+      : [["clients", "Clients", ICONS.clients], ["chat", "Messages", ICONS.chat], ["proofs", "Preuves", ICONS.proof], ["pro", "Visibilité", ICONS.pro]];
+    const cur = A.tab[role];
+    const badges = {
+      proofs: A.proofsCoach.filter(p => p.status === "pending").length,
+      chat: role === "athlete" ? (viewingChat(A.chat?.id) ? 0 : unreadIn(A.msgs, A.chat?.readBy?.[A.myId])) : A.chats.filter(c => chatUnread(c) && !viewingChat(c.id)).length
+    };
     $tabbar.innerHTML = tabs.map(([id, label, ic]) =>
-      `<button type="button" data-tab="${id}" ${id === cur ? 'aria-current="page"' : ""}>${ic}${label}${id === "proofs" && nPend ? `<span class="badge">${nPend}</span>` : ""}</button>`).join("");
+      `<button type="button" data-tab="${id}" ${id === cur ? 'aria-current="page"' : ""}>${ic}${label}${badges[id] ? `<span class="badge">${badges[id]}</span>` : ""}</button>`).join("");
   }
 
   /* ---------- Accès impossible ---------- */
@@ -864,6 +970,7 @@ video.proof-img{background:#000;object-fit:contain}
         <div class="row"><div class="avatar volt">${esc(initials(me.name))}</div>
           <div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">@${esc(me.handle)} · ${esc(me.sport || "")}${me.city ? " · " + esc(me.city) : ""}</div></div>
           <span class="chip volt">Actif</span></div>
+        <button type="button" class="btn small" data-goto="chat" style="align-self:flex-start">💬 Écrire à ${esc(first(me.name))}</button>
         <div class="split"><span class="muted">Coaching mensuel</span><b class="num">${euro(A.program.coachFee)} / mois</b></div>
       </div>` : ""}
       <h2>Trouver un coach</h2>
@@ -951,6 +1058,7 @@ video.proof-img{background:#000;object-fit:contain}
     return `<section class="screen ENTER">
       <button type="button" class="btn small ghost" data-back style="align-self:flex-start">← Mes clients</button>
       <div class="row"><div class="avatar volt">${esc(initials(a?.name))}</div><div class="grow"><h2>${esc(athleteName(aid))}</h2><div class="muted" style="font-size:13px">@${esc(a?.handle || "")} · mise ${euro(c.mise)} · ${euro(recovered(c))} récupérés</div></div></div>
+      <button type="button" class="btn small" data-chat="${esc(aid)}" style="align-self:flex-start">💬 Écrire à ${esc(first(a?.name) || "ton client")}</button>
       <div class="split"><h2>Exercices</h2><button type="button" class="btn small" data-open="program">${tasks.length ? "Modifier le programme" : "Créer le programme"}</button></div>
       ${!c.mise ? `<p class="note">${esc(first(a?.name) || "Ton client")} n'a pas encore choisi sa mise. Tu peux déjà créer ses exercices : leur valeur sera calculée quand il aura choisi.</p>` : ""}
       ${tasks.length ? `<p class="muted" style="margin:0;font-size:13px">En séance ? Valide chaque exercice réalisé : l'argent est rendu tout de suite.</p>
@@ -963,6 +1071,63 @@ video.proof-img{background:#000;object-fit:contain}
           <div class="task-actions">${full ? `<span class="chip volt">Objectif du mois atteint ✓</span>`
             : `<button type="button" class="btn small primary" data-validate="${esc(t.id)}" ${t.value > 0 ? "" : "disabled"}>✓ Valider · rendre ${euro(t.value)}</button>`}</div>
         </div>`; }).join("")}</div>` : ""}
+    </section>`;
+  }
+
+  /* ---------- Messagerie ---------- */
+  const hhmm = ts => new Date(ts).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  function dayLabel(ts) {
+    const d = new Date(ts), t = new Date(), y = new Date(t.getTime() - 86400000);
+    if (d.toDateString() === t.toDateString()) return "Aujourd'hui";
+    if (d.toDateString() === y.toDateString()) return "Hier";
+    const l = d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+    return l.charAt(0).toUpperCase() + l.slice(1);
+  }
+  function chatScreen({ name, sub, backBtn }) {
+    const other = A.chat?.readBy ? Object.entries(A.chat.readBy).filter(([k]) => k !== A.myId).reduce((m, [, v]) => Math.max(m, v || 0), 0) : 0;
+    const mine = A.msgs.filter(m => m.from === A.myId);
+    const lastMine = mine[mine.length - 1];
+    let day = "", html = "";
+    for (const m of A.msgs) {
+      const dl = dayLabel(m.ts);
+      if (dl !== day) { day = dl; html += `<div class="day"><span>${esc(dl)}</span></div>`; }
+      const me = m.from === A.myId;
+      html += `<div class="bubble ${me ? "me" : "them"}"><div class="txt">${esc(m.text)}</div><div class="meta">${hhmm(m.ts)}${me ? `<span class="ticks ${other >= m.ts ? "seen" : ""}">✓✓</span>` : ""}</div></div>`;
+    }
+    const seen = lastMine && other >= lastMine.ts && A.msgs[A.msgs.length - 1] === lastMine;
+    return `<section class="screen ENTER chat-screen">
+      <div class="chat-head">${backBtn || ""}<div class="avatar volt">${esc(initials(name))}</div><div class="grow"><h3>${esc(name)}</h3><div class="muted" style="font-size:12px">${esc(sub)}</div></div></div>
+      <div class="msgs" id="msgs">${html || `<div class="chat-empty">Dis bonjour à ${esc(first(name))} 👋<br><span class="muted">Organisez vos séances, posez vos questions, motivez-vous.</span></div>`}
+        ${seen ? `<div class="seen-line">Vu</div>` : ""}</div>
+      <form class="composer" id="composer" autocomplete="off">
+        <input type="text" id="chatInput" maxlength="1000" placeholder="Message" aria-label="Écrire un message" enterkeyhint="send">
+        <button type="submit" class="send" aria-label="Envoyer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4l17.5-7.5a1 1 0 0 0 0-1.8L3.4 3.6a.9.9 0 0 0-1.3 1L4 11l9 1-9 1-1.9 6.4a.9.9 0 0 0 1.3 1z"/></svg></button>
+      </form>
+    </section>`;
+  }
+  function viewChatAthlete() {
+    const coach = myCoach();
+    if (!A.program?.coachId) return `<section class="screen ENTER"><h2>Messages</h2><div class="card empty"><h3>Pas encore de coach</h3><p class="muted" style="margin:0">Choisis ton coach pour pouvoir lui écrire.</p><button type="button" class="btn primary" data-goto="coach">Trouver mon coach</button></div></section>`;
+    return chatScreen({ name: coach?.name || "Ton coach", sub: `Coach${coach?.sport ? " · " + coach.sport : ""}` });
+  }
+  function viewChatsCoach() {
+    if (A.chatWith) {
+      const a = A.athletes[A.chatWith];
+      return chatScreen({ name: athleteName(A.chatWith), sub: `Client${a?.goal ? " · " + a.goal : ""}`, backBtn: `<button type="button" class="icon-btn" data-chat-back aria-label="Retour aux conversations">←</button>` });
+    }
+    const byAthlete = Object.fromEntries(A.chats.map(c => [c.athleteId, c]));
+    const rows = A.clients.map(c => ({ aid: c.id, chat: byAthlete[c.id] })).sort((x, y) => (y.chat?.lastTs || 0) - (x.chat?.lastTs || 0));
+    return `<section class="screen ENTER">
+      <div class="eyebrow">Coach ${esc(first(A.profile.name))}</div><h2>Messages</h2>
+      ${rows.length ? `<div class="list chat-list">${rows.map(({ aid, chat }) => {
+        const un = chat && chatUnread(chat);
+        return `<button type="button" class="chat-row ${un ? "unread" : ""}" data-chat="${esc(aid)}">
+          <div class="avatar volt">${esc(initials(A.athletes[aid]?.name))}</div>
+          <div class="grow"><div class="split"><b>${esc(athleteName(aid))}</b><span class="muted" style="font-size:12px">${chat?.lastTs ? (dayLabel(chat.lastTs) === "Aujourd'hui" ? hhmm(chat.lastTs) : dayLabel(chat.lastTs)) : ""}</span></div>
+            <div class="preview">${chat ? (chat.lastFrom === A.myId ? "Toi : " : "") + esc(chat.lastMsg) : `<span class="muted">Pas encore de message</span>`}</div></div>
+          ${un ? `<span class="dot" aria-label="Non lu"></span>` : ""}
+        </button>`; }).join("")}</div>`
+      : `<div class="card"><h3>Pas encore de client</h3><p class="muted" style="margin:0">Tes conversations avec tes clients apparaîtront ici.</p></div>`}
     </section>`;
   }
 
@@ -1092,7 +1257,26 @@ video.proof-img{background:#000;object-fit:contain}
   /* =====================================================================
      Après rendu : animation du coffre, recherche
      ===================================================================== */
+  let lastMsgCount = -1, lastChatKey = "";
   function afterRender() {
+    const box = document.getElementById("msgs");
+    if (box) {
+      const key = chatSub?.id || "";
+      if (key !== lastChatKey || A.msgs.length !== lastMsgCount) $main.scrollTop = $main.scrollHeight; // descend sur le dernier message
+      lastChatKey = key; lastMsgCount = A.msgs.length;
+      markRead();
+      const form = document.getElementById("composer");
+      if (form && !form.dataset.wired) {
+        form.dataset.wired = "1";
+        form.addEventListener("submit", e => {
+          e.preventDefault();
+          const inp = document.getElementById("chatInput"), text = inp.value.trim();
+          if (!text) return;
+          inp.value = ""; inp.focus();
+          sendMessage(text.slice(0, 1000)).catch(() => { toast("Message non envoyé. Vérifie ta connexion."); const i = document.getElementById("chatInput"); if (i && !i.value) i.value = text; });
+        });
+      }
+    } else { lastChatKey = ""; lastMsgCount = -1; }
     const el = document.getElementById("recAmount");
     if (el && A.program?.mise) {
       const now_ = recovered(A.program);
@@ -1135,7 +1319,9 @@ video.proof-img{background:#000;object-fit:contain}
   $settings.addEventListener("click", sheetSettings);
   $tabbar.addEventListener("click", e => {
     const b = e.target.closest("button[data-tab]"); if (!b) return;
-    A.tab[A.profile.role] = b.dataset.tab; A.openClient = null; render(); $main.scrollTop = 0;
+    A.tab[A.profile.role] = b.dataset.tab; A.openClient = null;
+    if (A.profile.role === "coach" && A.chatWith) { A.chatWith = null; closeChatSub(); }
+    render(); if (b.dataset.tab !== "chat") $main.scrollTop = 0;
   });
 
   $main.addEventListener("click", e => {
@@ -1145,6 +1331,8 @@ video.proof-img{background:#000;object-fit:contain}
     if (d.act === "onboard-back") { A.onboardRole = null; render(); return; }
     if (d.act === "demo-on") { startDemo(); return; }
     if (d.goto) { A.tab.athlete = d.goto; render(); return; }
+    if (d.chat) { A.tab.coach = "chat"; A.chatWith = d.chat; A.openClient = null; openChatSub(chatId(d.chat, A.myId)); render(); return; }
+    if ("chatBack" in d) { A.chatWith = null; closeChatSub(); render(); return; }
     if (d.sport) { A.coachFilter = d.sport; render(); return; }
     if (d.add) { const c = A.coaches.find(x => x.id === d.add); if (c) guard(() => addCoach(c), `${first(c.name)} est maintenant ton coach`); return; }
     if (d.open === "mise") return sheetMise();

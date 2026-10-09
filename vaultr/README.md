@@ -23,6 +23,8 @@ sa mise. Les montants non validés en fin de mois restent à Vaultr.
     Une vidéo (30 s max) est compressée sur le téléphone (480 px, sans le son), découpée
     en morceaux dans `proofs/<id>/chunks/*`, puis supprimée une fois la preuve traitée ;
   - `events/*` : historique de l'argent (mises, exercices validés).
+  - `chats/<sportif>__<coach>` : dernière activité et lecture de chaque conversation ;
+    `chats/<id>/messages/*` : les messages (messagerie coach ⇄ client façon WhatsApp).
 - **Mode démo** : Léa (sportive) et Karim (coach), sans compte.
 - **Encaissement** : quand un exercice est validé, le sportif voit un écran plein
   « +X € » avec une pluie de pièces, même s'il rouvre l'appli plus tard.
