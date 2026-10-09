@@ -33,3 +33,7 @@ scripts/fetch-images.sh
 ## Projet Portier
 
 [`portier/index.html`](portier/index.html) : maquette de **Portier**, un moteur de réservation directe sans commission pour hôtels indépendants (calculateur de commissions, application cliquable, tarifs, business plan). Fichier autonome, à ouvrir directement dans un navigateur.
+
+## Projet Revendo
+
+[`revendo/index.html`](revendo/index.html) : maquette de **Revendo**, une app pour les revendeurs de seconde main (annonce générée à partir d'une photo, prix conseillé, suivi du stock et des bénéfices, business plan). Fichier autonome.
