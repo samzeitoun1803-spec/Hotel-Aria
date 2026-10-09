@@ -219,6 +219,10 @@ input[type=range]{width:100%;accent-color:var(--volt)}
 .loading{display:grid;place-items:center;height:100%;color:var(--muted)}
 .copy{display:flex;gap:8px;align-items:center}
 .copy code{flex:1;min-width:0;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;color:var(--volt);overflow:hidden;text-overflow:ellipsis}
+.vid-wrap{position:relative}
+.vid-play{position:absolute;inset:auto 12px 12px auto;display:inline-flex;align-items:center;gap:8px;background:#0B0D0Ae6;border:1px solid var(--volt);color:var(--volt);border-radius:999px;padding:8px 14px 8px 8px;font-weight:700;font-size:13px}
+.vid-play span{width:26px;height:26px;border-radius:50%;background:var(--volt);color:var(--ink);display:grid;place-items:center;font-size:11px}
+video.proof-img{background:#000;object-fit:contain}
 </style>
 </head>
 <body>
@@ -350,11 +354,13 @@ input[type=range]{width:100%;accent-color:var(--volt)}
       set: async v => { data[path] = clone(v); emit(); },
       update: async v => { if (!(path in data)) throw { code: "invalid_argument", message: "absent" }; data[path] = { ...data[path], ...clone(v) }; emit(); },
       delete: async () => { delete data[path]; emit(); },
-      onSnapshot(next) { const fn = () => next(snap(path)); listeners.add(fn); setTimeout(fn, 0); return () => listeners.delete(fn); }
+      onSnapshot(next) { const fn = () => next(snap(path)); listeners.add(fn); setTimeout(fn, 0); return () => listeners.delete(fn); },
+      collection: sub => colRef(path + "/" + sub)
     });
+    const colRef = col => Object.assign(query(col), { path: col, doc: id => docRef(col + "/" + (id || rid())), add: async v => { const r = docRef(col + "/" + rid()); await r.set(v); return r; } });
     return {
       doc: docRef,
-      collection: col => Object.assign(query(col), { path: col, doc: id => docRef(col + "/" + (id || rid())), add: async v => { const r = docRef(col + "/" + rid()); await r.set(v); return r; } }),
+      collection: colRef,
       reset() { data = demoSeed(); for (const k of Object.keys(localStorage || {})) if (k.startsWith("vaultr-seen-demo")) try { localStorage.removeItem(k); } catch {} emit(); }
     };
   }
@@ -603,9 +609,33 @@ input[type=range]{width:100%;accent-color:var(--volt)}
     await progRef(A.myId).update({ mise: v, tasks });
     await A.db.collection("events").add({ athleteId: A.myId, coachId: p.coachId, label: `Mise ${euro(v)} + coaching ${euro(p.coachFee)} (simulé)`, amount: -(v + (p.coachFee || 0)), ts: now() });
   }
-  async function sendProof(taskId, img) {
+  // Une vidéo est trop lourde pour un seul document : on la range en morceaux sous proofs/<id>/chunks.
+  const CHUNK = 190000;
+  async function sendProof(taskId, media, onProgress) {
     const p = A.program, t = p.tasks.find(x => x.id === taskId);
-    await A.db.collection("proofs").add({ athleteId: A.myId, coachId: p.coachId, taskId, taskName: t?.name || "", value: t?.value || 0, img, status: "pending", ts: now() });
+    const ref = A.db.collection("proofs").doc();
+    const base = { athleteId: A.myId, coachId: p.coachId, taskId, taskName: t?.name || "", value: t?.value || 0, status: "pending", ts: now() };
+    if (media.video) {
+      const parts = [];
+      for (let i = 0; i < media.video.length; i += CHUNK) parts.push(media.video.slice(i, i + CHUNK));
+      for (let i = 0; i < parts.length; i++) {
+        await ref.collection("chunks").doc(String(i).padStart(3, "0")).set({ d: parts[i] });
+        onProgress?.((i + 1) / parts.length);
+      }
+      await ref.set({ ...base, kind: "video", mime: media.mime, chunks: parts.length, poster: media.poster || "", duration: media.duration || 0 });
+    } else await ref.set({ ...base, kind: "photo", img: media.img });
+  }
+  async function loadVideo(pr) {
+    const snaps = await Promise.all(Array.from({ length: pr.chunks }, (_, i) => A.db.doc(`proofs/${pr.id}/chunks/${String(i).padStart(3, "0")}`).get()));
+    if (snaps.some(s => !s.exists)) throw { ui: "La vidéo n'est plus disponible." };
+    const b64 = snaps.map(s => s.data().d).join(""), mime = pr.mime || "video/webm";
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return { url: URL.createObjectURL(new Blob([bytes], { type: mime })), fallback: `data:${mime};base64,${b64}` };
+  }
+  async function dropVideo(pr) {
+    if (pr.kind !== "video" || !pr.chunks) return;
+    for (let i = 0; i < pr.chunks; i++) await A.db.doc(`proofs/${pr.id}/chunks/${String(i).padStart(3, "0")}`).delete().catch(() => {});
   }
   async function validateTask(aid, taskId, viaProof) {
     const s = await progRef(aid).get(); if (!s.exists) return null;
@@ -618,7 +648,8 @@ input[type=range]{width:100%;accent-color:var(--volt)}
   }
   async function reviewProof(pr, ok) {
     if (ok) await validateTask(pr.athleteId, pr.taskId, true);
-    await A.db.doc("proofs/" + pr.id).update({ status: ok ? "ok" : "ko", reviewedAt: now() });
+    await A.db.doc("proofs/" + pr.id).update({ status: ok ? "ok" : "ko", reviewedAt: now(), ...(pr.kind === "video" ? { chunks: 0, poster: "" } : {}) });
+    await dropVideo(pr); // la vidéo est supprimée après la décision pour garder de la place
   }
 
   // Arrondit au centime et met le reste éventuel sur le point faible (ou le premier exercice)
@@ -793,7 +824,7 @@ input[type=range]{width:100%;accent-color:var(--volt)}
         ${full ? `<span class="chip volt">Objectif du mois atteint ✓</span>`
         : pend ? `<span class="chip wait">Preuve envoyée · en attente du coach</span>`
         : `${refused ? `<span class="chip loss">Preuve refusée, renvoie-en une</span>` : ""}
-           <label class="btn small"><input type="file" accept="image/*" data-proof="${esc(t.id)}" hidden>📸 Envoyer une preuve</label>
+           <label class="btn small"><input type="file" accept="image/*,video/*" data-proof="${esc(t.id)}" hidden>📸 Photo ou vidéo</label>
            <span class="chip">ou validation en séance</span>`}
       </div>
     </div>`;
@@ -986,10 +1017,14 @@ input[type=range]{width:100%;accent-color:var(--volt)}
       <div class="eyebrow">À distance</div><h2>Preuves à vérifier</h2>
       ${pend.length ? pend.map(p => `<div class="card">
           <div class="split"><div><h3>${esc(first(athleteName(p.athleteId)))} · ${esc(p.taskName)}</h3><div class="muted" style="font-size:12px">Envoyée le ${new Date(p.ts).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</div></div><div class="price">${euro(p.value)}</div></div>
-          ${p.img ? `<img class="proof-img" src="${esc(p.img)}" alt="Preuve envoyée pour ${esc(p.taskName)}">` : `<div class="proof-img">Pas d'image</div>`}
+          ${p.kind === "video" ? `<div class="vid-wrap" id="vid-${esc(p.id)}">
+              ${p.poster ? `<img class="proof-img" src="${esc(p.poster)}" alt="Aperçu de la vidéo pour ${esc(p.taskName)}">` : `<div class="proof-img"></div>`}
+              <button type="button" class="vid-play" data-play="${esc(p.id)}" aria-label="Lire la vidéo"><span>▶</span>Vidéo · ${Math.round(p.duration || 0)} s</button>
+            </div>`
+          : p.img ? `<img class="proof-img" src="${esc(p.img)}" alt="Preuve envoyée pour ${esc(p.taskName)}">` : `<div class="proof-img">Pas d'image</div>`}
           <div class="row"><button type="button" class="btn small primary" data-approve="${esc(p.id)}" style="flex:1">✓ Valider · rendre ${euro(p.value)}</button><button type="button" class="btn small" data-reject="${esc(p.id)}">Refuser</button></div>
         </div>`).join("")
-      : `<div class="card"><h3>Rien à vérifier</h3><p class="muted" style="margin:0">Quand un client t'envoie une photo d'un exercice, elle apparaît ici en direct.</p></div>`}
+      : `<div class="card"><h3>Rien à vérifier</h3><p class="muted" style="margin:0">Quand un client t'envoie une photo ou une vidéo d'un exercice, elle apparaît ici en direct.</p></div>`}
       ${done.length ? `<h2>Déjà traitées</h2><div class="list">${done.map(p => `<div class="split" style="padding:4px 2px"><span>${esc(first(athleteName(p.athleteId)))} · ${esc(p.taskName)}</span><span class="chip ${p.status === "ok" ? "volt" : "loss"}">${p.status === "ok" ? "Validée" : "Refusée"}</span></div>`).join("")}</div>` : ""}
     </section>`;
   }
@@ -1118,6 +1153,18 @@ input[type=range]{width:100%;accent-color:var(--volt)}
     if ("back" in d) { A.openClient = null; render(); return; }
     if (d.validate) return guard(async () => { const task = await validateTask(A.openClient, d.validate, false); if (task) { coinBurst(t, task.value); toast(`+${euro(task.value)} rendus à ${first(athleteName(A.openClient))} 💸`); } });
     if (d.approve) { const p = A.proofsCoach.find(x => x.id === d.approve); if (p) guard(async () => { await reviewProof(p, true); coinBurst(t, p.value); }, `+${euro(p?.value)} rendus 💸`); return; }
+    if (d.play) {
+      const p = A.proofsCoach.find(x => x.id === d.play); if (!p) return;
+      t.disabled = true; t.innerHTML = "<span>…</span>Chargement";
+      loadVideo(p).then(({ url, fallback }) => {
+        const box = document.getElementById("vid-" + p.id); if (!box) return;
+        const v = document.createElement("video");
+        v.className = "proof-img"; v.controls = true; v.playsInline = true; v.autoplay = true; v.muted = true;
+        v.onerror = () => { if (v.src !== fallback) v.src = fallback; else toast("Ce format de vidéo ne se lit pas sur cet appareil."); };
+        v.src = url; box.replaceChildren(v);
+      }).catch(x => { toast(x?.ui || "Impossible de lire cette vidéo."); t.disabled = false; t.innerHTML = "<span>▶</span>Réessayer"; });
+      return;
+    }
     if (d.reject) { const p = A.proofsCoach.find(x => x.id === d.reject); if (p) guard(() => reviewProof(p, false), "Preuve refusée. Ton client peut en renvoyer une."); return; }
     if (d.act === "boost") return guard(() => A.db.doc("profiles/" + A.myId).update({ boostedUntil: now() + 30 * 86400000 }), "Boost activé : tu es en tête de la recherche ⚡");
     if (d.act === "pro") return guard(() => A.db.doc("profiles/" + A.myId).update({ pro: !A.profile.pro }), A.profile.pro ? "Retour à la version gratuite" : "Vaultr Pro activé");
@@ -1131,11 +1178,13 @@ input[type=range]{width:100%;accent-color:var(--volt)}
     }
   });
 
-  // Envoi d'une photo comme preuve : réduite pour rester légère
+  // Envoi d'une preuve : photo réduite, ou vidéo compressée sur le téléphone puis envoyée en morceaux
   $main.addEventListener("change", e => {
     const inp = e.target.closest("input[data-proof]"); if (!inp || !inp.files[0]) return;
     const f = inp.files[0], taskId = inp.dataset.proof;
-    if (!f.type.startsWith("image/")) { toast("Envoie une photo (les vidéos arrivent bientôt)."); return; }
+    inp.value = "";
+    if (f.type.startsWith("video/") || /\.(mov|mp4|webm|m4v|3gp)$/i.test(f.name)) return sendVideoProof(f, taskId);
+    if (!f.type.startsWith("image/")) { toast("Envoie une photo ou une vidéo."); return; }
     const r = new FileReader();
     r.onload = () => {
       const im = new Image();
@@ -1147,13 +1196,90 @@ input[type=range]{width:100%;accent-color:var(--volt)}
           c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
           url = c.toDataURL("image/jpeg", q); side *= .8; q -= .1;
         } while (url.length > 180000 && q > .2);
-        guard(() => sendProof(taskId, url), "Preuve envoyée à ton coach 📸");
+        guard(() => sendProof(taskId, { img: url }), "Preuve envoyée à ton coach 📸");
       };
       im.onerror = () => toast("Cette image n'a pas pu être lue.");
       im.src = r.result;
     };
     r.readAsDataURL(f);
   });
+
+  /* ---------- Vidéos ---------- */
+  const MAX_SECONDS = 30, DIRECT_BYTES = 1200000, MAX_BYTES = 4000000;
+  const blobToB64 = b => new Promise((ok, ko) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = ko; r.readAsDataURL(b); });
+  function progressSheet(title) {
+    openSheet(`<div class="grab"></div><h2>${esc(title)}</h2><p class="muted" id="vpText" style="margin:0">Préparation…</p>
+      <div class="bar" style="height:10px"><i id="vpBar" style="width:0%"></i></div>
+      <p class="muted" style="margin:0;font-size:12px">Garde l'appli ouverte pendant l'envoi.</p>`);
+    const wrap = document.getElementById("sheetWrap"); wrap.replaceWith(wrap.cloneNode(true)); // pas de fermeture par clic pendant l'envoi
+    return (text, pct) => { const t = document.getElementById("vpText"), b = document.getElementById("vpBar"); if (t) t.textContent = text; if (b) b.style.width = Math.round(pct * 100) + "%"; };
+  }
+  function openVideo(file) {
+    return new Promise((ok, ko) => {
+      const v = document.createElement("video");
+      v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = URL.createObjectURL(file);
+      v.onloadedmetadata = () => {
+        if (Number.isFinite(v.duration)) return ok(v);
+        // certaines vidéos (souvent Android) n'annoncent pas leur durée : on va à la fin pour la connaître
+        v.ondurationchange = () => { if (Number.isFinite(v.duration)) { v.ondurationchange = null; v.onseeked = () => { v.onseeked = null; ok(v); }; v.currentTime = 0; } };
+        v.currentTime = 1e7;
+        setTimeout(() => ko({ ui: "Impossible de lire la durée de cette vidéo." }), 8000);
+      };
+      v.onerror = () => ko({ ui: "Cette vidéo ne peut pas être lue sur ce téléphone. Essaie de la filmer à nouveau." });
+    });
+  }
+  function grabPoster(v) {
+    return new Promise(ok => {
+      const draw = () => { try { const c = document.createElement("canvas"), k = Math.min(1, 480 / Math.max(v.videoWidth, v.videoHeight)); c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k); c.getContext("2d").drawImage(v, 0, 0, c.width, c.height); ok(c.toDataURL("image/jpeg", .6)); } catch { ok(""); } };
+      v.onseeked = draw; try { v.currentTime = Math.min(.5, v.duration / 2 || 0); } catch { draw(); }
+      setTimeout(() => ok(""), 4000);
+    });
+  }
+  // Ré-encode la vidéo en petit format (480 px, sans le son) en la rejouant dans un canvas.
+  function compressVideo(v, onProgress) {
+    return new Promise((ok, ko) => {
+      const type = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm", "video/mp4"].find(t => window.MediaRecorder?.isTypeSupported?.(t));
+      if (!type || !HTMLCanvasElement.prototype.captureStream) return ko({ ui: "Ton navigateur ne peut pas compresser cette vidéo. Filme une vidéo plus courte (quelques secondes)." });
+      const k = Math.min(1, 480 / Math.max(v.videoWidth, v.videoHeight));
+      const c = document.createElement("canvas"); c.width = Math.round(v.videoWidth * k / 2) * 2; c.height = Math.round(v.videoHeight * k / 2) * 2;
+      const ctx = c.getContext("2d");
+      const rec = new MediaRecorder(c.captureStream(24), { mimeType: type, videoBitsPerSecond: 600000 });
+      const parts = []; rec.ondataavailable = e => e.data.size && parts.push(e.data);
+      rec.onstop = () => ok({ blob: new Blob(parts, { type: type.split(";")[0] }), mime: type.split(";")[0] });
+      let stopped = false;
+      const stop = () => { if (!stopped) { stopped = true; rec.stop(); v.pause(); } };
+      const frame = () => { if (stopped) return; ctx.drawImage(v, 0, 0, c.width, c.height); onProgress(Math.min(1, v.currentTime / v.duration)); if (v.ended) stop(); else requestAnimationFrame(frame); };
+      v.onended = stop;
+      v.currentTime = 0; rec.start(250);
+      v.play().then(() => requestAnimationFrame(frame)).catch(() => { stopped = true; try { rec.stop(); } catch {} ko({ ui: "Impossible de lire la vidéo pour la compresser." }); });
+      setTimeout(stop, (MAX_SECONDS + 5) * 1000);
+    });
+  }
+  async function sendVideoProof(file, taskId) {
+    if (A.busy) return;
+    A.busy = true;
+    let set = null;
+    try {
+      const v = await openVideo(file);
+      if (v.duration > MAX_SECONDS + .5) throw { ui: `Vidéo trop longue : ${MAX_SECONDS} secondes maximum. Coupe-la ou filme seulement l'exercice.` };
+      set = progressSheet("Envoi de ta vidéo");
+      const poster = await grabPoster(v);
+      let blob = file, mime = file.type || "video/mp4";
+      if (file.size > DIRECT_BYTES) {
+        const out = await compressVideo(v, p => set("Compression de la vidéo…", p * .6));
+        blob = out.blob; mime = out.mime;
+      }
+      if (blob.size > MAX_BYTES) throw { ui: "Vidéo trop lourde, même compressée. Filme une vidéo plus courte." };
+      set("Envoi à ton coach…", .6);
+      const b64 = await blobToB64(blob);
+      await sendProof(taskId, { video: b64, mime, poster, duration: v.duration }, p => set("Envoi à ton coach…", .6 + p * .4));
+      URL.revokeObjectURL(v.src);
+      closeSheet(); toast("Vidéo envoyée à ton coach 🎥");
+    } catch (x) {
+      closeSheet();
+      toast(x?.ui || (x?.code === "quota_exceeded" ? "L'espace de stockage de Vaultr est plein." : "L'envoi de la vidéo a échoué. Vérifie ta connexion et réessaie."));
+    } finally { A.busy = false; }
+  }
 
   /* =====================================================================
      Lancement

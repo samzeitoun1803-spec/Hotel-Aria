@@ -19,7 +19,9 @@ sa mise. Les montants non validés en fin de mois restent à Vaultr.
   `@tag`. Les données sont partagées en direct :
   - `profiles/<id>` : profil (chacun ne modifie que le sien) ;
   - `programs/<id sportif>` : coach, mise, exercices (valeur, séances, argent déjà rendu) ;
-  - `proofs/*` : photos envoyées par le sportif, validées ou refusées par le coach ;
+  - `proofs/*` : photos ou vidéos envoyées par le sportif, validées ou refusées par le coach.
+    Une vidéo (30 s max) est compressée sur le téléphone (480 px, sans le son), découpée
+    en morceaux dans `proofs/<id>/chunks/*`, puis supprimée une fois la preuve traitée ;
   - `events/*` : historique de l'argent (mises, exercices validés).
 - **Mode démo** : Léa (sportive) et Karim (coach), sans compte.
 - **Encaissement** : quand un exercice est validé, le sportif voit un écran plein
