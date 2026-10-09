@@ -25,7 +25,12 @@ sa mise. Les montants non validés en fin de mois restent à Vaultr.
   - `events/*` : historique de l'argent (mises, exercices validés).
   - `chats/<sportif>__<coach>` : dernière activité et lecture de chaque conversation ;
     `chats/<id>/messages/*` : les messages (messagerie coach ⇄ client façon WhatsApp).
-- **Mode démo** : Léa (sportive) et Karim (coach), sans compte.
+- **Connexion** : écran d'accueil « Créer un compte » / « Se connecter », déconnexion et
+  suppression du compte dans les réglages.
+  - Démo : e-mail + mot de passe gardés sur l'appareil (`accounts/*` de la base locale) ;
+    comptes Léa et Karim (mot de passe `demo1234`) en un clic.
+  - Vrais comptes : identité du compte Claude (pas de mot de passe stocké dans la base
+    partagée). Les vrais comptes e-mail / Apple / Google viendront avec Supabase.
 - **Encaissement** : quand un exercice est validé, le sportif voit un écran plein
   « +X € » avec une pluie de pièces, même s'il rouvre l'appli plus tard.
 - L'argent déjà rendu est acquis : modifier le programme ou la mise ne répartit que

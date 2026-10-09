@@ -252,6 +252,29 @@ video.proof-img{background:#000;object-fit:contain}
 .chat-row .dot{width:10px;height:10px;border-radius:50%;background:var(--volt);flex:none;box-shadow:0 0 8px #C6FF4D}
 .chat-list{gap:0}
 .chat-row .grow{flex:1;min-width:0}
+
+/* ---------- Connexion ---------- */
+.auth{gap:18px}
+.auth-hero{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-top:10px}
+.auth-dial{width:64px;height:64px;box-shadow:0 0 0 8px #C6FF4D1a,0 0 40px #C6FF4D55}
+.auth-dial svg{width:40px;height:40px}
+.auth-actions{display:flex;flex-direction:column;gap:10px}
+.btn.big{padding:15px 16px;font-size:16px;border-radius:14px}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.demo-accounts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field input[type=email],.field input[type=password],.pw input{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+.pw{position:relative;display:flex}
+.pw input{padding-right:84px}
+.pw .link{position:absolute;right:10px;top:50%;transform:translateY(-50%)}
+.link{color:var(--volt);font-weight:600;font-size:13px;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
+.center{text-align:center;margin:0}
+.check.small{font-size:13px;align-items:flex-start;color:var(--muted)}
+.check.small input{margin-top:1px;flex:none}
+.err.info{color:var(--volt)}
+.btn.danger{color:var(--loss);border-color:#FF5C4D55}
+.btn.danger-fill{background:var(--loss);border-color:var(--loss);color:#fff}
+.danger-box{border-color:#FF5C4D55}
 </style>
 </head>
 <body>
@@ -321,15 +344,26 @@ video.proof-img{background:#000;object-fit:contain}
   const earned = t => t.earned ?? t.value * t.done;            // argent déjà rendu sur cet exercice (acquis)
   const recovered = p => (p?.tasks || []).reduce((a, t) => a + earned(t), 0);
   const left = t => Math.max(0, t.target - t.done);              // séances encore à valider
+  // Empreinte du mot de passe pour la démo (comptes gardés sur l'appareil uniquement)
+  function pwHash(email, pw) {
+    const str = email.toLowerCase() + ":" + pw; let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+    for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (h2 >>> 0).toString(16) + (h1 >>> 0).toString(16);
+  }
+  const emailKey = e => e.trim().toLowerCase().replace(/[^a-z0-9_\-.~:@+]/g, "_").slice(0, 190);
   const SPORTS = ["Remise en forme", "Musculation", "Course à pied", "Yoga & mobilité", "Boxe", "Pilates", "Natation", "Autre"];
 
   /* =====================================================================
      Base locale pour le mode démo (même interface que la vraie base)
      ===================================================================== */
-  const DEMO_KEY = "vaultr-demo-v3";
+  const DEMO_KEY = "vaultr-demo-v4";
   function demoSeed() {
     const t0 = now() - 86400000 * 9;
     const P = {};
+    P["accounts/lea@vaultr.demo"] = { uid: "demo_lea", email: "lea@vaultr.demo", pw: pwHash("lea@vaultr.demo", "demo1234") };
+    P["accounts/karim@vaultr.demo"] = { uid: "demo_karim", email: "karim@vaultr.demo", pw: pwHash("karim@vaultr.demo", "demo1234") };
     const coach = (id, name, handle, city, sport, price) => P["profiles/" + id] = { role: "coach", name, handle, city, sport, price, boostedUntil: 0, pro: false, createdAt: t0 };
     coach("demo_karim", "Karim Benali", "karim.fit", "Nice", "Remise en forme", 150);
     coach("demo_ines", "Inès Morel", "ines.yoga", "Nice", "Yoga & mobilité", 120);
@@ -412,7 +446,7 @@ video.proof-img{background:#000;object-fit:contain}
     blockedWhy: "",
     db: null, liveDb: null, user: null,
     myId: null, suggestedName: "",
-    demoAs: lsGet("vaultr-demo-as") || "demo_lea",
+    auth: "welcome", creating: false,   // écrans de connexion
     profile: undefined,       // undefined = pas encore chargé, null = pas de profil
     coaches: [], athletes: {},
     program: undefined, proofsAth: [], events: [],
@@ -556,12 +590,25 @@ video.proof-img{background:#000;object-fit:contain}
   }
   function startLive() {
     A.mode = "live"; A.db = A.liveDb; A.myId = A.liveId; lsSet("vaultr-mode", "live");
+    A.auth = "welcome"; A.creating = false;
     resetData(); subscribeBase(); render();
   }
   function startDemo() {
     A.mode = "demo"; A.db = A.demoDb || (A.demoDb = makeLocalDb()); lsSet("vaultr-mode", "demo");
-    A.myId = A.demoAs; resetData(); subscribeBase(); render();
+    A.myId = lsGet("vaultr-demo-session") || null; A.auth = "welcome";
+    resetData(); if (A.myId) subscribeBase(); render();
   }
+  function demoLogin(uid) {
+    lsSet("vaultr-demo-session", uid); A.myId = uid;
+    resetData(); subscribeBase(); render(); $main.scrollTop = 0;
+  }
+  function logout() {
+    closeSheet();
+    if (A.mode === "demo") { lsSet("vaultr-demo-session", ""); A.myId = null; resetData(); }
+    else lsSet("vaultr-live-out", "1");
+    A.auth = "welcome"; A.creating = false; render(); toast("Tu es déconnecté");
+  }
+  const loggedOut = () => A.mode === "demo" ? !A.myId : lsGet("vaultr-live-out") === "1";
   function resetData() {
     unsubs.forEach(u => u()); roleSubs.forEach(u => u()); unsubs = []; roleSubs = []; subscribedRole = null;
     Object.assign(A, { profile: undefined, coaches: [], athletes: {}, program: undefined, proofsAth: [], events: [], clients: [], proofsCoach: [], openClient: null, onboardRole: null, chats: [], chat: null, msgs: [], chatWith: null });
@@ -784,15 +831,17 @@ video.proof-img{background:#000;object-fit:contain}
     const role = A.profile?.role;
     const ready = A.mode === "live" || A.mode === "demo";
     $pill.hidden = A.mode !== "demo";
-    $switch.hidden = A.mode !== "demo";
+    $switch.hidden = A.mode !== "demo" || !A.myId || !A.profile;
     $switch.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.role === "athlete" ? "demo_lea" : "demo_karim") === A.myId)));
-    $settings.hidden = !ready || !A.profile;
-    $tabbar.hidden = !ready || !role;
+    $settings.hidden = !ready || !A.profile || loggedOut();
+    $tabbar.hidden = !ready || !role || loggedOut();
 
     let html, key;
     if (A.mode === "loading") { html = `<div class="loading">Ouverture du coffre…</div>`; key = "loading"; }
     else if (A.mode === "blocked") { html = viewBlocked(); key = "blocked"; }
+    else if (loggedOut()) { html = viewAuth(); key = "auth" + A.auth; }
     else if (A.profile === undefined) { html = `<div class="loading">Chargement de ton compte…</div>`; key = "loading"; }
+    else if (!A.profile && A.mode === "live" && !A.creating) { html = viewAuth(); key = "auth" + A.auth; }
     else if (!A.profile) { html = viewOnboard(); key = "onboard" + (A.onboardRole || ""); }
     else {
       renderTabs(role);
@@ -844,17 +893,85 @@ video.proof-img{background:#000;object-fit:contain}
     </section>`;
   }
 
-  /* ---------- Inscription ---------- */
+  /* ---------- Connexion / création de compte ---------- */
+  function viewAuth() {
+    const step = A.auth, live = A.mode === "live";
+    if (step === "welcome") return `<section class="screen ENTER auth">
+      <div class="auth-hero"><div class="cele-vault auth-dial">${VAULT_ICON}</div>
+        <p class="hero-line">Mets de l'argent en jeu.<br><em>Récupère-le</em> en t'entraînant.</p></div>
+      <p class="muted" style="margin:0">Tu paies ton coach ici et tu ajoutes une mise pour te motiver. Chaque exercice validé te rend une partie de ta mise.</p>
+      <div class="auth-actions">
+        <button type="button" class="btn primary wide big" data-auth="signup">Créer un compte</button>
+        <button type="button" class="btn wide big" data-auth="login">Se connecter</button>
+      </div>
+      ${live ? `<button type="button" class="btn ghost small" data-act="demo-on" style="align-self:center">Juste essayer la démo</button>`
+      : `<div class="or"><span>ou essaie un compte de démo</span></div>
+      <div class="demo-accounts">
+        <button type="button" class="btn" data-demo-login="demo_lea">👟 Léa · sportive</button>
+        <button type="button" class="btn" data-demo-login="demo_karim">🏋️ Karim · coach</button>
+      </div>`}
+    </section>`;
+    const signup = step === "signup";
+    const back = `<button type="button" class="btn small ghost" data-auth="welcome" style="align-self:flex-start">← Retour</button>`;
+    const swap = signup ? `Déjà un compte ? <button type="button" class="link" data-auth="login">Se connecter</button>` : `Pas encore de compte ? <button type="button" class="link" data-auth="signup">Créer un compte</button>`;
+    if (live) return `<section class="screen ENTER">${back}
+      <h2>${signup ? "Créer ton compte" : "Se connecter"}</h2>
+      <div class="card">
+        <div class="row"><div class="avatar volt">${esc(initials(A.suggestedName))}</div><div class="grow"><h3>${esc(A.suggestedName || "Ton compte")}</h3><div class="muted" style="font-size:13px">Compte Claude</div></div></div>
+        <p class="muted" style="margin:0;font-size:14px">Sur cette version, ton compte Vaultr est lié à ton compte Claude : pas de mot de passe à retenir, la connexion est sécurisée.</p>
+        <div class="err" id="authErr" role="alert"></div>
+        <button type="button" class="btn primary wide" data-live-auth="${signup ? "signup" : "login"}">${signup ? "Continuer et créer mon profil" : "Me connecter"}</button>
+      </div>
+      <p class="muted center">${swap}</p>
+    </section>`;
+    return `<section class="screen ENTER">${back}
+      <h2>${signup ? "Créer ton compte" : "Content de te revoir 👋"}</h2>
+      <form id="authForm" class="card" novalidate>
+        <div class="field"><label for="authEmail">E-mail</label><input type="email" id="authEmail" autocomplete="email" inputmode="email" autocapitalize="off" placeholder="toi@exemple.fr"></div>
+        <div class="field"><label for="authPw">Mot de passe${signup ? " (8 caractères minimum)" : ""}</label>
+          <div class="pw"><input type="password" id="authPw" autocomplete="${signup ? "new-password" : "current-password"}" placeholder="••••••••"><button type="button" class="link" data-act="pw-toggle">Afficher</button></div></div>
+        ${signup ? `<div class="field"><label for="authPw2">Confirme le mot de passe</label><input type="password" id="authPw2" autocomplete="new-password" placeholder="••••••••"></div>
+        <label class="check small"><input type="checkbox" id="authCgu"> <span>J'accepte les conditions d'utilisation et la règle de la mise : l'argent non récupéré à la fin du mois reste à Vaultr.</span></label>`
+        : `<button type="button" class="link" data-act="forgot" style="align-self:flex-end">Mot de passe oublié ?</button>`}
+        <div class="err" id="authErr" role="alert"></div>
+        <button type="submit" class="btn primary wide">${signup ? "Créer mon compte" : "Se connecter"}</button>
+      </form>
+      <div class="or"><span>ou</span></div>
+      <button type="button" class="btn wide" data-act="social" data-p="Apple"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.5 1.3-.1 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.3-2.7 1.4-2.8-.1 0-2.6-1-2.7-4.2zM14 5.3c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg> Continuer avec Apple</button>
+      <button type="button" class="btn wide" data-act="social" data-p="Google"><b style="color:#4285F4">G</b> Continuer avec Google</button>
+      <p class="muted center">${swap}</p>
+    </section>`;
+  }
+  async function demoAuth(signup) {
+    const g = id => document.getElementById(id);
+    const email = (g("authEmail")?.value || "").trim().toLowerCase(), pw = g("authPw")?.value || "";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw { ui: "Entre une adresse e-mail valide." };
+    if (pw.length < (signup ? 8 : 1)) throw { ui: signup ? "Ton mot de passe doit faire au moins 8 caractères." : "Entre ton mot de passe." };
+    const ref = A.db.doc("accounts/" + emailKey(email)), snap = await ref.get();
+    if (signup) {
+      if (pw !== g("authPw2")?.value) throw { ui: "Les deux mots de passe ne sont pas identiques." };
+      if (!g("authCgu")?.checked) throw { ui: "Accepte les conditions d'utilisation pour continuer." };
+      if (snap.exists) throw { ui: "Un compte existe déjà avec cet e-mail. Connecte-toi." };
+      const uid = "demo_u_" + rid();
+      await ref.set({ uid, email, pw: pwHash(email, pw), createdAt: now() });
+      demoLogin(uid); toast("Compte créé ! Complète ton profil.");
+    } else {
+      if (!snap.exists || snap.data().pw !== pwHash(email, pw)) throw { ui: "E-mail ou mot de passe incorrect." };
+      demoLogin(snap.data().uid); toast("Connecté");
+    }
+  }
+
+  /* ---------- Inscription : profil ---------- */
   function viewOnboard() {
     const r = A.onboardRole;
     if (!r) return `<section class="screen ENTER">
-      <p class="hero-line">Mets de l'argent en jeu.<br><em>Récupère-le</em> en t'entraînant.</p>
-      <p class="muted">Tu paies ton coach ici, tu ajoutes une mise pour te motiver. Chaque exercice validé par ton coach te rend une partie de ta mise.</p>
+      <button type="button" class="btn small ghost" data-act="onboard-exit" style="align-self:flex-start">← ${A.mode === "live" ? "Retour" : "Se déconnecter"}</button>
+      <h2>Tu es plutôt…</h2>
+      <p class="muted" style="margin:0">Dernière étape : ton profil. Tu pourras le changer plus tard dans les réglages.</p>
       <div class="role-pick">
         <button type="button" class="role-card" data-pick="athlete"><b>Je suis sportif</b><span>Je veux me remettre au sport, perdre du poids ou progresser.</span></button>
         <button type="button" class="role-card" data-pick="coach"><b>Je suis coach</b><span>Je suis mes clients, je crée leurs exercices et je valide leurs séances.</span></button>
       </div>
-      ${A.mode === "live" ? `<button type="button" class="btn ghost small" data-act="demo-on" style="align-self:flex-start">Juste essayer la démo</button>` : ""}
     </section>`;
     const coach = r === "coach";
     return `<section class="screen ENTER">
@@ -1228,13 +1345,31 @@ video.proof-img{background:#000;object-fit:contain}
       : `<p class="note">Tu es dans la <b>démo</b> : les données restent sur cet appareil.</p>
         ${A.liveDb ? `<button type="button" class="btn primary wide" data-s="live">Utiliser mon vrai compte</button>` : ""}
         <button type="button" class="btn wide ghost" data-s="reset">Remettre la démo à zéro</button>`}
+      <button type="button" class="btn wide" data-s="logout">Se déconnecter</button>
+      <div id="delZone"><button type="button" class="btn wide ghost danger" data-s="delete">Supprimer mon compte</button></div>
       <p class="muted" style="margin:0;font-size:12px">Paiements simulés : aucune vraie somme n'est débitée.</p>`, sh => {
       sh.addEventListener("click", e => {
         const b = e.target.closest("[data-s]"); if (!b) return;
-        const s = b.dataset.s; closeSheet();
-        if (s === "demo") { startDemo(); toast("Mode démo : tu peux passer de Léa à Karim en haut"); }
+        const s = b.dataset.s;
+        if (s === "delete") {
+          sh.querySelector("#delZone").innerHTML = `<div class="card danger-box"><h3>Supprimer ton compte ?</h3>
+            <p class="muted" style="margin:0;font-size:14px">Ton profil${me.role === "athlete" ? ", ton programme et ton solde" : ""} seront effacés. C'est définitif.</p>
+            <div class="row"><button type="button" class="btn small danger-fill" data-s="delete-yes" style="flex:1">Oui, supprimer</button><button type="button" class="btn small" data-s="delete-no">Annuler</button></div></div>`;
+          return;
+        }
+        if (s === "delete-no") { sh.querySelector("#delZone").innerHTML = `<button type="button" class="btn wide ghost danger" data-s="delete">Supprimer mon compte</button>`; return; }
+        closeSheet();
+        if (s === "logout") return logout();
+        if (s === "delete-yes") return guard(async () => {
+          const id = A.myId;
+          if (me.role === "athlete") await A.db.doc("programs/" + id).delete();
+          await A.db.doc("profiles/" + id).delete();
+          if (A.mode === "demo") { const acc = (await A.db.collection("accounts").where("uid", "==", id).get()).docs[0]; if (acc) await A.db.doc("accounts/" + acc.id).delete(); logout(); }
+          else { A.creating = false; A.auth = "welcome"; render(); }
+        }, "Compte supprimé");
+        if (s === "demo") { startDemo(); toast("Mode démo : choisis Léa ou Karim, ou crée un compte"); }
         if (s === "live") { startLive(); }
-        if (s === "reset") { A.demoDb.reset(); resetData(); subscribeBase(); toast("Démo remise à zéro"); }
+        if (s === "reset") { A.demoDb.reset(); lsSet("vaultr-demo-session", ""); A.myId = null; resetData(); A.auth = "welcome"; render(); toast("Démo remise à zéro"); }
         if (s === "switch") guard(async () => {
           const role = me.role === "coach" ? "athlete" : "coach";
           await A.db.doc("profiles/" + A.myId).update(role === "coach" ? { role, sport: me.sport || SPORTS[0], price: me.price ?? 150, boostedUntil: me.boostedUntil || 0, pro: !!me.pro } : { role, goal: me.goal || "Remise en forme" });
@@ -1293,6 +1428,17 @@ video.proof-img{background:#000;object-fit:contain}
     }
     const s = document.getElementById("coachSearch");
     if (s && !s.dataset.wired) { s.dataset.wired = "1"; s.addEventListener("input", () => { A.coachQuery = s.value; document.getElementById("coachList").innerHTML = coachListHTML(); }); }
+    const af = document.getElementById("authForm");
+    if (af && !af.dataset.wired) {
+      af.dataset.wired = "1";
+      af.addEventListener("submit", async e => {
+        e.preventDefault();
+        const err = document.getElementById("authErr"); err.textContent = ""; err.classList.remove("info");
+        const btn = af.querySelector("button[type=submit]"), label = btn.textContent; btn.disabled = true;
+        try { await demoAuth(A.auth === "signup"); }
+        catch (x) { const e2 = document.getElementById("authErr"); if (e2) e2.textContent = x?.ui || "Ça n'a pas marché. Réessaie."; const b2 = document.querySelector("#authForm button[type=submit]"); if (b2) { b2.disabled = false; b2.textContent = label; } }
+      });
+    }
     const f = document.getElementById("onboardForm");
     if (f && !f.dataset.wired) {
       f.dataset.wired = "1";
@@ -1313,8 +1459,8 @@ video.proof-img{background:#000;object-fit:contain}
   $switch.addEventListener("click", e => {
     const b = e.target.closest("button[data-role]"); if (!b || A.mode !== "demo") return;
     const id = b.dataset.role === "athlete" ? "demo_lea" : "demo_karim";
+    if (id !== A.myId) return demoLogin(id);
     if (id === A.myId) return;
-    A.demoAs = id; lsSet("vaultr-demo-as", id); A.myId = id; resetData(); subscribeBase(); render();
   });
   $settings.addEventListener("click", sheetSettings);
   $tabbar.addEventListener("click", e => {
@@ -1329,6 +1475,20 @@ video.proof-img{background:#000;object-fit:contain}
     const d = t.dataset;
     if (d.pick) { A.onboardRole = d.pick; render(); return; }
     if (d.act === "onboard-back") { A.onboardRole = null; render(); return; }
+    if (d.act === "onboard-exit") { if (A.mode === "demo") logout(); else { A.creating = false; A.auth = "welcome"; render(); } return; }
+    if (d.auth) { A.auth = d.auth; render(); $main.scrollTop = 0; return; }
+    if (d.demoLogin) { demoLogin(d.demoLogin); toast(d.demoLogin === "demo_lea" ? "Connectée en tant que Léa" : "Connecté en tant que Karim"); return; }
+    if (d.liveAuth) {
+      const err = document.getElementById("authErr");
+      if (A.profile === undefined) { err.textContent = "Chargement de ton compte, réessaie dans une seconde."; return; }
+      if (A.profile) { lsSet("vaultr-live-out", ""); render(); toast(`Content de te revoir, ${first(A.profile.name)} !`); return; }
+      if (d.liveAuth === "signup") { lsSet("vaultr-live-out", ""); A.creating = true; A.onboardRole = null; render(); return; }
+      err.innerHTML = `Aucun compte Vaultr n'est lié à ce compte Claude. <button type="button" class="link" data-auth="signup">Crée-le en 1 minute</button>`;
+      return;
+    }
+    if (d.act === "pw-toggle") { const i = document.getElementById("authPw"); const show = i.type === "password"; i.type = show ? "text" : "password"; t.textContent = show ? "Masquer" : "Afficher"; return; }
+    if (d.act === "forgot") { const e2 = document.getElementById("authErr"); e2.classList.add("info"); e2.textContent = "Démo : le mot de passe de Léa et de Karim est demo1234. Dans l'appli finale, tu recevras un e-mail pour en choisir un nouveau."; return; }
+    if (d.act === "social") return toast(`La connexion avec ${d.p} arrive avec la version App Store`);
     if (d.act === "demo-on") { startDemo(); return; }
     if (d.goto) { A.tab.athlete = d.goto; render(); return; }
     if (d.chat) { A.tab.coach = "chat"; A.chatWith = d.chat; A.openClient = null; openChatSub(chatId(d.chat, A.myId)); render(); return; }
