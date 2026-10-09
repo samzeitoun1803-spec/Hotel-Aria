@@ -47,3 +47,8 @@ Mêmes fonctionnalités que `vaultr/maquette.html`, nouvelle direction artistiqu
   nouveaux exercices ! », « +3 € rendus »…) ou au coach (« Léa t'écrit », « Nouvelle preuve à
   vérifier ! »…). Réglable ensuite dans ⚙️. Si le navigateur l'autorise, les messages, l'argent
   rendu et les nouvelles preuves déclenchent une vraie notification quand l'appli est en arrière-plan.
+- **Blocs sponsorisés** : sous les exercices du sportif, un carrousel « Près de chez toi » qui défile
+  seul (pause au toucher) : salle de sport, course locale, nutrition, magasin de running, yoga, et un
+  bloc « Ta marque ici » qui présente l'offre aux annonceurs (ciblage ville / sport / objectif, tarif indicatif).
+  Les annonceurs de la démo sont des marques fictives ; les annonces sont une simple liste (`ADS`)
+  à remplacer par une collection alimentée par les vrais annonceurs.

@@ -1302,6 +1302,7 @@
       ${tasks.length ? `<div class="list">${tasks.map(taskAthlete).join("")}</div>`
         : coach?.ai ? `<div class="card ai-wait"><div class="row">${avatar(coach)}<div class="grow"><h3>${A.aiBuilding ? "Vaultr crée ton programme…" : "Ton programme n'est pas encore prêt"}</h3><p class="muted" style="margin:0;font-size:13px">${A.aiBuilding ? "Quelques secondes : il choisit tes exercices et répartit ta mise." : "Demande à Vaultr de le créer maintenant."}</p></div></div>${A.aiBuilding ? `<div class="dots"><span></span><span></span><span></span></div>` : `<button type="button" class="btn primary" data-act="ai-build">Créer mon programme</button>`}</div>`
         : `<div class="card"><h3>${esc(first(coach?.name) || "Ton coach")} prépare ton programme</h3><p class="muted" style="margin:0">Tes exercices et leur valeur apparaîtront ici dès qu'il les aura créés.</p></div>`}
+      ${adsHTML()}
       <p class="note">À la fin du mois, l'argent des exercices non validés <b>reste à Vaultr</b>. C'est la règle du jeu, alors ne lâche rien.</p>
     </section>`;
   }
@@ -2120,6 +2121,7 @@
   let lastMsgCount = -1, lastChatKey = "";
   let vopenPending = false;
   function afterRender() {
+    wireAds();
     maybeNotifPrompt();
     mountThumbVideos($main);
     if (A.profile?.role === "athlete" && A.tab.athlete === "vault" && isFull(A.program) && !vopenPending && !vopenEl && !cele && !A.gate && lsGet(openedKey()) !== "1") {
@@ -2278,6 +2280,7 @@
     if (d.act === "cover-gen") { A.draft.cover = { type: "gen", style: COVER_STYLES[Math.floor(Math.random() * COVER_STYLES.length)], seed: Math.floor(Math.random() * 1e9) }; render(); return; }
     if (d.coverStyle) { A.draft.cover = { type: "gen", style: d.coverStyle, seed: A.draft.cover?.type === "gen" ? A.draft.cover.seed : hashStr(A.myId) }; render(); return; }
     if (d.howto) return sheetHowTo(d.howto);
+    if (d.ad) return onAd(d.ad);
     if (d.spec) { const l = A.draft.specialties, i = l.indexOf(d.spec); if (i >= 0) l.splice(i, 1); else l.push(d.spec); t.setAttribute("aria-pressed", String(i < 0)); return; }
     if (d.act === "spec-add") { const inp = document.getElementById("specNew"), v = inp.value.trim().slice(0, 30); if (v && !A.draft.specialties.includes(v)) A.draft.specialties.push(v); inp.value = ""; render(); return; }
     if (d.act === "place-add") { A.draft.places.push({ type: "gym", label: "" }); render(); document.getElementById("pll" + (A.draft.places.length - 1))?.focus(); return; }
@@ -2886,6 +2889,63 @@
     el.classList.add("out"); setTimeout(() => el.remove(), 380);
   }
   document.addEventListener("keydown", e => { if (notifEl && e.key === "Escape") closeNotif(); });
+
+  /* =====================================================================
+     Blocs sponsorisés : carrousel d'annonces locales sous les exercices du sportif
+     (dans la version finale : collection « ads » louée par les annonceurs, ciblée par ville et par sport)
+     Annonceurs de la démo : marques fictives.
+     ===================================================================== */
+  const ADS = [
+    { id: "gym", brand: "PulseGym", kind: "Salle de sport", title: "Ta salle à 650 m", text: "Ouverte 24h/24, sans engagement. Le 1er mois à 9,99 € pour les membres Vaultr.", meta: ["📍 650 m", "⏱ 24h/24"], cta: "Réserver ma séance d'essai", emoji: "🏋️", g: "linear-gradient(135deg,#FF6A00,#FF3D2E 60%,#B3122E)" },
+    { id: "run", brand: "Prom' Run 10K", kind: "Course à pied", title: "10 km face à la mer", text: "Dimanche 15 novembre, départ du Jardin Albert Ier. Inscriptions ouvertes, t-shirt finisher offert.", meta: ["📍 1,2 km", "📅 15 nov."], cta: "M'inscrire à la course", emoji: "🏃", g: "linear-gradient(135deg,#00A3FF,#0057D9 60%,#1B1F7A)" },
+    { id: "food", brand: "Kalo Nutrition", kind: "Nutrition", title: "−20 % sur les barres protéinées", text: "Avec le code VAULTR. Livraison en 24 h, ou retrait chez ton coach.", meta: ["🎁 Code VAULTR", "🚚 24 h"], cta: "Profiter de l'offre", emoji: "🍫", g: "linear-gradient(135deg,#F6D58A,#E3B04B 55%,#9A6A14)", dark: true },
+    { id: "shoe", brand: "Stride Running", kind: "Équipement", title: "Analyse de foulée offerte", text: "Trouve la chaussure qu'il te faut en 10 minutes, dans notre magasin de Nice Étoile.", meta: ["📍 900 m", "⏱ 10 min"], cta: "Prendre rendez-vous", emoji: "👟", g: "linear-gradient(135deg,#2EE59D,#11A86B 60%,#0B5C46)", dark: true },
+    { id: "yoga", brand: "Studio Shanti", kind: "Yoga", title: "Cours gratuit dimanche 10 h", text: "Yoga en plein air au jardin. Apporte ton tapis, on s'occupe du reste.", meta: ["📍 1,5 km", "📅 dim. 10 h"], cta: "Réserver ma place", emoji: "🧘", g: "linear-gradient(135deg,#B57BFF,#7B3FE4 60%,#3D1A8C)" },
+    { id: "rent", rent: true, brand: "Vaultr Ads", kind: "Annonceurs", title: "Ta marque ici", text: "Louez ce bloc et touchez des sportifs motivés, près de chez vous, au moment où ils s'entraînent.", meta: ["🎯 Ville, sport, objectif", "📈 Dès 49 € / semaine"], cta: "Louer ce bloc", emoji: "📣", g: "linear-gradient(135deg,#2B3038,#171A1F 60%,#0C0E11)" }
+  ];
+  let adIdx = 0, adHold = false;
+  function adsHTML() {
+    return `<section class="ads" aria-label="Annonces près de chez toi">
+      <div class="split"><h2>Près de chez toi</h2><span class="ad-tag">Sponsorisé</span></div>
+      <div class="ad-track" id="adTrack">${ADS.map((a, i) => `<article class="ad ${a.dark ? "dark" : ""} ${a.rent ? "rent" : ""} ${i === adIdx ? "on" : ""}" style="--g:${a.g}" aria-label="${esc(a.brand)} : ${esc(a.title)}">
+        <span class="ad-blob" aria-hidden="true"></span><span class="ad-blob b2" aria-hidden="true"></span>
+        <div class="ad-top"><span class="ad-brand">${esc(a.brand)} · ${esc(a.kind)}</span><span class="ad-spon">${a.rent ? "Espace à louer" : "Sponsorisé · exemple"}</span></div>
+        <h3>${esc(a.title)}</h3><p>${esc(a.text)}</p>
+        <div class="ad-meta">${a.meta.map(m => `<span>${esc(m)}</span>`).join("")}</div>
+        <button type="button" class="ad-cta" data-ad="${a.id}">${esc(a.cta)} →</button>
+        <span class="ad-emoji" aria-hidden="true">${a.emoji}</span>
+      </article>`).join("")}</div>
+      <div class="ad-dots" aria-hidden="true">${ADS.map((_, i) => `<i class="${i === adIdx ? "on" : ""}"></i>`).join("")}</div>
+    </section>`;
+  }
+  // Le carrousel garde sa position entre deux rendus, défile seul toutes les 4,5 s et se met en pause quand on le touche
+  function wireAds() {
+    const tr = document.getElementById("adTrack"); if (!tr || tr.dataset.wired) return;
+    tr.dataset.wired = "1";
+    const cards = [...tr.children], dots = [...tr.parentElement.querySelectorAll(".ad-dots i")];
+    const left = i => cards[i].offsetLeft - cards[0].offsetLeft;
+    tr.scrollLeft = left(adIdx);
+    const mark = () => { cards.forEach((c, j) => c.classList.toggle("on", j === adIdx)); dots.forEach((d, j) => d.classList.toggle("on", j === adIdx)); };
+    let t = null;
+    tr.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => { const i = cards.reduce((b, c, j) => Math.abs(left(j) - tr.scrollLeft) < Math.abs(left(b) - tr.scrollLeft) ? j : b, 0); if (i !== adIdx) { adIdx = i; mark(); } }, 90); }, { passive: true });
+    const hold = v => () => { adHold = v; };
+    tr.addEventListener("pointerdown", hold(true)); tr.addEventListener("pointerup", () => setTimeout(hold(false), 2500)); tr.addEventListener("pointerleave", () => setTimeout(hold(false), 2500));
+    tr._go = i => { adIdx = (i + cards.length) % cards.length; mark(); tr.scrollTo({ left: left(adIdx), behavior: reduced() ? "auto" : "smooth" }); };
+  }
+  setInterval(() => { const tr = document.getElementById("adTrack"); if (tr?._go && !adHold && !document.hidden && !reduced() && !document.getElementById("sheetWrap")) tr._go(adIdx + 1); }, 4500);
+  function onAd(id) {
+    const a = ADS.find(x => x.id === id); if (!a) return;
+    if (!a.rent) return toast(`Démo : ce bouton ouvrira l'offre de ${a.brand}`);
+    openSheet(`<div class="grab"></div><span class="ad-tag" style="align-self:flex-start">Pour les entreprises</span><h2>Louez un bloc Vaultr</h2>
+      <p class="muted" style="margin:0">Votre annonce apparaît sous les exercices des sportifs, au moment où ils sont le plus motivés.</p>
+      <div class="list">
+        <div class="card" style="gap:4px"><h3>🎯 Un ciblage précis</h3><p class="muted" style="margin:0;font-size:13px">Par ville et rayon, par sport, par objectif (perte de poids, course, muscu…).</p></div>
+        <div class="card" style="gap:4px"><h3>📍 Des sportifs près de chez vous</h3><p class="muted" style="margin:0;font-size:13px">Salles, courses, magasins, nutrition, kinés : touchez des gens qui s'entraînent vraiment.</p></div>
+        <div class="card" style="gap:4px"><h3>📈 Des résultats mesurés</h3><p class="muted" style="margin:0;font-size:13px">Vues, clics et inscriptions suivis en direct dans votre espace annonceur.</p></div>
+      </div>
+      <div class="budget ok"><span>Tarif indicatif</span><span class="num">dès 49 € / semaine / ville</span></div>
+      <button type="button" class="btn money big wide" id="adQuote">Demander un devis</button>`, sh => sh.querySelector("#adQuote").addEventListener("click", () => { closeSheet(); toast("Démo : la demande de devis arrivera dans l'espace annonceur"); }));
+  }
 
   /* =====================================================================
      Lancement
