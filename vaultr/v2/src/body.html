@@ -409,6 +409,7 @@
   let cele = null;
   function celebrate(amount, lines) {
     if (amount <= 0) return;
+    pushNotif(`💸 +${euro(amount)} rendus dans ton coffre`, lines[lines.length - 1] || "");
     if (cele) { // un autre gain arrive pendant l'écran : on additionne
       const from = cele.total; cele.total += amount; cele.lines.push(...lines);
       countUp(cele.el.querySelector(".cele-amt"), from, cele.total, 600, "+");
@@ -546,7 +547,14 @@
     } else if (role === "coach") {
       roleSubs.push(db.collection("programs").where("coachId", "==", id).onSnapshot(q => { A.clients = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
       roleSubs.push(db.collection("profiles").where("role", "==", "athlete").onSnapshot(q => { A.athletes = Object.fromEntries(q.docs.map(d => [d.id, { id: d.id, ...d.data() }])); schedule(); }, onErr));
-      roleSubs.push(db.collection("proofs").where("coachId", "==", id).onSnapshot(q => { A.proofsCoach = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.ts - a.ts); schedule(); }, onErr));
+      let seenProofs = null;
+      roleSubs.push(db.collection("proofs").where("coachId", "==", id).onSnapshot(q => {
+        A.proofsCoach = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.ts - a.ts);
+        const pend = A.proofsCoach.filter(p => p.status === "pending");
+        if (seenProofs) pend.filter(p => !seenProofs.has(p.id)).forEach(p => { const n = first(athleteName(p.athleteId)); toast(`📸 Nouvelle preuve de ${n} à vérifier`); pushNotif("📸 Nouvelle preuve à vérifier !", `${n} : ${p.taskName || "un exercice"}`); });
+        seenProofs = new Set(pend.map(p => p.id));
+        schedule();
+      }, onErr));
       roleSubs.push(db.collection(`profiles/${id}/gallery`).orderBy("ts").onSnapshot(q => { A.gallery[id] = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
       const byTs = (a, b) => (a.ts || 0) - (b.ts || 0);
       roleSubs.push(db.collection(`profiles/${id}/blocks`).onSnapshot(q => { A.blocks = q.docs.map(d => ({ id: d.id, ...d.data() })).sort(byTs); schedule(); }, onErr));
@@ -556,7 +564,7 @@
         // notification quand un client écrit dans une autre conversation
         for (const c of A.chats) {
           const before = prevChatTs[c.id];
-          if (before !== undefined && c.lastTs > before && c.lastFrom !== A.myId && !viewingChat(c.id)) toast(`💬 ${first(athleteName(c.athleteId))} : ${c.lastMsg}`);
+          if (before !== undefined && c.lastTs > before && c.lastFrom !== A.myId && !viewingChat(c.id)) { toast(`💬 ${first(athleteName(c.athleteId))} : ${c.lastMsg}`); pushNotif(`💬 ${first(athleteName(c.athleteId))} t'écrit`, c.lastMsg); }
           prevChatTs[c.id] = c.lastTs || 0;
         }
         schedule();
@@ -599,7 +607,7 @@
       A.msgs = q.docs.map(d => ({ id: d.id, ...d.data() })).reverse();
       const newest = A.msgs.length ? A.msgs[A.msgs.length - 1] : null;
       if (sub.baseline !== null && newest && newest.ts > sub.baseline && newest.from !== A.myId && !viewingChat(id) && A.profile?.role === "athlete")
-        toast(`💬 ${first(myCoach()?.name) || "Ton coach"} : ${newest.text}`);
+        { toast(`💬 ${first(myCoach()?.name) || "Ton coach"} : ${newest.text}`); pushNotif(`💬 ${first(myCoach()?.name) || "Ton coach"} t'écrit`, newest.text); }
       sub.baseline = newest?.ts || 0;
       schedule();
     }, onErr));
@@ -2057,6 +2065,7 @@
         <button type="button" class="btn wide ghost" data-s="reset">Remettre la démo à zéro</button>`}
       <div class="field"><label>Apparence</label><div class="seg" role="group" aria-label="Apparence">${[["dark", "🌙 Sombre"], ["light", "☀️ Clair"], ["auto", "Auto"]].map(([k, l]) => `<button type="button" data-s="theme-${k}" aria-pressed="${themePref() === k}">${l}</button>`).join("")}</div></div>
       ${me.role === "athlete" && recapOff() !== null ? `<button type="button" class="btn wide" data-s="recap">🎬 Voir mon recap ${esc(deM(monthLabel(recapOff())))}</button>` : ""}
+      <button type="button" class="btn wide" data-s="notif">🔔 Notifications : ${notifOn() ? "activées" : "désactivées"}</button>
       <button type="button" class="btn wide" data-s="logout">Se déconnecter</button>
       <div id="delZone"><button type="button" class="btn wide ghost danger" data-s="delete">Supprimer mon compte</button></div>
       <p class="muted" style="margin:0;font-size:12px">Paiements simulés : aucune vraie somme n'est débitée.</p>`, sh => {
@@ -2074,6 +2083,7 @@
         closeSheet();
         if (s === "recap") return openRecap(recapOff() ?? 0);
         if (s === "logout") return logout();
+        if (s === "notif") return showNotifPrompt();
         if (s === "quiz") return startQuiz("edit");
         if (s === "delete-yes") return guard(async () => {
           const id = A.myId; A.deleting = true;
@@ -2110,6 +2120,7 @@
   let lastMsgCount = -1, lastChatKey = "";
   let vopenPending = false;
   function afterRender() {
+    maybeNotifPrompt();
     mountThumbVideos($main);
     if (A.profile?.role === "athlete" && A.tab.athlete === "vault" && isFull(A.program) && !vopenPending && !vopenEl && !cele && !A.gate && lsGet(openedKey()) !== "1") {
       vopenPending = true; setTimeout(() => { vopenPending = false; showVaultOpen(); }, 1400);
@@ -2775,6 +2786,106 @@
     if (recapEl && RS) { if (e.key === "ArrowRight") goRecap(RS.i + 1); else if (e.key === "ArrowLeft") goRecap(RS.i - 1); else if (e.key === "Escape") closeRecap(); return; }
     if (vopenEl && e.key === "Escape") closeVaultOpen();
   });
+
+  /* =====================================================================
+     Notifications : page d'activation animée, adaptée au sportif et au coach
+     ===================================================================== */
+  const notifKey = () => `vaultr-notif-${A.mode}-${A.myId}`;   // "on" | "off" (pas encore demandé : vide)
+  const notifOn = () => lsGet(notifKey()) === "on";
+  const BELL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>';
+  // Vraie notification système quand l'appli est en arrière-plan (si le navigateur l'autorise)
+  function pushNotif(title, body) {
+    if (!notifOn()) return;
+    try { if ("Notification" in window && Notification.permission === "granted" && document.hidden) new Notification(title, { body }); } catch {}
+  }
+  function notifContent() {
+    if (A.profile?.role === "coach") {
+      const names = A.clients.map(c => first(athleteName(c.id))).filter(Boolean), [n1 = "Léa", n2 = "Tom", n3 = "Yanis"] = names;
+      return {
+        title: "Ne fais jamais attendre tes clients",
+        why: [["📸", "Valide les preuves dès qu'elles arrivent : tes clients récupèrent leur argent plus vite"], ["💬", "Réponds à tes clients en quelques minutes"], ["🎉", "Sache tout de suite quand un nouveau client te choisit"]],
+        cards: [["💬", `${n1} t'écrit`, "« Je peux décaler la séance à jeudi ? »"], ["📸", "Nouvelle preuve à vérifier !", `${n2} a envoyé la vidéo de ses pompes`], ["🎉", "Nouveau client", `${n3} t'a choisi comme coach`], ["⭐", "Nouvel avis 5 étoiles", "« Super motivant, je recommande ! »"], ["⏳", "2 preuves attendent", `${n1} et ${n2} attendent ta validation`]]
+      };
+    }
+    const c = myCoach(), cn = first(c?.name) || "Ton coach";
+    return {
+      title: "Ne laisse plus ton argent dormir",
+      why: [["💸", "Sache dès que ton coach te rend de l'argent"], ["💬", `Ne rate aucun message ${c?.ai ? "de Vaultr" : `de ${cn}`}`], ["⏰", "Un rappel avant que ta mise ne reste au coffre"]],
+      cards: [["🏋️", `${cn} a ajouté de nouveaux exercices !`, "Ton programme est prêt, à toi de jouer"], ["💬", `${cn} t'écrit`, c?.ai ? "« Une petite séance aujourd'hui ? Ton coffre t'attend 💪 »" : "« On se voit ce soir pour la séance ? »"], ["💸", "+3 € rendus dans ton coffre", "15 pompes validé, bravo !"], ["⏰", "Plus que 5 jours", "Il te reste 31 € à récupérer ce mois-ci"], ["🎬", `Ton recap ${deM(monthName())} est arrivé`, "Découvre ta personnalité sportive"]]
+    };
+  }
+  let notifEl = null, notifPending = false;
+  function maybeNotifPrompt() {
+    if (notifPending || notifEl || !A.profile || A.gate || A.quizMode || cele || recapEl || vopenEl || document.getElementById("sheetWrap")) return;
+    if (lsGet(notifKey()) || lsGet("vaultr-notif-skip")) return; // déjà demandé (ou tests automatiques)
+    notifPending = true;
+    setTimeout(() => { notifPending = false; if (!A.gate && !A.quizMode && !cele && !recapEl && !vopenEl && !document.getElementById("sheetWrap") && !lsGet(notifKey())) showNotifPrompt(); }, 1200);
+  }
+  function showNotifPrompt() {
+    if (notifEl || !A.profile) return;
+    const C = notifContent(), on = notifOn();
+    const el = document.createElement("div");
+    el.className = "notif"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-labelledby", "ntTitle");
+    el.innerHTML = `<button type="button" class="nt-x" data-nt="close" aria-label="Fermer">×</button>
+      <div class="nt-in">
+        <div class="nt-bell" aria-hidden="true"><span class="nt-wave"></span><span class="nt-wave"></span>${BELL}<b class="nt-badge">${C.cards.length}</b></div>
+        <p class="eyebrow">Notifications</p>
+        <h2 id="ntTitle">${esc(C.title)}</h2>
+        <ul class="nt-why">${C.why.map(([ic, t]) => `<li><span aria-hidden="true">${ic}</span>${esc(t)}</li>`).join("")}</ul>
+        <div class="nt-switch-row"><span><b>Activer les notifications</b><small id="ntState">${on ? "Activées ✓" : "Tu pourras changer d'avis dans les réglages"}</small></span>
+          <button type="button" class="ios-switch" role="switch" aria-checked="${on}" aria-label="Activer les notifications" data-nt="toggle"><i></i></button></div>
+        <div class="nt-stack" aria-hidden="true"></div>
+        <p class="nt-note" ${on ? "" : "hidden"}></p>
+        <div class="nt-actions"><button type="button" class="btn primary wide" data-nt="done" ${on ? "" : "hidden"}>C'est parti 🚀</button><button type="button" class="btn ghost wide" data-nt="later" ${on ? "hidden" : ""}>Plus tard</button></div>
+      </div>`;
+    $phone.appendChild(el); notifEl = el;
+    // les notifications d'exemple « tombent » une à une, comme sur un écran de téléphone
+    const stack = el.querySelector(".nt-stack"), cards = []; let k = 0, timer = null;
+    const place = () => cards.forEach((c, i) => { c.style.transform = `translateY(${i * 66}px) scale(${1 - i * .05})`; c.style.opacity = String(Math.max(0, 1 - i * .28)); c.style.zIndex = String(10 - i); });
+    const addCard = () => {
+      if (!el.isConnected) return;
+      const [ic, t, b] = C.cards[k++ % C.cards.length], c = document.createElement("div");
+      c.className = "nt-card"; c.innerHTML = `<span class="nt-app">${VAULT_ICON}</span><div class="grow"><div class="nt-top"><span>VAULTR</span><span>maintenant</span></div><b>${ic} ${esc(t)}</b><span>${esc(b)}</span></div>`;
+      stack.prepend(c); cards.unshift(c); place();
+      if (cards.length > 3) { const old = cards.pop(); old.classList.add("gone"); setTimeout(() => old.remove(), 450); }
+    };
+    const loop = ms => { clearInterval(timer); timer = setInterval(addCard, ms); el._timer = timer; };
+    if (reduced()) { for (let i = 0; i < 3; i++) addCard(); }
+    else { setTimeout(addCard, 700); setTimeout(() => { addCard(); loop(2300); }, 1900); }
+    const setUi = v => {
+      el.querySelector(".ios-switch").setAttribute("aria-checked", String(v));
+      el.querySelector("#ntState").textContent = v ? "Activées ✓" : "Tu pourras changer d'avis dans les réglages";
+      el.querySelector('[data-nt="done"]').hidden = !v; el.querySelector('[data-nt="later"]').hidden = v; el.querySelector(".nt-note").hidden = !v;
+    };
+    const note = granted => el.querySelector(".nt-note").textContent = granted
+      ? "C'est activé : tu recevras les alertes même quand Vaultr est fermé."
+      : "C'est activé : les alertes s'affichent dans Vaultr. Les notifications sur l'écran verrouillé arriveront avec l'appli sur l'App Store.";
+    if (on) note(typeof Notification !== "undefined" && Notification.permission === "granted");
+    el.addEventListener("click", async e => {
+      const b = e.target.closest("[data-nt]"); if (!b) return;
+      const a = b.dataset.nt;
+      if (a === "toggle") {
+        const v = b.getAttribute("aria-checked") !== "true";
+        lsSet(notifKey(), v ? "on" : "off"); setUi(v);
+        if (!v) return;
+        try { navigator.vibrate?.(30); } catch {}
+        let granted = false;
+        try { if ("Notification" in window) granted = (Notification.permission === "default" ? await Notification.requestPermission() : Notification.permission) === "granted"; } catch {}
+        note(granted);
+        if (!reduced()) { addCard(); setTimeout(addCard, 350); loop(1400); confetti(el, 40); }
+        return;
+      }
+      if (a === "done") toast(A.profile?.role === "coach" ? "🔔 Notifications activées : tes clients n'attendront plus" : "🔔 Notifications activées : ton coffre te tient au courant");
+      closeNotif();
+    });
+  }
+  function closeNotif() {
+    if (!notifEl) return;
+    const el = notifEl; notifEl = null; clearInterval(el._timer);
+    if (!lsGet(notifKey())) lsSet(notifKey(), "off");
+    el.classList.add("out"); setTimeout(() => el.remove(), 380);
+  }
+  document.addEventListener("keydown", e => { if (notifEl && e.key === "Escape") closeNotif(); });
 
   /* =====================================================================
      Lancement

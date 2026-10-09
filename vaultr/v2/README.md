@@ -41,3 +41,9 @@ Mêmes fonctionnalités que `vaultr/maquette.html`, nouvelle direction artistiqu
   de blocs nommés, à donner à un ou plusieurs clients. Dans le programme d'un client : appliquer
   un template, ajouter des blocs d'une touche, et choisir qui fixe les montants
   (« L'IA répartit » ou « Je choisis »). Données : `profiles/<coach>/blocks` et `profiles/<coach>/templates`.
+- **Notifications** : à la première arrivée dans l'appli (après l'inscription), une page monte
+  depuis le bas (croix pour la fermer) : cloche qui sonne, raisons d'activer, interrupteur façon iPhone
+  et exemples de notifications qui tombent en boucle, adaptés au sportif (« Karim a ajouté de
+  nouveaux exercices ! », « +3 € rendus »…) ou au coach (« Léa t'écrit », « Nouvelle preuve à
+  vérifier ! »…). Réglable ensuite dans ⚙️. Si le navigateur l'autorise, les messages, l'argent
+  rendu et les nouvelles preuves déclenchent une vraie notification quand l'appli est en arrière-plan.
