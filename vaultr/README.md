@@ -30,8 +30,14 @@ sa mise. Les montants non validés en fin de mois restent à Vaultr.
   la capacité `sample`) et répond dans la messagerie. Sans accès à Claude (démo hors
   claude.ai), il utilise des programmes types et des réponses simples. Le sportif peut
   choisir un coach humain à tout moment.
+- **Exercices illustrés** : illustration animée par famille de mouvement (SVG), ou démo photo /
+  vidéo du coach (`profiles/<coach>/media/*`) ; fiche « Comment faire ».
+- **Coffre** : la mise entière et les exercices restants passent avant le gain par exercice.
+- **Choix de la mise** : jauge qui chauffe (rouge, tremblement, étincelles, fissures) et phrases
+  qui changent avec le montant.
 - **Pages coach** : photo, présentation, spécialités, diplômes, expérience, lieux de travail,
-  disponibilités (grille semaine), galerie (`profiles/<id>/gallery/*`), prix, séance d'essai,
+  carte animée des lieux + coaching à distance oui/non, fond de page (image ou
+  généré), disponibilités (grille semaine), galerie (`profiles/<id>/gallery/*`), prix, séance d'essai,
   avis notés (`reviews/<sportif>` : chacun n'écrit que les siens). Éditeur « Ma page » et
   tableau de bord coach (revenus, note, à traiter, page complète à X %).
 - **Vrais comptes** (sur claude.ai) : chacun crée son profil sportif ou coach avec un

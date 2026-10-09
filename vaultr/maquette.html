@@ -362,6 +362,179 @@ textarea::placeholder{color:var(--muted)}
 .ai-note.ko b{color:var(--loss)}
 .resume-card{flex-direction:row;align-items:center;gap:12px;border-color:var(--volt)}
 @media (max-width:360px){.q-opts.multi{grid-template-columns:1fr}}
+
+/* ---------- Coffre : la mise d'abord ---------- */
+.vault-center .of.top{margin:0 0 2px;text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:600}
+.rec-small{margin-top:8px;font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.rec-small span{color:var(--volt);font-weight:700;font-variant-numeric:tabular-nums}
+.goal-line{margin:0;text-align:center;font-size:14px;color:var(--muted)}
+.goal-line b{color:var(--fg)}
+.goal-line.win{color:var(--volt)}
+.cele-left{font-size:14px;color:var(--muted);margin-top:4px}
+.cele-left b{color:var(--fg)}
+
+/* ---------- Cartes d'exercice ---------- */
+.task.t2{grid-template-columns:76px 1fr auto;align-items:start}
+.task.t2.full{opacity:.75}
+.exo-thumb{width:76px;height:76px;border-radius:16px;background:radial-gradient(circle at 50% 30%,#24321B,#0E120C 75%);border:1px solid var(--line);overflow:hidden;position:relative;padding:0;display:grid;place-items:center}
+.exo-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.exo-thumb .exo{width:100%;height:100%}
+.play{position:absolute;inset:auto;width:30px;height:30px;border-radius:50%;background:#0B0D0Ad9;border:1.5px solid var(--volt);color:var(--volt);display:grid;place-items:center;font-size:12px;z-index:1}
+.play.big{width:64px;height:64px;font-size:24px}
+.t2-body{min-width:0;display:flex;flex-direction:column;gap:3px}
+.t2-prog{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:2px;flex-wrap:wrap}
+.t2-prog b{font-family:var(--display);font-stretch:110%;font-size:18px;color:var(--fg)}
+.val-chip{font-size:11px;font-weight:700;color:var(--muted);background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.task.t2 .bar{grid-column:1/-1}
+.howto-media{width:100%;aspect-ratio:4/3;border-radius:18px;object-fit:cover;background:#000;display:grid;place-items:center;position:relative;overflow:hidden;max-width:100%}
+.howto-media.vid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.howto-media.vid{cursor:pointer}
+.exo-big{background:radial-gradient(circle at 50% 30%,#2A3A1F,#0E120C 75%);border:1px solid var(--line)}
+.exo-big .exo{width:78%;height:78%}
+.howto-steps{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.howto-steps div{background:var(--panel-2);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column}
+.howto-steps b{font-family:var(--display);font-stretch:112%;font-size:22px}
+.howto-steps span{font-size:12px;color:var(--muted)}
+.tmedia{grid-column:1/-1;font-size:12px;font-weight:600;color:var(--volt);cursor:pointer;padding:2px 0}
+.tmedia.on{color:var(--muted)}
+.tmedia.busy{opacity:.6;pointer-events:none}
+
+/* illustrations animées */
+.exo polyline,.exo line{stroke:var(--volt);stroke-width:6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.exo .hd{fill:var(--volt)}
+.exo .gd,.exo .gd2{stroke:#33402C;stroke-width:3}
+.exo polyline.gd{stroke-width:4}
+.exo .rope{fill:none;stroke:#F1F6EC66;stroke-width:2;stroke-dasharray:6 6}
+.exo .shadow{fill:#000000aa}
+.exo .wh{fill:none;stroke:var(--volt);stroke-width:4}
+.exo .wave{fill:none;stroke:#4DD9FF;stroke-width:3;stroke-linecap:round}
+.exo .bar{stroke:#F1F6EC}
+.exo .db{fill:#F1F6EC}
+.exo .glove{fill:#FF5C4D}
+.exo .tm-bg{fill:none;stroke:#33402C;stroke-width:4}
+.exo .tm{fill:none;stroke:var(--volt);stroke-width:4;stroke-dasharray:76;transform:rotate(-90deg);transform-origin:50px 28px}
+.exo g,.exo ellipse,.exo circle{transform-box:view-box}
+.a-bob{animation:exBob 1.4s ease-in-out infinite}
+.a-bob-fast{animation:exBob .45s ease-in-out infinite}
+.a-press{animation:exPress 1.4s ease-in-out infinite}
+.a-hip{animation:exHip 1.6s ease-in-out infinite}
+.a-jump{animation:exJump .7s ease-in-out infinite}
+.a-shadow{transform-box:fill-box;transform-origin:center;animation:exShadow .7s ease-in-out infinite}
+.a-rope{animation:exRope .7s linear infinite}
+.a-spin{animation:exSpin 1s linear infinite}
+.flow{animation:exFlow .6s linear infinite}
+.flow.slow{animation-duration:1.2s}
+.a-punch{animation:exPunch 1s ease-in-out infinite}
+.a-sway{animation:exSway 1.6s ease-in-out infinite}
+.a-sway-slow{animation:exSway2 3.2s ease-in-out infinite}
+.a-swim{animation:exSwim 1.4s ease-in-out infinite}
+.a-pull{animation:exPull 1.6s ease-in-out infinite}
+.a-lift{animation:exBob 1.4s ease-in-out infinite}
+.a-climb{animation:exClimb 2.6s linear infinite}
+.a-timer{animation:exTimer 3s linear infinite}
+@keyframes exBob{50%{transform:translateY(6px)}}
+@keyframes exPress{50%{transform:rotate(7deg)}}
+@keyframes exHip{50%{transform:rotate(14deg)}}
+@keyframes exJump{50%{transform:translateY(-12px)}}
+@keyframes exShadow{50%{transform:scale(.6)}}
+@keyframes exRope{to{stroke-dashoffset:-24}}
+@keyframes exSpin{to{transform:rotate(360deg)}}
+@keyframes exFlow{to{transform:translateX(-20px)}}
+@keyframes exPunch{0%,100%{transform:translateX(-12px)}40%{transform:translateX(4px)}}
+@keyframes exSway{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+@keyframes exSway2{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes exSwim{50%{transform:rotate(-14deg)}}
+@keyframes exPull{0%,100%{transform:translateY(12px)}50%{transform:translateY(0)}}
+@keyframes exClimb{0%{transform:translate(0,0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translate(40px,-30px);opacity:0}}
+@keyframes exTimer{from{stroke-dashoffset:76}to{stroke-dashoffset:0}}
+
+/* ---------- Mise : la jauge qui chauffe ---------- */
+.mise-stage{--p:.2;--amp:0;--crack:0;display:flex;flex-direction:column;gap:16px;padding:6px 0}
+.mise-stage .big-amount{transform:scale(calc(1 + var(--p) * .4));transition:transform .15s;color:var(--volt);color:color-mix(in srgb,#FF2D1F calc(var(--p) * 100%),var(--volt))}
+.mise-stage.max .big-amount{animation:pulseBig .5s ease-in-out infinite}
+@keyframes pulseBig{50%{text-shadow:0 0 30px #FF2D1F}}
+.meter{position:relative;height:24px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line)}
+.mise-stage.hot .meter{animation:meterShake .11s linear infinite}
+@keyframes meterShake{0%{transform:translate(calc(var(--amp) * 1px),0)}25%{transform:translate(calc(var(--amp) * -1px),calc(var(--amp) * .6px))}50%{transform:translate(calc(var(--amp) * .6px),calc(var(--amp) * -1px))}75%{transform:translate(calc(var(--amp) * -.6px),calc(var(--amp) * .5px))}}
+.meter-fill{position:absolute;left:0;top:0;bottom:0;width:calc(var(--p) * 100%);min-width:24px;border-radius:999px;background:linear-gradient(90deg,#FFB020,#FF5A1F 55%,#FF1A1A);box-shadow:0 0 calc(var(--p) * 36px) calc(var(--p) * 5px) rgba(255,40,20,calc(var(--p) * .85));overflow:hidden}
+.meter-fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 10px,rgba(255,255,255,.22) 10px 16px);animation:meterFlow .9s linear infinite}
+.mise-stage.hot .meter-fill::after{animation-duration:.35s}
+@keyframes meterFlow{to{transform:translateX(-19px)}}
+.cracks{position:absolute;inset:-10px 0;width:100%;height:44px;opacity:var(--crack);pointer-events:none}
+.cracks polyline{fill:none;stroke:#FFFFFF;stroke-width:1.6;vector-effect:non-scaling-stroke}
+.meter input[type=range]{position:absolute;left:-4px;right:-4px;top:-10px;width:calc(100% + 8px);height:44px;margin:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer}
+.meter input[type=range]::-webkit-slider-runnable-track{background:transparent;height:44px}
+.meter input[type=range]::-moz-range-track{background:transparent;height:44px}
+.meter input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;margin-top:5px;border-radius:50%;background:#fff;border:4px solid #FF3B2F;box-shadow:0 0 0 calc(var(--p) * 12px) rgba(255,59,47,.25),0 4px 12px #000a}
+.meter input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#fff;border:4px solid #FF3B2F;box-shadow:0 0 0 calc(var(--p) * 12px) rgba(255,59,47,.25)}
+.spark{position:absolute;width:6px;height:6px;border-radius:50%;pointer-events:none;z-index:3;box-shadow:0 0 6px #FFB020}
+.mise-phrase{min-height:44px;text-align:center;font-weight:800;font-size:17px;line-height:1.3;font-family:var(--display);font-stretch:105%}
+.mise-stage.hot .mise-phrase{color:#FF8A5C}
+.mise-stage.max .mise-phrase{color:#FF3B2F}
+
+/* ---------- Page coach ---------- */
+.coach-page{gap:14px}
+.cp-cover{position:relative;height:150px;border-radius:22px;overflow:hidden;margin:0 -2px;background:var(--panel-2)}
+.cover-svg,.cover-img{width:100%;height:100%;display:block;object-fit:cover}
+.cv-float{animation:cvFloat 9s ease-in-out infinite;animation-delay:calc(var(--i) * -2s);transform-box:fill-box;transform-origin:center}
+@keyframes cvFloat{50%{transform:translate(18px,-10px) scale(1.12)}}
+.cp-flag{position:absolute;top:10px;right:10px;font-size:11px;font-weight:700;background:#0B0D0Acc;color:var(--volt);border-radius:999px;padding:4px 9px}
+.cp-head{display:flex;align-items:flex-end;gap:14px;margin-top:-52px;padding-left:12px;position:relative}
+.cp-head .avatar.xl{border:4px solid var(--ink);box-shadow:0 0 0 2px var(--volt)}
+.cp-id{min-width:0;padding-bottom:4px}
+.cp-id h2{font-size:24px}
+.cp-sub{font-size:13px;color:var(--muted)}
+.pro-tag{font:700 10px var(--body);letter-spacing:.1em;color:var(--ink);background:var(--volt);border-radius:6px;padding:2px 6px;vertical-align:middle}
+.cp-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.cp-meta b{color:var(--fg);font-family:var(--display);font-stretch:108%;font-size:15px}
+.cp-sec{gap:12px;border-top:none;padding-top:6px}
+.cp-label{font-family:var(--body);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);display:flex;align-items:center;gap:10px;padding-top:8px}
+.cp-label::after{content:"";flex:1;height:1px;background:var(--line)}
+.specs{margin:0;font-size:14px;color:var(--volt);font-weight:600}
+.gal.strip{grid-template-columns:repeat(3,1fr)}
+.coach-card{padding:0;overflow:hidden;gap:0}
+.coach-card>*:not(.cc-cover){margin:0 16px}
+.coach-card>.row:last-child{margin-bottom:14px}
+.coach-card .cc-main{margin-top:12px;margin-bottom:10px}
+.coach-card>.row{margin-bottom:10px}
+.cc-cover{height:70px;padding:0;display:block;width:100%;overflow:hidden}
+.cover-prev{height:110px;border-radius:16px;overflow:hidden}
+.cover-opts{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.cover-opt{height:40px;border-radius:10px;overflow:hidden;padding:0;border:2px solid transparent}
+.cover-opt.on{border-color:var(--volt)}
+
+/* carte des lieux */
+.map-card{position:relative;height:190px;border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+.map{width:100%;height:100%;display:block}
+.map-bg{fill:#10140E}
+.map-pan{animation:mapPan 16s ease-in-out infinite alternate;transform-origin:200px 110px}
+@keyframes mapPan{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.12) translate(-14px,-8px)}}
+.map .st{fill:none;stroke:#222A1E;stroke-width:3}
+.map .st.main{stroke:#2F3B28;stroke-width:8}
+.map .park{fill:#16301A}
+.map .sea{fill:#0E2730}
+.map .sea-line{fill:none;stroke:#4DD9FF55;stroke-width:2;stroke-dasharray:10 8;animation:seaMove 4s linear infinite}
+@keyframes seaMove{to{stroke-dashoffset:-36}}
+.map .route{fill:none;stroke:var(--volt);stroke-width:2.5;stroke-dasharray:6 6;opacity:.8;animation:seaMove 2s linear infinite}
+.map .pulse{fill:#C6FF4D33;transform-box:fill-box;transform-origin:center;animation:pinPulse 2.2s ease-out infinite}
+@keyframes pinPulse{0%{transform:scale(.4);opacity:1}100%{transform:scale(2.4);opacity:0}}
+.map .drop{animation:pinDrop .9s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes pinDrop{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+.map .pin-s{fill:var(--volt);stroke:#0B0D0A;stroke-width:2}
+.map .pin-n{fill:#0B0D0A;font:900 11px var(--display);text-anchor:middle}
+.map .ring-r{fill:none;stroke:var(--volt);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ringOut 2.4s ease-out infinite}
+@keyframes ringOut{0%{transform:scale(1);opacity:.9}100%{transform:scale(4.5);opacity:0}}
+.map .ring-c{fill:var(--volt)}
+.map .ring-t{font-size:14px;text-anchor:middle}
+.map-city{position:absolute;left:10px;bottom:10px;font-size:12px;font-weight:700;background:#0B0D0Acc;border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.places-list{display:flex;flex-direction:column;gap:6px}
+.place .pn{width:26px;height:26px;border-radius:50%;background:var(--volt);color:var(--ink);display:grid;place-items:center;font:900 12px var(--display);flex:none}
+.remote{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.remote b{color:var(--fg)}
+.rdot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--muted)}
+.remote.yes .rdot{background:var(--volt);box-shadow:0 0 0 0 #C6FF4D88;animation:rdot 1.8s infinite}
+.remote.no .rdot{background:var(--loss)}
+@keyframes rdot{0%{box-shadow:0 0 0 0 #C6FF4D88}100%{box-shadow:0 0 0 10px #C6FF4D00}}
 </style>
 
 <div class="stage">
@@ -454,6 +627,81 @@ textarea::placeholder{color:var(--muted)}
     places: [{ type: "online", label: "Dans ton téléphone" }],
     availability: Object.fromEntries(DAYS.map(([d]) => [d, SLOTS.map(([x]) => x)])), experience: "", diplomas: ""
   };
+  const hashStr = str => { let h = 2166136261; for (const ch of String(str)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const rng = seed => () => { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+
+  // Illustrations animées des exercices (dessinées en SVG, une par famille de mouvement)
+  const EXO_KINDS = [["pullup", /traction|suspension/], ["pushup", /pompe/], ["plank", /gainage|planche/], ["bridge", /pont/], ["lunge", /fente/],
+    ["squat", /squat|chaise/], ["jump", /corde|jumping|saut|burpee/], ["bike", /vélo|velo|elliptique/], ["swim", /natation|nage|piscine/],
+    ["box", /box|shadow|frappe/], ["dance", /danse/], ["yoga", /yoga|mobilit|étirement|stretch/], ["stairs", /escalier/],
+    ["run", /course|fractionn|footing|running|sprint|montées de genoux|cours/], ["walk", /marche|rando/], ["weights", /haltère|développé|rowing|curl|muscu|élastique/]];
+  const exoKind = name => (EXO_KINDS.find(([, re]) => re.test((name || "").toLowerCase())) || ["generic"])[0];
+  function exoSVG(kind) {
+    const P = pts => `<polyline points="${pts}"/>`, H = (x, y) => `<circle class="hd" cx="${x}" cy="${y}" r="6.5"/>`;
+    const gd = `<line class="gd" x1="6" y1="90" x2="94" y2="90"/>`;
+    const flow = `<g class="flow">${[-20, 0, 20, 40, 60, 80, 100].map(x => `<line class="gd2" x1="${x}" y1="95" x2="${x + 9}" y2="95"/>`).join("")}</g>`;
+    const F = {
+      squat: `${gd}<g class="a-bob">${H(46, 26)}${P("47,33 45,54")}${P("46,40 66,44")}${P("45,54 60,62 56,88")}${P("45,54 53,65 47,88")}</g>`,
+      lunge: `${gd}<g class="a-bob">${H(50, 22)}${P("50,29 50,54")}${P("50,36 42,48")}${P("50,36 58,48")}${P("50,54 64,66 66,88")}${P("50,54 38,72 26,88")}</g>`,
+      pushup: `${gd}<g class="a-press" style="transform-origin:18px 86px">${H(80, 52)}${P("18,86 72,58")}${P("70,60 72,88")}${P("62,63 60,88")}</g>`,
+      plank: `${gd}${H(80, 60)}${P("16,86 72,68")}${P("70,69 70,86 82,86")}<circle class="tm-bg" cx="50" cy="28" r="12"/><circle class="tm a-timer" cx="50" cy="28" r="12"/>`,
+      bridge: `${gd}${H(14, 82)}${P("20,85 34,85")}<g class="a-hip" style="transform-origin:34px 85px">${P("34,85 54,64 70,66 74,88")}</g>`,
+      run: `${gd}${flow}<g class="a-bob-fast">${H(57, 20)}${P("57,27 50,50")}${P("55,33 65,42 73,36")}${P("55,33 45,42 38,52")}${P("50,50 62,62 58,84")}${P("50,50 40,64 26,64")}</g>`,
+      walk: `${gd}<g class="flow slow">${[-20, 0, 20, 40, 60, 80, 100].map(x => `<line class="gd2" x1="${x}" y1="95" x2="${x + 9}" y2="95"/>`).join("")}</g><g class="a-bob">${H(50, 18)}${P("50,25 50,52")}${P("50,31 58,44 60,52")}${P("50,31 42,44 40,52")}${P("50,52 58,70 60,88")}${P("50,52 44,70 40,88")}</g>`,
+      jump: `<ellipse class="rope a-rope" cx="50" cy="50" rx="32" ry="40"/><ellipse class="shadow a-shadow" cx="50" cy="92" rx="15" ry="3"/><g class="a-jump">${H(50, 22)}${P("50,29 50,54")}${P("50,34 34,22")}${P("50,34 66,22")}${P("50,54 40,82")}${P("50,54 60,82")}</g>`,
+      bike: `${gd}<g class="a-spin" style="transform-origin:28px 72px"><circle class="wh" cx="28" cy="72" r="14"/><line x1="28" y1="60" x2="28" y2="84"/><line x1="16" y1="72" x2="40" y2="72"/></g><g class="a-spin" style="transform-origin:74px 72px"><circle class="wh" cx="74" cy="72" r="14"/><line x1="74" y1="60" x2="74" y2="84"/><line x1="62" y1="72" x2="86" y2="72"/></g>${P("28,72 46,52 70,52 74,72")}${P("46,52 52,72")}<g class="a-bob-fast">${H(60, 22)}${P("60,29 48,50")}${P("58,34 70,50")}${P("48,50 58,62 52,72")}</g>`,
+      swim: `<g class="flow">${[0, 1, 2].map(i => `<path class="wave" d="M${-40 + i * 0} ${66 + i * 9} q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>`).join("")}</g><g class="a-swim" style="transform-origin:64px 58px">${H(72, 56)}${P("22,62 66,58")}${P("62,58 70,38 86,44")}</g>`,
+      box: `${gd}${H(42, 22)}${P("42,29 45,54")}${P("45,54 34,88")}${P("45,54 58,88")}${P("44,35 50,45 49,31")}<g class="a-punch">${P("44,35 62,36 74,34")}<circle class="glove" cx="78" cy="34" r="5"/></g>`,
+      dance: `${gd}<g class="a-sway" style="transform-origin:50px 88px">${H(50, 20)}${P("50,27 50,52")}${P("50,32 34,18")}${P("50,32 66,42 72,32")}${P("50,52 40,70 44,88")}${P("50,52 62,68 66,86")}</g>`,
+      yoga: `${gd}<g class="a-sway-slow" style="transform-origin:50px 88px">${H(50, 24)}${P("50,31 50,56")}${P("50,36 44,18 50,8")}${P("50,36 56,18 50,8")}${P("50,56 50,88")}${P("50,56 38,66 50,70")}</g>`,
+      pullup: `<line class="bar" x1="14" y1="12" x2="86" y2="12"/><g class="a-pull">${P("38,12 44,32")}${P("62,12 56,32")}${H(50, 27)}${P("50,34 50,60")}${P("50,60 44,82")}${P("50,60 56,82")}</g>`,
+      weights: `${gd}${H(50, 22)}${P("50,29 50,56")}${P("50,56 42,88")}${P("50,56 58,88")}<g class="a-lift">${P("50,34 36,32 34,16")}${P("50,34 64,32 66,16")}<rect class="db" x="25" y="11" width="18" height="7" rx="2"/><rect class="db" x="57" y="11" width="18" height="7" rx="2"/></g>`,
+      stairs: `<polyline class="gd" points="4,92 26,92 26,78 46,78 46,64 66,64 66,50 96,50"/><g class="a-climb">${H(30, 46)}${P("30,53 30,68")}${P("30,57 38,63")}${P("30,68 36,78")}${P("30,68 24,79")}</g>`,
+      generic: `<g class="a-lift"><rect class="db" x="20" y="38" width="12" height="26" rx="3"/><rect class="db" x="68" y="38" width="12" height="26" rx="3"/><line x1="32" y1="51" x2="68" y2="51"/></g>`
+    };
+    return `<svg class="exo" viewBox="0 0 100 100" aria-hidden="true">${F[kind] || F.generic}</svg>`;
+  }
+
+  // Couvertures de page générées (le coach peut aussi importer sa propre image)
+  const COVER_STYLES = ["aurora", "lines", "grid", "dots", "stripes", "waves"];
+  const COVER_PALETTES = [["#C6FF4D", "#1E5F3A", "#0B0D0A"], ["#FF6B3D", "#7A1E3A", "#120B10"], ["#4DD9FF", "#2B3A8F", "#0A0D18"], ["#FFD23D", "#B5481E", "#140E08"], ["#B98CFF", "#3A1E7A", "#0E0A18"], ["#3DFFB0", "#0E5A6B", "#081214"]];
+  function coverSVG(cv, fallbackId) {
+    const h0 = hashStr(fallbackId || "vaultr");
+    const c = cv?.type === "gen" ? cv : { style: COVER_STYLES[h0 % COVER_STYLES.length], seed: h0 };
+    const R = rng(c.seed), [a, b, bg] = COVER_PALETTES[c.seed % COVER_PALETTES.length], id = "cv" + Math.floor(R() * 1e9);
+    let inner = "";
+    if (c.style === "aurora") inner = `<defs><filter id="${id}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="28"/></filter></defs><g filter="url(#${id})">${[a, b, a, b].map((col, i) => `<circle class="cv-float" style="--i:${i}" cx="${40 + R() * 320}" cy="${20 + R() * 120}" r="${50 + R() * 50}" fill="${col}" opacity="${.45 + R() * .4}"/>`).join("")}</g>`;
+    else if (c.style === "lines") inner = Array.from({ length: 14 }, (_, i) => { const y = 8 + i * 11, k = R() * 30; return `<path d="M-10 ${y} C 90 ${y - k} 170 ${y + k} 250 ${y} S 360 ${y - k} 420 ${y}" fill="none" stroke="${i % 3 ? b : a}" stroke-width="${i % 3 ? 1.2 : 2}" opacity="${i % 3 ? .7 : .9}"/>`; }).join("");
+    else if (c.style === "grid") inner = `<rect y="70" width="400" height="90" fill="url(#${id})"/><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}" stop-opacity=".45"/><stop offset="1" stop-color="${bg}" stop-opacity="0"/></linearGradient></defs>${Array.from({ length: 15 }, (_, i) => `<line x1="200" y1="70" x2="${-200 + i * 57}" y2="170" stroke="${a}" stroke-opacity=".5"/>`).join("")}${Array.from({ length: 6 }, (_, i) => `<line x1="0" x2="400" y1="${74 + i * i * 3.2}" y2="${74 + i * i * 3.2}" stroke="${a}" stroke-opacity="${.25 + i * .08}"/>`).join("")}<circle cx="200" cy="66" r="${26 + R() * 10}" fill="${b}" opacity=".9"/>`;
+    else if (c.style === "dots") inner = Array.from({ length: 18 * 8 }, (_, i) => { const x = (i % 18) * 23 + 6, y = Math.floor(i / 18) * 21 + 8, d = Math.hypot(x - 300 * R() - 50, y - 80) ; return `<circle cx="${x}" cy="${y}" r="${Math.max(.6, 7 - d / 30)}" fill="${i % 7 ? a : b}" opacity=".85"/>`; }).join("");
+    else if (c.style === "stripes") inner = Array.from({ length: 12 }, (_, i) => `<rect x="${-120 + i * 52}" y="-40" width="${12 + (i % 3) * 10}" height="260" fill="${i % 2 ? a : b}" opacity="${.25 + (i % 4) * .15}" transform="rotate(28 200 80)"/>`).join("");
+    else inner = Array.from({ length: 6 }, (_, i) => `<path d="M-10 ${60 + i * 18} C 80 ${30 + i * 18 + R() * 30} 180 ${90 + i * 18 - R() * 30} 260 ${60 + i * 18} S 380 ${40 + i * 18} 420 ${70 + i * 18} L 420 200 L -10 200 Z" fill="${i % 2 ? a : b}" opacity="${.12 + i * .1}"/>`).join("");
+    return `<svg class="cover-svg" viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="160" fill="${bg}"/>${inner}</svg>`;
+  }
+  const coverHTML = c => c?.cover?.type === "img" ? `<img class="cover-img" src="${esc(c.cover.img)}" alt="">` : coverSVG(c?.cover, c?.id || c?.handle);
+
+  // Carte animée des lieux de travail (dessinée : pas de service de carte externe)
+  function mapHTML(c) {
+    const phys = (c.places || []).filter(x => x.label && x.type !== "online");
+    const remote = !!c.ai || !!c.remote || (c.places || []).some(x => x.type === "online");
+    const R = rng(hashStr((c.city || "x") + (c.id || "")));
+    let streets = "";
+    for (let i = 0; i < 7; i++) { const y = 18 + i * 28 + R() * 10; streets += `<path class="st" d="M-10 ${y} C 120 ${y + (R() - .5) * 40}, 260 ${y + (R() - .5) * 40}, 410 ${y + (R() - .5) * 30}"/>`; }
+    for (let i = 0; i < 6; i++) { const x = 30 + i * 70 + R() * 20; streets += `<path class="st" d="M${x} -10 C ${x + (R() - .5) * 40} 80, ${x + (R() - .5) * 40} 150, ${x + (R() - .5) * 30} 230"/>`; }
+    const main = `<path class="st main" d="M-10 ${110 + R() * 30} C 140 ${50 + R() * 40}, 260 ${150 + R() * 30}, 410 ${70 + R() * 40}"/>`;
+    const sea = `<path class="sea" d="M-10 178 C 80 162, 160 198, 250 182 S 380 172, 410 186 L 410 240 L -10 240 Z"/><path class="sea-line" d="M-10 186 C 80 170, 160 206, 250 190 S 380 180, 410 194"/>`;
+    const parks = [0, 1, 2].map(() => `<rect class="park" x="${30 + R() * 320}" y="${15 + R() * 120}" width="${28 + R() * 40}" height="${18 + R() * 24}" rx="10"/>`).join("");
+    const pts = phys.map((p, i) => ({ x: Math.round(70 + ((i * 97 + R() * 120) % 260)), y: Math.round(55 + ((i * 53 + R() * 80) % 95)), i }));
+    const route = pts.length > 1 ? `<path class="route" d="M${pts.map(q => `${q.x} ${q.y}`).join(" L ")}"/>` : "";
+    const pins = pts.map(q => `<g transform="translate(${q.x} ${q.y})"><circle class="pulse" r="10" style="animation-delay:${q.i * .4}s"/><g class="drop" style="animation-delay:${.2 + q.i * .25}s"><path class="pin-s" d="M0 0 C -10 -13 -10 -26 0 -26 C 10 -26 10 -13 0 0 Z"/><text class="pin-n" y="-13">${q.i + 1}</text></g></g>`).join("");
+    const onlyRemote = !phys.length;
+    return `<div class="map-card"><svg class="map" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect width="400" height="220" class="map-bg"/><g class="map-pan">${parks}${streets}${main}${sea}${route}${pins}</g>
+        ${onlyRemote ? `<g transform="translate(200 105)"><circle class="ring-r" r="16"/><circle class="ring-r" r="16" style="animation-delay:.8s"/><circle class="ring-r" r="16" style="animation-delay:1.6s"/><circle r="15" class="ring-c"/><text class="ring-t" y="5">💻</text></g>` : ""}
+      </svg><span class="map-city">${esc(onlyRemote ? (c.ai ? "Partout, 24h/24" : "Uniquement à distance") : c.city || "")}</span></div>
+      ${phys.length ? `<div class="places-list">${phys.map((x, i) => `<div class="place"><span class="pn">${i + 1}</span><div><b>${esc(x.label)}</b><div class="muted" style="font-size:12px">${PLACE_TYPES[x.type]?.[1] || ""}</div></div></div>`).join("")}</div>` : ""}
+      <div class="remote ${remote ? "yes" : "no"}"><span class="rdot"></span><span>${remote ? "<b>À distance : oui</b> · séances en visio possibles" : "<b>À distance : non</b> · uniquement en présentiel"}</span></div>`;
+  }
   const avatar = (p, cls = "") => p?.photo ? `<img class="avatar ${cls}" src="${esc(p.photo)}" alt="">` : `<div class="avatar ${cls}">${esc(initials(p?.name))}</div>`;
   const starStr = r => { const n = Math.max(0, Math.min(5, Math.round(r))); return "★".repeat(n) + "☆".repeat(5 - n); };
   const note1 = x => x.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -658,6 +906,7 @@ textarea::placeholder{color:var(--muted)}
         <div class="eyebrow" style="color:var(--volt)">Argent récupéré</div>
         <div class="cele-amt">+0 €</div>
         <div class="cele-lines">${lines.slice(-4).map(l => `<div>${esc(l)}</div>`).join("")}</div>
+        ${A.program?.mise ? `<div class="cele-left">${recovered(A.program) >= A.program.mise - .01 ? "🏆 Tu as récupéré toute ta mise !" : `Encore <b>${euro(Math.max(0, A.program.mise - recovered(A.program)))}</b> à récupérer sur tes ${euro(A.program.mise)}`}</div>` : ""}
         <button type="button" class="btn primary wide" data-cele-ok>Encaisser dans mon coffre</button>
       </div>`;
     $phone.appendChild(el);
@@ -1498,14 +1747,16 @@ textarea::placeholder{color:var(--muted)}
       <button type="button" class="btn primary" data-open="mise">Choisir ma mise</button></div></section>`;
     const rec = recovered(p), shown = lastVault ?? rec, pct = Math.min(1, shown / p.mise);
     const tasks = (p.tasks || []).filter(t => !t.archived);
+    const leftT = tasks.reduce((a, t) => a + Math.max(0, t.target - t.done), 0);
     return `<section class="screen ENTER">${hello}
       <div class="vault" id="vaultBox">${vaultSVG(pct)}
-        <div class="vault-center"><div class="amount" id="recAmount">${euro(shown)}</div><div class="of">récupérés sur ${euro(p.mise)}</div></div></div>
+        <div class="vault-center"><div class="of top">Ta mise</div><div class="amount">${euro(p.mise)}</div><div class="of">à récupérer en entier</div><div class="rec-small"><span id="recAmount">${euro(shown)}</span> déjà récupérés</div></div></div>
       <div class="vault-stats">
-        <div class="stat"><b>${euro(p.mise)}</b><span>Ma mise</span></div>
-        <div class="stat"><b>${euro(Math.max(0, p.mise - rec))}</b><span>Encore à gagner</span></div>
-        <div class="stat"><b>${(p.tasks || []).reduce((a, t) => a + t.done, 0)}</b><span>Exercices validés</span></div>
+        <div class="stat"><b>${leftT}</b><span>Exercices restants</span></div>
+        <div class="stat"><b>${daysLeft()}</b><span>Jours restants</span></div>
+        <div class="stat"><b>${Math.round(Math.min(1, rec / p.mise) * 100)} %</b><span>Mise récupérée</span></div>
       </div>
+      ${leftT ? `<p class="goal-line">Fais tes <b>${leftT} exercices</b> pour récupérer tes <b>${euro(p.mise)}</b>. Chaque exercice oublié, c'est de l'argent qui reste au coffre.</p>` : tasks.length ? `<p class="goal-line win">🏆 Tout est validé : tu as récupéré ta mise !</p>` : ""}
       ${coach?.ai && !A.profile.quiz ? `<div class="card ai-wait"><div class="row">${avatar(coach)}<div class="grow"><h3>Aide Vaultr à te connaître</h3><p class="muted" style="margin:0;font-size:13px">10 questions rapides pour un programme qui respecte tes goûts, tes limites et ton temps.</p></div></div><button type="button" class="btn small primary" data-act="quiz-edit" style="align-self:flex-start">Répondre aux questions</button></div>` : ""}
       <div class="split"><h2>Mes exercices</h2>${coach?.ai && tasks.length ? `<button type="button" class="btn small" data-open="adapt" ${A.aiBuilding ? "disabled" : ""}>${A.aiBuilding ? "Vaultr adapte…" : "🔧 Adapter"}</button>` : `<span class="muted" style="font-size:13px">fixés par ${esc(first(coach?.name) || "ton coach")}</span>`}</div>
       ${tasks.length ? `<div class="list">${tasks.map(taskAthlete).join("")}</div>`
@@ -1514,26 +1765,78 @@ textarea::placeholder{color:var(--muted)}
       <p class="note">À la fin du mois, l'argent des exercices non validés <b>reste à Vaultr</b>. C'est la règle du jeu, alors ne lâche rien.</p>
     </section>`;
   }
+  // Démos photo/vidéo fournies par le coach : profiles/<coach>/media/<id> (vidéo en morceaux dans chunks)
+  const mediaCache = {};
+  function coachMedia(cid, mid) {
+    const k = cid + "/" + mid;
+    if (!mediaCache[k]) { mediaCache[k] = { loading: true }; A.db.doc(`profiles/${cid}/media/${mid}`).get().then(sn => { mediaCache[k] = sn.exists ? sn.data() : { missing: true }; schedule(); }).catch(() => { mediaCache[k] = { missing: true }; }); }
+    return mediaCache[k];
+  }
+  function taskThumb(t, coachId) {
+    if (t.media?.id && coachId && coachId !== AI_ID) {
+      const m = coachMedia(coachId, t.media.id);
+      if (m.kind === "photo") return `<img src="${esc(m.img)}" alt="">`;
+      if (m.kind === "video") return `${m.poster ? `<img src="${esc(m.poster)}" alt="">` : ""}<span class="play">▶</span>`;
+    }
+    return exoSVG(exoKind(t.name));
+  }
   function taskAthlete(t) {
     const pend = A.proofsAth.find(x => x.taskId === t.id && x.status === "pending");
     const last = A.proofsAth.filter(x => x.taskId === t.id).sort((a, b) => b.ts - a.ts)[0];
     const refused = !pend && last?.status === "ko";
     const aiNote = !pend && last?.aiMessage && now() - (last.reviewedAt || last.ts) < 3 * 86400000 ? last.aiMessage : "";
-    const full = t.done >= t.target;
-    return `<div class="task ${t.weak ? "weak" : ""}">
-      <div style="min-width:0"><div class="name">${esc(t.name)}</div>
-        <div class="meta">${t.detail ? `<span>${esc(t.detail)}</span>` : ""}<span class="num">${t.done}/${t.target} séances</span></div></div>
-      <div class="price">+${euro(t.value)}</div>
+    const full = t.done >= t.target, ai = A.program?.coachId === AI_ID;
+    return `<div class="task t2 ${t.weak ? "weak" : ""} ${full ? "full" : ""}">
+      <button type="button" class="exo-thumb" data-howto="${esc(t.id)}" aria-label="Voir comment faire ${esc(t.name)}">${taskThumb(t, A.program?.coachId)}</button>
+      <div class="t2-body"><div class="name">${esc(t.name)}</div>
+        <div class="meta">${t.detail ? `<span>${esc(t.detail)}</span>` : ""}</div>
+        <div class="t2-prog"><b class="num">${t.done}/${t.target}</b><span>${full ? "terminé" : `encore ${t.target - t.done}`}</span>${t.weak ? `<span class="chip volt">point faible</span>` : ""}</div></div>
+      <span class="val-chip" title="Valeur de chaque validation">${euro(t.value)}</span>
       <div class="bar"><i style="width:${(t.done / t.target) * 100}%"></i></div>
       <div class="task-actions">
         ${full ? `<span class="chip volt">Objectif du mois atteint ✓</span>`
-        : pend ? `<span class="chip wait">${A.program?.coachId === AI_ID ? "Vaultr vérifie ta preuve…" : "Preuve envoyée · en attente du coach"}</span>`
+        : pend ? `<span class="chip wait">${ai ? "Vaultr vérifie ta preuve…" : "Preuve envoyée · en attente du coach"}</span>`
         : `${refused ? `<span class="chip loss">Preuve refusée, renvoie-en une</span>` : ""}
-           <label class="btn small"><input type="file" accept="image/*,video/*" data-proof="${esc(t.id)}" hidden>📸 Photo ou vidéo</label>
-           <span class="chip">${A.program?.coachId === AI_ID ? "validée en quelques secondes" : "ou validation en séance"}</span>`}
+           <label class="btn small primary"><input type="file" accept="image/*,video/*" data-proof="${esc(t.id)}" hidden>📸 J'ai fait l'exercice</label>
+           <button type="button" class="btn small ghost" data-howto="${esc(t.id)}">Comment faire ?</button>`}
       </div>
       ${aiNote ? `<div class="ai-note ${refused ? "ko" : ""}"><b>🤖 Vaultr :</b> ${esc(aiNote)}</div>` : ""}
     </div>`;
+  }
+  // Feuille « Comment faire » : grande illustration, ou démo du coach
+  async function loadCoachVideo(cid, mid, m) {
+    const snaps = await Promise.all(Array.from({ length: m.chunks }, (_, i) => A.db.doc(`profiles/${cid}/media/${mid}/chunks/${String(i).padStart(3, "0")}`).get()));
+    if (snaps.some(x => !x.exists)) throw { ui: "La vidéo n'est plus disponible." };
+    const b64 = snaps.map(x => x.data().d).join(""), mime = m.mime || "video/webm", bin = atob(b64), bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return { url: URL.createObjectURL(new Blob([bytes], { type: mime })), fallback: `data:${mime};base64,${b64}` };
+  }
+  function sheetHowTo(taskId) {
+    const p = A.program, t = (p?.tasks || []).find(x => x.id === taskId); if (!t) return;
+    const coach = myCoach(), cid = p.coachId, m = t.media?.id && cid !== AI_ID ? coachMedia(cid, t.media.id) : null;
+    const full = t.done >= t.target, pend = A.proofsAth.some(x => x.taskId === t.id && x.status === "pending");
+    const visual = m?.kind === "photo" ? `<img class="howto-media" src="${esc(m.img)}" alt="Démonstration de ${esc(t.name)}">`
+      : m?.kind === "video" ? `<div class="howto-media vid" id="howVid">${m.poster ? `<img src="${esc(m.poster)}" alt="">` : ""}<span class="play big">▶</span></div>`
+      : `<div class="howto-media exo-big">${exoSVG(exoKind(t.name))}</div>`;
+    openSheet(`<div class="grab"></div>${visual}
+      <span class="muted" style="font-size:12px">${m ? `Démo de ${esc(first(coach?.name) || "ton coach")}` : "Illustration Vaultr"}</span>
+      <h2>${esc(t.name)}</h2>${t.detail ? `<p class="muted" style="margin:0">${esc(t.detail)}</p>` : ""}
+      <div class="howto-steps">
+        <div><b>${t.target - t.done}</b><span>fois encore ce mois-ci</span></div>
+        <div><b>${t.done}/${t.target}</b><span>déjà validé${t.done > 1 ? "s" : ""}</span></div>
+      </div>
+      <p class="note" style="margin:0">Pour valider : filme ta série (30 s max) ou prends une photo pendant l'exercice. ${cid === AI_ID ? "Vaultr vérifie en quelques secondes." : `${esc(first(coach?.name) || "Ton coach")} valide dès qu'il la voit.`}</p>
+      ${full || pend ? "" : `<label class="btn primary wide"><input type="file" accept="image/*,video/*" data-proof="${esc(t.id)}" hidden>📸 J'ai fait l'exercice</label>`}`, sh => {
+      sh.addEventListener("change", e => { if (e.target.closest("input[data-proof]")) { onProofChange(e); closeSheet(); } });
+      const v = sh.querySelector("#howVid");
+      if (v) v.addEventListener("click", () => {
+        v.innerHTML = `<span class="play big">…</span>`;
+        loadCoachVideo(cid, t.media.id, m).then(({ url, fallback }) => {
+          const el = document.createElement("video"); el.className = "howto-media"; el.controls = true; el.playsInline = true; el.autoplay = true; el.muted = true; el.loop = true;
+          el.onerror = () => { if (el.src !== fallback) el.src = fallback; }; el.src = url; v.replaceWith(el);
+        }).catch(x => { toast(x?.ui || "Impossible de lire la vidéo."); v.innerHTML = `<span class="play big">▶</span>`; });
+      });
+    });
   }
 
   /* ---------- Sportif : trouver un coach ---------- */
@@ -1550,6 +1853,7 @@ textarea::placeholder{color:var(--muted)}
   function coachCard(c) {
     const r = ratingOf(c.id), pl = (c.places || [])[0];
     return `<div class="card coach-card">
+      <button type="button" class="cc-cover" data-coach-page="${esc(c.id)}" aria-label="Voir la page de ${esc(c.name)}">${coverHTML(c)}</button>
       <button type="button" class="cc-main" data-coach-page="${esc(c.id)}">${avatar(c, c.boosted ? "volt" : "")}
         <div class="grow"><h3>${esc(c.name)}</h3><div class="muted" style="font-size:13px">${r.n ? `<span class="star1">★</span> ${note1(r.avg)} (${r.n}) · ` : ""}${esc(c.sport || "Coach")}${c.city ? " · " + esc(c.city) : ""}</div></div>
         <div class="price" style="font-size:16px">${euro(c.price || 0)}<span class="muted" style="font:500 11px var(--body)"> /mois</span></div></button>
@@ -1596,7 +1900,7 @@ textarea::placeholder{color:var(--muted)}
   const reviewHTML = rv => `<div class="review"><div class="split"><b>${esc(rv.name || "Client")}</b><span class="stars">${starStr(rv.rating)}</span></div>${rv.text ? `<p>${esc(rv.text)}</p>` : ""}<span class="muted" style="font-size:12px">${new Date(rv.ts).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}</span></div>`;
   function coachPageHTML(c, { self = false } = {}) {
     const r = ratingOf(c.id), isAth = A.profile.role === "athlete", mine = isAth && A.program?.coachId === c.id;
-    const places = (c.places || []).filter(x => x.label), specs = c.specialties || [], gal = c.ai ? [] : (A.gallery[c.id] || []);
+    const specs = c.specialties || [], gal = c.ai ? [] : (A.gallery[c.id] || []);
     const hasAv = DAYS.some(([d]) => (c.availability?.[d] || []).length);
     if (!self && !c.ai) openGallerySub(c.id);
     const counts = [5, 4, 3, 2, 1].map(n => r.list.filter(x => x.rating === n).length);
@@ -1610,29 +1914,29 @@ textarea::placeholder{color:var(--muted)}
         <textarea id="rvText" data-rv maxlength="400" rows="3" placeholder="Comment se passent tes séances ?">${esc(dr.text)}</textarea>
         <button type="button" class="btn small primary" data-act="review-save" ${dr.rating ? "" : "disabled"}>${myRv ? "Mettre à jour mon avis" : "Publier mon avis"}</button></div>`;
     }
-    return `<div class="cp-hero">${avatar(c, "xl volt")}
-        <div class="cp-id"><h2>${esc(c.name)}</h2>
-          <div class="muted" style="font-size:13px">@${esc(c.handle)}${c.city ? " · " + esc(c.city) : ""}</div>
-          <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px">${c.ai ? `<span class="chip volt">Coach IA</span>` : `<span class="chip">${esc(c.sport || "Coach")}</span>`}${c.pro ? `<span class="chip volt">PRO</span>` : ""}${(c.boostedUntil || 0) > now() ? `<span class="chip volt">⚡ Mis en avant</span>` : ""}</div></div></div>
-      <div class="cp-facts">
-        <div><b>${c.price ? euro(c.price) : "Gratuit"}</b><span>${c.price ? "par mois" : "toujours"}</span></div>
-        <div><b>${c.ai ? "24h/24" : c.experience ? `${esc(c.experience)} an${c.experience > 1 ? "s" : ""}` : "—"}</b><span>${c.ai ? "disponible" : "d'expérience"}</span></div>
-        <div><b>${r.n ? `${note1(r.avg)} ★` : "—"}</b><span>${r.n} avis</span></div>
-      </div>
+    const meta = [r.n ? `<span><b>${note1(r.avg)}</b> <i class="star1">★</i> ${r.n} avis</span>` : `<span>Nouveau sur Vaultr</span>`,
+      !c.ai && c.experience ? `<span><b>${esc(c.experience)}</b> an${c.experience > 1 ? "s" : ""} d'expérience</span>` : "",
+      `<span><b>${c.price ? euro(c.price) : "Gratuit"}</b>${c.price ? " / mois" : ""}</span>`].filter(Boolean).join("");
+    return `<div class="cp-cover">${coverHTML(c)}${(c.boostedUntil || 0) > now() ? `<span class="cp-flag">⚡ Mis en avant</span>` : ""}</div>
+      <div class="cp-head">${avatar(c, "xl")}
+        <div class="cp-id"><h2>${esc(c.name)}${c.pro ? ` <span class="pro-tag">PRO</span>` : ""}</h2>
+          <div class="cp-sub">${c.ai ? "Coach IA" : esc(c.sport || "Coach")} · @${esc(c.handle)}</div></div></div>
+      <div class="cp-meta">${meta}</div>
       ${!self && isAth ? `<div class="row cp-actions">${mine ? `<span class="chip volt">✓ C'est ton coach</span><button type="button" class="btn small" data-goto="chat">💬 Écrire</button>`
         : `<button type="button" class="btn primary" data-add="${esc(c.id)}" style="flex:1">${c.ai ? "Revenir au coach IA" : "Choisir ce coach"}${c.price ? ` · ${euro(c.price)}/mois` : ""}</button>`}</div>
         ${c.trial && !mine ? `<p class="note" style="margin:0">🎁 Première séance d'essai offerte.</p>` : ""}` : ""}
-      <div class="cp-sec"><h3>À propos</h3>${c.bio ? `<p class="bio">${esc(c.bio)}</p>` : `<p class="muted">${self ? "Ajoute une présentation pour donner envie aux sportifs." : "Pas encore de présentation."}</p>`}
-        ${specs.length ? `<div class="row" style="flex-wrap:wrap;gap:6px">${specs.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}
-        ${c.diplomas ? `<p class="muted" style="margin:0;font-size:13px">🎓 ${esc(c.diplomas)}</p>` : ""}</div>
-      ${c.ai ? `<div class="cp-sec"><h3>Comment ça marche</h3><ol class="steps"><li>Tu choisis ta mise du mois.</li><li>Vaultr crée ton programme et répartit ta mise.</li><li>Tu envoies une photo ou une vidéo après chaque exercice.</li><li>Vaultr vérifie en quelques secondes et l'argent revient dans ton coffre.</li></ol></div>` : ""}
-      <div class="cp-sec"><h3>Où s'entraîner</h3>${places.length ? `<div class="list" style="gap:8px">${places.map(x => `<div class="place"><span class="pi">${PLACE_TYPES[x.type]?.[0] || "📍"}</span><div><b>${esc(x.label)}</b><div class="muted" style="font-size:12px">${PLACE_TYPES[x.type]?.[1] || ""}</div></div></div>`).join("")}</div>` : `<p class="muted">${self ? "Ajoute ta salle, tes lieux en extérieur ou la visio." : "Lieux non précisés."}</p>`}</div>
-      <div class="cp-sec"><h3>Disponibilités</h3>${hasAv ? avGrid(c.availability, false) : `<p class="muted">${self ? "Indique tes créneaux pour que les sportifs sachent quand te réserver." : "Disponibilités non précisées."}</p>`}</div>
-      ${gal.length ? `<div class="cp-sec"><h3>Photos</h3><div class="gal">${gal.map((g, i) => `<button type="button" class="gal-item" data-gal-view="${esc(c.id)}:${i}"><img src="${esc(g.img)}" alt="Photo ${i + 1} de ${esc(c.name)}"></button>`).join("")}</div></div>` : self ? `<div class="cp-sec"><h3>Photos</h3><p class="muted">Ajoute des photos de ta salle ou de tes séances.</p></div>` : ""}
-      <div class="cp-sec"><h3>Avis</h3>
+      <section class="cp-sec"><h3 class="cp-label">Où s'entraîner</h3>${mapHTML(c)}</section>
+      <section class="cp-sec"><h3 class="cp-label">À propos</h3>
+        ${c.bio ? `<p class="bio">${esc(c.bio)}</p>` : `<p class="muted" style="margin:0">${self ? "Ajoute une présentation pour donner envie aux sportifs." : "Pas encore de présentation."}</p>`}
+        ${specs.length ? `<p class="specs">${specs.map(esc).join(" · ")}</p>` : ""}
+        ${c.diplomas ? `<p class="muted" style="margin:0;font-size:13px">🎓 ${esc(c.diplomas)}</p>` : ""}
+        ${c.ai ? `<ol class="steps"><li>Tu choisis ta mise du mois.</li><li>Vaultr crée ton programme selon tes réponses.</li><li>Tu envoies une photo ou une vidéo après chaque exercice.</li><li>Vaultr vérifie et l'argent revient dans ton coffre.</li></ol>` : ""}
+        ${gal.length ? `<div class="gal strip">${gal.map((g, i) => `<button type="button" class="gal-item" data-gal-view="${esc(c.id)}:${i}"><img src="${esc(g.img)}" alt="Photo ${i + 1} de ${esc(c.name)}"></button>`).join("")}</div>` : self ? `<p class="muted" style="margin:0;font-size:13px">Ajoute des photos de ta salle ou de tes séances.</p>` : ""}</section>
+      <section class="cp-sec"><h3 class="cp-label">Disponibilités</h3>${hasAv ? avGrid(c.availability, false) : `<p class="muted" style="margin:0">${self ? "Indique tes créneaux pour que les sportifs sachent quand te réserver." : "Disponibilités non précisées."}</p>`}</section>
+      <section class="cp-sec"><h3 class="cp-label">Avis</h3>
         ${r.n ? `<div class="rating-sum"><div class="big"><b>${note1(r.avg)}</b><span class="stars">${starStr(r.avg)}</span><span class="muted" style="font-size:12px">${r.n} avis</span></div>
           <div class="bars">${counts.map((n, i) => `<div class="bar-row"><span>${5 - i}</span><div class="bar"><i style="width:${r.n ? n / r.n * 100 : 0}%"></i></div><span class="muted">${n}</span></div>`).join("")}</div></div>
-          ${form}<div class="list">${r.list.map(reviewHTML).join("")}</div>` : `${form}<p class="muted">${self ? "Tes clients pourront te laisser un avis depuis ta page." : "Pas encore d'avis."}</p>`}</div>`;
+          ${form}<div class="list">${r.list.map(reviewHTML).join("")}</div>` : `${form}<p class="muted" style="margin:0">${self ? "Tes clients pourront te laisser un avis depuis ta page." : "Pas encore d'avis."}</p>`}</section>`;
   }
 
   /* ---------- Sportif : paiements ---------- */
@@ -1680,21 +1984,53 @@ textarea::placeholder{color:var(--muted)}
       sh.querySelector("[data-act-sheet]").addEventListener("click", () => { closeSheet(); startQuiz("edit"); });
     });
   }
+  const MISE_TIERS = [[0, "Petit joueur… ça va vraiment te faire bouger ? 😏"], [20, "Pas mal. Mais est-ce assez pour ne jamais lâcher ?"], [50, "Là, on parle 💪 Tu ne vas pas laisser filer ça."], [100, "Sérieux ! À ce prix-là, tu ne rates plus une séance 🔥"], [150, "Mode guerrier activé. Ton canapé tremble 😤"], [250, "LÉGENDAIRE. Plus aucune excuse possible 🧨"]];
   function sheetMise() {
-    const p = A.program, minV = Math.max(10, Math.ceil(recovered(p) / 5) * 5); let v = Math.max(minV, p.mise || 50);
-    openSheet(`<div class="grab"></div><h2>Ma mise de ${esc(monthName())}</h2>
-      <p class="muted" style="margin:0">Combien tu mets en jeu, en plus du coaching ? Ton coach répartit cette somme sur tes exercices.</p>
-      <div class="big-amount" id="miseVal">${euro(v)}</div>
-      <input id="miseRange" type="range" min="${minV}" max="300" step="5" value="${v}" aria-label="Montant de la mise">
-      <div class="presets">${[20, 50, 100, 150].filter(x => x >= minV).map(x => `<button type="button" class="btn small" data-preset="${x}">${x} €</button>`).join("")}</div>
+    const p = A.program, minV = Math.max(10, Math.ceil(recovered(p) / 5) * 5), maxV = 300; let v = Math.max(minV, p.mise || 50), tier = -1, lastSpark = 0;
+    openSheet(`<div class="grab"></div><h2>Ta mise de ${esc(monthName())}</h2>
+      <p class="muted" style="margin:0">Plus tu mets en jeu, moins tu as envie de lâcher. Tu récupères tout si tu fais tous tes exercices.</p>
+      <div class="mise-stage" id="miseStage">
+        <div class="big-amount" id="miseVal">${euro(v)}</div>
+        <div class="meter" id="meter"><div class="meter-fill"></div>
+          <svg class="cracks" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true"><polyline points="214,4 222,16 216,22 228,36"/><polyline points="246,2 240,14 252,20 246,38"/><polyline points="276,6 284,18 278,26 290,34"/><polyline points="262,20 270,22"/></svg>
+          <input id="miseRange" type="range" min="${minV}" max="${maxV}" step="5" value="${v}" aria-label="Montant de la mise"></div>
+        <div class="mise-phrase" id="misePhrase" aria-live="polite"></div>
+      </div>
+      <div class="presets">${[20, 50, 100, 150, 250].filter(x => x >= minV).map(x => `<button type="button" class="btn small" data-preset="${x}">${x} €</button>`).join("")}</div>
       ${recovered(p) ? `<p class="muted" style="margin:0;font-size:12px">Minimum ${euro(minV)} : tu as déjà récupéré ${euro(recovered(p))} ce mois-ci.</p>` : ""}
-      <div class="note">Total du mois : <b id="miseTotal">${euro((p.coachFee || 0) + v)}</b> (coaching ${euro(p.coachFee)} + mise). Les montants non validés à la fin du mois restent à Vaultr.</div>
-      <button type="button" class="btn primary wide" id="miseOk">Confirmer (paiement simulé)</button>`, sh => {
-      const r = sh.querySelector("#miseRange"), out = sh.querySelector("#miseVal"), tot = sh.querySelector("#miseTotal");
-      const set = n => { v = n; r.value = n; out.textContent = euro(n); tot.textContent = euro((p.coachFee || 0) + n); out.classList.remove("pop"); void out.offsetWidth; out.classList.add("pop"); };
-      r.addEventListener("input", () => set(+r.value));
-      sh.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => set(+b.dataset.preset)));
-      sh.querySelector("#miseOk").addEventListener("click", () => { closeSheet(); guard(() => setMise(v), `Mise réglée à ${euro(v)}.`); });
+      <div class="note">Total du mois : <b id="miseTotal">${euro((p.coachFee || 0) + v)}</b>${p.coachFee ? ` (coaching ${euro(p.coachFee)} + mise)` : ""}. Les montants non validés à la fin du mois restent à Vaultr.</div>
+      <button type="button" class="btn primary wide big" id="miseOk">Je mets ${euro(v)} en jeu (simulé)</button>`, sh => {
+      const r = sh.querySelector("#miseRange"), out = sh.querySelector("#miseVal"), tot = sh.querySelector("#miseTotal"), stage = sh.querySelector("#miseStage"), phrase = sh.querySelector("#misePhrase"), ok = sh.querySelector("#miseOk"), meter = sh.querySelector("#meter");
+      const spark = pr => {
+        if (reduced()) return;
+        const x = meter.clientWidth * pr, n = 2 + Math.round(pr * 5);
+        for (let i = 0; i < n; i++) {
+          const el = document.createElement("span"); el.className = "spark"; el.style.left = x + "px"; el.style.top = "10px";
+          el.style.background = ["#FFB020", "#FF5A1F", "#FFE066"][i % 3]; meter.appendChild(el);
+          const a = -Math.PI / 2 + (Math.random() - .5) * 2.2, d = 20 + Math.random() * 40 * pr;
+          el.animate([{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d}px) scale(.2)`, opacity: 0 }], { duration: 500 + Math.random() * 400, easing: "cubic-bezier(.2,.7,.3,1)" }).onfinish = () => el.remove();
+        }
+      };
+      const set = (n, fromUser) => {
+        v = n; r.value = n;
+        const pr = (n - 10) / (maxV - 10);
+        stage.style.setProperty("--p", pr.toFixed(3));
+        stage.style.setProperty("--amp", (pr > .45 ? (pr - .45) / .55 * 3.5 : 0).toFixed(2));
+        stage.style.setProperty("--crack", Math.max(0, (pr - .72) / .28).toFixed(2));
+        stage.classList.toggle("hot", pr > .45); stage.classList.toggle("max", pr > .93);
+        out.textContent = euro(n); tot.textContent = euro((p.coachFee || 0) + n); ok.textContent = `Je mets ${euro(n)} en jeu (simulé)`;
+        const ti = MISE_TIERS.reduce((k, [min], i) => n >= min ? i : k, 0);
+        if (ti !== tier) {
+          tier = ti; phrase.textContent = MISE_TIERS[ti][1]; phrase.classList.remove("pop"); void phrase.offsetWidth; phrase.classList.add("pop");
+          if (fromUser) try { if (navigator.userActivation?.hasBeenActive) navigator.vibrate?.(8 + ti * 8); } catch {}
+        }
+        const t0 = performance.now();
+        if (fromUser && pr > .5 && t0 - lastSpark > 70) { lastSpark = t0; spark(pr); }
+      };
+      set(v, false);
+      r.addEventListener("input", () => set(+r.value, true));
+      sh.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => set(+b.dataset.preset, true)));
+      ok.addEventListener("click", () => { closeSheet(); guard(() => setMise(v), `Mise réglée à ${euro(v)}. Ne lâche rien !`); });
     });
   }
 
@@ -1813,6 +2149,23 @@ textarea::placeholder{color:var(--muted)}
     </section>`;
   }
 
+  async function uploadCoachMedia(file) {
+    const ref = A.db.collection(`profiles/${A.myId}/media`).doc();
+    if (file.type.startsWith("image/")) { await ref.set({ kind: "photo", img: await compressImage(file, 900, .7, false), ts: now() }); return { id: ref.id, kind: "photo" }; }
+    const v = await openVideo(file);
+    if (v.duration > MAX_SECONDS + .5) throw { ui: `Vidéo trop longue : ${MAX_SECONDS} secondes maximum.` };
+    const poster = await grabPoster(v);
+    let blob = file, mime = file.type || "video/mp4";
+    if (file.size > DIRECT_BYTES) { const o = await compressVideo(v, () => {}); blob = o.blob; mime = o.mime; }
+    if (blob.size > MAX_BYTES) throw { ui: "Vidéo trop lourde, même compressée. Filme une démo plus courte." };
+    const b64 = await blobToB64(blob), parts = [];
+    for (let i = 0; i < b64.length; i += CHUNK) parts.push(b64.slice(i, i + CHUNK));
+    for (let i = 0; i < parts.length; i++) await ref.collection("chunks").doc(String(i).padStart(3, "0")).set({ d: parts[i] });
+    await ref.set({ kind: "video", mime, chunks: parts.length, poster, ts: now() });
+    URL.revokeObjectURL(v.src);
+    return { id: ref.id, kind: "video" };
+  }
+
   /* ---------- Coach : programme + répartition IA ---------- */
   function sheetProgram(aid) {
     const c = A.clients.find(x => x.id === aid); if (!c) return;
@@ -1828,6 +2181,7 @@ textarea::placeholder{color:var(--muted)}
           <div><b>${esc(t.name)}</b><div class="meta">${t.target} séances · difficulté ${"●".repeat(t.diff)}${"○".repeat(3 - t.diff)}${t.weak ? " · point faible" : ""}${t.done ? ` · ${euro(earned(t))} déjà rendus` : ""}</div></div>
           <input type="number" min="0" step="0.05" value="${t.value}" data-val="${i}" aria-label="Valeur de ${esc(t.name)} en euros" ${budget && left(t) ? "" : "disabled"}>
           <button type="button" class="del" data-del="${i}" aria-label="Supprimer ${esc(t.name)}" ${t.done ? "disabled" : ""}>×</button>
+          <label class="tmedia ${t.media ? "on" : ""}"><input type="file" accept="image/*,video/*" data-tmedia="${i}" hidden>${t.media ? `✓ Démo ${t.media.kind === "video" ? "vidéo" : "photo"} · changer` : "🎬 Ajouter une démo (photo ou vidéo)"}</label>
         </div>`).join("")}
         <div class="card" style="gap:10px;padding:12px">
           <div class="field"><label for="ntName">Nouvel exercice</label><input type="text" id="ntName" maxlength="40" placeholder="Ex. 20 squats"></div>
@@ -1845,6 +2199,12 @@ textarea::placeholder{color:var(--muted)}
       const rerender = () => { const st = sh.scrollTop; sh.innerHTML = body(); wire(sh); sh.scrollTop = st; };
       sh.querySelectorAll("[data-val]").forEach(inp => inp.addEventListener("change", () => { draft[+inp.dataset.val].value = Math.max(0, +inp.value || 0); rerender(); }));
       sh.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { draft.splice(+b.dataset.del, 1); rerender(); }));
+      sh.querySelectorAll("[data-tmedia]").forEach(inp => inp.addEventListener("change", async () => {
+        const f = inp.files[0], i = +inp.dataset.tmedia; if (!f) return;
+        const lab = inp.closest("label"); lab.classList.add("busy"); lab.lastChild.textContent = f.type.startsWith("video/") ? "Compression de la vidéo…" : "Envoi…";
+        try { draft[i].media = await uploadCoachMedia(f); toast("Démo ajoutée ✓"); } catch (x) { toast(x?.ui || "La démo n'a pas pu être ajoutée."); }
+        rerender();
+      }));
       sh.querySelector("#aiBtn")?.addEventListener("click", () => { aiSplit(draft, budget).forEach((v, i) => draft[i].value = v); rerender(); toast("Mise répartie selon la difficulté et les points faibles"); });
       sh.querySelector("#addTask").addEventListener("click", () => {
         const name = sh.querySelector("#ntName").value.trim(); if (!name) { sh.querySelector("#ntName").focus(); return; }
@@ -1881,7 +2241,8 @@ textarea::placeholder{color:var(--muted)}
     const p = A.profile;
     A.draft = { photo: p.photo || "", name: p.name || "", city: p.city || "", sport: p.sport || SPORTS[0], specialties: [...(p.specialties || [])], bio: p.bio || "",
       experience: p.experience ?? "", diplomas: p.diplomas || "", price: p.price ?? 0, trial: !!p.trial, places: (p.places || []).map(x => ({ ...x })),
-      availability: JSON.parse(JSON.stringify(p.availability || {})) };
+      availability: JSON.parse(JSON.stringify(p.availability || {})), remote: !!p.remote,
+      cover: p.cover ? JSON.parse(JSON.stringify(p.cover)) : { type: "gen", style: COVER_STYLES[hashStr(A.myId) % COVER_STYLES.length], seed: hashStr(A.myId) } };
     A.editing = true; A.tab.coach = "pro"; render(); $main.scrollTop = 0;
   }
   function viewProfileEdit() {
@@ -1889,6 +2250,10 @@ textarea::placeholder{color:var(--muted)}
     const specs = [...new Set([...SPECIALTIES, ...d.specialties])];
     return `<section class="screen ENTER">
       <div class="split edit-bar"><button type="button" class="btn small ghost" data-act="edit-cancel">Annuler</button><b>Modifier ma page</b><button type="button" class="btn small primary" data-act="edit-save">Enregistrer</button></div>
+      <div class="card"><h3>Fond de ta page</h3>
+        <div class="cover-prev">${coverHTML({ cover: d.cover, id: A.myId })}</div>
+        <div class="row" style="flex-wrap:wrap;gap:8px"><label class="btn small"><input type="file" accept="image/*" data-upload="cover" hidden>🖼️ Importer une image</label><button type="button" class="btn small" data-act="cover-gen">🎲 Générer un fond</button></div>
+        <div class="cover-opts">${COVER_STYLES.map(st => `<button type="button" class="cover-opt ${d.cover?.type === "gen" && d.cover.style === st ? "on" : ""}" data-cover-style="${st}" aria-label="Style ${st}">${coverSVG({ type: "gen", style: st, seed: d.cover?.type === "gen" ? d.cover.seed : hashStr(A.myId) }, A.myId)}</button>`).join("")}</div></div>
       <div class="card"><h3>Photo de profil</h3><div class="row">${avatar({ photo: d.photo, name: d.name }, "xl volt")}
         <div class="grow" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><label class="btn small"><input type="file" accept="image/*" data-upload="photo" hidden>📷 ${d.photo ? "Changer la photo" : "Ajouter une photo"}</label>${d.photo ? `<button type="button" class="btn small ghost" data-act="photo-del">Retirer</button>` : ""}</div></div></div>
       <div class="card"><h3>Infos</h3>
@@ -1900,7 +2265,8 @@ textarea::placeholder{color:var(--muted)}
           <div class="field" style="flex:1;min-width:130px"><label for="pfPrice">Prix (€ / mois)</label><input type="number" id="pfPrice" data-f="price" min="0" step="5" value="${esc(d.price)}"></div>
           <div class="field" style="flex:1;min-width:130px"><label for="pfExp">Années d'expérience</label><input type="number" id="pfExp" data-f="experience" min="0" max="60" value="${esc(d.experience)}"></div></div>
         <div class="field"><label for="pfDipl">Diplômes et certifications</label><input type="text" id="pfDipl" data-f="diplomas" maxlength="120" value="${esc(d.diplomas)}" placeholder="Ex. BPJEPS AF, Licence STAPS"></div>
-        <label class="check"><input type="checkbox" id="pfTrial" data-f="trial" ${d.trial ? "checked" : ""}> Première séance d'essai offerte</label></div>
+        <label class="check"><input type="checkbox" id="pfTrial" data-f="trial" ${d.trial ? "checked" : ""}> Première séance d'essai offerte</label>
+        <label class="check"><input type="checkbox" id="pfRemote" data-f="remote" ${d.remote ? "checked" : ""}> Je propose aussi du coaching à distance (visio)</label></div>
       <div class="card"><h3>Présentation</h3>
         <textarea id="pfBio" data-f="bio" maxlength="600" rows="5" placeholder="Ton parcours, ta méthode, pour qui tu es fait…">${esc(d.bio)}</textarea>
         <span class="muted" style="font-size:12px;align-self:flex-end" id="bioCount">${d.bio.length}/600</span></div>
@@ -1925,7 +2291,8 @@ textarea::placeholder{color:var(--muted)}
     await A.db.doc("profiles/" + A.myId).update({
       photo: d.photo, name: d.name.trim().slice(0, 40), city: d.city.trim().slice(0, 40), sport: d.sport, specialties: d.specialties.slice(0, 12), bio: d.bio.trim().slice(0, 600),
       experience: d.experience === "" ? "" : Math.max(0, Math.round(+d.experience || 0)), diplomas: d.diplomas.trim().slice(0, 120), price: Math.max(0, Math.round(+d.price || 0)), trial: !!d.trial,
-      places: d.places.filter(x => x.label.trim()).map(x => ({ type: x.type, label: x.label.trim().slice(0, 60) })), availability: d.availability
+      places: d.places.filter(x => x.label.trim()).map(x => ({ type: x.type, label: x.label.trim().slice(0, 60) })), availability: d.availability,
+      remote: !!d.remote, cover: d.cover
     });
     A.editing = false; A.draft = null;
   }
@@ -2154,6 +2521,9 @@ textarea::placeholder{color:var(--muted)}
     if (d.act === "edit-cancel") { A.editing = false; A.draft = null; render(); $main.scrollTop = 0; return; }
     if (d.act === "edit-save") return guard(async () => { try { await saveProfileDraft(); } catch (x) { if (x?.ui) { toast(x.ui); return; } throw x; } render(); $main.scrollTop = 0; toast("Ta page est à jour ✨"); });
     if (d.act === "photo-del") { A.draft.photo = ""; render(); return; }
+    if (d.act === "cover-gen") { A.draft.cover = { type: "gen", style: COVER_STYLES[Math.floor(Math.random() * COVER_STYLES.length)], seed: Math.floor(Math.random() * 1e9) }; render(); return; }
+    if (d.coverStyle) { A.draft.cover = { type: "gen", style: d.coverStyle, seed: A.draft.cover?.type === "gen" ? A.draft.cover.seed : hashStr(A.myId) }; render(); return; }
+    if (d.howto) return sheetHowTo(d.howto);
     if (d.spec) { const l = A.draft.specialties, i = l.indexOf(d.spec); if (i >= 0) l.splice(i, 1); else l.push(d.spec); t.setAttribute("aria-pressed", String(i < 0)); return; }
     if (d.act === "spec-add") { const inp = document.getElementById("specNew"), v = inp.value.trim().slice(0, 30); if (v && !A.draft.specialties.includes(v)) A.draft.specialties.push(v); inp.value = ""; render(); return; }
     if (d.act === "place-add") { A.draft.places.push({ type: "gym", label: "" }); render(); document.getElementById("pll" + (A.draft.places.length - 1))?.focus(); return; }
@@ -2208,11 +2578,12 @@ textarea::placeholder{color:var(--muted)}
     const f = inp.files[0], kind = inp.dataset.upload; inp.value = "";
     try {
       if (kind === "photo") { A.draft.photo = await compressImage(f, 320, .8, true); render(); }
+      else if (kind === "cover") { A.draft.cover = { type: "img", img: await compressImage(f, 1000, .62, false) }; render(); }
       else await guard(async () => { const img = await compressImage(f, 900, .7, false); await A.db.collection(`profiles/${A.myId}/gallery`).add({ img, ts: now() }); }, "Photo ajoutée");
     } catch (x) { toast(x?.ui || "Cette image n'a pas pu être ajoutée."); }
   });
   // Envoi d'une preuve : photo réduite, ou vidéo compressée sur le téléphone puis envoyée en morceaux
-  $main.addEventListener("change", e => {
+  function onProofChange(e) {
     const inp = e.target.closest("input[data-proof]"); if (!inp || !inp.files[0]) return;
     const f = inp.files[0], taskId = inp.dataset.proof;
     inp.value = "";
@@ -2235,7 +2606,8 @@ textarea::placeholder{color:var(--muted)}
       im.src = r.result;
     };
     r.readAsDataURL(f);
-  });
+  }
+  $main.addEventListener("change", onProofChange);
 
   /* ---------- Vidéos ---------- */
   const MAX_SECONDS = 30, DIRECT_BYTES = 1200000, MAX_BYTES = 4000000;
