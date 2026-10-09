@@ -1,0 +1,226 @@
+
+/* =====================================================================
+   VAULTR — DA « Le Coffre »
+   Métal sombre de porte de coffre, laiton pour l'argent (et uniquement l'argent),
+   blanc os pour les actions, typo de tableau d'affichage pour les chiffres,
+   chiffres « gravés » en mono pour les montants.
+   ===================================================================== */
+:root{
+  --ink:#0C0E11;          /* fond : acier noirci */
+  --panel:#15181C;        /* surfaces */
+  --panel-2:#1C2026;      /* surfaces surélevées */
+  --line:#262B33;         /* filets */
+  --fg:#EDE9E1;           /* texte : blanc os */
+  --muted:#8C929C;        /* texte secondaire */
+  --volt:#E3B04B;         /* laiton : l'argent, la valeur */
+  --volt-dim:#E3B04B1F;
+  --brass-hi:#F6D58A;     /* reflet du laiton */
+  --brass-lo:#9A6A14;     /* ombre du laiton */
+  --bone:#F2EEE6;         /* actions principales */
+  --ok:#5BD192;           /* validé */
+  --loss:#FF5B4F;         /* perdu, danger */
+  --paper:#0C0E11;
+  --stage:#07080A;
+  --display:"Big Shoulders Display","Oswald","Arial Narrow",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --steel:linear-gradient(160deg,#2B3038 0%,#171A1F 55%,#101216 100%);
+  --brass:linear-gradient(135deg,var(--brass-hi) 0%,var(--volt) 45%,var(--brass-lo) 100%);
+  color-scheme:dark;
+}
+*{font-stretch:normal!important;font-style:normal}
+body{font-family:var(--body);font-size:15px;letter-spacing:.005em;
+  background:radial-gradient(1200px 600px at 70% -10%,#1A1D22 0%,var(--stage) 60%)}
+
+/* ---------- Téléphone : métal brossé très léger ---------- */
+.phone{background:
+  radial-gradient(120% 60% at 50% -10%,#1B1F25 0%,transparent 55%),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 3px),
+  var(--ink);
+  box-shadow:0 0 0 1px #23272e,0 0 0 9px #0f1114,0 0 0 10px #2a2f37,0 40px 90px #000d}
+.side h1{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:64px;line-height:.88;letter-spacing:.01em}
+.side h1 span{color:var(--volt)}
+.side-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--volt);margin-bottom:14px}
+.side .demo-tip{border-left-color:var(--volt)}
+
+/* ---------- Typographie ---------- */
+h2{font-family:var(--display);font-weight:800;font-size:28px;line-height:1;text-transform:uppercase;letter-spacing:.01em}
+h3{font-family:var(--body);font-weight:700;font-size:16px;letter-spacing:0}
+.eyebrow{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.18em;color:var(--muted)}
+.hero-line{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:52px;line-height:.9;letter-spacing:.005em}
+.hero-line em{color:var(--volt)}
+.brand{font-family:var(--display);font-weight:900;font-size:26px;letter-spacing:.06em}
+.brand span{color:var(--volt)}
+.num,.val-chip,.rec-small span,.budget .num,.copy code{font-family:var(--mono)}
+.muted{color:var(--muted)}
+
+/* ---------- Boutons : blanc os pour agir, laiton pour l'argent ---------- */
+.btn{border-radius:14px;font-weight:700;letter-spacing:.01em;background:var(--panel-2);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.btn.primary{background:var(--bone);color:var(--ink);border-color:var(--bone);box-shadow:0 6px 18px rgba(242,238,230,.08)}
+.btn.primary:hover{background:#fff}
+.btn.big{padding:16px 18px;font-size:16px;border-radius:16px}
+.btn.ghost{background:transparent;box-shadow:none}
+#miseOk,[data-act="ai-build"],.btn.money{background:var(--brass);color:#1A1205;border-color:transparent;box-shadow:0 8px 24px rgba(227,176,75,.25)}
+.link{color:var(--bone);text-decoration-color:var(--volt)}
+:focus-visible{outline-color:var(--volt)}
+
+/* ---------- Cartes : moins de cadres, plus de matière ---------- */
+.card{background:linear-gradient(180deg,#171A1F,#14171B);border:1px solid var(--line);border-radius:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.note{background:transparent;border:1px dashed var(--line);color:var(--muted)}
+.chip{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:3px 7px;background:var(--panel-2)}
+.chip.volt{background:var(--volt-dim);color:var(--volt)}
+.chip.wait{background:#E3B04B14;color:var(--brass-hi)}
+.stat{background:transparent;border:none;border-left:1px solid var(--line);border-radius:0;padding:4px 12px}
+.vault-stats .stat:first-child{border-left:none}
+.stat b{font-family:var(--display);font-weight:800;font-size:28px;line-height:1}
+.stat span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+
+/* ---------- En-tête et barre d'onglets en « dock » ---------- */
+.top{padding-bottom:4px}
+.role-switch button[aria-pressed="true"]{background:var(--bone);color:var(--ink)}
+.icon-btn{background:var(--panel);border-color:var(--line)}
+.mode-pill{font-family:var(--mono);background:transparent;color:var(--volt);border:1px solid var(--volt)}
+nav.tabbar{margin:0 12px 12px;border:1px solid var(--line);border-radius:22px;background:rgba(21,24,28,.92);backdrop-filter:blur(14px);box-shadow:0 10px 30px #000a;padding:6px}
+nav.tabbar button{border-radius:16px;padding:8px 0 6px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase}
+nav.tabbar button[aria-current="page"]{color:var(--bone);background:var(--panel-2)}
+nav.tabbar button[aria-current="page"] svg{color:var(--volt)}
+.badge{background:var(--loss);color:#fff;font-family:var(--mono)}
+
+/* ---------- Ouverture : la porte du coffre ---------- */
+.splash{background:radial-gradient(circle at 50% 42%,#1D2127 0%,#0A0B0D 70%);color:var(--fg);gap:26px;transition:opacity .6s ease .35s}
+.splash.open{clip-path:none;opacity:0}
+.door{width:190px;height:190px;perspective:700px}
+.door-face{position:relative;width:100%;height:100%;border-radius:50%;background:var(--steel);box-shadow:inset 0 2px 0 rgba(255,255,255,.08),inset 0 -10px 30px rgba(0,0,0,.6),0 0 0 6px #0E1013,0 0 0 8px #2A2F37,0 30px 60px #000;transform-origin:0% 50%;transition:transform .8s cubic-bezier(.6,0,.3,1)}
+.splash.open .door-face{transform:rotateY(-80deg)}
+.door-ring{position:absolute;inset:26px;border-radius:50%;border:2px solid #333944;box-shadow:inset 0 0 0 10px #15181C,inset 0 0 0 11px #2E343D}
+.door-bolts span{position:absolute;left:50%;top:50%;width:12px;height:30px;margin:-15px 0 0 -6px;border-radius:5px;background:var(--brass);transform:rotate(var(--a)) translateY(-104px);animation:boltIn .55s cubic-bezier(.5,0,.3,1) .55s forwards;box-shadow:0 0 8px rgba(227,176,75,.35)}
+@keyframes boltIn{to{transform:rotate(var(--a)) translateY(-76px)}}
+.door-wheel{position:absolute;inset:42px;color:var(--volt);animation:wheelSpin 1.1s cubic-bezier(.6,0,.2,1) .15s both;filter:drop-shadow(0 4px 10px #000)}
+@keyframes wheelSpin{from{transform:rotate(0)}to{transform:rotate(-300deg)}}
+.wordmark{font-family:var(--display);font-weight:900;font-size:58px;letter-spacing:.08em;line-height:1}
+.splash small{font-family:var(--mono);color:var(--volt);letter-spacing:.24em;font-size:11px}
+
+/* ---------- Le coffre : verrous ---------- */
+.vault svg{width:256px;height:256px}
+.vault .steel-disc{fill:url(#steel);stroke:#2B3038;stroke-width:1.5}
+.vault .ticks line{stroke:#3A404A;stroke-width:1.5}
+.vault .bolt{fill:#262B33;stroke:#323843;stroke-width:1;transition:fill .4s,filter .4s}
+.vault .bolt.on{fill:var(--volt);stroke:var(--brass-hi);filter:drop-shadow(0 0 4px rgba(227,176,75,.7));animation:boltOn .5s cubic-bezier(.3,1.6,.5,1) both;animation-delay:var(--d)}
+@keyframes boltOn{from{opacity:.2}}
+.vault .ring-bg{stroke:#101317;stroke-width:5}
+.vault .ring{stroke:var(--volt);stroke-width:5;filter:drop-shadow(0 0 6px rgba(227,176,75,.6))}
+.vault.boom .ring{filter:drop-shadow(0 0 22px var(--volt))}
+.vault-center{gap:1px}
+.lock{width:22px;height:22px;color:var(--muted);margin-bottom:4px}
+.lock.open{color:var(--volt)}
+.lock.open .shackle{transform:translate(4px,-3px) rotate(18deg);transform-origin:17px 11px}
+.vault-center .of.top{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--muted)}
+.vault-center .amount{font-family:var(--display);font-weight:900;font-size:58px;line-height:.95;background:var(--brass);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 10px rgba(227,176,75,.25))}
+.vault-center .of{font-size:12px}
+.rec-small{background:#0F1215;border-color:#2A2F37;font-size:11px}
+.goal-line{font-size:14px;line-height:1.5;padding:0 10px}
+.goal-line b{color:var(--bone)}
+
+/* ---------- Exercices : vignettes métal, séances en pastilles ---------- */
+.task{background:linear-gradient(180deg,#171A1F,#13161A);border-radius:20px}
+.task.weak{border-color:#E3B04B44}
+.task.t2{grid-template-columns:80px 1fr auto;gap:12px 14px}
+.exo-thumb{width:80px;height:80px;border-radius:18px;background:radial-gradient(circle at 50% 28%,#2A2F37,#111317 78%);border-color:#2A2F37;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.exo polyline,.exo line{stroke:var(--bone)}
+.exo .hd{fill:var(--bone)}
+.exo .wh,.exo .tm,.exo .glove{stroke:var(--volt)}
+.exo .glove,.exo .db{fill:var(--volt)}
+.exo .wave{stroke:#7FB4FF}
+.exo .gd,.exo .gd2,.exo .tm-bg{stroke:#2E343D}
+.task .name{font-weight:700;font-size:16px}
+.t2-prog b{font-family:var(--display);font-weight:800;font-size:22px;color:var(--bone)}
+.t2-prog span{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.val-chip{background:transparent;border-color:#E3B04B44;color:var(--volt);font-weight:600;font-size:11px}
+.pips{grid-column:1/-1;display:flex;gap:4px}
+.pips i{flex:1;height:6px;border-radius:3px;background:#262B33;transition:background .4s}
+.pips i.on{background:var(--volt);box-shadow:0 0 6px rgba(227,176,75,.45)}
+.task.full .pips i.on{background:var(--ok);box-shadow:none}
+.ai-note{background:#E3B04B12;border-left:2px solid var(--volt);border-radius:8px}
+.ai-note b{color:var(--volt)}
+
+/* ---------- Encaissement : laiton ---------- */
+.cele{background:radial-gradient(circle at 50% 42%,#2a2112 0%,rgba(12,14,17,.96) 62%)}
+.cele-rays{background:repeating-conic-gradient(from 0deg,#E3B04B1f 0deg 8deg,transparent 8deg 20deg)}
+.cele-vault{background:var(--steel);color:var(--volt);box-shadow:0 0 0 2px #2E343D,0 0 0 10px #E3B04B22,0 0 60px rgba(227,176,75,.45)}
+.cele-vault .lock{width:52px;height:52px;margin:0}
+.cele-amt{font-family:var(--display);font-weight:900;font-size:84px;background:var(--brass);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 4px 24px rgba(227,176,75,.5))}
+.coin,.rain{background:radial-gradient(circle at 35% 30%,#FFF1C9,#E3B04B 50%,#8E5F10);box-shadow:0 0 10px rgba(227,176,75,.6);color:#3a2706;font-family:var(--display)}
+
+/* ---------- Mise : la jauge garde sa chaleur ---------- */
+.mise-stage .big-amount{font-family:var(--display);font-weight:900;font-size:72px;color:var(--volt);color:color-mix(in srgb,#FF2D1F calc(var(--p) * 100%),var(--volt))}
+.mise-phrase{font-family:var(--display);font-weight:800;font-size:22px;text-transform:uppercase;letter-spacing:.01em;color:var(--bone)}
+.presets .btn{font-family:var(--mono);font-weight:600}
+.big-amount{font-family:var(--display);font-weight:900}
+
+/* ---------- Accueil / connexion ---------- */
+.auth-dial{background:var(--steel);color:var(--volt);box-shadow:0 0 0 2px #2E343D,0 0 40px rgba(227,176,75,.25)}
+.auth .hero-line{font-size:58px}
+.role-card{background:var(--steel);border-color:#2A2F37;border-radius:22px;position:relative;overflow:hidden}
+.role-card b{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:32px;letter-spacing:.01em}
+.role-card::after{content:"→";position:absolute;right:18px;top:18px;font-size:22px;color:var(--volt)}
+.role-card:hover{border-color:var(--volt)}
+.resume-card{border-color:var(--volt);background:var(--steel)}
+.q-title{font-family:var(--display);font-weight:800;font-size:34px;text-transform:uppercase;line-height:.95}
+.q-opt{background:var(--panel);border-radius:14px}
+.q-opt.on{background:var(--volt-dim);border-color:var(--volt);color:var(--bone)}
+.q-opt.on .q-check{background:var(--volt);border-color:var(--volt)}
+
+/* ---------- Discussion : l'argent garde le laiton, les bulles restent neutres ---------- */
+.bubble.me{background:var(--bone);color:var(--ink)}
+.bubble.them{background:var(--panel-2)}
+.send{background:var(--bone)}
+.chat-row .dot{background:var(--loss);box-shadow:none}
+
+/* ---------- Coach : tableau d'affichage ---------- */
+.kpi{background:var(--steel);border-color:#2A2F37;border-radius:18px}
+.kpi span{font-family:var(--mono);font-size:10px;letter-spacing:.14em}
+.kpi b{font-family:var(--display);font-weight:900;font-size:38px;line-height:1}
+.kpi.hot{border-color:var(--loss)}
+.kpi.hot b{color:var(--loss)}
+.price{font-family:var(--display);font-weight:800;color:var(--volt)}
+.budget.ok{background:var(--volt-dim);color:var(--volt)}
+
+/* ---------- Page coach ---------- */
+.cp-cover{border-radius:24px;height:170px}
+.cp-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(12,14,17,.85))}
+.cp-head .avatar.xl{box-shadow:0 0 0 2px var(--volt);border-color:var(--ink)}
+.cp-id h2{font-size:32px}
+.cp-meta b{font-family:var(--display);font-weight:800;font-size:20px;color:var(--bone)}
+.pro-tag{background:var(--brass);color:#1A1205}
+.cp-label{font-family:var(--mono);font-weight:500;color:var(--volt)}
+.specs{color:var(--bone);font-weight:600}
+.av-c.on{background:var(--volt);border-color:var(--volt);box-shadow:none}
+.map .pin-s{fill:var(--volt);stroke:#0C0E11}
+.map .route{stroke:var(--volt)}
+.map .pulse{fill:#E3B04B33}
+.map .ring-r{stroke:var(--volt)}
+.map .ring-c{fill:var(--volt)}
+.place .pn{background:var(--volt)}
+.remote.yes .rdot{background:var(--ok);animation:none;box-shadow:0 0 0 4px #5BD19222}
+.rating-sum .big b{font-family:var(--display);font-weight:900;font-size:48px;color:var(--volt)}
+.star-pick button.on,.star1,.stars{color:var(--volt)}
+.review{background:transparent;border:none;border-bottom:1px solid var(--line);border-radius:0;padding:12px 2px}
+
+/* ---------- Divers ---------- */
+.toast{background:var(--bone);color:var(--ink);border-radius:16px;font-weight:600}
+.avatar{background:var(--steel)}
+.avatar.volt{border-color:var(--volt);color:var(--volt)}
+.sheet{background:linear-gradient(180deg,#1A1D22,#15181C);border-radius:26px 26px 0 0}
+.tog[aria-pressed="true"]{border-color:var(--volt);color:var(--volt)}
+.seg button[aria-pressed="true"]{border-color:var(--volt);color:var(--volt)}
+.tabs-inline button[aria-pressed="true"]{border-color:var(--bone);color:var(--bone);background:var(--panel-2)}
+
+/* ---------- Finitions ---------- */
+*{font-style:normal!important}
+.vault .vault-center .lock{width:26px;height:26px;margin-bottom:6px}
+.stat span{display:block;letter-spacing:.06em;line-height:1.35;margin-top:4px}
+.hero-line,.auth .hero-line{font-size:44px;line-height:.92}
+.wordmark{background:linear-gradient(180deg,#FFFFFF,#BDB7AB);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:30px}
+.split h2{font-size:28px}
+.auth-hero{gap:14px}
