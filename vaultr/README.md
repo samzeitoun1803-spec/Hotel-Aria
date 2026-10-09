@@ -15,6 +15,16 @@ sa mise. Les montants non validés en fin de mois restent à Vaultr.
 
 ## Fonctionnement
 
+- **Questionnaire d'inscription** (sportif, 10 questions) : objectif, niveau, séances/semaine,
+  durée, lieux, matériel, goûts, ce qu'il refuse de faire, douleurs, mot libre (`profiles/<id>.quiz`).
+  Modifiable ensuite (« Mes réponses pour Vaultr »).
+- **Programme adaptatif** : Vaultr construit le programme à partir du questionnaire et l'adapte à
+  la demande (chat ou bouton « Adapter ») ; l'argent déjà gagné reste acquis (exercices retirés
+  gardés en `archived`). Sans Claude : banque d'exercices filtrée (interdits, douleurs, matériel,
+  lieux) et lecture simple de la demande.
+- **Analyse des preuves** : photo, ou 4 images réparties sur la vidéo, envoyées à Claude ; la
+  décision et le commentaire de Vaultr s'affichent sous l'exercice.
+- **Accueil à chaque ouverture** : « Continuer en tant que… », « Créer un compte », « Se connecter ».
 - **Coach IA « Vaultr »** : attribué d'office à chaque nouveau sportif (gratuit). Il crée le
   programme quand la mise est choisie, vérifie les photos/vidéos (image envoyée à Claude via
   la capacité `sample`) et répond dans la messagerie. Sans accès à Claude (démo hors

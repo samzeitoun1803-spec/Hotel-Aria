@@ -342,6 +342,26 @@ textarea::placeholder{color:var(--muted)}
 .dots span:nth-child(2),.bubble.typing span:nth-child(2){animation-delay:.2s}
 .dots span:nth-child(3),.bubble.typing span:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+/* ---------- Questionnaire Vaultr ---------- */
+.quiz{gap:18px}
+.quiz .bar{height:8px}
+.q-head{display:flex;align-items:center;gap:12px}
+.q-head .avatar{width:40px;height:40px}
+.q-title{font-size:26px;line-height:1.1}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px 16px;font-size:15px;font-weight:600;transition:border-color .15s,background .15s,transform .12s}
+.q-opt:active{transform:scale(.98)}
+.q-opt.on{border-color:var(--volt);background:var(--volt-dim);color:var(--volt)}
+.q-opts.multi{display:grid;grid-template-columns:1fr 1fr}
+.q-check{width:22px;height:22px;flex:none;border-radius:7px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px}
+.q-opt.on .q-check{background:var(--volt);border-color:var(--volt);color:var(--ink)}
+.ai-note{grid-column:1/-1;font-size:13px;line-height:1.45;background:var(--volt-dim);color:var(--fg);border-radius:12px;padding:9px 11px}
+.ai-note b{color:var(--volt)}
+.ai-note.ko{background:#FF5C4D1a}
+.ai-note.ko b{color:var(--loss)}
+.resume-card{flex-direction:row;align-items:center;gap:12px;border-color:var(--volt)}
+@media (max-width:360px){.q-opts.multi{grid-template-columns:1fr}}
 </style>
 
 <div class="stage">
@@ -551,7 +571,8 @@ textarea::placeholder{color:var(--muted)}
     blockedWhy: "",
     db: null, liveDb: null, user: null,
     myId: null, suggestedName: "",
-    auth: "welcome", creating: false,   // écrans de connexion
+    auth: "welcome", creating: false, gate: true,   // écrans de connexion (gate : accueil à chaque ouverture)
+    quizMode: null, quizStep: 0, quizAns: {}, pendingProfile: null,   // questionnaire
     profile: undefined,       // undefined = pas encore chargé, null = pas de profil
     coaches: [], athletes: {},
     program: undefined, proofsAth: [], events: [],
@@ -707,7 +728,7 @@ textarea::placeholder{color:var(--muted)}
     resetData(); if (A.myId) subscribeBase(); render();
   }
   function demoLogin(uid) {
-    lsSet("vaultr-demo-session", uid); A.myId = uid;
+    lsSet("vaultr-demo-session", uid); A.myId = uid; A.gate = false;
     resetData(); subscribeBase(); render(); $main.scrollTop = 0;
   }
   function logout() {
@@ -775,6 +796,7 @@ textarea::placeholder{color:var(--muted)}
   // Détecte l'argent reçu depuis la dernière visite (même appli fermée) et lance l'encaissement.
   let seenTs = null;
   function checkNewMoney() {
+    if (A.gate || A.quizMode) return; // l'encaissement attend que le sportif soit entré dans l'appli
     const key = `vaultr-seen-${A.mode}-${A.myId}`;
     const newest = A.events.reduce((m, e) => Math.max(m, e.ts || 0), 0);
     if (seenTs === null) {
@@ -879,13 +901,90 @@ textarea::placeholder{color:var(--muted)}
      Tourne sur le téléphone du sportif ; utilise Claude quand il est disponible,
      sinon des réponses simples (mode démo).
      ===================================================================== */
-  const GOAL_TEMPLATES = {
-    "Perte de poids": [["Marche rapide 30 min", "Rythme soutenu", 8, 1, false], ["20 squats", "3 séries", 8, 2, false], ["Corde à sauter 5 min", "Ou montées de genoux", 6, 3, true], ["Gainage 1 min", "Planche", 8, 2, false]],
-    "Prise de muscle": [["Pompes 3 × 12", "Sur les genoux si besoin", 8, 2, false], ["Squats sautés 3 × 10", "", 8, 3, true], ["Rowing 3 × 10", "Avec une bouteille d'eau", 6, 2, false], ["Fentes 3 × 10", "", 8, 2, false]],
-    "Endurance": [["Course 30 min", "Allure confortable", 8, 2, false], ["Fractionné 10 × 30 s", "30 s vite, 30 s lent", 6, 3, true], ["Gainage 2 min", "", 8, 1, false]],
-    "Bien-être": [["Marche 20 min", "", 8, 1, false], ["Mobilité 10 min", "Hanches et épaules", 8, 1, false], ["Yoga 15 min", "", 6, 2, true]],
-    "Remise en forme": [["Course 15 min", "Échauffement inclus", 8, 1, false], ["15 pompes", "Sur les genoux si besoin", 8, 3, true], ["Gainage 3 × 45 s", "", 8, 2, false], ["20 squats", "", 8, 2, false]]
-  };
+  // Questionnaire d'inscription : ce que Vaultr doit savoir pour construire et adapter le programme
+  const QUIZ = [
+    { k: "goal", q: "Quel est ton objectif principal ?", single: true, opts: ["Perdre du poids", "Prendre du muscle", "Me remettre en forme", "Améliorer mon endurance", "Bien-être et mobilité", "Préparer un objectif précis"] },
+    { k: "level", q: "Où en es-tu aujourd'hui ?", single: true, opts: ["Débutant : je ne fais pas de sport", "Occasionnel : environ 1 fois par semaine", "Régulier : 2 à 3 fois par semaine", "Confirmé : 4 fois ou plus"] },
+    { k: "perWeek", q: "Combien de séances par semaine es-tu prêt à faire ?", single: true, opts: ["1 à 2", "3", "4", "5 ou plus"] },
+    { k: "duration", q: "Combien de temps par séance ?", single: true, opts: ["15 min", "30 min", "45 min", "1 h ou plus"] },
+    { k: "places", q: "Où peux-tu t'entraîner ?", sub: "Plusieurs choix possibles.", multi: true, opts: ["À la maison", "En salle", "Dehors"] },
+    { k: "equipment", q: "Quel matériel as-tu ?", sub: "Plusieurs choix possibles.", multi: true, excl: "Aucun", opts: ["Aucun", "Tapis", "Haltères", "Élastiques", "Barre de traction", "Corde à sauter", "Vélo", "Machines de salle"] },
+    { k: "likes", q: "Qu'est-ce que tu aimes faire ?", sub: "Vaultr en mettra davantage dans ton programme.", multi: true, opts: ["Marche", "Course", "Renforcement", "Cardio / HIIT", "Yoga / mobilité", "Vélo", "Natation", "Danse", "Sports de combat"] },
+    { k: "dislikes", q: "Qu'est-ce que tu ne veux PAS faire ?", sub: "Vaultr n'en mettra jamais.", multi: true, excl: "Rien de spécial", opts: ["Courir", "Sauter", "Pompes", "Burpees", "Exercices au sol", "Sortir dehors", "Rien de spécial"] },
+    { k: "pains", q: "As-tu des douleurs ou des zones à ménager ?", multi: true, excl: "Aucune", opts: ["Genoux", "Dos", "Épaules", "Poignets", "Chevilles", "Aucune"] },
+    { k: "note", q: "Un dernier mot pour Vaultr ?", sub: "Ce qui te motive, ce qui t'a fait arrêter avant, un objectif précis… (facultatif)", text: true }
+  ];
+  const GOAL_KEY = { "Perdre du poids": "poids", "Prendre du muscle": "muscle", "Me remettre en forme": "forme", "Améliorer mon endurance": "endu", "Bien-être et mobilité": "bien", "Préparer un objectif précis": "prep" };
+  const GOAL_LABEL = { poids: "Perte de poids", muscle: "Prise de muscle", forme: "Remise en forme", endu: "Endurance", bien: "Bien-être", prep: "Préparation physique" };
+  const LABEL_KEY = Object.fromEntries(Object.entries(GOAL_LABEL).map(([k, v]) => [v, k]));
+  // Banque d'exercices pour le mode sans Claude : objectifs, goûts, interdits, zones sollicitées, matériel, lieux
+  const LIB = [
+    { n: "Marche rapide 30 min", d: "Rythme soutenu", diff: 1, g: ["poids", "forme", "bien"], like: ["Marche"], pl: ["Dehors"], dis: ["Sortir dehors"] },
+    { n: "Course 20 min", d: "Allure où tu peux parler", diff: 2, g: ["poids", "endu", "forme", "prep"], like: ["Course"], pl: ["Dehors"], dis: ["Courir", "Sortir dehors"], pain: ["Genoux", "Chevilles", "Dos"] },
+    { n: "Fractionné 8 × 30 s", d: "30 s vite, 30 s lent", diff: 3, g: ["endu", "poids", "prep"], like: ["Course", "Cardio / HIIT"], pl: ["Dehors"], dis: ["Courir", "Sortir dehors"], pain: ["Genoux", "Chevilles"] },
+    { n: "Vélo 30 min", d: "Dehors ou d'appartement", diff: 2, g: ["endu", "poids", "forme"], like: ["Vélo"], eq: ["Vélo", "Machines de salle"] },
+    { n: "Elliptique 20 min", d: "Sans impact", diff: 2, g: ["poids", "endu", "forme"], like: ["Cardio / HIIT"], pl: ["En salle"] },
+    { n: "Corde à sauter 5 min", d: "Par séries de 1 min", diff: 3, g: ["poids", "endu"], like: ["Cardio / HIIT"], eq: ["Corde à sauter"], dis: ["Sauter"], pain: ["Genoux", "Chevilles", "Dos"] },
+    { n: "Jumping jacks 3 × 40 s", d: "", diff: 2, g: ["poids", "forme"], like: ["Cardio / HIIT", "Danse"], dis: ["Sauter"], pain: ["Genoux", "Chevilles"] },
+    { n: "Montées de genoux 3 × 40 s", d: "Sur place", diff: 2, g: ["poids", "endu"], like: ["Cardio / HIIT"], pain: ["Genoux"] },
+    { n: "Burpees 3 × 8", d: "Sans saut si besoin", diff: 3, g: ["poids", "prep", "muscle"], like: ["Cardio / HIIT"], dis: ["Burpees", "Sauter", "Exercices au sol"], pain: ["Poignets", "Genoux", "Épaules", "Dos"] },
+    { n: "20 squats", d: "3 séries", diff: 2, g: ["poids", "muscle", "forme", "prep"], like: ["Renforcement"], pain: ["Genoux"] },
+    { n: "Chaise contre un mur 3 × 30 s", d: "", diff: 2, g: ["muscle", "forme"], like: ["Renforcement"], pain: ["Genoux"] },
+    { n: "Fentes 3 × 10", d: "Par jambe", diff: 2, g: ["muscle", "forme", "prep"], like: ["Renforcement"], pain: ["Genoux"] },
+    { n: "Pompes 3 × 10", d: "Sur les genoux si besoin", diff: 3, g: ["muscle", "forme"], like: ["Renforcement"], dis: ["Pompes", "Exercices au sol"], pain: ["Poignets", "Épaules"] },
+    { n: "Pompes contre un mur 3 × 15", d: "", diff: 1, g: ["forme", "muscle"], like: ["Renforcement"], dis: ["Pompes"], pain: ["Poignets", "Épaules"] },
+    { n: "Gainage 3 × 40 s", d: "Sur les avant-bras", diff: 2, g: ["forme", "muscle", "poids", "prep"], like: ["Renforcement"], dis: ["Exercices au sol"], pain: ["Épaules", "Dos"] },
+    { n: "Pont fessier 3 × 15", d: "", diff: 1, g: ["muscle", "forme", "bien"], like: ["Renforcement"], dis: ["Exercices au sol"] },
+    { n: "Développé haltères 3 × 12", d: "", diff: 2, g: ["muscle"], like: ["Renforcement"], eq: ["Haltères", "Machines de salle"], pain: ["Épaules"] },
+    { n: "Rowing élastique 3 × 12", d: "Dos droit", diff: 2, g: ["muscle", "forme"], like: ["Renforcement"], eq: ["Élastiques", "Haltères", "Machines de salle"] },
+    { n: "Tractions 3 × 5", d: "Ou suspension 20 s", diff: 3, g: ["muscle", "prep"], like: ["Renforcement"], eq: ["Barre de traction", "Machines de salle"], pain: ["Épaules", "Dos"] },
+    { n: "Yoga 20 min", d: "Vidéo guidée", diff: 1, g: ["bien", "forme"], like: ["Yoga / mobilité"], dis: ["Exercices au sol"] },
+    { n: "Mobilité 10 min", d: "Hanches, dos, épaules", diff: 1, g: ["bien", "forme", "prep"], like: ["Yoga / mobilité"] },
+    { n: "Natation 30 min", d: "Brasse ou crawl", diff: 2, g: ["endu", "poids", "bien", "forme"], like: ["Natation"], pl: ["En salle", "Dehors"] },
+    { n: "Danse 20 min", d: "Sur ta playlist préférée", diff: 1, g: ["poids", "forme", "bien"], like: ["Danse"] },
+    { n: "Shadow boxing 3 × 2 min", d: "Garde haute", diff: 2, g: ["poids", "endu", "forme"], like: ["Sports de combat", "Cardio / HIIT"], pain: ["Épaules"] },
+    { n: "Escaliers 10 min", d: "Monter et descendre", diff: 2, g: ["poids", "endu"], like: ["Cardio / HIIT", "Marche"], pain: ["Genoux"] }
+  ];
+  const quizGoalKey = prof => GOAL_KEY[prof?.quiz?.goal] || LABEL_KEY[prof?.goal] || "forme";
+  function sessionsPerMonth(q) { return { "1 à 2": 6, "3": 12, "4": 16, "5 ou plus": 20 }[q?.perWeek] || 10; }
+  // Choisit les exercices qui respectent les réponses : jamais un interdit, une douleur ou un matériel manquant
+  function pickExercises(prof) {
+    const q = prof?.quiz || {}, goal = quizGoalKey(prof);
+    const dis = q.dislikes || [], pains = q.pains || [], eqs = q.equipment || [], pls = q.places?.length ? q.places.map(x => x === "À la maison" ? "Maison" : x) : null, likes = q.likes || [];
+    const lvl = /Débutant/.test(q.level || "") ? 0 : /Confirmé/.test(q.level || "") ? 3 : /Régulier/.test(q.level || "") ? 2 : 1;
+    const banned = (q.banned || []).map(b => b.toLowerCase());
+    const ok = e => !banned.some(b => e.n.toLowerCase().startsWith(b)) && !(e.dis || []).some(x => dis.includes(x)) && !(e.pain || []).some(x => pains.includes(x))
+      && (!e.eq || e.eq.some(x => eqs.includes(x))) && (!e.pl || !pls || e.pl.some(x => pls.includes(x)));
+    const scored = LIB.filter(ok).map(e => ({ e, sc: (e.g.includes(goal) ? 4 : 0) + 3 * (e.like || []).filter(x => likes.includes(x)).length + (e.diff === 3 ? (lvl === 0 ? -3 : lvl >= 2 ? 1 : 0) : 0) + (e.diff === 1 && lvl >= 3 ? -1 : 0) }))
+      .sort((a, b) => b.sc - a.sc || a.e.n.localeCompare(b.e.n));
+    const n = sessionsPerMonth(q) >= 12 ? 4 : 3;
+    let picks = scored.slice(0, n).map(x => x.e);
+    if (!picks.length) picks = [LIB.find(e => e.n.startsWith("Mobilité")), LIB.find(e => e.n.startsWith("Pont"))];
+    const target = Math.max(3, Math.min(10, Math.round(sessionsPerMonth(q) / 2)));
+    const hardest = picks.reduce((m, e) => e.diff > m.diff ? e : m, picks[0]);
+    return picks.map(e => [e.n, e.d, target, e.diff, e === hardest]);
+  }
+  // Mode sans Claude : met à jour les réponses selon la demande écrite (« pas de pompes », « mal au genou »…)
+  function applyRequestToQuiz(quiz, text, current = []) {
+    const q = JSON.parse(JSON.stringify(quiz || {})), t = (text || "").toLowerCase();
+    const neg = /(pas de|pas d'|sans|plus de |déteste|n'aime pas|marre|arrête|enl[eè]ve|retire|supprime|remplace|j'en peux plus)/.test(t);
+    const add = (k, v) => { q[k] = [...new Set([...(q[k] || []).filter(x => !["Rien de spécial", "Aucune", "Aucun"].includes(x)), v])]; };
+    // un exercice du programme cité avec une négation est retiré pour de bon
+    if (neg) for (const name of current) { const w = name.split(/\s+/)[0].toLowerCase(); if (w.length > 3 && t.includes(w)) add("banned", name.split(/\s+/)[0]); }
+    const kw = { "Courir": /cour(s|ir|se)|running|footing/, "Sauter": /saut/, "Pompes": /pompe/, "Burpees": /burpee/, "Exercices au sol": /au sol|par terre/, "Sortir dehors": /dehors|extérieur|sortir/ };
+    for (const [k, re] of Object.entries(kw)) if (re.test(t) && neg) add("dislikes", k);
+    const pains = { "Genoux": /genou/, "Dos": /\bdos\b|lombaire/, "Épaules": /épaule/, "Poignets": /poignet/, "Chevilles": /cheville/ };
+    if (/mal|douleur|bless|souffr/.test(t)) for (const [k, re] of Object.entries(pains)) if (re.test(t)) add("pains", k);
+    if (/plus facile|trop dur|trop difficile|doucement|débutant|crevé|épuisé/.test(t)) q.level = "Débutant : je ne fais pas de sport";
+    if (/plus dur|trop facile|plus intense|plus difficile|challenge/.test(t)) q.level = "Confirmé : 4 fois ou plus";
+    if (/pas le temps|moins de temps|plus court|rapide/.test(t)) q.perWeek = "1 à 2";
+    const likes = { "Cardio / HIIT": /cardio|hiit/, "Renforcement": /muscu|renfo|muscle/, "Yoga / mobilité": /yoga|mobilit|étirement/, "Marche": /marche/, "Vélo": /vélo/, "Natation": /nag|piscine|natation/, "Danse": /dans/, "Sports de combat": /box|combat/ };
+    if (!neg) for (const [k, re] of Object.entries(likes)) if (re.test(t)) add("likes", k);
+    return q;
+  }
+  const quizSummary = prof => { const q = prof?.quiz; if (!q) return `objectif : ${prof?.goal || "remise en forme"} (pas de questionnaire rempli)`;
+    return `objectif : ${q.goal || "?"} ; niveau : ${q.level || "?"} ; séances par semaine : ${q.perWeek || "?"} ; durée par séance : ${q.duration || "?"} ; lieux : ${(q.places || []).join(", ") || "?"} ; matériel : ${(q.equipment || []).join(", ") || "aucun"} ; aime : ${(q.likes || []).join(", ") || "?"} ; NE VEUT PAS faire : ${(q.dislikes || []).join(", ") || "rien de spécial"} ; douleurs ou zones à ménager : ${(q.pains || []).join(", ") || "aucune"}${q.note ? ` ; il ajoute : « ${q.note} »` : ""}`; };
+  const cleanTasks = out => (Array.isArray(out) ? out : []).slice(0, 5).map(t => [String(t?.name || "").slice(0, 40), String(t?.detail || "").slice(0, 60), Math.min(12, Math.max(2, Math.round(+t?.target || 6))), Math.min(3, Math.max(1, Math.round(+t?.diff || 2))), !!t?.weak]).filter(t => t[0]);
   async function postMessage(aid, cid, from, text) {
     const id = chatId(aid, cid), ts = now();
     await A.db.collection(`chats/${id}/messages`).add({ from, text, ts });
@@ -904,39 +1003,81 @@ textarea::placeholder{color:var(--muted)}
       await postMessage(A.myId, AI_ID, AI_ID, `Salut ${first(A.profile.name)} 👋 Je suis Vaultr, ton coach IA. Choisis ta mise du mois dans « Mon coffre » : je crée ton programme tout de suite et je valide tes photos en quelques secondes. Si tu préfères un coach humain, tu peux en choisir un quand tu veux dans l'onglet Coach.`);
     } catch {} finally { A.ensuring = false; }
   }
-  async function aiMakeTasks(goal, mise) {
+  async function aiMakeTasks(prof, mise) {
     let raw = null;
     if (A.sample) try {
-      const out = await A.sample.json(`Tu es Vaultr, coach sportif IA dans une appli française. Crée le programme du mois pour un sportif dont l'objectif est « ${goal} ». Il a mis ${mise} € en jeu et les récupère exercice par exercice. Propose 3 ou 4 exercices simples, faisables sans matériel, vérifiables par une photo ou une courte vidéo. Réponds uniquement avec un tableau JSON, par exemple : [{"name":"20 squats","detail":"3 séries","target":12,"diff":2,"weak":false}] où name fait moins de 30 caractères, target est le nombre de fois dans le mois (4 à 10, environ 30 au total), diff la difficulté de 1 à 3, et weak vaut true pour UN seul exercice difficile qui rapportera plus.`, { modelTier: "quick" });
-      if (Array.isArray(out)) raw = out.slice(0, 5).map(t => [String(t?.name || "").slice(0, 40), String(t?.detail || "").slice(0, 60), Math.min(20, Math.max(2, Math.round(+t?.target || 8))), Math.min(3, Math.max(1, Math.round(+t?.diff || 2))), !!t?.weak]).filter(t => t[0]);
+      raw = cleanTasks(await A.sample.json(`Tu es Vaultr, coach sportif IA dans une appli française. Crée le programme du mois de ce sportif à partir de ses réponses au questionnaire : ${quizSummary(prof)}. Il a mis ${mise} € en jeu et les récupère exercice par exercice. Règles : respecte STRICTEMENT ce qu'il ne veut pas faire, ses douleurs, son matériel et ses lieux ; adapte la difficulté à son niveau et au temps dont il dispose ; privilégie ce qu'il aime. Propose 3 ou 4 exercices vérifiables par une photo ou une courte vidéo. Réponds uniquement avec un tableau JSON, par exemple : [{"name":"20 squats","detail":"3 séries","target":6,"diff":2,"weak":false}] où name fait moins de 30 caractères, target est le nombre de fois dans le mois (environ ${sessionsPerMonth(prof?.quiz) * 2} au total, 2 à 12 par exercice), diff la difficulté de 1 à 3, et weak vaut true pour UN seul exercice difficile qui rapportera plus.`, { modelTier: "quick" }));
     } catch {}
-    if (!raw?.length) raw = GOAL_TEMPLATES[goal] || GOAL_TEMPLATES["Remise en forme"];
+    if (!raw?.length) raw = pickExercises(prof);
     const tasks = raw.map(([name, detail, target, diff, weak]) => ({ id: rid(), name, detail, value: 0, target, done: 0, earned: 0, diff, weak }));
-    aiSplit(tasks, mise).forEach((v, i) => tasks[i].value = v);
+    if (mise) aiSplit(tasks, mise).forEach((v, i) => tasks[i].value = v);
     return tasks;
   }
   async function aiBuildProgram() {
     if (A.aiBuilding || !A.program?.mise) return;
     A.aiBuilding = true; schedule();
     try {
-      const mise = A.program.mise, tasks = await aiMakeTasks(A.profile.goal || "Remise en forme", mise);
+      const mise = A.program.mise, tasks = await aiMakeTasks(A.profile, mise);
       const cur = (await progRef(A.myId).get()).data();
       if (cur?.coachId !== AI_ID || cur.tasks?.length) return;
       await progRef(A.myId).update({ tasks });
-      await postMessage(A.myId, AI_ID, AI_ID, `Ton programme est prêt 💪 ${tasks.map(t => `${t.name} (${euro(t.value)})`).join(", ")}. Envoie-moi une photo ou une vidéo à chaque fois depuis « Mon coffre » : je valide en quelques secondes.`);
+      await postMessage(A.myId, AI_ID, AI_ID, `Ton programme est prêt 💪 ${tasks.map(t => `${t.name} (${euro(t.value)})`).join(", ")}. Je l'ai construit avec tes réponses${A.profile.quiz?.dislikes?.length && !A.profile.quiz.dislikes.includes("Rien de spécial") ? ` (sans ${A.profile.quiz.dislikes.join(", ").toLowerCase()})` : ""}. Envoie-moi une photo ou une vidéo à chaque fois depuis « Mon coffre » : je valide en quelques secondes. Et si quelque chose ne te va pas, dis-le-moi, j'adapte.`);
     } catch { toast("Vaultr n'a pas pu créer ton programme. Réessaie."); }
     finally { A.aiBuilding = false; schedule(); }
   }
-  async function aiReviewProof(proofId, taskId, img, kind, chunks) {
+  // Adapte le programme à une demande. L'argent déjà gagné reste acquis : un exercice retiré
+  // après validation est gardé « terminé » (archived) pour que son gain compte toujours.
+  async function aiAdaptProgram(request) {
+    if (A.aiBuilding) return;
+    A.aiBuilding = true; schedule();
+    try {
+      const p = (await progRef(A.myId).get()).data();
+      if (!p || p.coachId !== AI_ID) return;
+      const live = (p.tasks || []).filter(t => !t.archived);
+      let raw = null, message = null;
+      if (A.sample) try {
+        const out = await A.sample.json(`Tu es Vaultr, coach sportif IA. Voici le profil de ton client : ${quizSummary(A.profile)}. Son programme actuel du mois : ${live.map(t => `« ${t.name} » (${t.detail || "-"}, déjà fait ${t.done} fois sur ${t.target}, difficulté ${t.diff})`).join(" ; ") || "vide"}. Il te demande : « ${request} ». Adapte le programme à sa demande en respectant STRICTEMENT ce qu'il ne veut pas faire et ses douleurs. Garde à l'identique (même nom exact) les exercices qui ne posent pas de problème ; pour un exercice gardé, target doit rester supérieur ou égal au nombre de fois déjà fait. 3 ou 4 exercices au total. Réponds uniquement en JSON : {"message":"une ou deux phrases en français, au tutoiement, qui expliquent ce que tu as changé","tasks":[{"name":"...","detail":"...","target":6,"diff":2,"weak":false}]}`, { modelTier: "quick", cache: false });
+        raw = cleanTasks(out?.tasks); message = out?.message ? String(out.message).slice(0, 300) : null;
+      } catch {}
+      let quiz = A.profile.quiz;
+      if (!raw?.length) {
+        quiz = applyRequestToQuiz(A.profile.quiz || { goal: Object.keys(GOAL_KEY).find(k => GOAL_KEY[k] === quizGoalKey(A.profile)) }, request, live.map(t => t.name));
+        raw = pickExercises({ ...A.profile, quiz });
+        // intensité : plus ou moins de séances par exercice
+        const rq = request.toLowerCase(), harder = /plus dur|trop facile|plus intense|plus difficile|challenge/.test(rq), easier = /plus facile|trop dur|trop difficile|doucement|crevé|épuisé/.test(rq);
+        if (harder || easier) raw = raw.map(([n, d, tg, df, w]) => [n, harder ? (d ? d + " · version intense" : "Version intense") : d, Math.max(2, Math.min(12, tg + (harder ? 2 : -2))), Math.max(1, Math.min(3, df + (harder ? 1 : -1))), w]);
+        message = "C'est noté ✅ J'ai adapté ton programme à ta demande, et je m'en souviendrai pour la suite.";
+        await A.db.doc("profiles/" + A.myId).update({ quiz });
+      }
+      const old = p.tasks || [];
+      const next = raw.map(([name, detail, target, diff, weak]) => {
+        const o = old.find(t => !t.archived && t.name.trim().toLowerCase() === name.trim().toLowerCase());
+        return o ? { ...o, detail: detail || o.detail, target: Math.max(target, o.done, 1), diff, weak } : { id: rid(), name, detail, value: 0, target, done: 0, earned: 0, diff, weak };
+      });
+      const keep = new Set(next.map(t => t.id));
+      const all = [...next, ...old.filter(t => !keep.has(t.id) && (t.done > 0 || t.archived)).map(t => ({ ...t, archived: true, target: t.done, weak: false }))];
+      if (p.mise) aiSplit(all, p.mise).forEach((v, i) => all[i].value = v);
+      await progRef(A.myId).update({ tasks: all });
+      await postMessage(A.myId, AI_ID, AI_ID, `${message} Ton programme : ${next.map(t => `${t.name}${p.mise ? ` (${euro(all.find(x => x.id === t.id).value)})` : ""}`).join(", ")}.`);
+      toast("Vaultr a adapté ton programme ✨");
+    } catch { toast("Vaultr n'a pas pu adapter ton programme. Réessaie."); }
+    finally { A.aiBuilding = false; schedule(); }
+  }
+  // Vérifie une preuve : la photo, ou plusieurs images prises tout au long de la vidéo
+  async function aiReviewProof(proofId, taskId, imgs, kind, chunks) {
     const t = (A.program?.tasks || []).find(x => x.id === taskId); if (!t) return;
+    imgs = (imgs || []).filter(Boolean);
     let verdict = null;
-    if (A.sample && img) try {
+    if (A.sample && imgs.length) try {
       const lim = await A.sample.limits().catch(() => null);
-      if (lim?.images) verdict = await A.sample.json(`Tu es Vaultr, coach sportif IA bienveillant mais sérieux. Ton client dit avoir fait l'exercice « ${t.name} »${t.detail ? ` (${t.detail})` : ""}. Voici ${kind === "video" ? "une image extraite de sa vidéo" : "sa photo"} comme preuve. Valide si l'image montre de façon plausible une personne en train de faire cet exercice, ou une activité sportive cohérente (tenue, posture, lieu). Refuse si l'image n'a aucun rapport (écran, objet, paysage sans personne, image inexploitable). Réponds uniquement en JSON : {"valid": true ou false, "message": "une phrase courte en français, au tutoiement, encourageante, qui explique ta décision"}`, { images: [dataUrlToBlob(img)], modelTier: "quick", cache: false });
+      if (lim?.images) {
+        const list = imgs.slice(0, Math.max(1, lim.images.maxCount || 1)).map(dataUrlToBlob);
+        verdict = await A.sample.json(`Tu es Vaultr, coach sportif IA bienveillant mais sérieux : tu décides si ton client récupère son argent. Il dit avoir fait l'exercice « ${t.name} »${t.detail ? ` (${t.detail})` : ""}. ${kind === "video" ? `Voici ${list.length} images extraites dans l'ordre de sa vidéo` : "Voici sa photo"} comme preuve. Analyse : la personne fait-elle bien cet exercice (mouvement, posture, tenue, lieu cohérents) ? ${kind === "video" ? "Compare les images pour voir si le mouvement progresse. " : ""}Tu ne peux pas compter précisément les répétitions : valide si l'effort est plausible et correspond à l'exercice. Refuse si l'image n'a aucun rapport (écran, objet, paysage sans personne), si c'est un autre exercice, ou si elle est inexploitable. Réponds uniquement en JSON : {"valid": true ou false, "message": "une ou deux phrases en français, au tutoiement : ce que tu as vu, ta décision et un conseil de posture si utile"}`, { images: list, modelTier: "quick", cache: false });
+      }
     } catch {}
     if (!verdict) await new Promise(r => setTimeout(r, 1200));
     const ok = verdict ? !!verdict.valid : true;
-    const msg = verdict?.message ? String(verdict.message).slice(0, 280) : `Preuve reçue pour « ${t.name} » ✅ Bien joué, continue comme ça !`;
+    const msg = verdict?.message ? String(verdict.message).slice(0, 300) : `Preuve reçue pour « ${t.name} » ✅ Bien joué, continue comme ça !`;
     try {
       if (ok) await validateTask(A.myId, taskId, true, AI_ID);
       await A.db.doc("proofs/" + proofId).update({ status: ok ? "ok" : "ko", reviewedAt: now(), aiMessage: msg, ...(kind === "video" ? { chunks: 0, poster: "" } : {}) });
@@ -944,30 +1085,38 @@ textarea::placeholder{color:var(--muted)}
       await postMessage(A.myId, AI_ID, AI_ID, ok ? `${msg} +${euro(t.value)} dans ton coffre 💸` : `${msg} Renvoie une autre preuve quand tu veux.`);
     } catch { toast("Vaultr n'a pas pu traiter ta preuve. Réessaie."); }
   }
+  const WANTS_CHANGE = /(chang|adapt|modifi|remplace|enl[eè]ve|retire|supprime|plus facile|plus dur|trop dur|trop facile|trop difficile|pas de |sans |n'aime pas|déteste|mal (au|à|aux|a )|douleur|bless|plus de cardio|pas le temps|moins de temps)/i;
   function cannedReply(text) {
-    const p = A.program || {}, left = Math.max(0, (p.mise || 0) - recovered(p)), next = (p.tasks || []).find(t => t.done < t.target);
+    const p = A.program || {}, left = Math.max(0, (p.mise || 0) - recovered(p)), next = (p.tasks || []).find(t => !t.archived && t.done < t.target);
     const q = (text || "").toLowerCase();
-    if (/mal|douleur|bless|santé|malade/.test(q)) return "Écoute ton corps : en cas de douleur, arrête l'exercice et demande l'avis d'un médecin ou d'un kiné. On reprendra doucement quand ça ira mieux 🙏";
+    if (/mal|douleur|bless|santé|malade/.test(q) && !/genou|dos|épaule|poignet|cheville/.test(q)) return "Écoute ton corps : en cas de douleur, arrête l'exercice et demande l'avis d'un médecin ou d'un kiné. Dis-moi où tu as mal, j'adapterai ton programme 🙏";
     if (!p.mise) return "Pour commencer, choisis ta mise du mois dans « Mon coffre ». Je crée ton programme tout de suite après 💪";
-    if (/programme|exercice|quoi faire|séance/.test(q)) return `Ton programme : ${(p.tasks || []).map(t => `${t.name} ${t.done}/${t.target}`).join(", ") || "en préparation"}. ${next ? `Prochain conseillé : ${next.name} (+${euro(next.value)}).` : "Tout est validé, bravo !"}`;
-    if (/flemme|motiv|fatigu|dur|envie/.test(q)) return `Je comprends 😅 Mais il te reste ${euro(left)} à récupérer, et ${daysLeft()} jours. ${next ? `Fais juste « ${next.name} » aujourd'hui : c'est ${euro(next.value)} de plus dans ton coffre.` : ""}`;
-    if (/mise|argent|€|euro|rembours/.test(q)) return `Ta mise est de ${euro(p.mise)}. Tu as déjà récupéré ${euro(recovered(p))}. Chaque exercice validé te rend sa valeur ; ce qui n'est pas validé à la fin du mois reste à Vaultr.`;
+    if (/programme|exercice|quoi faire|séance/.test(q)) return `Ton programme : ${(p.tasks || []).filter(t => !t.archived).map(t => `${t.name} ${t.done}/${t.target}`).join(", ") || "en préparation"}. ${next ? `Prochain conseillé : ${next.name} (+${euro(next.value)}).` : "Tout est validé, bravo !"}`;
+    if (/flemme|motiv|fatigu|envie/.test(q)) return `Je comprends 😅 Mais il te reste ${euro(left)} à récupérer, et ${daysLeft()} jours. ${next ? `Fais juste « ${next.name} » aujourd'hui : c'est ${euro(next.value)} de plus dans ton coffre.` : ""}`;
+    if (/mise|argent|€|euro|rembours|virement/.test(q)) return `Ta mise est de ${euro(p.mise)}. Tu as déjà récupéré ${euro(recovered(p))}. Chaque exercice que je valide te rend sa valeur ; ce qui n'est pas validé à la fin du mois reste à Vaultr.`;
     return `Je suis là 💪 Il te reste ${euro(left)} à récupérer ce mois-ci. ${next ? `Envoie-moi une preuve de « ${next.name} » et je valide tout de suite.` : "Tu as tout validé, chapeau !"}`;
   }
   async function aiChatReply(lastText) {
     if (A.aiTyping) return;
     A.aiTyping = true; schedule();
     const p = A.program || {}, me = A.profile;
-    let reply = null;
+    let reply = null, adapt = false, request = lastText;
     if (A.sample) try {
-      const ctx = `Tu es Vaultr, coach sportif IA de l'appli Vaultr (le sportif met de l'argent en jeu chaque mois et le récupère à chaque exercice validé ; ce qui n'est pas validé reste à Vaultr). Tu parles en français, tu tutoies, tu es motivant, concret et bref (2 à 4 phrases, pas de longues listes). Pas de conseil médical : en cas de douleur ou de problème de santé, conseille de consulter un professionnel. Infos sur ${first(me.name)} : objectif ${me.goal || "remise en forme"}, mise du mois ${euro(p.mise || 0)}, déjà récupéré ${euro(recovered(p))}, ${daysLeft()} jours restants. Programme : ${(p.tasks || []).map(t => `${t.name} ${t.done}/${t.target} (${euro(t.value)} chacun)`).join(" ; ") || "pas encore créé (il faut d'abord choisir une mise dans Mon coffre)"}. Pour faire valider un exercice, il envoie une photo ou une vidéo depuis l'onglet Mon coffre. Réponds au dernier message de la conversation.`;
+      const ctx = `Tu es Vaultr, coach sportif IA de l'appli Vaultr (le sportif met de l'argent en jeu chaque mois et le récupère à chaque exercice que tu valides sur photo ou vidéo ; ce qui n'est pas validé reste à Vaultr). Tu parles en français, tu tutoies, tu es motivant, concret et bref (2 à 4 phrases). Pas de conseil médical : en cas de douleur, conseille aussi de consulter un professionnel. Profil de ${first(me.name)} : ${quizSummary(me)}. Mise du mois ${euro(p.mise || 0)}, déjà récupéré ${euro(recovered(p))}, ${daysLeft()} jours restants. Programme : ${(p.tasks || []).filter(t => !t.archived).map(t => `${t.name} ${t.done}/${t.target} (${euro(t.value)} chacun)`).join(" ; ") || "pas encore créé (il faut d'abord choisir une mise dans Mon coffre)"}. Si son dernier message demande de changer son programme (exercice qu'il n'aime pas, douleur, trop dur, trop facile, manque de temps, envie d'autre chose…), mets adapt à true et résume sa demande dans request : le programme sera modifié juste après ta réponse. Réponds uniquement en JSON : {"reply":"ta réponse","adapt":true ou false,"request":"la demande résumée, ou une chaîne vide"}`;
       const hist = A.msgs.slice(-12).map(m => ({ role: m.from === AI_ID ? "assistant" : "user", content: m.text }));
       if (!hist.length || hist[hist.length - 1].content !== lastText || hist[hist.length - 1].role !== "user") hist.push({ role: "user", content: lastText });
-      reply = (await A.sample([{ role: "user", content: ctx }, ...hist], { cache: false, modelTier: "quick" })).text;
+      while (hist.length && hist[0].role !== "user") hist.shift();
+      const out = await A.sample.json([{ role: "user", content: ctx }, ...hist], { cache: false, modelTier: "quick" });
+      if (out?.reply) { reply = String(out.reply); adapt = !!out.adapt && !!p.mise && (p.tasks || []).length > 0; request = String(out.request || lastText); }
     } catch {}
-    if (!reply) { await new Promise(r => setTimeout(r, 900)); reply = cannedReply(lastText); }
+    if (!reply) {
+      await new Promise(r => setTimeout(r, 900));
+      adapt = WANTS_CHANGE.test(lastText) && !!p.mise && (p.tasks || []).length > 0;
+      reply = adapt ? "C'est noté 👍 J'adapte ton programme tout de suite." : cannedReply(lastText);
+    }
     try { await postMessage(A.myId, AI_ID, AI_ID, reply.trim().slice(0, 1000)); } catch {}
     A.aiTyping = false; schedule();
+    if (adapt) aiAdaptProgram(request);
   }
 
   /* =====================================================================
@@ -983,6 +1132,13 @@ textarea::placeholder{color:var(--muted)}
   }
   const progRef = aid => A.db.doc("programs/" + aid);
 
+  async function checkBasics(f) {
+    const handle = cleanHandle(f.handle);
+    if (!f.name.trim()) throw { ui: "Indique ton prénom et ton nom." };
+    if (handle.length < 3) throw { ui: "Ton @tag doit faire au moins 3 caractères (lettres, chiffres, point)." };
+    const taken = await A.db.collection("profiles").where("handle", "==", handle).limit(2).get();
+    if (taken.docs.some(d => d.id !== A.myId)) throw { ui: `Le tag @${handle} est déjà pris.` };
+  }
   async function createProfile(f) {
     const handle = cleanHandle(f.handle);
     if (!f.name.trim()) throw { ui: "Indique ton prénom et ton nom." };
@@ -992,7 +1148,7 @@ textarea::placeholder{color:var(--muted)}
     const base = { role: f.role, name: f.name.trim().slice(0, 40), handle, city: f.city.trim().slice(0, 40), createdAt: now() };
     await A.db.doc("profiles/" + A.myId).set(f.role === "coach"
       ? { ...base, sport: f.sport, price: Math.max(0, Math.round(+f.price || 0)), boostedUntil: 0, pro: false }
-      : { ...base, goal: f.goal });
+      : { ...base, goal: GOAL_LABEL[GOAL_KEY[f.quiz?.goal]] || "Remise en forme", quiz: f.quiz || null });
   }
   async function addCoach(c) {
     const ref = progRef(A.myId), s = await ref.get();
@@ -1023,10 +1179,10 @@ textarea::placeholder{color:var(--muted)}
         onProgress?.((i + 1) / parts.length);
       }
       await ref.set({ ...base, kind: "video", mime: media.mime, chunks: parts.length, poster: media.poster || "", duration: media.duration || 0 });
-      if (p.coachId === AI_ID) setTimeout(() => aiReviewProof(ref.id, taskId, media.poster, "video", parts.length), 0);
+      if (p.coachId === AI_ID) setTimeout(() => aiReviewProof(ref.id, taskId, media.frames?.length ? media.frames : [media.poster], "video", parts.length), 0);
     } else {
       await ref.set({ ...base, kind: "photo", img: media.img });
-      if (p.coachId === AI_ID) setTimeout(() => aiReviewProof(ref.id, taskId, media.img, "photo", 0), 0);
+      if (p.coachId === AI_ID) setTimeout(() => aiReviewProof(ref.id, taskId, [media.img], "photo", 0), 0);
     }
   }
   async function loadVideo(pr) {
@@ -1086,16 +1242,18 @@ textarea::placeholder{color:var(--muted)}
     const role = A.profile?.role;
     const ready = A.mode === "live" || A.mode === "demo";
     $pill.hidden = A.mode !== "demo";
-    $switch.hidden = A.mode !== "demo" || !A.myId || !A.profile;
+    $switch.hidden = A.mode !== "demo" || !A.myId || !A.profile || A.gate || !!A.quizMode;
     $switch.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.role === "athlete" ? "demo_lea" : "demo_karim") === A.myId)));
-    $settings.hidden = !ready || !A.profile || loggedOut();
-    $tabbar.hidden = !ready || !role || loggedOut();
+    $settings.hidden = !ready || !A.profile || loggedOut() || !!A.quizMode || A.gate;
+    $tabbar.hidden = !ready || !role || loggedOut() || !!A.quizMode || A.gate;
 
     let html, key;
     if (A.mode === "loading") { html = `<div class="loading">Ouverture du coffre…</div>`; key = "loading"; }
-    else if (A.mode === "blocked") { html = viewBlocked(); key = "blocked"; }
+    else if (A.mode === "blocked") { html = viewBlocked(); key = "blocked" + A.auth; }
     else if (loggedOut()) { html = viewAuth(); key = "auth" + A.auth; }
     else if (A.profile === undefined) { html = `<div class="loading">Chargement de ton compte…</div>`; key = "loading"; }
+    else if (A.quizMode) { html = viewQuiz(); key = "quiz" + A.quizStep; }
+    else if (A.gate && A.profile) { html = viewResume(); key = "resume"; }
     else if (!A.profile && A.mode === "live" && !A.creating) { html = viewAuth(); key = "auth" + A.auth; }
     else if (!A.profile) { html = viewOnboard(); key = "onboard" + (A.onboardRole || ""); }
     else {
@@ -1135,16 +1293,47 @@ textarea::placeholder{color:var(--muted)}
   }
 
   /* ---------- Accès impossible ---------- */
+  // Visiteur sans droit d'écriture (lien public, compte non connecté) : même accueil, avec l'explication
   function viewBlocked() {
     const msg = {
-      signin: "Connecte-toi à ton compte Claude pour utiliser Vaultr avec tes vraies données.",
-      write: "Tu peux voir Vaultr, mais pas encore l'utiliser : demande au propriétaire de te donner l'accès « Éditeur » (ou « Contributeur ») depuis le menu Partager.",
+      signin: "Connecte-toi à ton compte Claude pour créer ton compte Vaultr.",
+      write: "Pour créer ton compte, demande au propriétaire de Vaultr de t'inviter par e-mail avec l'accès « Éditeur ». En attendant, tu peux tout essayer avec la démo.",
       revoked: "Ton accès à Vaultr a changé. Recharge la page."
     }[A.blockedWhy] || "";
+    if (A.auth === "welcome") return `<section class="screen ENTER auth">
+      <div class="auth-hero"><div class="cele-vault auth-dial">${VAULT_ICON}</div>
+        <p class="hero-line">Mets de l'argent en jeu.<br><em>Récupère-le</em> en t'entraînant.</p></div>
+      <p class="muted" style="margin:0">Tu paies ton coach ici et tu ajoutes une mise pour te motiver. Chaque exercice validé te rend une partie de ta mise.</p>
+      <div class="auth-actions">
+        <button type="button" class="btn primary wide big" data-auth="signup">Créer un compte</button>
+        <button type="button" class="btn wide big" data-auth="login">Se connecter</button>
+      </div>
+      <div class="or"><span>ou essaie un compte de démo</span></div>
+      <div class="demo-accounts">
+        <button type="button" class="btn" data-demo-login="demo_lea">👟 Léa · sportive</button>
+        <button type="button" class="btn" data-demo-login="demo_karim">🏋️ Karim · coach</button>
+      </div>
+    </section>`;
     return `<section class="screen ENTER">
-      <p class="hero-line">Presque<br><em>prêt.</em></p>
+      <button type="button" class="btn small ghost" data-auth="welcome" style="align-self:flex-start">← Retour</button>
+      <h2>${A.auth === "signup" ? "Créer ton compte" : "Se connecter"}</h2>
       <div class="card"><p style="margin:0">${msg}</p></div>
-      <button type="button" class="btn primary wide" data-act="demo-on">Essayer la démo en attendant</button>
+      <button type="button" class="btn primary wide" data-act="demo-on">Essayer la démo</button>
+    </section>`;
+  }
+  // À chaque ouverture : reprendre son compte, ou créer / changer de compte
+  function viewResume() {
+    const me = A.profile;
+    return `<section class="screen ENTER auth">
+      <div class="auth-hero"><div class="cele-vault auth-dial">${VAULT_ICON}</div>
+        <p class="hero-line">Content de te revoir${me.name ? ",<br><em>" + esc(first(me.name)) + "</em>" : ""}.</p></div>
+      <button type="button" class="card resume-card" data-act="resume">${avatar(me, "volt")}<div class="grow" style="text-align:left"><h3>Continuer en tant que ${esc(first(me.name))}</h3><div class="muted" style="font-size:13px">@${esc(me.handle)} · ${me.role === "coach" ? "Coach" : "Sportif"}</div></div><span class="price">→</span></button>
+      <div class="or"><span>ou</span></div>
+      <div class="auth-actions">
+        <button type="button" class="btn wide" data-act="switch-signup">Créer un compte</button>
+        <button type="button" class="btn wide" data-act="switch-login">Se connecter avec un autre compte</button>
+      </div>
+      ${A.mode === "demo" ? `<p class="muted center" style="font-size:12px">Mode démo : les comptes restent sur cet appareil.</p>` : ""}
     </section>`;
   }
 
@@ -1216,6 +1405,40 @@ textarea::placeholder{color:var(--muted)}
     }
   }
 
+  /* ---------- Questionnaire pour Vaultr ---------- */
+  function startQuiz(mode) {
+    A.quizMode = mode; A.quizStep = 0;
+    A.quizAns = mode === "edit" ? JSON.parse(JSON.stringify(A.profile.quiz || {})) : {};
+    render(); $main.scrollTop = 0;
+  }
+  function viewQuiz() {
+    const i = A.quizStep, q = QUIZ[i], val = A.quizAns[q.k];
+    const can = q.single ? !!val : q.multi ? (val || []).length > 0 : true;
+    return `<section class="screen ENTER quiz">
+      <div class="row"><button type="button" class="icon-btn" data-act="quiz-back" aria-label="Question précédente">←</button>
+        <div class="grow"><div class="bar"><i style="width:${(i + 1) / QUIZ.length * 100}%"></i></div></div><span class="muted num" style="font-size:12px">${i + 1}/${QUIZ.length}</span></div>
+      <div class="q-head">${avatar(AI_COACH)}<div><div class="eyebrow">Vaultr apprend à te connaître</div><div class="muted" style="font-size:12px">Tes réponses servent à construire et adapter ton programme.</div></div></div>
+      <h2 class="q-title">${esc(q.q)}</h2>${q.sub ? `<p class="muted" style="margin:0">${esc(q.sub)}</p>` : ""}
+      ${q.text ? `<textarea id="quizNote" data-qnote rows="4" maxlength="400" placeholder="Ex. Je veux courir 10 km en juin, mais je lâche vite quand je suis seul.">${esc(val || "")}</textarea>`
+        : `<div class="q-opts ${q.multi ? "multi" : ""}">${q.opts.map(o => { const on = q.single ? val === o : (val || []).includes(o); return `<button type="button" class="q-opt ${on ? "on" : ""}" data-qopt="${esc(o)}" aria-pressed="${on}">${esc(o)}${q.multi ? `<span class="q-check">${on ? "✓" : ""}</span>` : ""}</button>`; }).join("")}</div>`}
+      ${q.single ? "" : `<button type="button" class="btn primary wide big" data-act="quiz-next" ${can ? "" : "disabled"}>${i === QUIZ.length - 1 ? (A.quizMode === "edit" ? "Enregistrer mes réponses" : "Terminer et créer mon compte") : "Continuer"}</button>`}
+    </section>`;
+  }
+  async function finishQuiz() {
+    const quiz = A.quizAns;
+    if (A.quizMode === "signup") {
+      await createProfile({ ...A.pendingProfile, quiz });
+      A.pendingProfile = null; A.quizMode = null;
+      toast("Compte créé ! Vaultr a bien noté tes réponses 🤖");
+    } else {
+      await A.db.doc("profiles/" + A.myId).update({ quiz, goal: GOAL_LABEL[GOAL_KEY[quiz.goal]] || A.profile.goal });
+      A.quizMode = null; render();
+      toast("Réponses enregistrées");
+      if (A.program?.coachId === AI_ID && (A.program.tasks || []).length) setTimeout(() => aiAdaptProgram("J'ai mis à jour mes réponses au questionnaire : adapte mon programme."), 400);
+      else if (A.program?.coachId === AI_ID && A.program.mise) setTimeout(aiBuildProgram, 400);
+    }
+  }
+
   /* ---------- Inscription : profil ---------- */
   function viewOnboard() {
     const r = A.onboardRole;
@@ -1239,9 +1462,9 @@ textarea::placeholder{color:var(--muted)}
         ${coach ? `
         <div class="field"><label for="obSport">Spécialité</label><select id="obSport">${SPORTS.map(s => `<option>${esc(s)}</option>`).join("")}</select></div>
         <div class="field"><label for="obPrice">Prix du coaching (€ / mois)</label><input type="number" id="obPrice" min="0" step="5" value="150"></div>`
-        : `<div class="field"><label for="obGoal">Ton objectif</label><select id="obGoal">${["Remise en forme", "Perte de poids", "Prise de muscle", "Endurance", "Bien-être"].map(s => `<option>${s}</option>`).join("")}</select></div>`}
+        : `<p class="note" style="margin:0">Ensuite, 10 questions rapides pour que <b>Vaultr</b>, ton coach IA, construise un programme qui te ressemble.</p>`}
         <div class="err" id="obErr" role="alert"></div>
-        <button type="submit" class="btn primary wide">Créer mon compte</button>
+        <button type="submit" class="btn primary wide">${coach ? "Créer mon compte" : "Continuer"}</button>
       </form>
     </section>`;
   }
@@ -1274,16 +1497,17 @@ textarea::placeholder{color:var(--muted)}
       <div class="card empty"><h3>Choisis ta mise du mois</h3><p class="muted" style="margin:0">Mets en jeu la somme que tu veux. ${coach?.ai ? "Vaultr, ton coach IA, crée ton programme et la répartit sur tes exercices tout de suite" : `${esc(first(coach?.name) || "Ton coach")} la répartit sur tes exercices`}, et chaque exercice validé te la rend.</p>
       <button type="button" class="btn primary" data-open="mise">Choisir ma mise</button></div></section>`;
     const rec = recovered(p), shown = lastVault ?? rec, pct = Math.min(1, shown / p.mise);
-    const tasks = p.tasks || [];
+    const tasks = (p.tasks || []).filter(t => !t.archived);
     return `<section class="screen ENTER">${hello}
       <div class="vault" id="vaultBox">${vaultSVG(pct)}
         <div class="vault-center"><div class="amount" id="recAmount">${euro(shown)}</div><div class="of">récupérés sur ${euro(p.mise)}</div></div></div>
       <div class="vault-stats">
         <div class="stat"><b>${euro(p.mise)}</b><span>Ma mise</span></div>
         <div class="stat"><b>${euro(Math.max(0, p.mise - rec))}</b><span>Encore à gagner</span></div>
-        <div class="stat"><b>${tasks.reduce((a, t) => a + t.done, 0)}</b><span>Exercices validés</span></div>
+        <div class="stat"><b>${(p.tasks || []).reduce((a, t) => a + t.done, 0)}</b><span>Exercices validés</span></div>
       </div>
-      <div class="split"><h2>Mes exercices</h2><span class="muted" style="font-size:13px">fixés par ${esc(first(coach?.name) || "ton coach")}</span></div>
+      ${coach?.ai && !A.profile.quiz ? `<div class="card ai-wait"><div class="row">${avatar(coach)}<div class="grow"><h3>Aide Vaultr à te connaître</h3><p class="muted" style="margin:0;font-size:13px">10 questions rapides pour un programme qui respecte tes goûts, tes limites et ton temps.</p></div></div><button type="button" class="btn small primary" data-act="quiz-edit" style="align-self:flex-start">Répondre aux questions</button></div>` : ""}
+      <div class="split"><h2>Mes exercices</h2>${coach?.ai && tasks.length ? `<button type="button" class="btn small" data-open="adapt" ${A.aiBuilding ? "disabled" : ""}>${A.aiBuilding ? "Vaultr adapte…" : "🔧 Adapter"}</button>` : `<span class="muted" style="font-size:13px">fixés par ${esc(first(coach?.name) || "ton coach")}</span>`}</div>
       ${tasks.length ? `<div class="list">${tasks.map(taskAthlete).join("")}</div>`
         : coach?.ai ? `<div class="card ai-wait"><div class="row">${avatar(coach)}<div class="grow"><h3>${A.aiBuilding ? "Vaultr crée ton programme…" : "Ton programme n'est pas encore prêt"}</h3><p class="muted" style="margin:0;font-size:13px">${A.aiBuilding ? "Quelques secondes : il choisit tes exercices et répartit ta mise." : "Demande à Vaultr de le créer maintenant."}</p></div></div>${A.aiBuilding ? `<div class="dots"><span></span><span></span><span></span></div>` : `<button type="button" class="btn primary" data-act="ai-build">Créer mon programme</button>`}</div>`
         : `<div class="card"><h3>${esc(first(coach?.name) || "Ton coach")} prépare ton programme</h3><p class="muted" style="margin:0">Tes exercices et leur valeur apparaîtront ici dès qu'il les aura créés.</p></div>`}
@@ -1292,7 +1516,9 @@ textarea::placeholder{color:var(--muted)}
   }
   function taskAthlete(t) {
     const pend = A.proofsAth.find(x => x.taskId === t.id && x.status === "pending");
-    const refused = !pend && A.proofsAth.filter(x => x.taskId === t.id).sort((a, b) => b.ts - a.ts)[0]?.status === "ko";
+    const last = A.proofsAth.filter(x => x.taskId === t.id).sort((a, b) => b.ts - a.ts)[0];
+    const refused = !pend && last?.status === "ko";
+    const aiNote = !pend && last?.aiMessage && now() - (last.reviewedAt || last.ts) < 3 * 86400000 ? last.aiMessage : "";
     const full = t.done >= t.target;
     return `<div class="task ${t.weak ? "weak" : ""}">
       <div style="min-width:0"><div class="name">${esc(t.name)}</div>
@@ -1306,6 +1532,7 @@ textarea::placeholder{color:var(--muted)}
            <label class="btn small"><input type="file" accept="image/*,video/*" data-proof="${esc(t.id)}" hidden>📸 Photo ou vidéo</label>
            <span class="chip">${A.program?.coachId === AI_ID ? "validée en quelques secondes" : "ou validation en séance"}</span>`}
       </div>
+      ${aiNote ? `<div class="ai-note ${refused ? "ko" : ""}"><b>🤖 Vaultr :</b> ${esc(aiNote)}</div>` : ""}
     </div>`;
   }
 
@@ -1435,6 +1662,24 @@ textarea::placeholder{color:var(--muted)}
         : `<p class="muted">Rien pour l'instant.</p>`}
     </section>`;
   }
+  function sheetAdapt() {
+    const chips = ["C'est trop dur", "C'est trop facile", "J'ai moins de temps", "Plus de cardio", "Pas de pompes", "J'ai mal au genou", "Je veux plus de renforcement"];
+    openSheet(`<div class="grab"></div><div class="row">${avatar(AI_COACH)}<div class="grow"><h2>Adapter mon programme</h2><p class="muted" style="margin:0;font-size:13px">Dis à Vaultr ce que tu veux changer. L'argent déjà gagné reste acquis.</p></div></div>
+      <div class="row" style="flex-wrap:wrap;gap:6px">${chips.map(c => `<button type="button" class="tog" data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+      <textarea id="adaptText" rows="3" maxlength="300" placeholder="Ex. Je déteste courir, remplace par du vélo"></textarea>
+      <button type="button" class="btn primary wide" id="adaptOk">Adapter mon programme</button>
+      <button type="button" class="btn ghost wide" data-act-sheet="quiz">Refaire le questionnaire</button>`, sh => {
+      const ta = sh.querySelector("#adaptText");
+      sh.querySelectorAll("[data-chip]").forEach(b => b.addEventListener("click", () => { ta.value = ta.value ? ta.value + ". " + b.dataset.chip : b.dataset.chip; ta.focus(); }));
+      sh.querySelector("#adaptOk").addEventListener("click", () => {
+        const v = ta.value.trim(); if (!v) { ta.focus(); return; }
+        closeSheet();
+        postMessage(A.myId, AI_ID, A.myId, v).catch(() => {});
+        aiAdaptProgram(v);
+      });
+      sh.querySelector("[data-act-sheet]").addEventListener("click", () => { closeSheet(); startQuiz("edit"); });
+    });
+  }
   function sheetMise() {
     const p = A.program, minV = Math.max(10, Math.ceil(recovered(p) / 5) * 5); let v = Math.max(minV, p.mise || 50);
     openSheet(`<div class="grab"></div><h2>Ma mise de ${esc(monthName())}</h2>
@@ -1498,7 +1743,7 @@ textarea::placeholder{color:var(--muted)}
       <div class="split"><h2>Exercices</h2><button type="button" class="btn small" data-open="program">${tasks.length ? "Modifier le programme" : "Créer le programme"}</button></div>
       ${!c.mise ? `<p class="note">${esc(first(a?.name) || "Ton client")} n'a pas encore choisi sa mise. Tu peux déjà créer ses exercices : leur valeur sera calculée quand il aura choisi.</p>` : ""}
       ${tasks.length ? `<p class="muted" style="margin:0;font-size:13px">En séance ? Valide chaque exercice réalisé : l'argent est rendu tout de suite.</p>
-      <div class="list">${tasks.map(t => {
+      <div class="list">${tasks.filter(t => !t.archived).map(t => {
         const full = t.done >= t.target;
         return `<div class="task ${t.weak ? "weak" : ""}">
           <div style="min-width:0"><div class="name">${esc(t.name)}</div><div class="meta"><span class="num">${t.done}/${t.target} séances</span>${t.weak ? `<span class="chip volt">Point faible</span>` : ""}</div></div>
@@ -1579,7 +1824,7 @@ textarea::placeholder{color:var(--muted)}
       return `<div class="grab"></div><h2>Programme · ${esc(first(athleteName(aid)))}</h2>
         <p class="muted" style="margin:0">${budget ? `Répartis la mise de ${euro(budget)} sur les exercices. Mets plus d'argent sur ce que ${esc(first(athleteName(aid)))} aime le moins.` : "Ajoute les exercices du mois. Leur valeur sera calculée quand la mise sera choisie."}</p>
         ${budget && draft.length ? `<button type="button" class="btn wide" id="aiBtn">⚡ Répartir automatiquement</button>` : ""}
-        ${draft.map((t, i) => `<div class="edit-task">
+        ${draft.map((t, i) => t.archived ? "" : `<div class="edit-task">
           <div><b>${esc(t.name)}</b><div class="meta">${t.target} séances · difficulté ${"●".repeat(t.diff)}${"○".repeat(3 - t.diff)}${t.weak ? " · point faible" : ""}${t.done ? ` · ${euro(earned(t))} déjà rendus` : ""}</div></div>
           <input type="number" min="0" step="0.05" value="${t.value}" data-val="${i}" aria-label="Valeur de ${esc(t.name)} en euros" ${budget && left(t) ? "" : "disabled"}>
           <button type="button" class="del" data-del="${i}" aria-label="Supprimer ${esc(t.name)}" ${t.done ? "disabled" : ""}>×</button>
@@ -1715,10 +1960,12 @@ textarea::placeholder{color:var(--muted)}
     openSheet(`<div class="grab"></div><h2>Mon compte</h2>
       <div class="card"><div class="row">${avatar(me, "volt")}<div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">@${esc(me.handle)} · ${me.role === "coach" ? "Coach" : "Sportif"}</div></div></div></div>
       ${A.mode === "live" ? `
+        ${me.role === "athlete" ? `<button type="button" class="btn wide" data-s="quiz">🤖 Mes réponses pour Vaultr</button>` : ""}
         <button type="button" class="btn wide" data-s="switch">Passer en profil ${me.role === "coach" ? "sportif" : "coach"}</button>
         <button type="button" class="btn wide ghost" data-s="demo">Essayer la démo (Léa et Karim)</button>`
       : `<p class="note">Tu es dans la <b>démo</b> : les données restent sur cet appareil.</p>
         ${A.liveDb ? `<button type="button" class="btn primary wide" data-s="live">Utiliser mon vrai compte</button>` : ""}
+        ${me.role === "athlete" ? `<button type="button" class="btn wide" data-s="quiz">🤖 Mes réponses pour Vaultr</button>` : ""}
         <button type="button" class="btn wide ghost" data-s="reset">Remettre la démo à zéro</button>`}
       <button type="button" class="btn wide" data-s="logout">Se déconnecter</button>
       <div id="delZone"><button type="button" class="btn wide ghost danger" data-s="delete">Supprimer mon compte</button></div>
@@ -1735,6 +1982,7 @@ textarea::placeholder{color:var(--muted)}
         if (s === "delete-no") { sh.querySelector("#delZone").innerHTML = `<button type="button" class="btn wide ghost danger" data-s="delete">Supprimer mon compte</button>`; return; }
         closeSheet();
         if (s === "logout") return logout();
+        if (s === "quiz") return startQuiz("edit");
         if (s === "delete-yes") return guard(async () => {
           const id = A.myId; A.deleting = true;
           if (me.role === "athlete") await A.db.doc("programs/" + id).delete();
@@ -1742,8 +1990,8 @@ textarea::placeholder{color:var(--muted)}
           if (A.mode === "demo") { const acc = (await A.db.collection("accounts").where("uid", "==", id).get()).docs[0]; if (acc) await A.db.doc("accounts/" + acc.id).delete(); logout(); }
           else { A.creating = false; A.auth = "welcome"; render(); }
         }, "Compte supprimé");
-        if (s === "demo") { startDemo(); toast("Mode démo : choisis Léa ou Karim, ou crée un compte"); }
-        if (s === "live") { startLive(); }
+        if (s === "demo") { A.gate = false; startDemo(); toast("Mode démo : choisis Léa ou Karim, ou crée un compte"); }
+        if (s === "live") { A.gate = false; startLive(); }
         if (s === "reset") { A.demoDb.reset(); lsSet("vaultr-demo-session", ""); A.myId = null; resetData(); A.auth = "welcome"; render(); toast("Démo remise à zéro"); }
         if (s === "switch") guard(async () => {
           const role = me.role === "coach" ? "athlete" : "coach";
@@ -1822,7 +2070,11 @@ textarea::placeholder{color:var(--muted)}
         const g = id => document.getElementById(id)?.value || "";
         const err = document.getElementById("obErr"); err.textContent = "";
         const btn = f.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Création…";
-        try { await createProfile({ role: A.onboardRole, name: g("obName"), handle: g("obHandle"), city: g("obCity"), sport: g("obSport"), price: g("obPrice"), goal: g("obGoal") }); toast("Compte créé. Bienvenue sur Vaultr !"); }
+        const form = { role: A.onboardRole, name: g("obName"), handle: g("obHandle"), city: g("obCity"), sport: g("obSport"), price: g("obPrice") };
+        try {
+          if (A.onboardRole === "athlete") { await checkBasics(form); A.pendingProfile = form; startQuiz("signup"); return; }
+          await createProfile(form); toast("Compte créé. Bienvenue sur Vaultr !");
+        }
         catch (x) { const e2 = document.getElementById("obErr"); if (e2) e2.textContent = x?.ui || "Impossible de créer le compte. Réessaie."; const b = document.querySelector("#onboardForm button[type=submit]"); if (b) { b.disabled = false; b.textContent = "Créer mon compte"; } }
       });
     }
@@ -1852,8 +2104,30 @@ textarea::placeholder{color:var(--muted)}
     if (d.act === "onboard-back") { A.onboardRole = null; render(); return; }
     if (d.act === "onboard-exit") { if (A.mode === "demo") logout(); else { A.creating = false; A.auth = "welcome"; render(); } return; }
     if (d.auth) { A.auth = d.auth; render(); $main.scrollTop = 0; return; }
-    if (d.demoLogin) { demoLogin(d.demoLogin); toast(d.demoLogin === "demo_lea" ? "Connectée en tant que Léa" : "Connecté en tant que Karim"); return; }
+    if (d.act === "resume") { A.gate = false; render(); $main.scrollTop = 0; if (A.profile?.role === "athlete") setTimeout(checkNewMoney, 500); return; }
+    if (d.act === "switch-signup" || d.act === "switch-login") { A.gate = false; logout(); A.auth = d.act === "switch-signup" ? "signup" : "login"; render(); return; }
+    if (d.qopt) {
+      const q = QUIZ[A.quizStep], o = d.qopt;
+      if (q.single) { A.quizAns[q.k] = o; render(); setTimeout(() => { if (A.quizMode && QUIZ[A.quizStep] === q) { A.quizStep++; render(); $main.scrollTop = 0; } }, 220); return; }
+      let l = A.quizAns[q.k] || [];
+      if (o === q.excl) l = l.includes(o) ? [] : [o];
+      else { l = l.filter(x => x !== q.excl); l = l.includes(o) ? l.filter(x => x !== o) : [...l, o]; }
+      A.quizAns[q.k] = l; render(); return;
+    }
+    if (d.act === "quiz-next") {
+      if (A.quizStep < QUIZ.length - 1) { A.quizStep++; render(); $main.scrollTop = 0; return; }
+      return guard(finishQuiz);
+    }
+    if (d.act === "quiz-back") {
+      if (A.quizStep > 0) { A.quizStep--; render(); return; }
+      if (A.quizMode === "signup") { A.quizMode = null; render(); return; }  // retour au formulaire de profil
+      A.quizMode = null; render(); return;
+    }
+    if (d.act === "quiz-edit") return startQuiz("edit");
+    if (d.open === "adapt") return sheetAdapt();
+    if (d.demoLogin) { if (A.mode !== "demo") startDemo(); A.gate = false; demoLogin(d.demoLogin); toast(d.demoLogin === "demo_lea" ? "Connectée en tant que Léa" : "Connecté en tant que Karim"); return; }
     if (d.liveAuth) {
+      A.gate = false;
       const err = document.getElementById("authErr");
       if (A.profile === undefined) { err.textContent = "Chargement de ton compte, réessaie dans une seconde."; return; }
       if (A.profile) { lsSet("vaultr-live-out", ""); render(); toast(`Content de te revoir, ${first(A.profile.name)} !`); return; }
@@ -1864,7 +2138,7 @@ textarea::placeholder{color:var(--muted)}
     if (d.act === "pw-toggle") { const i = document.getElementById("authPw"); const show = i.type === "password"; i.type = show ? "text" : "password"; t.textContent = show ? "Masquer" : "Afficher"; return; }
     if (d.act === "forgot") { const e2 = document.getElementById("authErr"); e2.classList.add("info"); e2.textContent = "Démo : le mot de passe de Léa et de Karim est demo1234. Dans l'appli finale, tu recevras un e-mail pour en choisir un nouveau."; return; }
     if (d.act === "social") return toast(`La connexion avec ${d.p} arrive avec la version App Store`);
-    if (d.act === "demo-on") { startDemo(); return; }
+    if (d.act === "demo-on") { A.gate = false; A.auth = "welcome"; startDemo(); return; }
     if (d.goto) { A.tab.athlete = d.goto; render(); return; }
     if (d.coachPage) { A.viewCoach = d.coachPage; A.tab.athlete = "coach"; A.reviewDraft = null; render(); $main.scrollTop = 0; return; }
     if (d.act === "coach-back") { A.viewCoach = null; closeGallerySub(); render(); $main.scrollTop = 0; return; }
@@ -1926,6 +2200,7 @@ textarea::placeholder{color:var(--muted)}
     if (el.dataset.f && A.draft) { A.draft[el.dataset.f] = el.type === "checkbox" ? el.checked : el.value; if (el.id === "pfBio") { const c = document.getElementById("bioCount"); if (c) c.textContent = el.value.length + "/600"; } }
     if (el.dataset.pf && A.draft) { const [i, k] = el.dataset.pf.split(":"); A.draft.places[+i][k] = el.value; }
     if ("rv" in el.dataset && A.reviewDraft) A.reviewDraft.text = el.value;
+    if ("qnote" in el.dataset && A.quizMode) A.quizAns.note = el.value.slice(0, 400);
   });
   // Photos du profil coach
   $main.addEventListener("change", async e => {
@@ -1986,6 +2261,19 @@ textarea::placeholder{color:var(--muted)}
       v.onerror = () => ko({ ui: "Cette vidéo ne peut pas être lue sur ce téléphone. Essaie de la filmer à nouveau." });
     });
   }
+  // Quelques images réparties sur la vidéo, pour que Vaultr voie le mouvement
+  async function grabFrames(v, n) {
+    const out = [], c = document.createElement("canvas"), k = Math.min(1, 512 / Math.max(v.videoWidth, v.videoHeight));
+    c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
+    for (let i = 0; i < n; i++) {
+      const at = Math.min(v.duration - .05, (v.duration * (i + .5)) / n);
+      const okSeek = await new Promise(res => { const tm = setTimeout(() => res(false), 3000); v.onseeked = () => { clearTimeout(tm); res(true); }; try { v.currentTime = Math.max(0, at); } catch { clearTimeout(tm); res(false); } });
+      if (!okSeek) continue;
+      try { c.getContext("2d").drawImage(v, 0, 0, c.width, c.height); out.push(c.toDataURL("image/jpeg", .6)); } catch {}
+    }
+    v.onseeked = null;
+    return out;
+  }
   function grabPoster(v) {
     return new Promise(ok => {
       const draw = () => { try { const c = document.createElement("canvas"), k = Math.min(1, 480 / Math.max(v.videoWidth, v.videoHeight)); c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k); c.getContext("2d").drawImage(v, 0, 0, c.width, c.height); ok(c.toDataURL("image/jpeg", .6)); } catch { ok(""); } };
@@ -2022,6 +2310,7 @@ textarea::placeholder{color:var(--muted)}
       if (v.duration > MAX_SECONDS + .5) throw { ui: `Vidéo trop longue : ${MAX_SECONDS} secondes maximum. Coupe-la ou filme seulement l'exercice.` };
       set = progressSheet("Envoi de ta vidéo");
       const poster = await grabPoster(v);
+      const frames = await grabFrames(v, 4);
       let blob = file, mime = file.type || "video/mp4";
       if (file.size > DIRECT_BYTES) {
         const out = await compressVideo(v, p => set("Compression de la vidéo…", p * .6));
@@ -2030,7 +2319,7 @@ textarea::placeholder{color:var(--muted)}
       if (blob.size > MAX_BYTES) throw { ui: "Vidéo trop lourde, même compressée. Filme une vidéo plus courte." };
       set("Envoi à ton coach…", .6);
       const b64 = await blobToB64(blob);
-      await sendProof(taskId, { video: b64, mime, poster, duration: v.duration }, p => set("Envoi à ton coach…", .6 + p * .4));
+      await sendProof(taskId, { video: b64, mime, poster, duration: v.duration, frames }, p => set("Envoi à ton coach…", .6 + p * .4));
       URL.revokeObjectURL(v.src);
       closeSheet(); toast("Vidéo envoyée à ton coach 🎥");
     } catch (x) {
