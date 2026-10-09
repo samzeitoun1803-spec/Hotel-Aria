@@ -29,3 +29,7 @@ js/vendor/   gsap, ScrollTrigger, lenis (embarqués)
 assets/images/
 scripts/fetch-images.sh
 ```
+
+## Projet Portier
+
+[`portier/index.html`](portier/index.html) : maquette de **Portier**, un moteur de réservation directe sans commission pour hôtels indépendants (calculateur de commissions, application cliquable, tarifs, business plan). Fichier autonome, à ouvrir directement dans un navigateur.
