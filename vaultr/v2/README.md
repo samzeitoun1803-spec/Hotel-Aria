@@ -15,3 +15,22 @@ Mêmes fonctionnalités que `vaultr/maquette.html`, nouvelle direction artistiqu
 
 - `app.html` : la page publiée (Artifact) ; `index.html` : la même page autonome (démo).
 - `src/` : `base.css` (styles de structure), `theme.css` (la DA), `body.html` (l'appli).
+
+## Ajouts
+
+- **Mode clair « plein soleil »** : bouton ☀️/🌙 dans l'en-tête et réglage *Sombre / Clair / Auto*
+  (Auto suit l'appareil ou claude.ai). Papier crème, laiton bronze, encre noire ; le coffre,
+  les vignettes d'exercices, la carte et les célébrations restent en métal sombre.
+  Passage d'un mode à l'autre par un cercle qui se déploie depuis le bouton.
+- **Coffre grand ouvert** : quand toute la mise du mois est récupérée, les verrous rentrent,
+  le volant tourne, la porte s'ouvre sur des lingots, puis confettis et pluie de pièces
+  (une seule fois par mois).
+- **Carte de partage** (story Instagram 1080 × 1920) : progression, victoire ou recap ;
+  bouton « Enregistrer l'image » (feuille de partage native dans l'appli Claude iOS)
+  et légende à copier.
+- **Recap du mois** façon « Wrapped » : story plein écran, une dizaine d'écrans animés
+  (argent arraché au coffre, séances, tube du mois, grand oublié, jour sacré, plus longue série,
+  toi et ton coach, comparaison avec le mois d'avant, personnalité sportive, résumé).
+  Appui long = pause, tap à gauche/droite = écran précédent/suivant.
+  Aperçu en direct depuis la carte « Recap » du coffre ou les réglages ; s'ouvre tout seul
+  le dernier jour du mois et pendant les 5 premiers jours du mois suivant.
