@@ -37,3 +37,7 @@ scripts/fetch-images.sh
 ## Projet Revendo
 
 [`revendo/index.html`](revendo/index.html) : maquette de **Revendo**, une app pour les revendeurs de seconde main (annonce générée à partir d'une photo, prix conseillé, suivi du stock et des bénéfices, business plan). Fichier autonome.
+
+## Projet Récup
+
+[`recup/index.html`](recup/index.html) : maquette de **Récup**, une app qui repère l'argent qu'on te doit (vols et trains en retard, colis non livrés, prélèvements en trop) et envoie les réclamations, payée 20 % seulement en cas de remboursement. Fichier autonome.
