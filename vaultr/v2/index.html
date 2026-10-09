@@ -1012,6 +1012,68 @@ h2{font-size:30px}
   *,*::before,*::after{animation-delay:0s!important;transition-delay:0s!important}
   ::view-transition-new(root){animation:none}
 }
+
+/* =====================================================================
+   Coach : bibliothèque « Programmes » (blocs + templates)
+   ===================================================================== */
+.lib-tabs button{flex:1}
+.lib-item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;width:100%;padding:12px;text-align:left;border-radius:20px;background:linear-gradient(180deg,#171A1F,#13161A);border:1px solid var(--line);transition:transform .12s,border-color .2s}
+.lib-item:active{transform:scale(.98)}
+.lib-item:hover{border-color:color-mix(in srgb,var(--volt) 50%,var(--line))}
+.lib-item .exo-thumb,.block-demo .exo-thumb{width:64px;height:64px;border-radius:16px}
+.exo-thumb.big{width:96px!important;height:96px!important;border-radius:22px!important;flex:none}
+.exo-thumb.sm{width:46px;height:46px;border-radius:12px;flex:none}
+.exo-thumb.xs{width:24px;height:24px;border-radius:7px;flex:none;border:none}
+.exo-thumb.xs .exo .gd,.exo-thumb.xs .exo .gd2{display:none}
+.lib-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.lib-txt b{font-size:16px;font-weight:700}
+.lib-txt .meta{font-size:12.5px;color:var(--muted)}
+.lib-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.lib-go{font-size:26px;line-height:1;color:var(--muted);padding-right:4px}
+.tpl-card{gap:12px}
+.tpl-blocks{display:flex;flex-wrap:wrap;gap:6px}
+.tpl-chip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px 3px 3px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:12.5px;font-weight:600}
+.tpl-chip i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--volt)}
+.block-demo{display:flex;align-items:center;gap:14px;padding:12px;border-radius:18px;background:var(--panel-2);border:1px dashed color-mix(in srgb,var(--volt) 45%,var(--line))}
+.block-demo .grow{min-width:0}
+.block-demo p{margin:4px 0 8px;font-size:12.5px;line-height:1.4}
+.btn.busy{opacity:.6;pointer-events:none}
+.pick-list{display:flex;flex-direction:column;gap:8px}
+.pick-row{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden;transition:border-color .2s,background .2s}
+.pick-row.on{border-color:var(--volt);background:var(--volt-dim)}
+.pick-main{display:flex;align-items:center;gap:12px;width:100%;padding:8px 12px 8px 8px;text-align:left}
+.pick-main .grow{display:flex;flex-direction:column;min-width:0}
+.pick-main .meta{font-size:12px;color:var(--muted)}
+.pick-check{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);font-weight:800;color:var(--muted)}
+.pick-row.on .pick-check{background:var(--brass);border-color:transparent;color:#1A1205}
+.stepper{display:flex;align-items:center;gap:10px;padding:0 12px 10px 66px}
+.stepper button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);font-weight:800;font-size:18px;line-height:1}
+.stepper b{font-family:var(--display);font-weight:800;font-size:24px;min-width:26px;text-align:center}
+.stepper span{font-size:12px;color:var(--muted)}
+.lib-card{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:16px;background:var(--volt-dim);border:1px solid color-mix(in srgb,var(--volt) 40%,transparent)}
+.tpl-pick{display:flex;gap:8px}
+.tpl-pick select{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.block-chips{display:flex;flex-wrap:wrap;gap:6px}
+.bchip{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font-size:12.5px;font-weight:600;transition:transform .12s}
+.bchip:not(.on):active{transform:scale(.95)}
+.bchip.on{color:var(--muted);opacity:.65;cursor:default}
+.tweak{display:inline-block;margin-top:6px;padding:2px 9px;border-radius:999px;border:1px dashed var(--line);font-size:11.5px;font-weight:600;color:var(--muted)}
+.tweak[aria-pressed="true"]{border-style:solid;border-color:var(--volt);color:var(--volt);background:var(--volt-dim)}
+.adhoc{display:block;padding:12px 16px}
+.adhoc summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--muted)}
+.adhoc[open] summary{color:var(--fg)}
+.adhoc[open]>:not(summary){margin-top:10px}
+/* la démo vidéo du coach tourne en boucle à la place de l'animation */
+.vid-slot{position:absolute;inset:0;display:block}
+.thumb-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vid-slot:has(video) .play{display:none}
+/* Recap pas encore arrivé : compte à rebours */
+.recap-card.locked{color:var(--fg);background:var(--panel);border:1px dashed color-mix(in srgb,var(--volt) 55%,var(--line));animation:none;box-shadow:none}
+.recap-card.locked::before{display:none}
+.recap-card.locked b{color:var(--volt)}
+.recap-card.locked .rcc-go{background:var(--panel-2);color:var(--volt);animation:none;font-size:18px;padding:0}
+:root[data-vmode="light"] :is(.lib-item,.pick-row:not(.on),.recap-card.locked){background:#FFFFFF}
+.pick-main .grow{flex:1}
 </style>
 </head>
 <body>
@@ -1224,7 +1286,7 @@ h2{font-size:30px}
   /* =====================================================================
      Base locale pour le mode démo (même interface que la vraie base)
      ===================================================================== */
-  const DEMO_KEY = "vaultr-demo-v6";
+  const DEMO_KEY = "vaultr-demo-v7";
   function demoSeed() {
     const t0 = now() - 86400000 * 9;
     const P = {};
@@ -1257,6 +1319,18 @@ h2{font-size:30px}
     rv("demo_r3", "Sarah B.", "demo_theo", 5, "J'ai couru mon premier semi grâce à Théo !", 22);
     rv("demo_r2", "Hugo M.", "demo_nadia", 4, "Intense mais génial.", 8);
     rv("demo_r3", "Sarah B.", AI_ID, 5, "Parfait pour commencer : il crée le programme et valide mes photos en deux secondes.", 5);
+    // Bibliothèque de Karim : blocs d'exercices réutilisables et templates de programme
+    let ord = 0;
+    const blk = (id, name, detail, target, diff) => P[`profiles/demo_karim/blocks/${id}`] = { name, detail, target, diff, media: null, ts: t0 + ord++ };
+    blk("b_course", "Course 15 min", "Échauffement inclus", 8, 1);
+    blk("b_pompes", "15 pompes", "Dos droit, poitrine jusqu'au sol", 8, 3);
+    blk("b_gainage", "Gainage 3 × 1 min", "Planche ventrale", 8, 2);
+    blk("b_jj", "Jumping jacks 3 × 40", "30 s de repos entre les séries", 10, 1);
+    blk("b_squat", "20 squats", "Talons au sol, dos droit", 8, 2);
+    blk("b_corde", "Corde à sauter 5 min", "", 6, 2);
+    const tpl = (id, name, items) => P[`profiles/demo_karim/templates/${id}`] = { name, items: items.map(([blockId, target]) => ({ blockId, target })), ts: t0 + ord++ };
+    tpl("t_debut", "Remise en forme · débutant", [["b_course", 8], ["b_jj", 10], ["b_squat", 8]]);
+    tpl("t_intense", "Perte de poids · intensif", [["b_corde", 6], ["b_course", 10], ["b_pompes", 8], ["b_gainage", 8]]);
     const ath = (id, name, handle, goal) => P["profiles/" + id] = { role: "athlete", name, handle, city: "Nice", goal, createdAt: t0 };
     ath("demo_lea", "Léa Martin", "lea.run", "Remise en forme");
     ath("demo_tom", "Tom Lefèvre", "tom.l", "Perte de poids");
@@ -1345,6 +1419,7 @@ h2{font-size:30px}
     coaches: [], athletes: {},
     program: undefined, proofsAth: [], events: [],
     clients: [], proofsCoach: [],
+    blocks: [], templates: [], libTab: "blocks",   // bibliothèque du coach : blocs d'exercices + templates de programme
     chats: [], chat: null, msgs: [], chatWith: null,   // messagerie
     reviews: [], gallery: {}, viewCoach: null, editing: false, draft: null, reviewDraft: null,   // pages coach
     sample: null, aiTyping: false, aiBuilding: false,   // coach IA
@@ -1368,7 +1443,8 @@ h2{font-size:30px}
     proof: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>',
     home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>',
     chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg>',
-    pro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>'
+    pro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
+    lib: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 6v12M17.5 6v12M3 9v6M21 9v6M6.5 12h11"/></svg>'
   };
   const VAULT_ICON = '<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="25" fill="none" stroke="currentColor" stroke-width="5"/><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><line x1="30" y1="30" x2="30" y2="14"/><line x1="30" y1="30" x2="44" y2="38"/><line x1="30" y1="30" x2="16" y2="38"/></g><circle cx="30" cy="30" r="6" fill="currentColor"/></svg>';
 
@@ -1510,7 +1586,7 @@ h2{font-size:30px}
   const loggedOut = () => A.mode === "demo" ? !A.myId : lsGet("vaultr-live-out") === "1";
   function resetData() {
     unsubs.forEach(u => u()); roleSubs.forEach(u => u()); unsubs = []; roleSubs = []; subscribedRole = null;
-    Object.assign(A, { profile: undefined, coaches: [], athletes: {}, program: undefined, proofsAth: [], events: [], clients: [], proofsCoach: [], openClient: null, onboardRole: null, chats: [], chat: null, msgs: [], chatWith: null, reviews: [], gallery: {}, viewCoach: null, editing: false, draft: null, reviewDraft: null, aiTyping: false, aiBuilding: false, deleting: false });
+    Object.assign(A, { profile: undefined, coaches: [], athletes: {}, program: undefined, proofsAth: [], events: [], clients: [], proofsCoach: [], openClient: null, onboardRole: null, blocks: [], templates: [], chats: [], chat: null, msgs: [], chatWith: null, reviews: [], gallery: {}, viewCoach: null, editing: false, draft: null, reviewDraft: null, aiTyping: false, aiBuilding: false, deleting: false });
     closeGallerySub();
     closeChatSub(); prevChatTs = {};
     seenTs = null; lastVault = null; autoRecapDone = false;
@@ -1551,6 +1627,9 @@ h2{font-size:30px}
       roleSubs.push(db.collection("profiles").where("role", "==", "athlete").onSnapshot(q => { A.athletes = Object.fromEntries(q.docs.map(d => [d.id, { id: d.id, ...d.data() }])); schedule(); }, onErr));
       roleSubs.push(db.collection("proofs").where("coachId", "==", id).onSnapshot(q => { A.proofsCoach = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.ts - a.ts); schedule(); }, onErr));
       roleSubs.push(db.collection(`profiles/${id}/gallery`).orderBy("ts").onSnapshot(q => { A.gallery[id] = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
+      const byTs = (a, b) => (a.ts || 0) - (b.ts || 0);
+      roleSubs.push(db.collection(`profiles/${id}/blocks`).onSnapshot(q => { A.blocks = q.docs.map(d => ({ id: d.id, ...d.data() })).sort(byTs); schedule(); }, onErr));
+      roleSubs.push(db.collection(`profiles/${id}/templates`).onSnapshot(q => { A.templates = q.docs.map(d => ({ id: d.id, ...d.data() })).sort(byTs); schedule(); }, onErr));
       roleSubs.push(db.collection("chats").where("coachId", "==", id).onSnapshot(q => {
         A.chats = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.lastTs || 0) - (a.lastTs || 0));
         // notification quand un client écrit dans une autre conversation
@@ -2030,8 +2109,8 @@ h2{font-size:30px}
     else {
       renderTabs(role);
       const v = A.tab[role];
-      const views = { athlete: { vault: viewVault, chat: viewChatAthlete, coach: viewFindCoach, wallet: viewWallet }, coach: { clients: viewClients, chat: viewChatsCoach, proofs: viewProofs, pro: viewPro } };
-      html = views[role][v](); key = A.mode + A.myId + role + v + (A.openClient || "") + (v === "chat" ? A.chatWith || "" : "") + (A.viewCoach || "") + (A.editing ? "edit" : "");
+      const views = { athlete: { vault: viewVault, chat: viewChatAthlete, coach: viewFindCoach, wallet: viewWallet }, coach: { clients: viewClients, chat: viewChatsCoach, proofs: viewProofs, lib: viewLibrary, pro: viewPro } };
+      html = views[role][v](); key = A.mode + A.myId + role + v + (A.openClient || "") + (v === "chat" ? A.chatWith || "" : "") + (A.viewCoach || "") + (A.editing ? "edit" : "") + (v === "lib" ? A.libTab : "");
     }
 
     // garde la saisie en cours (un autre téléphone peut déclencher un rendu pendant qu'on tape)
@@ -2052,8 +2131,8 @@ h2{font-size:30px}
 
   function renderTabs(role) {
     const tabs = role === "athlete"
-      ? [["vault", "Mon coffre", ICONS.vault], ["chat", "Messages", ICONS.chat], ["coach", "Coach", ICONS.coach], ["wallet", "Paiements", ICONS.wallet]]
-      : [["clients", "Accueil", ICONS.home], ["chat", "Messages", ICONS.chat], ["proofs", "Preuves", ICONS.proof], ["pro", "Ma page", ICONS.coach]];
+      ? [["vault", "Mon coffre", ICONS.vault], ["chat", "Messages", ICONS.chat], ["coach", "Coach", ICONS.coach], ["wallet", "Ma page", ICONS.wallet]]
+      : [["clients", "Accueil", ICONS.home], ["chat", "Messages", ICONS.chat], ["proofs", "Preuves", ICONS.proof], ["lib", "Programmes", ICONS.lib], ["pro", "Ma page", ICONS.coach]];
     const cur = A.tab[role];
     const badges = {
       proofs: A.proofsCoach.filter(p => p.status === "pending").length,
@@ -2289,7 +2368,6 @@ h2{font-size:30px}
       </div>
       ${leftT ? `<p class="goal-line">Fais tes <b>${leftT} exercices</b> pour récupérer tes <b>${euro(p.mise)}</b>. Chaque exercice oublié, c'est de l'argent qui reste au coffre.</p>` : tasks.length ? `<p class="goal-line win">🏆 Tout est validé : tu as récupéré ta mise !</p>` : ""}
       ${rec > 0 ? `<button type="button" class="share-link" data-act="share-progress">📤 ${leftT ? "Partager ma progression" : "Partager ma victoire"}</button>` : ""}
-      ${tasks.length ? recapCardHTML() : ""}
       ${coach?.ai && !A.profile.quiz ? `<div class="card ai-wait"><div class="row">${avatar(coach)}<div class="grow"><h3>Aide Vaultr à te connaître</h3><p class="muted" style="margin:0;font-size:13px">10 questions rapides pour un programme qui respecte tes goûts, tes limites et ton temps.</p></div></div><button type="button" class="btn small primary" data-act="quiz-edit" style="align-self:flex-start">Répondre aux questions</button></div>` : ""}
       <div class="split"><h2>Mes exercices</h2>${coach?.ai && tasks.length ? `<button type="button" class="btn small" data-open="adapt" ${A.aiBuilding ? "disabled" : ""}>${A.aiBuilding ? "Vaultr adapte…" : "🔧 Adapter"}</button>` : `<span class="muted" style="font-size:13px">fixés par ${esc(first(coach?.name) || "ton coach")}</span>`}</div>
       ${tasks.length ? `<div class="list">${tasks.map(taskAthlete).join("")}</div>`
@@ -2309,9 +2387,28 @@ h2{font-size:30px}
     if (t.media?.id && coachId && coachId !== AI_ID) {
       const m = coachMedia(coachId, t.media.id);
       if (m.kind === "photo") return `<img src="${esc(m.img)}" alt="">`;
-      if (m.kind === "video") return `${m.poster ? `<img src="${esc(m.poster)}" alt="">` : ""}<span class="play">▶</span>`;
+      if (m.kind === "video") return `<span class="vid-slot" data-vid="${esc(coachId + "/" + t.media.id)}">${m.poster ? `<img src="${esc(m.poster)}" alt="">` : ""}<span class="play">▶</span></span>`;
     }
     return exoSVG(exoKind(t.name));
+  }
+  // Charge une fois la vidéo de démo, puis la remet en boucle (muette) dans chaque vignette affichée
+  const thumbVids = {};
+  function mountThumbVideos(root) {
+    if (!root || reduced()) return;
+    root.querySelectorAll(".vid-slot[data-vid]").forEach(slot => {
+      const k = slot.dataset.vid, e = thumbVids[k];
+      if (e?.url) {
+        let v = e.node && !e.node.isConnected ? e.node : null;
+        if (!v) { v = document.createElement("video"); v.className = "thumb-vid"; v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.src = e.url; if (!e.node) e.node = v; }
+        slot.appendChild(v); v.play?.().catch(() => {});
+        return;
+      }
+      if (e) return;
+      const i = k.lastIndexOf("/"), cid = k.slice(0, i), mid = k.slice(i + 1), m = mediaCache[k];
+      if (!m || m.kind !== "video") return;
+      thumbVids[k] = { loading: true };
+      loadCoachVideo(cid, mid, m).then(r => { thumbVids[k] = { url: r.url }; mountThumbVideos($main); mountThumbVideos(document.getElementById("sheetWrap")); }).catch(() => { thumbVids[k] = { failed: true }; });
+    });
   }
   function taskAthlete(t) {
     const pend = A.proofsAth.find(x => x.taskId === t.id && x.status === "pending");
@@ -2476,7 +2573,8 @@ h2{font-size:30px}
   function viewWallet() {
     const p = A.program, coach = myCoach(), rec = recovered(p);
     return `<section class="screen ENTER">
-      <div class="eyebrow">${esc(monthName())}</div><h2>Mon mois</h2>
+      <div class="eyebrow">${esc(monthName())} · paiements et recap</div><h2>Ma page</h2>
+      ${A.program?.tasks?.length || A.events.length ? recapCardHTML() : ""}
       ${p?.coachId ? `<div class="card">
         <div class="split"><span>Coaching · ${esc(first(coach?.name) || "coach")}${coach?.ai ? " (IA)" : ""}</span><b class="num">${p.coachFee ? euro(p.coachFee) : "Gratuit"}</b></div>
         <div class="split"><span>Ma mise de motivation</span><b class="num" style="color:var(--volt)">${euro(p.mise)}</b></div>
@@ -2684,7 +2782,8 @@ h2{font-size:30px}
 
   async function uploadCoachMedia(file) {
     const ref = A.db.collection(`profiles/${A.myId}/media`).doc();
-    if (file.type.startsWith("image/")) { await ref.set({ kind: "photo", img: await compressImage(file, 900, .7, false), ts: now() }); return { id: ref.id, kind: "photo" }; }
+    const key = A.myId + "/" + ref.id;
+    if (file.type.startsWith("image/")) { const img = await compressImage(file, 900, .7, false); await ref.set({ kind: "photo", img, ts: now() }); mediaCache[key] = { kind: "photo", img }; return { id: ref.id, kind: "photo" }; }
     const v = await openVideo(file);
     if (v.duration > MAX_SECONDS + .5) throw { ui: `Vidéo trop longue : ${MAX_SECONDS} secondes maximum.` };
     const poster = await grabPoster(v);
@@ -2695,28 +2794,188 @@ h2{font-size:30px}
     for (let i = 0; i < b64.length; i += CHUNK) parts.push(b64.slice(i, i + CHUNK));
     for (let i = 0; i < parts.length; i++) await ref.collection("chunks").doc(String(i).padStart(3, "0")).set({ d: parts[i] });
     await ref.set({ kind: "video", mime, chunks: parts.length, poster, ts: now() });
+    mediaCache[key] = { kind: "video", mime, chunks: parts.length, poster }; thumbVids[key] = { url: URL.createObjectURL(blob) };
     URL.revokeObjectURL(v.src);
     return { id: ref.id, kind: "video" };
   }
 
-  /* ---------- Coach : programme + répartition IA ---------- */
-  function sheetProgram(aid) {
-    const c = A.clients.find(x => x.id === aid); if (!c) return;
-    const budget = c.mise || 0;
-    const draft = (c.tasks || []).map(t => ({ ...t }));
+  /* ---------- Coach : bibliothèque (blocs d'exercices + templates de programme) ---------- */
+  const DIFF = ["", "Facile", "Moyen", "Dur"];
+  const tplItems = tp => (tp?.items || []).map(it => ({ ...it, b: A.blocks.find(b => b.id === it.blockId) })).filter(it => it.b);
+  function viewLibrary() {
+    const tab = A.libTab, bl = A.blocks, tps = A.templates;
+    const blocksHTML = `<button type="button" class="btn primary wide" data-act="block-new">＋ Nouveau bloc</button>
+      ${bl.length ? `<div class="list">${bl.map(b => `<button type="button" class="lib-item" data-block="${esc(b.id)}">
+          <span class="exo-thumb">${taskThumb(b, A.myId)}</span>
+          <span class="lib-txt"><b>${esc(b.name)}</b>${b.detail ? `<span class="meta">${esc(b.detail)}</span>` : ""}
+            <span class="lib-tags"><span class="chip">${b.target} séances / mois</span><span class="chip">${DIFF[b.diff] || ""}</span>${b.media ? `<span class="chip volt">🎬 démo ${b.media.kind === "video" ? "vidéo" : "photo"}</span>` : ""}</span></span>
+          <span class="lib-go" aria-hidden="true">›</span></button>`).join("")}</div>`
+        : `<div class="card empty"><h3>Crée ton premier bloc</h3><p class="muted" style="margin:0">Un bloc, c'est un exercice que tu réutilises pour tous tes clients : « Jumping jacks 3 × 40 », « 15 pompes »… Ajoute-lui ta vidéo de démo : tes clients la verront à la place de l'animation.</p></div>`}`;
+    const tplHTML = `<button type="button" class="btn primary wide" data-act="tpl-new" ${bl.length ? "" : "disabled"}>＋ Nouveau template</button>
+      ${!bl.length ? `<p class="note">Crée d'abord quelques blocs : un template est un assemblage de tes blocs.</p>` : ""}
+      ${tps.length ? `<div class="list">${tps.map(tp => {
+        const its = tplItems(tp), ses = its.reduce((a, it) => a + it.target, 0);
+        return `<div class="card tpl-card">
+          <div class="split"><h3>${esc(tp.name)}</h3><span class="muted num" style="font-size:12px;white-space:nowrap">${its.length} exo · ${ses} séances</span></div>
+          <div class="tpl-blocks">${its.map(it => `<span class="tpl-chip"><span class="exo-thumb xs">${taskThumb(it.b, A.myId)}</span>${esc(it.b.name)}<i>×${it.target}</i></span>`).join("")}</div>
+          <div class="row"><button type="button" class="btn small primary" data-tpl-give="${esc(tp.id)}">Donner à un client</button><button type="button" class="btn small" data-tpl-edit="${esc(tp.id)}">Modifier</button></div>
+        </div>`; }).join("")}</div>`
+        : bl.length ? `<div class="card empty"><h3>Pas encore de template</h3><p class="muted" style="margin:0">Assemble tes blocs en programmes tout prêts (« Débutant », « Perte de poids »…) et donne-les à plusieurs clients en une touche.</p></div>` : ""}`;
+    return `<section class="screen ENTER">
+      <div class="eyebrow">Ta bibliothèque</div><h2>Programmes</h2>
+      <p class="muted" style="margin:0">Crée tes exercices une fois, range-les en templates, puis donne un programme complet à un client en deux touches.</p>
+      <div class="tabs-inline lib-tabs" role="group" aria-label="Bibliothèque">
+        <button type="button" data-lib-tab="blocks" aria-pressed="${tab === "blocks"}">Mes blocs · ${bl.length}</button>
+        <button type="button" data-lib-tab="templates" aria-pressed="${tab === "templates"}">Mes templates · ${tps.length}</button>
+      </div>
+      ${tab === "blocks" ? blocksHTML : tplHTML}
+    </section>`;
+  }
+  // Les clients qui ont déjà ce bloc dans leur programme voient tout de suite le nouveau nom, la consigne et la démo
+  async function propagateBlock(b) {
+    for (const c of A.clients) {
+      if (!(c.tasks || []).some(t => t.blockId === b.id)) continue;
+      await progRef(c.id).update({ tasks: c.tasks.map(t => t.blockId === b.id ? { ...t, name: b.name, detail: b.detail, media: b.media || null } : t) });
+    }
+  }
+  function sheetBlock(id) {
+    const src = A.blocks.find(b => b.id === id);
+    const d = src ? { ...src } : { name: "", detail: "", target: 8, diff: 2, media: null };
+    let busy = "";
+    const grab = sh => { d.name = sh.querySelector("#bkName").value; d.detail = sh.querySelector("#bkDetail").value; d.target = Math.min(31, Math.max(1, +sh.querySelector("#bkTarget").value || 8)); d.diff = +sh.querySelector("#bkDiff").value; };
+    const body = () => `<div class="grab"></div><h2>${src ? "Modifier le bloc" : "Nouveau bloc"}</h2>
+      <p class="muted" style="margin:0">Un bloc = un exercice que tu réutilises pour tous tes clients.</p>
+      <div class="block-demo">
+        <span class="exo-thumb big">${taskThumb(d, A.myId)}</span>
+        <div class="grow"><b>${d.media ? `Démo ${d.media.kind === "video" ? "vidéo" : "photo"} ✓` : "Ta démo de l'exercice"}</b>
+          <p class="muted">${d.media ? "Tes clients la voient à la place de l'animation, à côté de l'exercice." : "Filme-toi (30 s max) ou ajoute une photo : elle remplacera l'animation chez tes clients."}</p>
+          <div class="row"><label class="btn small ${busy ? "busy" : ""}"><input type="file" accept="image/*,video/*" id="bkMedia" hidden>${busy || (d.media ? "Changer" : "🎬 Ajouter une démo")}</label>${d.media && !busy ? `<button type="button" class="btn small ghost" id="bkMediaDel">Retirer</button>` : ""}</div></div>
+      </div>
+      <div class="field"><label for="bkName">Nom de l'exercice</label><input type="text" id="bkName" maxlength="40" placeholder="Ex. Jumping jacks 3 × 40" value="${esc(d.name)}"></div>
+      <div class="field"><label for="bkDetail">Consigne (facultatif)</label><input type="text" id="bkDetail" maxlength="80" placeholder="Ex. 30 s de repos entre les séries" value="${esc(d.detail || "")}"></div>
+      <div class="row" style="flex-wrap:wrap">
+        <div class="field" style="flex:1;min-width:110px"><label for="bkTarget">Séances / mois</label><input type="number" id="bkTarget" min="1" max="31" value="${d.target}"></div>
+        <div class="field" style="flex:1;min-width:110px"><label for="bkDiff">Difficulté</label><select id="bkDiff">${[1, 2, 3].map(v => `<option value="${v}" ${d.diff === v ? "selected" : ""}>${DIFF[v]}</option>`).join("")}</select></div>
+      </div>
+      <button type="button" class="btn primary wide" id="bkSave" ${busy ? "disabled" : ""}>${src ? "Enregistrer le bloc" : "Créer le bloc"}</button>
+      ${src ? `<button type="button" class="btn ghost danger wide" id="bkDel">Supprimer ce bloc</button>` : ""}`;
+    openSheet(body(), function wire(sh) {
+      const rerender = () => { grab(sh); const st = sh.scrollTop; sh.innerHTML = body(); wire(sh); sh.scrollTop = st; };
+      mountThumbVideos(sh);
+      sh.querySelector("#bkName").addEventListener("input", e => { if (!d.media) { const t = sh.querySelector(".block-demo .exo-thumb"); const k = exoKind(e.target.value); if (t.dataset.k !== k) { t.dataset.k = k; t.innerHTML = exoSVG(k); } } });
+      sh.querySelector("#bkMedia").addEventListener("change", async e => {
+        const f = e.target.files[0]; if (!f) return;
+        busy = f.type.startsWith("video/") ? "Compression de la vidéo…" : "Envoi…"; rerender();
+        try { d.media = await uploadCoachMedia(f); toast("Démo ajoutée ✓"); } catch (x) { toast(x?.ui || "La démo n'a pas pu être ajoutée."); }
+        busy = ""; if (document.getElementById("sheetWrap")?.contains(sh)) rerender();
+      });
+      sh.querySelector("#bkMediaDel")?.addEventListener("click", () => { d.media = null; rerender(); });
+      sh.querySelector("#bkSave").addEventListener("click", () => {
+        grab(sh);
+        const name = d.name.trim().slice(0, 40); if (!name) { sh.querySelector("#bkName").focus(); return; }
+        const ref = src ? A.db.doc(`profiles/${A.myId}/blocks/${src.id}`) : A.db.collection(`profiles/${A.myId}/blocks`).doc();
+        const data = { name, detail: (d.detail || "").trim().slice(0, 80), target: d.target, diff: d.diff, media: d.media || null, ts: src?.ts || now() };
+        closeSheet();
+        guard(async () => { await ref.set(data); if (src) await propagateBlock({ id: src.id, ...data }); }, src ? "Bloc mis à jour ✓" : "Bloc créé ✓ Il est prêt pour tes clients");
+      });
+      sh.querySelector("#bkDel")?.addEventListener("click", e => {
+        if (e.target.dataset.sure !== "1") { e.target.dataset.sure = "1"; e.target.textContent = "Confirmer la suppression"; return; }
+        closeSheet(); guard(() => A.db.doc(`profiles/${A.myId}/blocks/${src.id}`).delete(), "Bloc supprimé (les programmes en cours ne changent pas)");
+      });
+    });
+  }
+  function sheetTemplate(id) {
+    const src = A.templates.find(x => x.id === id);
+    const d = { name: src?.name || "", items: tplItems(src).map(({ blockId, target }) => ({ blockId, target })) };
     const body = () => {
-      const tot = planned(draft);
+      const ses = d.items.reduce((a, it) => a + it.target, 0);
+      return `<div class="grab"></div><h2>${src ? "Modifier le template" : "Nouveau template"}</h2>
+        <p class="muted" style="margin:0">Choisis tes blocs et le nombre de séances : ce programme tout prêt pourra être donné à plusieurs clients.</p>
+        <div class="field"><label for="tpName">Nom du template</label><input type="text" id="tpName" maxlength="40" placeholder="Template ${A.templates.length + (src ? 0 : 1)}" value="${esc(d.name)}"></div>
+        <div class="pick-list">${A.blocks.map(b => { const it = d.items.find(x => x.blockId === b.id);
+          return `<div class="pick-row ${it ? "on" : ""}">
+            <button type="button" class="pick-main" data-tpick="${esc(b.id)}" aria-pressed="${!!it}"><span class="exo-thumb sm">${taskThumb(b, A.myId)}</span><span class="grow"><b>${esc(b.name)}</b><span class="meta">${DIFF[b.diff] || ""}${b.media ? " · 🎬 démo" : ""}</span></span><span class="pick-check" aria-hidden="true">${it ? "✓" : "＋"}</span></button>
+            ${it ? `<div class="stepper"><button type="button" data-step="${esc(b.id)}:-1" aria-label="Une séance de moins">−</button><b class="num">${it.target}</b><span>séances / mois</span><button type="button" data-step="${esc(b.id)}:1" aria-label="Une séance de plus">+</button></div>` : ""}
+          </div>`; }).join("")}</div>
+        <div class="budget ${d.items.length ? "ok" : ""}"><span>${d.items.length} exercice${d.items.length > 1 ? "s" : ""}</span><span class="num">${ses} séances / mois</span></div>
+        <button type="button" class="btn primary wide" id="tpSave" ${d.items.length ? "" : "disabled"}>${!d.items.length ? "Choisis au moins un bloc" : src ? "Enregistrer le template" : "Créer le template"}</button>
+        ${src ? `<button type="button" class="btn ghost danger wide" id="tpDel">Supprimer ce template</button>` : ""}`;
+    };
+    openSheet(body(), function wire(sh) {
+      const rerender = () => { d.name = sh.querySelector("#tpName").value; const st = sh.scrollTop; sh.innerHTML = body(); wire(sh); sh.scrollTop = st; };
+      mountThumbVideos(sh);
+      sh.querySelectorAll("[data-tpick]").forEach(b => b.addEventListener("click", () => {
+        const i = d.items.findIndex(x => x.blockId === b.dataset.tpick);
+        if (i >= 0) d.items.splice(i, 1); else d.items.push({ blockId: b.dataset.tpick, target: A.blocks.find(x => x.id === b.dataset.tpick)?.target || 8 });
+        rerender();
+      }));
+      sh.querySelectorAll("[data-step]").forEach(b => b.addEventListener("click", () => {
+        const [bid, k] = b.dataset.step.split(":"), it = d.items.find(x => x.blockId === bid);
+        if (it) it.target = Math.min(31, Math.max(1, it.target + +k)); rerender();
+      }));
+      sh.querySelector("#tpSave").addEventListener("click", () => {
+        const name = (sh.querySelector("#tpName").value.trim() || `Template ${A.templates.length + (src ? 0 : 1)}`).slice(0, 40);
+        const ref = src ? A.db.doc(`profiles/${A.myId}/templates/${src.id}`) : A.db.collection(`profiles/${A.myId}/templates`).doc();
+        closeSheet();
+        guard(() => ref.set({ name, items: d.items, ts: src?.ts || now() }), src ? "Template mis à jour ✓" : `Template « ${name} » créé ✓`);
+      });
+      sh.querySelector("#tpDel")?.addEventListener("click", e => {
+        if (e.target.dataset.sure !== "1") { e.target.dataset.sure = "1"; e.target.textContent = "Confirmer la suppression"; return; }
+        closeSheet(); guard(() => A.db.doc(`profiles/${A.myId}/templates/${src.id}`).delete(), "Template supprimé");
+      });
+    });
+  }
+  function sheetGive(tplId) {
+    const tp = A.templates.find(x => x.id === tplId); if (!tp) return;
+    if (!A.clients.length) return toast("Tu n'as pas encore de client : partage ton tag pour qu'ils te trouvent.");
+    openSheet(`<div class="grab"></div><h2>Donner « ${esc(tp.name)} »</h2>
+      <p class="muted" style="margin:0">Choisis le client. Tu verras son programme et les montants avant d'enregistrer.</p>
+      <div class="list chat-list">${A.clients.map(c => { const n = (c.tasks || []).filter(t => !t.archived).length;
+        return `<button type="button" class="chat-row" data-give="${esc(c.id)}">${avatar(A.athletes[c.id], "volt")}<div class="grow"><b>${esc(athleteName(c.id))}</b><div class="preview">${n ? `${n} exercice${n > 1 ? "s" : ""} en cours` : "Pas encore de programme"}${c.mise ? ` · mise ${euro(c.mise)}` : " · mise pas encore choisie"}</div></div><span class="lib-go" aria-hidden="true">›</span></button>`; }).join("")}</div>`, sh => {
+      sh.querySelectorAll("[data-give]").forEach(b => b.addEventListener("click", () => sheetProgram(b.dataset.give, { tpl: tplId })));
+    });
+  }
+
+  /* ---------- Coach : programme d'un client (blocs, templates, montants à la main ou par l'IA) ---------- */
+  const blockTask = (b, target) => ({ id: rid(), blockId: b.id, name: b.name, detail: b.detail || "", value: 0, target: target || b.target || 8, done: 0, earned: 0, diff: b.diff || 2, weak: false, media: b.media || null });
+  // Applique un template : les exercices déjà commencés restent, les autres sont remplacés par ceux du template
+  function applyTemplate(draft, tp) {
+    const kept = draft.filter(t => t.archived || t.done > 0);
+    const add = tplItems(tp).filter(it => !kept.some(t => !t.archived && (t.blockId === it.b.id || t.name === it.b.name))).map(it => blockTask(it.b, it.target));
+    draft.splice(0, draft.length, ...kept, ...add);
+  }
+  function sheetProgram(aid, opts = {}) {
+    const c = A.clients.find(x => x.id === aid); if (!c) return;
+    const budget = c.mise || 0, who = esc(first(athleteName(aid)) || "ton client");
+    const draft = (c.tasks || []).map(t => ({ ...t }));
+    let split = c.split || "ai";
+    const resplit = () => { if (budget && split === "ai" && draft.length) aiSplit(draft, budget).forEach((v, i) => draft[i].value = v); };
+    const tp0 = opts.tpl && A.templates.find(x => x.id === opts.tpl);
+    if (tp0) { applyTemplate(draft, tp0); resplit(); }
+    const body = () => {
+      const tot = planned(draft), live = draft.filter(t => !t.archived);
       const ok = !budget || budgetOk(draft, budget);
-      return `<div class="grab"></div><h2>Programme · ${esc(first(athleteName(aid)))}</h2>
-        <p class="muted" style="margin:0">${budget ? `Répartis la mise de ${euro(budget)} sur les exercices. Mets plus d'argent sur ce que ${esc(first(athleteName(aid)))} aime le moins.` : "Ajoute les exercices du mois. Leur valeur sera calculée quand la mise sera choisie."}</p>
-        ${budget && draft.length ? `<button type="button" class="btn wide" id="aiBtn">⚡ Répartir automatiquement</button>` : ""}
+      return `<div class="grab"></div><h2>Programme · ${who}</h2>
+        <p class="muted" style="margin:0">${budget ? `Choisis les exercices du mois et ce que chaque séance rend à ${who} sur sa mise de ${euro(budget)}.` : "Ajoute les exercices du mois. Leur valeur sera calculée quand la mise sera choisie."}</p>
+        <div class="lib-card">
+          <div class="split"><b>📚 Depuis ta bibliothèque</b><button type="button" class="link" id="goLib">Gérer</button></div>
+          ${A.templates.length ? `<div class="tpl-pick"><select id="tplPick" aria-label="Choisir un template"><option value="">Choisir un template…</option>${A.templates.map(tp => `<option value="${esc(tp.id)}" ${tp0?.id === tp.id ? "selected" : ""}>${esc(tp.name)}</option>`).join("")}</select><button type="button" class="btn small primary" id="tplApply">Appliquer</button></div>` : ""}
+          ${A.blocks.length ? `<div class="block-chips">${A.blocks.map(b => { const has = live.some(t => t.blockId === b.id || t.name === b.name);
+            return `<button type="button" class="bchip ${has ? "on" : ""}" data-addblock="${esc(b.id)}" ${has ? "disabled" : ""}>${has ? "✓" : "＋"} ${esc(b.name)}</button>`; }).join("")}</div>`
+            : `<p class="muted" style="margin:0;font-size:13px">Ta bibliothèque est vide. Crée tes blocs (pompes, jumping jacks…) dans l'onglet <b>Programmes</b> pour construire tes programmes en deux touches.</p>`}
+        </div>
+        ${budget ? `<div class="field"><label>Montant rendu à chaque séance</label><div class="seg" role="group" aria-label="Qui décide des montants">
+          <button type="button" data-split="ai" aria-pressed="${split === "ai"}">🤖 L'IA répartit</button><button type="button" data-split="manual" aria-pressed="${split === "manual"}">✍️ Je choisis</button></div>
+          <span class="muted" style="font-size:12px">${split === "ai" ? "Plus d'argent sur les exercices durs et les points faibles 😈 : ce qu'on évite rapporte plus." : "Tape le montant rendu à chaque séance validée. Le total doit faire la mise."}</span></div>` : ""}
         ${draft.map((t, i) => t.archived ? "" : `<div class="edit-task">
-          <div><b>${esc(t.name)}</b><div class="meta">${t.target} séances · difficulté ${"●".repeat(t.diff)}${"○".repeat(3 - t.diff)}${t.weak ? " · point faible" : ""}${t.done ? ` · ${euro(earned(t))} déjà rendus` : ""}</div></div>
-          <input type="number" min="0" step="0.05" value="${t.value}" data-val="${i}" aria-label="Valeur de ${esc(t.name)} en euros" ${budget && left(t) ? "" : "disabled"}>
+          <div><b>${esc(t.name)}</b><div class="meta">${t.target} séances · ${DIFF[t.diff] || ""}${t.done ? ` · ${euro(earned(t))} déjà rendus` : ""}</div>
+            <button type="button" class="tweak" data-weak="${i}" aria-pressed="${!!t.weak}">${t.weak ? "😈 Point faible" : "＋ Point faible"}</button></div>
+          <input type="number" min="0" step="0.05" value="${t.value}" data-val="${i}" aria-label="Valeur de ${esc(t.name)} en euros" ${budget && left(t) && split === "manual" ? "" : "disabled"}>
           <button type="button" class="del" data-del="${i}" aria-label="Supprimer ${esc(t.name)}" ${t.done ? "disabled" : ""}>×</button>
-          <label class="tmedia ${t.media ? "on" : ""}"><input type="file" accept="image/*,video/*" data-tmedia="${i}" hidden>${t.media ? `✓ Démo ${t.media.kind === "video" ? "vidéo" : "photo"} · changer` : "🎬 Ajouter une démo (photo ou vidéo)"}</label>
+          ${t.blockId ? `<span class="tmedia on">${t.media ? `🎬 Démo ${t.media.kind === "video" ? "vidéo" : "photo"} de ta bibliothèque` : "Bloc de ta bibliothèque"}</span>`
+            : `<label class="tmedia ${t.media ? "on" : ""}"><input type="file" accept="image/*,video/*" data-tmedia="${i}" hidden>${t.media ? `✓ Démo ${t.media.kind === "video" ? "vidéo" : "photo"} · changer` : "🎬 Ajouter une démo (photo ou vidéo)"}</label>`}
         </div>`).join("")}
-        <div class="card" style="gap:10px;padding:12px">
+        <details class="card adhoc"${A.blocks.length ? "" : " open"}><summary>Exercice ponctuel (hors bibliothèque)</summary>
           <div class="field"><label for="ntName">Nouvel exercice</label><input type="text" id="ntName" maxlength="40" placeholder="Ex. 20 squats"></div>
           <div class="row" style="flex-wrap:wrap">
             <div class="field" style="flex:1;min-width:110px"><label for="ntTarget">Séances / mois</label><input type="number" id="ntTarget" min="1" max="31" value="8"></div>
@@ -2724,29 +2983,37 @@ h2{font-size:30px}
           </div>
           <label class="check"><input type="checkbox" id="ntWeak"> Point faible (vaut plus cher)</label>
           <button type="button" class="btn small" id="addTask">Ajouter l'exercice</button>
-        </div>
+        </details>
         ${budget ? `<div class="budget ${ok ? "ok" : "ko"}"><span>Total réparti</span><span class="num">${euro(ok ? budget : tot)} / ${euro(budget)}</span></div>` : ""}
-        <button type="button" class="btn primary wide" id="progOk" ${ok && draft.length ? "" : "disabled"}>${!draft.length ? "Ajoute au moins un exercice" : ok ? "Enregistrer le programme" : tot > budget ? `Retire ${euro(tot - budget)} pour enregistrer` : `Il reste ${euro(budget - tot)} à répartir`}</button>`;
+        <button type="button" class="btn primary wide" id="progOk" ${ok && live.length ? "" : "disabled"}>${!live.length ? "Ajoute au moins un exercice" : ok ? "Enregistrer le programme" : tot > budget ? `Retire ${euro(tot - budget)} pour enregistrer` : `Il reste ${euro(budget - tot)} à répartir`}</button>`;
     };
     openSheet(body(), function wire(sh) {
-      const rerender = () => { const st = sh.scrollTop; sh.innerHTML = body(); wire(sh); sh.scrollTop = st; };
+      const rerender = () => { const st = sh.scrollTop, open = sh.querySelector(".adhoc")?.open; sh.innerHTML = body(); wire(sh); sh.scrollTop = st; if (open) sh.querySelector(".adhoc").open = true; };
+      const change = () => { resplit(); rerender(); };
+      sh.querySelector("#goLib").addEventListener("click", () => { closeSheet(); A.tab.coach = "lib"; A.openClient = null; render(); $main.scrollTop = 0; });
+      sh.querySelector("#tplApply")?.addEventListener("click", () => {
+        const tp = A.templates.find(x => x.id === sh.querySelector("#tplPick").value); if (!tp) { sh.querySelector("#tplPick").focus(); return; }
+        applyTemplate(draft, tp); change(); toast(`Template « ${tp.name} » appliqué`);
+      });
+      sh.querySelectorAll("[data-addblock]").forEach(b => b.addEventListener("click", () => { const bl = A.blocks.find(x => x.id === b.dataset.addblock); if (bl) { draft.push(blockTask(bl)); change(); } }));
+      sh.querySelectorAll("[data-split]").forEach(b => b.addEventListener("click", () => { split = b.dataset.split; change(); }));
+      sh.querySelectorAll("[data-weak]").forEach(b => b.addEventListener("click", () => { const t = draft[+b.dataset.weak]; t.weak = !t.weak; change(); }));
       sh.querySelectorAll("[data-val]").forEach(inp => inp.addEventListener("change", () => { draft[+inp.dataset.val].value = Math.max(0, +inp.value || 0); rerender(); }));
-      sh.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { draft.splice(+b.dataset.del, 1); rerender(); }));
+      sh.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { draft.splice(+b.dataset.del, 1); change(); }));
       sh.querySelectorAll("[data-tmedia]").forEach(inp => inp.addEventListener("change", async () => {
         const f = inp.files[0], i = +inp.dataset.tmedia; if (!f) return;
         const lab = inp.closest("label"); lab.classList.add("busy"); lab.lastChild.textContent = f.type.startsWith("video/") ? "Compression de la vidéo…" : "Envoi…";
         try { draft[i].media = await uploadCoachMedia(f); toast("Démo ajoutée ✓"); } catch (x) { toast(x?.ui || "La démo n'a pas pu être ajoutée."); }
         rerender();
       }));
-      sh.querySelector("#aiBtn")?.addEventListener("click", () => { aiSplit(draft, budget).forEach((v, i) => draft[i].value = v); rerender(); toast("Mise répartie selon la difficulté et les points faibles"); });
       sh.querySelector("#addTask").addEventListener("click", () => {
         const name = sh.querySelector("#ntName").value.trim(); if (!name) { sh.querySelector("#ntName").focus(); return; }
         draft.push({ id: rid(), name: name.slice(0, 40), detail: "", value: 0, target: Math.min(31, Math.max(1, +sh.querySelector("#ntTarget").value || 8)), done: 0, earned: 0, diff: +sh.querySelector("#ntDiff").value, weak: sh.querySelector("#ntWeak").checked });
-        if (budget) aiSplit(draft, budget).forEach((v, i) => draft[i].value = v);
-        rerender();
+        change();
       });
-      sh.querySelector("#progOk").addEventListener("click", () => { closeSheet(); guard(() => progRef(aid).update({ tasks: draft }), "Programme enregistré. Ton client le voit déjà."); });
+      sh.querySelector("#progOk").addEventListener("click", () => { closeSheet(); guard(() => progRef(aid).update({ tasks: draft, split }), `Programme enregistré. ${first(athleteName(aid)) || "Ton client"} le voit déjà.`); });
     });
+    if (tp0) toast(`« ${tp0.name} » prêt pour ${first(athleteName(aid)) || "ton client"} : vérifie puis enregistre`);
   }
 
   /* ---------- Coach : preuves ---------- */
@@ -2868,7 +3135,7 @@ h2{font-size:30px}
         ${me.role === "athlete" ? `<button type="button" class="btn wide" data-s="quiz">🤖 Mes réponses pour Vaultr</button>` : ""}
         <button type="button" class="btn wide ghost" data-s="reset">Remettre la démo à zéro</button>`}
       <div class="field"><label>Apparence</label><div class="seg" role="group" aria-label="Apparence">${[["dark", "🌙 Sombre"], ["light", "☀️ Clair"], ["auto", "Auto"]].map(([k, l]) => `<button type="button" data-s="theme-${k}" aria-pressed="${themePref() === k}">${l}</button>`).join("")}</div></div>
-      ${me.role === "athlete" ? `<button type="button" class="btn wide" data-s="recap">🎬 Voir mon recap du mois</button>` : ""}
+      ${me.role === "athlete" && recapOff() !== null ? `<button type="button" class="btn wide" data-s="recap">🎬 Voir mon recap ${esc(deM(monthLabel(recapOff())))}</button>` : ""}
       <button type="button" class="btn wide" data-s="logout">Se déconnecter</button>
       <div id="delZone"><button type="button" class="btn wide ghost danger" data-s="delete">Supprimer mon compte</button></div>
       <p class="muted" style="margin:0;font-size:12px">Paiements simulés : aucune vraie somme n'est débitée.</p>`, sh => {
@@ -2884,7 +3151,7 @@ h2{font-size:30px}
         if (s === "delete-no") { sh.querySelector("#delZone").innerHTML = `<button type="button" class="btn wide ghost danger" data-s="delete">Supprimer mon compte</button>`; return; }
         if (s.startsWith("theme-")) { setThemePref(s.slice(6), b); sh.querySelectorAll('[data-s^="theme-"]').forEach(x => x.setAttribute("aria-pressed", String(x.dataset.s === s))); return; }
         closeSheet();
-        if (s === "recap") return openRecap(0);
+        if (s === "recap") return openRecap(recapOff() ?? 0);
         if (s === "logout") return logout();
         if (s === "quiz") return startQuiz("edit");
         if (s === "delete-yes") return guard(async () => {
@@ -2922,6 +3189,7 @@ h2{font-size:30px}
   let lastMsgCount = -1, lastChatKey = "";
   let vopenPending = false;
   function afterRender() {
+    mountThumbVideos($main);
     if (A.profile?.role === "athlete" && A.tab.athlete === "vault" && isFull(A.program) && !vopenPending && !vopenEl && !cele && !A.gate && lsGet(openedKey()) !== "1") {
       vopenPending = true; setTimeout(() => { vopenPending = false; showVaultOpen(); }, 1400);
     }
@@ -3018,7 +3286,7 @@ h2{font-size:30px}
     if (d.act === "onboard-exit") { if (A.mode === "demo") logout(); else { A.creating = false; A.auth = "welcome"; render(); } return; }
     if (d.auth) { A.auth = d.auth; render(); $main.scrollTop = 0; return; }
     if (d.act === "resume") { A.gate = false; render(); $main.scrollTop = 0; if (A.profile?.role === "athlete") { setTimeout(checkNewMoney, 500); setTimeout(maybeAutoRecap, 1800); } return; }
-    if (d.act === "recap") return openRecap(0);
+    if (d.act === "recap") return openRecap(+(d.off || 0));
     if (d.act === "share-progress") return openShare(isFull(A.program) ? "victory" : "progress");
     if (d.act === "switch-signup" || d.act === "switch-login") { A.gate = false; logout(); A.auth = d.act === "switch-signup" ? "signup" : "login"; render(); return; }
     if (d.qopt) {
@@ -3057,6 +3325,12 @@ h2{font-size:30px}
     if (d.goto) { A.tab.athlete = d.goto; render(); return; }
     if (d.coachPage) { A.viewCoach = d.coachPage; A.tab.athlete = "coach"; A.reviewDraft = null; render(); $main.scrollTop = 0; return; }
     if (d.act === "coach-back") { A.viewCoach = null; closeGallerySub(); render(); $main.scrollTop = 0; return; }
+    if (d.libTab) { A.libTab = d.libTab; render(); return; }
+    if (d.act === "block-new") return sheetBlock();
+    if (d.block) return sheetBlock(d.block);
+    if (d.act === "tpl-new") return sheetTemplate();
+    if (d.tplEdit) return sheetTemplate(d.tplEdit);
+    if (d.tplGive) return sheetGive(d.tplGive);
     if (d.ctab) { A.tab.coach = d.ctab; A.openClient = null; render(); $main.scrollTop = 0; return; }
     if (d.act === "ai-build") return aiBuildProgram();
     if (d.star) { A.reviewDraft.rating = +d.star; render(); return; }
@@ -3462,13 +3736,25 @@ h2{font-size:30px}
   function maybeAutoRecap() {
     if (autoRecapDone || A.profile?.role !== "athlete" || recapEl || cele || vopenEl || A.gate || A.quizMode) return;
     autoRecapDone = true;
-    const off = daysLeft() === 0 ? 0 : new Date().getDate() <= 5 ? -1 : null;
+    const off = recapOff();
     if (off === null || lsGet(recapSeenKey(off)) || !computeRecap(off).n) return;
     setTimeout(() => { if (!recapEl && !cele && !vopenEl && !A.gate) { toast(`🎬 Ton recap ${deM(monthLabel(off))} est prêt !`); openRecap(off); } }, 1000);
   }
+  // Le Recap du mois arrive 3 jours avant la fin du mois ; celui du mois passé reste visible les 5 premiers jours
+  const RECAP_DAYS = 3;
+  function recapOff() {
+    if (daysLeft() <= RECAP_DAYS) return 0;
+    if (new Date().getDate() <= 5 && computeRecap(-1).n) return -1;
+    return null;
+  }
   function recapCardHTML() {
-    const last = daysLeft() <= 3, lastDay = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-    return `<button type="button" class="recap-card" data-act="recap"><span class="rcc-eyebrow">🎬 Recap · ${esc(monthName())}</span><b>${last ? "Ton recap est prêt" : "Ton mois en un coup d'œil"}</b><span class="rcc-sub">${last ? "Séances, record, personnalité sportive… Regarde ce que tu as accompli." : `Aperçu en direct · le recap officiel tombe le ${lastDay} ${esc(monthName())}`}</span><span class="rcc-go" aria-hidden="true">▶</span></button>`;
+    const off = recapOff();
+    if (off !== null) {
+      const seen = lsGet(recapSeenKey(off));
+      return `<button type="button" class="recap-card" data-act="recap" data-off="${off}"><span class="rcc-eyebrow">🎬 Recap · ${esc(monthLabel(off))}</span><b>${seen ? "Revois ton recap" : "Ton recap est arrivé !"}</b><span class="rcc-sub">Séances, record, personnalité sportive… Regarde tout ce que tu as accompli${off ? ` en ${esc(monthLabel(off))}` : " ce mois-ci"}.</span><span class="rcc-go" aria-hidden="true">▶</span></button>`;
+    }
+    const d = new Date(), arrive = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate() - RECAP_DAYS, wait = daysLeft() - RECAP_DAYS;
+    return `<div class="recap-card locked"><span class="rcc-eyebrow">🎬 Recap · ${esc(monthName())}</span><b>Arrive le ${arrive} ${esc(monthName())}</b><span class="rcc-sub">Dans ${wait} jour${wait > 1 ? "s" : ""}, Vaultr te dévoile ton mois : séances, record, personnalité sportive… Chaque séance validée d'ici là compte !</span><span class="rcc-go" aria-hidden="true">🔒</span></div>`;
   }
 
   // ---- Carte de partage (format story Instagram, 1080 × 1920) ----

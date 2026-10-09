@@ -470,3 +470,65 @@ h2{font-size:30px}
   *,*::before,*::after{animation-delay:0s!important;transition-delay:0s!important}
   ::view-transition-new(root){animation:none}
 }
+
+/* =====================================================================
+   Coach : bibliothèque « Programmes » (blocs + templates)
+   ===================================================================== */
+.lib-tabs button{flex:1}
+.lib-item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;width:100%;padding:12px;text-align:left;border-radius:20px;background:linear-gradient(180deg,#171A1F,#13161A);border:1px solid var(--line);transition:transform .12s,border-color .2s}
+.lib-item:active{transform:scale(.98)}
+.lib-item:hover{border-color:color-mix(in srgb,var(--volt) 50%,var(--line))}
+.lib-item .exo-thumb,.block-demo .exo-thumb{width:64px;height:64px;border-radius:16px}
+.exo-thumb.big{width:96px!important;height:96px!important;border-radius:22px!important;flex:none}
+.exo-thumb.sm{width:46px;height:46px;border-radius:12px;flex:none}
+.exo-thumb.xs{width:24px;height:24px;border-radius:7px;flex:none;border:none}
+.exo-thumb.xs .exo .gd,.exo-thumb.xs .exo .gd2{display:none}
+.lib-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.lib-txt b{font-size:16px;font-weight:700}
+.lib-txt .meta{font-size:12.5px;color:var(--muted)}
+.lib-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.lib-go{font-size:26px;line-height:1;color:var(--muted);padding-right:4px}
+.tpl-card{gap:12px}
+.tpl-blocks{display:flex;flex-wrap:wrap;gap:6px}
+.tpl-chip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px 3px 3px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:12.5px;font-weight:600}
+.tpl-chip i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--volt)}
+.block-demo{display:flex;align-items:center;gap:14px;padding:12px;border-radius:18px;background:var(--panel-2);border:1px dashed color-mix(in srgb,var(--volt) 45%,var(--line))}
+.block-demo .grow{min-width:0}
+.block-demo p{margin:4px 0 8px;font-size:12.5px;line-height:1.4}
+.btn.busy{opacity:.6;pointer-events:none}
+.pick-list{display:flex;flex-direction:column;gap:8px}
+.pick-row{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden;transition:border-color .2s,background .2s}
+.pick-row.on{border-color:var(--volt);background:var(--volt-dim)}
+.pick-main{display:flex;align-items:center;gap:12px;width:100%;padding:8px 12px 8px 8px;text-align:left}
+.pick-main .grow{display:flex;flex-direction:column;min-width:0}
+.pick-main .meta{font-size:12px;color:var(--muted)}
+.pick-check{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);font-weight:800;color:var(--muted)}
+.pick-row.on .pick-check{background:var(--brass);border-color:transparent;color:#1A1205}
+.stepper{display:flex;align-items:center;gap:10px;padding:0 12px 10px 66px}
+.stepper button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);font-weight:800;font-size:18px;line-height:1}
+.stepper b{font-family:var(--display);font-weight:800;font-size:24px;min-width:26px;text-align:center}
+.stepper span{font-size:12px;color:var(--muted)}
+.lib-card{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:16px;background:var(--volt-dim);border:1px solid color-mix(in srgb,var(--volt) 40%,transparent)}
+.tpl-pick{display:flex;gap:8px}
+.tpl-pick select{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.block-chips{display:flex;flex-wrap:wrap;gap:6px}
+.bchip{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font-size:12.5px;font-weight:600;transition:transform .12s}
+.bchip:not(.on):active{transform:scale(.95)}
+.bchip.on{color:var(--muted);opacity:.65;cursor:default}
+.tweak{display:inline-block;margin-top:6px;padding:2px 9px;border-radius:999px;border:1px dashed var(--line);font-size:11.5px;font-weight:600;color:var(--muted)}
+.tweak[aria-pressed="true"]{border-style:solid;border-color:var(--volt);color:var(--volt);background:var(--volt-dim)}
+.adhoc{display:block;padding:12px 16px}
+.adhoc summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--muted)}
+.adhoc[open] summary{color:var(--fg)}
+.adhoc[open]>:not(summary){margin-top:10px}
+/* la démo vidéo du coach tourne en boucle à la place de l'animation */
+.vid-slot{position:absolute;inset:0;display:block}
+.thumb-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vid-slot:has(video) .play{display:none}
+/* Recap pas encore arrivé : compte à rebours */
+.recap-card.locked{color:var(--fg);background:var(--panel);border:1px dashed color-mix(in srgb,var(--volt) 55%,var(--line));animation:none;box-shadow:none}
+.recap-card.locked::before{display:none}
+.recap-card.locked b{color:var(--volt)}
+.recap-card.locked .rcc-go{background:var(--panel-2);color:var(--volt);animation:none;font-size:18px;padding:0}
+:root[data-vmode="light"] :is(.lib-item,.pick-row:not(.on),.recap-card.locked){background:#FFFFFF}
+.pick-main .grow{flex:1}

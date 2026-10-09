@@ -32,5 +32,12 @@ Mêmes fonctionnalités que `vaultr/maquette.html`, nouvelle direction artistiqu
   (argent arraché au coffre, séances, tube du mois, grand oublié, jour sacré, plus longue série,
   toi et ton coach, comparaison avec le mois d'avant, personnalité sportive, résumé).
   Appui long = pause, tap à gauche/droite = écran précédent/suivant.
-  Aperçu en direct depuis la carte « Recap » du coffre ou les réglages ; s'ouvre tout seul
-  le dernier jour du mois et pendant les 5 premiers jours du mois suivant.
+  Il arrive 3 jours avant la fin du mois (ouverture automatique, une fois) dans l'onglet
+  « Ma page » du sportif (ex-« Paiements »), avec un compte à rebours avant ; celui du mois
+  passé reste visible les 5 premiers jours du mois suivant.
+- **Programmes (coach)** : nouvel onglet avec la bibliothèque du coach.
+  *Blocs* = exercices réutilisables (nom, consigne, séances/mois, difficulté, démo vidéo ou photo
+  qui tourne en boucle chez le client à la place de l'animation) ; *templates* = assemblages
+  de blocs nommés, à donner à un ou plusieurs clients. Dans le programme d'un client : appliquer
+  un template, ajouter des blocs d'une touche, et choisir qui fixe les montants
+  (« L'IA répartit » ou « Je choisis »). Données : `profiles/<coach>/blocks` et `profiles/<coach>/templates`.
