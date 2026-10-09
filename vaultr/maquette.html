@@ -270,6 +270,78 @@ video.proof-img{background:#000;object-fit:contain}
 .btn.danger{color:var(--loss);border-color:#FF5C4D55}
 .btn.danger-fill{background:var(--loss);border-color:var(--loss);color:#fff}
 .danger-box{border-color:#FF5C4D55}
+
+/* ---------- Pages coach ---------- */
+img.avatar{object-fit:cover;padding:0}
+.avatar.xl{width:84px;height:84px;font-size:28px;border-width:3px}
+.cc-main{display:flex;align-items:center;gap:12px;width:100%;text-align:left;min-width:0}
+.cc-main .grow{flex:1;min-width:0}
+.star1,.stars{color:var(--volt);letter-spacing:1px;font-style:normal}
+.ai-card{flex-direction:row;align-items:center;gap:12px;border-style:dashed}
+.coach-page{display:flex;flex-direction:column;gap:16px}
+.coach-page.self{border:1px dashed var(--line);border-radius:20px;padding:14px}
+.cp-hero{display:flex;align-items:center;gap:16px}
+.cp-id{min-width:0}
+.cp-id h2{font-size:24px}
+.cp-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cp-facts div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.cp-facts b{font-family:var(--display);font-stretch:110%;font-size:17px}
+.cp-facts span{font-size:11px;color:var(--muted)}
+.cp-actions{flex-wrap:wrap}
+.cp-sec{display:flex;flex-direction:column;gap:10px;padding-top:4px;border-top:1px solid var(--line)}
+.cp-sec h3{padding-top:12px}
+.bio{margin:0;white-space:pre-line;line-height:1.55}
+.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:var(--fg)}
+.place{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.place .pi{font-size:20px;width:36px;height:36px;border-radius:10px;background:var(--panel-2);display:grid;place-items:center;flex:none}
+.av-grid{display:grid;grid-template-columns:48px repeat(7,1fr);gap:4px;align-items:center}
+.av-h{font-size:11px;color:var(--muted);text-align:center;font-weight:600}
+.av-s{font-size:11px;color:var(--muted)}
+.av-c{height:26px;border-radius:7px;background:var(--panel-2);border:1px solid var(--line)}
+.av-c.on{background:var(--volt);border-color:var(--volt);box-shadow:0 0 8px #C6FF4D55}
+.av-grid.edit .av-c{height:34px;cursor:pointer}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.gal-item{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--panel-2);padding:0}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-del{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:#000c;color:#fff;font-size:16px;line-height:1}
+.gal-add{aspect-ratio:1;border-radius:12px;border:1px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--muted);font-size:12px;cursor:pointer}
+.gal-add span{font-size:26px;color:var(--volt);line-height:1}
+.gal-big{width:100%;border-radius:14px;max-height:70vh;object-fit:contain;background:#000}
+.rating-sum{display:flex;gap:16px;align-items:center}
+.rating-sum .big{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:84px}
+.rating-sum .big b{font-family:var(--display);font-style:italic;font-weight:900;font-size:38px;line-height:1;color:var(--volt)}
+.rating-sum .bars{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.bar-row{display:grid;grid-template-columns:12px 1fr 20px;gap:8px;align-items:center;font-size:12px}
+.bar-row .bar{grid-column:auto;height:6px}
+.review{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:4px}
+.review p{margin:0;font-size:14px;line-height:1.5}
+.star-pick{display:flex;gap:4px}
+.star-pick button{font-size:30px;line-height:1;color:var(--line);transition:transform .12s,color .15s}
+.star-pick button.on{color:var(--volt)}
+.star-pick button:active{transform:scale(1.2)}
+textarea{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%;font:inherit;color:inherit;resize:vertical}
+textarea::placeholder{color:var(--muted)}
+.tog{padding:6px 11px;border-radius:999px;border:1px solid var(--line);font-size:13px;color:var(--muted)}
+.tog[aria-pressed="true"]{border-color:var(--volt);color:var(--volt);background:var(--volt-dim)}
+.place-edit{display:grid;grid-template-columns:118px 1fr auto;gap:6px;align-items:center}
+.place-edit select,.place-edit input{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:9px 8px;width:100%;min-width:0}
+.edit-bar{position:sticky;top:-4px;z-index:2;background:var(--ink);padding:6px 0;align-items:center}
+.preview-bar{border-color:#C6FF4D55}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;text-align:left}
+.kpi span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.kpi b{font-family:var(--display);font-stretch:112%;font-size:24px;font-variant-numeric:tabular-nums}
+.kpi small{font-size:12px;color:var(--muted)}
+.kpi.hot{border-color:var(--volt)}
+.kpi.hot b{color:var(--volt)}
+.ai-wait{border-color:#C6FF4D55}
+.dots,.bubble.typing{display:flex;gap:5px;align-items:center}
+.bubble.typing{padding:12px 14px}
+.dots span,.bubble.typing span{width:8px;height:8px;border-radius:50%;background:var(--volt);animation:blink 1.2s infinite ease-in-out}
+.bubble.typing span{background:var(--muted)}
+.dots span:nth-child(2),.bubble.typing span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3),.bubble.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 </style>
 
 <div class="stage">
@@ -347,22 +419,62 @@ video.proof-img{background:#000;object-fit:contain}
   }
   const emailKey = e => e.trim().toLowerCase().replace(/[^a-z0-9_\-.~:@+]/g, "_").slice(0, 190);
   const SPORTS = ["Remise en forme", "Musculation", "Course à pied", "Yoga & mobilité", "Boxe", "Pilates", "Natation", "Autre"];
+  const DAYS = [["mon", "Lun"], ["tue", "Mar"], ["wed", "Mer"], ["thu", "Jeu"], ["fri", "Ven"], ["sat", "Sam"], ["sun", "Dim"]];
+  const SLOTS = [["am", "Matin"], ["noon", "Midi"], ["pm", "Aprèm"], ["eve", "Soir"]];
+  const PLACE_TYPES = { gym: ["🏋️", "En salle"], home: ["🏠", "À domicile"], outdoor: ["🌳", "En extérieur"], online: ["💻", "En visio"] };
+  const SPECIALTIES = ["Perte de poids", "Prise de muscle", "Remise en forme", "Cardio", "Mobilité", "Préparation physique", "Course à pied", "Post-grossesse", "Seniors", "Nutrition"];
+
+  // Le coach IA « Vaultr » : attribué d'office à chaque sportif, il n'existe pas dans la base.
+  const AI_ID = "vaultr_ai";
+  const AI_PHOTO = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#C6FF4D"/><circle cx="50" cy="50" r="30" fill="none" stroke="#0B0D0A" stroke-width="7"/><g stroke="#0B0D0A" stroke-width="8" stroke-linecap="round"><line x1="50" y1="50" x2="50" y2="28"/><line x1="50" y1="50" x2="69" y2="61"/><line x1="50" y1="50" x2="31" y2="61"/></g><circle cx="50" cy="50" r="8" fill="#0B0D0A"/></svg>');
+  const AI_COACH = {
+    id: AI_ID, ai: true, role: "coach", name: "Vaultr", handle: "vaultr", city: "Partout, 24h/24", sport: "Coach IA", price: 0, photo: AI_PHOTO, trial: false,
+    bio: "Je suis Vaultr, le coach IA de l'appli. Je crée ton programme selon ton objectif, je répartis ta mise sur tes exercices et je vérifie tes photos et vidéos en quelques secondes. Gratuit, disponible jour et nuit. Quand tu veux passer à un coach humain, choisis-en un dans la liste.",
+    specialties: ["Tous objectifs", "Programme sur mesure", "Validation en quelques secondes"],
+    places: [{ type: "online", label: "Dans ton téléphone" }],
+    availability: Object.fromEntries(DAYS.map(([d]) => [d, SLOTS.map(([x]) => x)])), experience: "", diplomas: ""
+  };
+  const avatar = (p, cls = "") => p?.photo ? `<img class="avatar ${cls}" src="${esc(p.photo)}" alt="">` : `<div class="avatar ${cls}">${esc(initials(p?.name))}</div>`;
+  const starStr = r => { const n = Math.max(0, Math.min(5, Math.round(r))); return "★".repeat(n) + "☆".repeat(5 - n); };
+  const note1 = x => x.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  function dataUrlToBlob(u) { const [h, b] = u.split(","); const bin = atob(b); const a = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return new Blob([a], { type: (h.match(/:(.*?);/) || [])[1] || "image/jpeg" }); }
 
   /* =====================================================================
      Base locale pour le mode démo (même interface que la vraie base)
      ===================================================================== */
-  const DEMO_KEY = "vaultr-demo-v4";
+  const DEMO_KEY = "vaultr-demo-v5";
   function demoSeed() {
     const t0 = now() - 86400000 * 9;
     const P = {};
     P["accounts/lea@vaultr.demo"] = { uid: "demo_lea", email: "lea@vaultr.demo", pw: pwHash("lea@vaultr.demo", "demo1234") };
     P["accounts/karim@vaultr.demo"] = { uid: "demo_karim", email: "karim@vaultr.demo", pw: pwHash("karim@vaultr.demo", "demo1234") };
-    const coach = (id, name, handle, city, sport, price) => P["profiles/" + id] = { role: "coach", name, handle, city, sport, price, boostedUntil: 0, pro: false, createdAt: t0 };
-    coach("demo_karim", "Karim Benali", "karim.fit", "Nice", "Remise en forme", 150);
-    coach("demo_ines", "Inès Morel", "ines.yoga", "Nice", "Yoga & mobilité", 120);
-    coach("demo_theo", "Théo Garnier", "theo.run", "Nice", "Course à pied", 90);
-    coach("demo_nadia", "Nadia Haddad", "nadia.boxe", "Antibes", "Boxe", 160);
-    coach("demo_jade", "Jade Rossi", "jade.pilates", "Nice", "Pilates", 110);
+    const coach = (id, name, handle, city, sport, price, more = {}) => P["profiles/" + id] = { role: "coach", name, handle, city, sport, price, boostedUntil: 0, pro: false, createdAt: t0, ...more };
+    coach("demo_karim", "Karim Benali", "karim.fit", "Nice", "Remise en forme", 150, {
+      bio: "Coach sportif diplômé d'État depuis 8 ans à Nice. Je t'accompagne pour perdre du poids, te remettre en forme ou préparer un objectif, avec des séances adaptées à ton niveau. Ma méthode : régularité, bonne humeur… et un peu de pression grâce à ta mise Vaultr 😉",
+      specialties: ["Perte de poids", "Remise en forme", "Préparation physique"], experience: 8, diplomas: "BPJEPS Activités de la forme · Licence STAPS", trial: true, pro: true,
+      places: [{ type: "gym", label: "Basic-Fit Nice Jean Médecin" }, { type: "outdoor", label: "Promenade des Anglais" }, { type: "home", label: "À domicile, Nice centre" }],
+      availability: { mon: ["am", "eve"], tue: ["eve"], wed: ["am", "noon", "eve"], thu: ["eve"], fri: ["am", "pm"], sat: ["am"] } });
+    coach("demo_ines", "Inès Morel", "ines.yoga", "Nice", "Yoga & mobilité", 120, {
+      bio: "Professeure de yoga et de mobilité. Douceur, respiration et progrès durables, pour le dos comme pour la tête.", specialties: ["Mobilité", "Seniors", "Post-grossesse"], experience: 6, diplomas: "Certification Yoga Alliance 500 h", trial: true,
+      places: [{ type: "outdoor", label: "Jardin Albert Ier" }, { type: "online", label: "Cours en visio" }], availability: { tue: ["am", "noon"], thu: ["am", "noon"], sat: ["am"], sun: ["am"] } });
+    coach("demo_theo", "Théo Garnier", "theo.run", "Nice", "Course à pied", 90, {
+      bio: "Du premier 5 km au marathon. Plans d'entraînement, fractionné et bonne humeur.", specialties: ["Course à pied", "Cardio"], experience: 4, diplomas: "BF Athlétisme",
+      places: [{ type: "outdoor", label: "Parc Phœnix" }], availability: { mon: ["eve"], wed: ["eve"], sat: ["am"], sun: ["am"] } });
+    coach("demo_nadia", "Nadia Haddad", "nadia.boxe", "Antibes", "Boxe", 160, {
+      bio: "Boxe anglaise et cardio-boxe. Tu ressors lessivé, mais heureux.", specialties: ["Cardio", "Perte de poids"], experience: 10, diplomas: "BPJEPS Boxe",
+      places: [{ type: "gym", label: "Boxing Club Antibes" }], availability: { mon: ["pm", "eve"], tue: ["pm", "eve"], fri: ["eve"] } });
+    coach("demo_jade", "Jade Rossi", "jade.pilates", "Nice", "Pilates", 110, {
+      bio: "Pilates au sol et sur machine, posture et renforcement profond.", specialties: ["Mobilité", "Post-grossesse"], experience: 3, places: [{ type: "gym", label: "Studio Pilates Masséna" }],
+      availability: { tue: ["noon"], thu: ["noon", "pm"], sat: ["am"] } });
+    const rv = (aid, name, cid, rating, text, days) => { const k = "reviews/" + aid; P[k] = P[k] || { coaches: [], byCoach: {} }; P[k].coaches.push(cid); P[k].byCoach[cid] = { rating, text, name, ts: now() - days * 86400000 }; };
+    rv("demo_tom", "Tom L.", "demo_karim", 5, "Karim est hyper motivant, j'ai perdu 6 kg en 3 mois. Le système de mise marche vraiment sur moi 😅", 12);
+    rv("demo_yanis", "Yanis C.", "demo_karim", 5, "Séances carrées, programme adapté à mon niveau. Top.", 20);
+    rv("demo_r1", "Camille D.", "demo_karim", 4, "Très pro et à l'écoute. Parfois difficile d'avoir un créneau le soir.", 35);
+    rv("demo_r2", "Hugo M.", "demo_karim", 5, "Le meilleur coach de Nice, sans hésiter.", 50);
+    rv("demo_r1", "Camille D.", "demo_ines", 5, "Inès est d'une douceur incroyable, mon dos dit merci.", 15);
+    rv("demo_r3", "Sarah B.", "demo_theo", 5, "J'ai couru mon premier semi grâce à Théo !", 22);
+    rv("demo_r2", "Hugo M.", "demo_nadia", 4, "Intense mais génial.", 8);
+    rv("demo_r3", "Sarah B.", AI_ID, 5, "Parfait pour commencer : il crée le programme et valide mes photos en deux secondes.", 5);
     const ath = (id, name, handle, goal) => P["profiles/" + id] = { role: "athlete", name, handle, city: "Nice", goal, createdAt: t0 };
     ath("demo_lea", "Léa Martin", "lea.run", "Remise en forme");
     ath("demo_tom", "Tom Lefèvre", "tom.l", "Perte de poids");
@@ -445,6 +557,8 @@ video.proof-img{background:#000;object-fit:contain}
     program: undefined, proofsAth: [], events: [],
     clients: [], proofsCoach: [],
     chats: [], chat: null, msgs: [], chatWith: null,   // messagerie
+    reviews: [], gallery: {}, viewCoach: null, editing: false, draft: null, reviewDraft: null,   // pages coach
+    sample: null, aiTyping: false, aiBuilding: false,   // coach IA
     tab: { athlete: "vault", coach: "clients" },
     openClient: null, coachFilter: "Tous", coachQuery: "",
     onboardRole: null, busy: false
@@ -463,6 +577,7 @@ video.proof-img{background:#000;object-fit:contain}
     wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M3 7l12-4 2 4"/><circle cx="16.5" cy="13.5" r="1.5"/></svg>',
     clients: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5 6.5-5s5.5 1.5 6.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.5 0 4 1.5 4.5 4"/></svg>',
     proof: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>',
+    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>',
     chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg>',
     pro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>'
   };
@@ -474,7 +589,7 @@ video.proof-img{background:#000;object-fit:contain}
   function toast(msg) {
     document.querySelectorAll(".toast").forEach(t => t.remove());
     const t = document.createElement("div");
-    t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+    t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg.length > 110 ? msg.slice(0, 107).trimEnd() + "…" : msg;
     $phone.appendChild(t); setTimeout(() => t.remove(), 2700);
   }
   function coinBurst(fromEl, amount) {
@@ -568,7 +683,7 @@ video.proof-img{background:#000;object-fit:contain}
   async function boot() {
     const use = window.claude?.use?.bind(window.claude);
     let db = null, user = null;
-    if (use) { try { [db, user] = await Promise.all([use("db"), use("user")]); } catch {} }
+    if (use) { try { [db, user, A.sample] = await Promise.all([use("db"), use("user"), use("sample")]); } catch {} }
     if (db && user) {
       const me = await user.me();
       A.liveDb = db; A.user = user;
@@ -604,7 +719,8 @@ video.proof-img{background:#000;object-fit:contain}
   const loggedOut = () => A.mode === "demo" ? !A.myId : lsGet("vaultr-live-out") === "1";
   function resetData() {
     unsubs.forEach(u => u()); roleSubs.forEach(u => u()); unsubs = []; roleSubs = []; subscribedRole = null;
-    Object.assign(A, { profile: undefined, coaches: [], athletes: {}, program: undefined, proofsAth: [], events: [], clients: [], proofsCoach: [], openClient: null, onboardRole: null, chats: [], chat: null, msgs: [], chatWith: null });
+    Object.assign(A, { profile: undefined, coaches: [], athletes: {}, program: undefined, proofsAth: [], events: [], clients: [], proofsCoach: [], openClient: null, onboardRole: null, chats: [], chat: null, msgs: [], chatWith: null, reviews: [], gallery: {}, viewCoach: null, editing: false, draft: null, reviewDraft: null, aiTyping: false, aiBuilding: false, deleting: false });
+    closeGallerySub();
     closeChatSub(); prevChatTs = {};
     seenTs = null; lastVault = null;
   }
@@ -619,6 +735,10 @@ video.proof-img{background:#000;object-fit:contain}
     unsubs.push(db.collection("profiles").where("role", "==", "coach").onSnapshot(q => {
       A.coaches = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule();
     }, onErr));
+    // avis : reviews/<sportif> = { coaches: [...], byCoach: { <coach>: {rating, text, name, ts} } }, chacun n'écrit que le sien
+    unsubs.push(db.collection("reviews").onSnapshot(q => {
+      A.reviews = q.docs.flatMap(d => Object.entries(d.data().byCoach || {}).map(([coachId, r]) => ({ athleteId: d.id, coachId, ...r }))); schedule();
+    }, onErr));
   }
   function subscribeRole(role) {
     roleSubs.forEach(u => u()); roleSubs = []; subscribedRole = role;
@@ -626,6 +746,7 @@ video.proof-img{background:#000;object-fit:contain}
     if (role === "athlete") {
       roleSubs.push(db.doc("programs/" + id).onSnapshot(s => {
         A.program = s.exists ? s.data() : null;
+        if (!s.exists) ensureProgram();
         if (A.program?.coachId) openChatSub(chatId(id, A.program.coachId)); else closeChatSub();
         schedule();
       }, onErr));
@@ -637,6 +758,7 @@ video.proof-img{background:#000;object-fit:contain}
       roleSubs.push(db.collection("programs").where("coachId", "==", id).onSnapshot(q => { A.clients = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
       roleSubs.push(db.collection("profiles").where("role", "==", "athlete").onSnapshot(q => { A.athletes = Object.fromEntries(q.docs.map(d => [d.id, { id: d.id, ...d.data() }])); schedule(); }, onErr));
       roleSubs.push(db.collection("proofs").where("coachId", "==", id).onSnapshot(q => { A.proofsCoach = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.ts - a.ts); schedule(); }, onErr));
+      roleSubs.push(db.collection(`profiles/${id}/gallery`).orderBy("ts").onSnapshot(q => { A.gallery[id] = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr));
       roleSubs.push(db.collection("chats").where("coachId", "==", id).onSnapshot(q => {
         A.chats = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.lastTs || 0) - (a.lastTs || 0));
         // notification quand un client écrit dans une autre conversation
@@ -663,7 +785,7 @@ video.proof-img{background:#000;object-fit:contain}
     const fresh = A.events.filter(e => e.amount > 0 && e.ts > seenTs).sort((a, b) => a.ts - b.ts);
     if (!fresh.length) return;
     seenTs = Math.max(seenTs, newest); lsSet(key, String(seenTs));
-    const coach = A.coaches.find(c => c.id === fresh[0].coachId);
+    const coach = coachById(fresh[0].coachId);
     const who = first(coach?.name) || "Ton coach";
     celebrate(fresh.reduce((a, e) => a + e.amount, 0), fresh.map(e => `${who} a validé : ${e.label.replace(/ validé.*$/, "")} · +${euro(e.amount)}`));
   }
@@ -698,12 +820,8 @@ video.proof-img{background:#000;object-fit:contain}
   async function sendMessage(text) {
     const role = A.profile.role;
     const aid = role === "athlete" ? A.myId : A.chatWith, cid = role === "athlete" ? A.program.coachId : A.myId;
-    const id = chatId(aid, cid), ts = now();
-    await A.db.collection(`chats/${id}/messages`).add({ from: A.myId, text, ts });
-    const meta = { athleteId: aid, coachId: cid, lastMsg: text.slice(0, 120), lastFrom: A.myId, lastTs: ts };
-    const ref = A.db.doc("chats/" + id);
-    if ((await ref.get()).exists) await ref.update({ ...meta, readBy: { [A.myId]: ts } });
-    else await ref.set({ ...meta, readBy: { [A.myId]: ts } });
+    await postMessage(aid, cid, A.myId, text);
+    if (role === "athlete" && cid === AI_ID) aiChatReply(text);
   }
   async function markRead() {
     const c = A.chat; if (!c || markingRead || !viewingChat(c.id)) return;
@@ -713,6 +831,144 @@ video.proof-img{background:#000;object-fit:contain}
   }
   const unreadIn = (msgs, readTs) => msgs.filter(m => m.from !== A.myId && m.ts > (readTs || 0)).length;
   const chatUnread = c => c.lastFrom !== A.myId && (c.lastTs || 0) > (c.readBy?.[A.myId] || 0);
+
+  /* =====================================================================
+     Galerie et avis des coachs
+     ===================================================================== */
+  let gallerySub = null;
+  function closeGallerySub() { if (gallerySub) { gallerySub.unsub(); gallerySub = null; } }
+  function openGallerySub(cid) {
+    if (cid === AI_ID || cid === A.myId || gallerySub?.id === cid) return;
+    closeGallerySub();
+    gallerySub = { id: cid, unsub: A.db.collection(`profiles/${cid}/gallery`).orderBy("ts").onSnapshot(q => { A.gallery[cid] = q.docs.map(d => ({ id: d.id, ...d.data() })); schedule(); }, onErr) };
+  }
+  function ratingOf(cid) {
+    const list = A.reviews.filter(r => r.coachId === cid).sort((a, b) => b.ts - a.ts);
+    return { n: list.length, avg: list.length ? list.reduce((a, r) => a + r.rating, 0) / list.length : 0, list };
+  }
+  const allCoaches = () => [AI_COACH, ...A.coaches];
+  const coachById = id => id === AI_ID ? AI_COACH : A.coaches.find(c => c.id === id);
+  function completion(p) {
+    const items = [["photo de profil", !!p.photo], ["présentation", (p.bio || "").length >= 40], ["spécialités", (p.specialties || []).length > 0],
+      ["lieu de travail", (p.places || []).some(x => x.label)], ["disponibilités", DAYS.some(([d]) => (p.availability?.[d] || []).length)],
+      ["expérience ou diplôme", !!(p.experience || p.diplomas)], ["photos", (A.gallery[p.id] || []).length > 0]];
+    return { pct: Math.round(items.filter(i => i[1]).length / items.length * 100), missing: items.filter(i => !i[1]).map(i => i[0]) };
+  }
+  async function saveReview(cid) {
+    const dr = A.reviewDraft, ref = A.db.doc("reviews/" + A.myId), s = await ref.get();
+    const parts = (A.profile.name || "").trim().split(/\s+/);
+    const rv = { rating: dr.rating, text: dr.text.trim().slice(0, 400), ts: now(), name: parts[0] + (parts[1] ? " " + parts[1][0] + "." : "") };
+    if (s.exists) await ref.update({ coaches: [...new Set([...(s.data().coaches || []), cid])], byCoach: { [cid]: rv } });
+    else await ref.set({ coaches: [cid], byCoach: { [cid]: rv } });
+  }
+  function compressImage(file, max, q, square) {
+    return new Promise((ok, ko) => {
+      const r = new FileReader();
+      r.onload = () => { const im = new Image(); im.onload = () => {
+        const c = document.createElement("canvas"); let sx = 0, sy = 0, sw = im.width, sh = im.height;
+        if (square) { const m = Math.min(sw, sh); sx = (sw - m) / 2; sy = (sh - m) / 2; sw = sh = m; }
+        const k = Math.min(1, max / Math.max(sw, sh)); c.width = Math.round(sw * k); c.height = Math.round(sh * k);
+        c.getContext("2d").drawImage(im, sx, sy, sw, sh, 0, 0, c.width, c.height); ok(c.toDataURL("image/jpeg", q));
+      }; im.onerror = () => ko({ ui: "Cette image n'a pas pu être lue." }); im.src = r.result; };
+      r.onerror = () => ko({ ui: "Cette image n'a pas pu être lue." }); r.readAsDataURL(file);
+    });
+  }
+
+  /* =====================================================================
+     Coach IA « Vaultr » : programme, vérification des preuves, discussion.
+     Tourne sur le téléphone du sportif ; utilise Claude quand il est disponible,
+     sinon des réponses simples (mode démo).
+     ===================================================================== */
+  const GOAL_TEMPLATES = {
+    "Perte de poids": [["Marche rapide 30 min", "Rythme soutenu", 8, 1, false], ["20 squats", "3 séries", 8, 2, false], ["Corde à sauter 5 min", "Ou montées de genoux", 6, 3, true], ["Gainage 1 min", "Planche", 8, 2, false]],
+    "Prise de muscle": [["Pompes 3 × 12", "Sur les genoux si besoin", 8, 2, false], ["Squats sautés 3 × 10", "", 8, 3, true], ["Rowing 3 × 10", "Avec une bouteille d'eau", 6, 2, false], ["Fentes 3 × 10", "", 8, 2, false]],
+    "Endurance": [["Course 30 min", "Allure confortable", 8, 2, false], ["Fractionné 10 × 30 s", "30 s vite, 30 s lent", 6, 3, true], ["Gainage 2 min", "", 8, 1, false]],
+    "Bien-être": [["Marche 20 min", "", 8, 1, false], ["Mobilité 10 min", "Hanches et épaules", 8, 1, false], ["Yoga 15 min", "", 6, 2, true]],
+    "Remise en forme": [["Course 15 min", "Échauffement inclus", 8, 1, false], ["15 pompes", "Sur les genoux si besoin", 8, 3, true], ["Gainage 3 × 45 s", "", 8, 2, false], ["20 squats", "", 8, 2, false]]
+  };
+  async function postMessage(aid, cid, from, text) {
+    const id = chatId(aid, cid), ts = now();
+    await A.db.collection(`chats/${id}/messages`).add({ from, text, ts });
+    const meta = { athleteId: aid, coachId: cid, lastMsg: text.slice(0, 120), lastFrom: from, lastTs: ts };
+    const ref = A.db.doc("chats/" + id);
+    if ((await ref.get()).exists) await ref.update({ ...meta, readBy: { [from]: ts } });
+    else await ref.set({ ...meta, readBy: { [from]: ts } });
+  }
+  async function ensureProgram() {
+    if (A.ensuring || A.deleting || A.profile?.role !== "athlete") return;
+    A.ensuring = true;
+    try {
+      const ref = progRef(A.myId);
+      if ((await ref.get()).exists) return;
+      await ref.set({ athleteId: A.myId, coachId: AI_ID, mise: 0, coachFee: 0, tasks: [], createdAt: now() });
+      await postMessage(A.myId, AI_ID, AI_ID, `Salut ${first(A.profile.name)} 👋 Je suis Vaultr, ton coach IA. Choisis ta mise du mois dans « Mon coffre » : je crée ton programme tout de suite et je valide tes photos en quelques secondes. Si tu préfères un coach humain, tu peux en choisir un quand tu veux dans l'onglet Coach.`);
+    } catch {} finally { A.ensuring = false; }
+  }
+  async function aiMakeTasks(goal, mise) {
+    let raw = null;
+    if (A.sample) try {
+      const out = await A.sample.json(`Tu es Vaultr, coach sportif IA dans une appli française. Crée le programme du mois pour un sportif dont l'objectif est « ${goal} ». Il a mis ${mise} € en jeu et les récupère exercice par exercice. Propose 3 ou 4 exercices simples, faisables sans matériel, vérifiables par une photo ou une courte vidéo. Réponds uniquement avec un tableau JSON, par exemple : [{"name":"20 squats","detail":"3 séries","target":12,"diff":2,"weak":false}] où name fait moins de 30 caractères, target est le nombre de fois dans le mois (4 à 10, environ 30 au total), diff la difficulté de 1 à 3, et weak vaut true pour UN seul exercice difficile qui rapportera plus.`, { modelTier: "quick" });
+      if (Array.isArray(out)) raw = out.slice(0, 5).map(t => [String(t?.name || "").slice(0, 40), String(t?.detail || "").slice(0, 60), Math.min(20, Math.max(2, Math.round(+t?.target || 8))), Math.min(3, Math.max(1, Math.round(+t?.diff || 2))), !!t?.weak]).filter(t => t[0]);
+    } catch {}
+    if (!raw?.length) raw = GOAL_TEMPLATES[goal] || GOAL_TEMPLATES["Remise en forme"];
+    const tasks = raw.map(([name, detail, target, diff, weak]) => ({ id: rid(), name, detail, value: 0, target, done: 0, earned: 0, diff, weak }));
+    aiSplit(tasks, mise).forEach((v, i) => tasks[i].value = v);
+    return tasks;
+  }
+  async function aiBuildProgram() {
+    if (A.aiBuilding || !A.program?.mise) return;
+    A.aiBuilding = true; schedule();
+    try {
+      const mise = A.program.mise, tasks = await aiMakeTasks(A.profile.goal || "Remise en forme", mise);
+      const cur = (await progRef(A.myId).get()).data();
+      if (cur?.coachId !== AI_ID || cur.tasks?.length) return;
+      await progRef(A.myId).update({ tasks });
+      await postMessage(A.myId, AI_ID, AI_ID, `Ton programme est prêt 💪 ${tasks.map(t => `${t.name} (${euro(t.value)})`).join(", ")}. Envoie-moi une photo ou une vidéo à chaque fois depuis « Mon coffre » : je valide en quelques secondes.`);
+    } catch { toast("Vaultr n'a pas pu créer ton programme. Réessaie."); }
+    finally { A.aiBuilding = false; schedule(); }
+  }
+  async function aiReviewProof(proofId, taskId, img, kind, chunks) {
+    const t = (A.program?.tasks || []).find(x => x.id === taskId); if (!t) return;
+    let verdict = null;
+    if (A.sample && img) try {
+      const lim = await A.sample.limits().catch(() => null);
+      if (lim?.images) verdict = await A.sample.json(`Tu es Vaultr, coach sportif IA bienveillant mais sérieux. Ton client dit avoir fait l'exercice « ${t.name} »${t.detail ? ` (${t.detail})` : ""}. Voici ${kind === "video" ? "une image extraite de sa vidéo" : "sa photo"} comme preuve. Valide si l'image montre de façon plausible une personne en train de faire cet exercice, ou une activité sportive cohérente (tenue, posture, lieu). Refuse si l'image n'a aucun rapport (écran, objet, paysage sans personne, image inexploitable). Réponds uniquement en JSON : {"valid": true ou false, "message": "une phrase courte en français, au tutoiement, encourageante, qui explique ta décision"}`, { images: [dataUrlToBlob(img)], modelTier: "quick", cache: false });
+    } catch {}
+    if (!verdict) await new Promise(r => setTimeout(r, 1200));
+    const ok = verdict ? !!verdict.valid : true;
+    const msg = verdict?.message ? String(verdict.message).slice(0, 280) : `Preuve reçue pour « ${t.name} » ✅ Bien joué, continue comme ça !`;
+    try {
+      if (ok) await validateTask(A.myId, taskId, true, AI_ID);
+      await A.db.doc("proofs/" + proofId).update({ status: ok ? "ok" : "ko", reviewedAt: now(), aiMessage: msg, ...(kind === "video" ? { chunks: 0, poster: "" } : {}) });
+      if (kind === "video") await dropVideo({ id: proofId, kind, chunks });
+      await postMessage(A.myId, AI_ID, AI_ID, ok ? `${msg} +${euro(t.value)} dans ton coffre 💸` : `${msg} Renvoie une autre preuve quand tu veux.`);
+    } catch { toast("Vaultr n'a pas pu traiter ta preuve. Réessaie."); }
+  }
+  function cannedReply(text) {
+    const p = A.program || {}, left = Math.max(0, (p.mise || 0) - recovered(p)), next = (p.tasks || []).find(t => t.done < t.target);
+    const q = (text || "").toLowerCase();
+    if (/mal|douleur|bless|santé|malade/.test(q)) return "Écoute ton corps : en cas de douleur, arrête l'exercice et demande l'avis d'un médecin ou d'un kiné. On reprendra doucement quand ça ira mieux 🙏";
+    if (!p.mise) return "Pour commencer, choisis ta mise du mois dans « Mon coffre ». Je crée ton programme tout de suite après 💪";
+    if (/programme|exercice|quoi faire|séance/.test(q)) return `Ton programme : ${(p.tasks || []).map(t => `${t.name} ${t.done}/${t.target}`).join(", ") || "en préparation"}. ${next ? `Prochain conseillé : ${next.name} (+${euro(next.value)}).` : "Tout est validé, bravo !"}`;
+    if (/flemme|motiv|fatigu|dur|envie/.test(q)) return `Je comprends 😅 Mais il te reste ${euro(left)} à récupérer, et ${daysLeft()} jours. ${next ? `Fais juste « ${next.name} » aujourd'hui : c'est ${euro(next.value)} de plus dans ton coffre.` : ""}`;
+    if (/mise|argent|€|euro|rembours/.test(q)) return `Ta mise est de ${euro(p.mise)}. Tu as déjà récupéré ${euro(recovered(p))}. Chaque exercice validé te rend sa valeur ; ce qui n'est pas validé à la fin du mois reste à Vaultr.`;
+    return `Je suis là 💪 Il te reste ${euro(left)} à récupérer ce mois-ci. ${next ? `Envoie-moi une preuve de « ${next.name} » et je valide tout de suite.` : "Tu as tout validé, chapeau !"}`;
+  }
+  async function aiChatReply(lastText) {
+    if (A.aiTyping) return;
+    A.aiTyping = true; schedule();
+    const p = A.program || {}, me = A.profile;
+    let reply = null;
+    if (A.sample) try {
+      const ctx = `Tu es Vaultr, coach sportif IA de l'appli Vaultr (le sportif met de l'argent en jeu chaque mois et le récupère à chaque exercice validé ; ce qui n'est pas validé reste à Vaultr). Tu parles en français, tu tutoies, tu es motivant, concret et bref (2 à 4 phrases, pas de longues listes). Pas de conseil médical : en cas de douleur ou de problème de santé, conseille de consulter un professionnel. Infos sur ${first(me.name)} : objectif ${me.goal || "remise en forme"}, mise du mois ${euro(p.mise || 0)}, déjà récupéré ${euro(recovered(p))}, ${daysLeft()} jours restants. Programme : ${(p.tasks || []).map(t => `${t.name} ${t.done}/${t.target} (${euro(t.value)} chacun)`).join(" ; ") || "pas encore créé (il faut d'abord choisir une mise dans Mon coffre)"}. Pour faire valider un exercice, il envoie une photo ou une vidéo depuis l'onglet Mon coffre. Réponds au dernier message de la conversation.`;
+      const hist = A.msgs.slice(-12).map(m => ({ role: m.from === AI_ID ? "assistant" : "user", content: m.text }));
+      if (!hist.length || hist[hist.length - 1].content !== lastText || hist[hist.length - 1].role !== "user") hist.push({ role: "user", content: lastText });
+      reply = (await A.sample([{ role: "user", content: ctx }, ...hist], { cache: false, modelTier: "quick" })).text;
+    } catch {}
+    if (!reply) { await new Promise(r => setTimeout(r, 900)); reply = cannedReply(lastText); }
+    try { await postMessage(A.myId, AI_ID, AI_ID, reply.trim().slice(0, 1000)); } catch {}
+    A.aiTyping = false; schedule();
+  }
 
   /* =====================================================================
      Actions (écrivent dans la base, la vue suit toute seule)
@@ -742,6 +998,7 @@ video.proof-img{background:#000;object-fit:contain}
     const ref = progRef(A.myId), s = await ref.get();
     if (s.exists) await ref.update({ coachId: c.id, coachFee: c.price || 0 });
     else await ref.set({ athleteId: A.myId, coachId: c.id, mise: 0, coachFee: c.price || 0, tasks: [], createdAt: now() });
+    if (c.ai && s.exists && s.data().mise && !s.data().tasks?.length) setTimeout(aiBuildProgram, 300);
   }
   async function setMise(v) {
     const p = A.program;
@@ -749,7 +1006,8 @@ video.proof-img{background:#000;object-fit:contain}
     const restOld = Math.max(0, p.mise - recovered(p)), restNew = Math.max(0, v - recovered(p));
     if (p.mise > 0 && tasks.length) fitBudget(tasks, tasks.map(t => restOld ? t.value * restNew / restOld : t.value), v).forEach((x, i) => tasks[i].value = x);
     await progRef(A.myId).update({ mise: v, tasks });
-    await A.db.collection("events").add({ athleteId: A.myId, coachId: p.coachId, label: `Mise ${euro(v)} + coaching ${euro(p.coachFee)} (simulé)`, amount: -(v + (p.coachFee || 0)), ts: now() });
+    await A.db.collection("events").add({ athleteId: A.myId, coachId: p.coachId, label: p.coachFee ? `Mise ${euro(v)} + coaching ${euro(p.coachFee)} (simulé)` : `Mise ${euro(v)} (simulé)`, amount: -(v + (p.coachFee || 0)), ts: now() });
+    if (p.coachId === AI_ID && !tasks.length) setTimeout(aiBuildProgram, 300);
   }
   // Une vidéo est trop lourde pour un seul document : on la range en morceaux sous proofs/<id>/chunks.
   const CHUNK = 190000;
@@ -765,7 +1023,11 @@ video.proof-img{background:#000;object-fit:contain}
         onProgress?.((i + 1) / parts.length);
       }
       await ref.set({ ...base, kind: "video", mime: media.mime, chunks: parts.length, poster: media.poster || "", duration: media.duration || 0 });
-    } else await ref.set({ ...base, kind: "photo", img: media.img });
+      if (p.coachId === AI_ID) setTimeout(() => aiReviewProof(ref.id, taskId, media.poster, "video", parts.length), 0);
+    } else {
+      await ref.set({ ...base, kind: "photo", img: media.img });
+      if (p.coachId === AI_ID) setTimeout(() => aiReviewProof(ref.id, taskId, media.img, "photo", 0), 0);
+    }
   }
   async function loadVideo(pr) {
     const snaps = await Promise.all(Array.from({ length: pr.chunks }, (_, i) => A.db.doc(`proofs/${pr.id}/chunks/${String(i).padStart(3, "0")}`).get()));
@@ -779,13 +1041,13 @@ video.proof-img{background:#000;object-fit:contain}
     if (pr.kind !== "video" || !pr.chunks) return;
     for (let i = 0; i < pr.chunks; i++) await A.db.doc(`proofs/${pr.id}/chunks/${String(i).padStart(3, "0")}`).delete().catch(() => {});
   }
-  async function validateTask(aid, taskId, viaProof) {
+  async function validateTask(aid, taskId, viaProof, by = A.myId) {
     const s = await progRef(aid).get(); if (!s.exists) return null;
     const p = s.data(), tasks = p.tasks.map(t => ({ ...t })), t = tasks.find(x => x.id === taskId);
     if (!t || t.done >= t.target) return null;
     t.earned = Math.round((earned(t) + t.value) * 100) / 100; t.done++;
     await progRef(aid).update({ tasks });
-    await A.db.collection("events").add({ athleteId: aid, coachId: A.myId, label: `${t.name} validé${viaProof ? " (preuve)" : ""}`, amount: t.value, ts: now() });
+    await A.db.collection("events").add({ athleteId: aid, coachId: by, label: `${t.name} validé${viaProof ? " (preuve)" : ""}`, amount: t.value, ts: now() });
     return t;
   }
   async function reviewProof(pr, ok) {
@@ -840,7 +1102,7 @@ video.proof-img{background:#000;object-fit:contain}
       renderTabs(role);
       const v = A.tab[role];
       const views = { athlete: { vault: viewVault, chat: viewChatAthlete, coach: viewFindCoach, wallet: viewWallet }, coach: { clients: viewClients, chat: viewChatsCoach, proofs: viewProofs, pro: viewPro } };
-      html = views[role][v](); key = A.mode + A.myId + role + v + (A.openClient || "") + (v === "chat" ? A.chatWith || "" : "");
+      html = views[role][v](); key = A.mode + A.myId + role + v + (A.openClient || "") + (v === "chat" ? A.chatWith || "" : "") + (A.viewCoach || "") + (A.editing ? "edit" : "");
     }
 
     // garde la saisie en cours (un autre téléphone peut déclencher un rendu pendant qu'on tape)
@@ -862,7 +1124,7 @@ video.proof-img{background:#000;object-fit:contain}
   function renderTabs(role) {
     const tabs = role === "athlete"
       ? [["vault", "Mon coffre", ICONS.vault], ["chat", "Messages", ICONS.chat], ["coach", "Coach", ICONS.coach], ["wallet", "Paiements", ICONS.wallet]]
-      : [["clients", "Clients", ICONS.clients], ["chat", "Messages", ICONS.chat], ["proofs", "Preuves", ICONS.proof], ["pro", "Visibilité", ICONS.pro]];
+      : [["clients", "Accueil", ICONS.home], ["chat", "Messages", ICONS.chat], ["proofs", "Preuves", ICONS.proof], ["pro", "Ma page", ICONS.coach]];
     const cur = A.tab[role];
     const badges = {
       proofs: A.proofsCoach.filter(p => p.status === "pending").length,
@@ -997,11 +1259,11 @@ video.proof-img{background:#000;object-fit:contain}
       <circle cx="120" cy="120" r="96" class="ring" id="ring" transform="rotate(-90 120 120)" style="stroke-dasharray:${C};stroke-dashoffset:${C * (1 - pct)}"/></g>
     </svg>`;
   }
-  const myCoach = () => A.coaches.find(c => c.id === A.program?.coachId);
+  const myCoach = () => coachById(A.program?.coachId);
   function viewVault() {
     const me = A.profile, p = A.program, coach = myCoach();
     const hello = `<div class="split"><div><div class="eyebrow">${esc(monthName())} · ${daysLeft()} jours restants</div><h2>Salut ${esc(first(me.name))} 👋</h2></div>
-      ${coach ? `<span class="chip volt">Coach : ${esc(first(coach.name))}</span>` : ""}</div>`;
+      ${coach ? `<span class="chip volt">Coach : ${esc(first(coach.name))}${coach.ai ? " (IA)" : ""}</span>` : ""}</div>`;
     if (p === undefined) return `<section class="screen ENTER">${hello}<div class="loading" style="height:200px">Chargement…</div></section>`;
     if (!p || !p.coachId) return `<section class="screen ENTER">${hello}
       <div class="vault" id="vaultBox">${vaultSVG(0)}<div class="vault-center"><div class="amount">0 €</div><div class="of">ton coffre est vide</div></div></div>
@@ -1009,7 +1271,7 @@ video.proof-img{background:#000;object-fit:contain}
       <button type="button" class="btn primary" data-goto="coach">Trouver mon coach</button></div></section>`;
     if (!p.mise) return `<section class="screen ENTER">${hello}
       <div class="vault" id="vaultBox">${vaultSVG(0)}<div class="vault-center"><div class="amount">0 €</div><div class="of">aucune mise ce mois-ci</div></div></div>
-      <div class="card empty"><h3>Choisis ta mise du mois</h3><p class="muted" style="margin:0">Mets en jeu la somme que tu veux. ${esc(first(coach?.name) || "Ton coach")} la répartit sur tes exercices, et chaque exercice validé te la rend.</p>
+      <div class="card empty"><h3>Choisis ta mise du mois</h3><p class="muted" style="margin:0">Mets en jeu la somme que tu veux. ${coach?.ai ? "Vaultr, ton coach IA, crée ton programme et la répartit sur tes exercices tout de suite" : `${esc(first(coach?.name) || "Ton coach")} la répartit sur tes exercices`}, et chaque exercice validé te la rend.</p>
       <button type="button" class="btn primary" data-open="mise">Choisir ma mise</button></div></section>`;
     const rec = recovered(p), shown = lastVault ?? rec, pct = Math.min(1, shown / p.mise);
     const tasks = p.tasks || [];
@@ -1023,6 +1285,7 @@ video.proof-img{background:#000;object-fit:contain}
       </div>
       <div class="split"><h2>Mes exercices</h2><span class="muted" style="font-size:13px">fixés par ${esc(first(coach?.name) || "ton coach")}</span></div>
       ${tasks.length ? `<div class="list">${tasks.map(taskAthlete).join("")}</div>`
+        : coach?.ai ? `<div class="card ai-wait"><div class="row">${avatar(coach)}<div class="grow"><h3>${A.aiBuilding ? "Vaultr crée ton programme…" : "Ton programme n'est pas encore prêt"}</h3><p class="muted" style="margin:0;font-size:13px">${A.aiBuilding ? "Quelques secondes : il choisit tes exercices et répartit ta mise." : "Demande à Vaultr de le créer maintenant."}</p></div></div>${A.aiBuilding ? `<div class="dots"><span></span><span></span><span></span></div>` : `<button type="button" class="btn primary" data-act="ai-build">Créer mon programme</button>`}</div>`
         : `<div class="card"><h3>${esc(first(coach?.name) || "Ton coach")} prépare ton programme</h3><p class="muted" style="margin:0">Tes exercices et leur valeur apparaîtront ici dès qu'il les aura créés.</p></div>`}
       <p class="note">À la fin du mois, l'argent des exercices non validés <b>reste à Vaultr</b>. C'est la règle du jeu, alors ne lâche rien.</p>
     </section>`;
@@ -1038,10 +1301,10 @@ video.proof-img{background:#000;object-fit:contain}
       <div class="bar"><i style="width:${(t.done / t.target) * 100}%"></i></div>
       <div class="task-actions">
         ${full ? `<span class="chip volt">Objectif du mois atteint ✓</span>`
-        : pend ? `<span class="chip wait">Preuve envoyée · en attente du coach</span>`
+        : pend ? `<span class="chip wait">${A.program?.coachId === AI_ID ? "Vaultr vérifie ta preuve…" : "Preuve envoyée · en attente du coach"}</span>`
         : `${refused ? `<span class="chip loss">Preuve refusée, renvoie-en une</span>` : ""}
            <label class="btn small"><input type="file" accept="image/*,video/*" data-proof="${esc(t.id)}" hidden>📸 Photo ou vidéo</label>
-           <span class="chip">ou validation en séance</span>`}
+           <span class="chip">${A.program?.coachId === AI_ID ? "validée en quelques secondes" : "ou validation en séance"}</span>`}
       </div>
     </div>`;
   }
@@ -1049,46 +1312,100 @@ video.proof-img{background:#000;object-fit:contain}
   /* ---------- Sportif : trouver un coach ---------- */
   function coachListHTML() {
     const q = cleanHandle(A.coachQuery) || A.coachQuery.trim().toLowerCase();
-    const list = A.coaches.filter(c => c.id !== A.myId)
-      .map(c => ({ ...c, boosted: (c.boostedUntil || 0) > now() }))
+    const others = A.coaches.filter(c => c.id !== A.myId && c.id !== A.program?.coachId);
+    const list = others.map(c => ({ ...c, boosted: (c.boostedUntil || 0) > now() }))
       .filter(c => (A.coachFilter === "Tous" || c.sport === A.coachFilter) &&
-        (!q || [c.name, c.handle, c.city, c.sport].join(" ").toLowerCase().includes(q)))
-      .sort((a, b) => (b.boosted - a.boosted) || (b.pro - a.pro) || a.name.localeCompare(b.name));
-    if (!list.length) return `<p class="note">${A.coaches.filter(c => c.id !== A.myId).length ? "Aucun coach ne correspond. Essaie un autre sport ou le @tag exact de ton coach." : "Aucun coach inscrit pour l'instant. Invite ton coach à créer son profil Vaultr, puis cherche son @tag ici."}</p>`;
+        (!q || [c.name, c.handle, c.city, c.sport, ...(c.specialties || []), ...(c.places || []).map(x => x.label)].join(" ").toLowerCase().includes(q)))
+      .sort((a, b) => (b.boosted - a.boosted) || (b.pro - a.pro) || (ratingOf(b.id).avg - ratingOf(a.id).avg) || a.name.localeCompare(b.name));
+    if (!list.length) return `<p class="note">${others.length ? "Aucun coach ne correspond. Essaie un autre sport ou le @tag exact de ton coach." : "Aucun coach humain inscrit pour l'instant. Invite ton coach à créer son profil Vaultr, puis cherche son @tag ici."}</p>`;
     return list.map(coachCard).join("");
   }
   function coachCard(c) {
-    const mine = c.id === A.program?.coachId;
-    return `<div class="card">
-      <div class="row"><div class="avatar ${c.boosted ? "volt" : ""}">${esc(initials(c.name))}</div>
-        <div class="grow"><h3>${esc(c.name)}</h3><div class="muted" style="font-size:13px">@${esc(c.handle)}${c.city ? " · " + esc(c.city) : ""}</div></div>
-        <div class="price" style="font-size:16px">${euro(c.price || 0)}<span class="muted" style="font:500 11px var(--body)"> /mois</span></div></div>
+    const r = ratingOf(c.id), pl = (c.places || [])[0];
+    return `<div class="card coach-card">
+      <button type="button" class="cc-main" data-coach-page="${esc(c.id)}">${avatar(c, c.boosted ? "volt" : "")}
+        <div class="grow"><h3>${esc(c.name)}</h3><div class="muted" style="font-size:13px">${r.n ? `<span class="star1">★</span> ${note1(r.avg)} (${r.n}) · ` : ""}${esc(c.sport || "Coach")}${c.city ? " · " + esc(c.city) : ""}</div></div>
+        <div class="price" style="font-size:16px">${euro(c.price || 0)}<span class="muted" style="font:500 11px var(--body)"> /mois</span></div></button>
       <div class="row" style="flex-wrap:wrap;gap:6px">
         ${c.boosted ? `<span class="chip volt">⚡ Mis en avant</span>` : ""}${c.pro ? `<span class="chip">PRO</span>` : ""}
-        <span class="chip">${esc(c.sport || "Coach")}</span>
+        ${pl ? `<span class="chip">${PLACE_TYPES[pl.type]?.[0] || "📍"} ${esc(pl.label)}</span>` : ""}${c.trial ? `<span class="chip volt">Séance d'essai offerte</span>` : ""}
       </div>
-      ${mine ? `<span class="chip volt" style="align-self:flex-start">C'est ton coach</span>`
-        : `<button type="button" class="btn small primary" data-add="${esc(c.id)}">${A.program?.coachId ? "Choisir ce coach à la place" : "Choisir ce coach"}</button>`}
+      <div class="row"><button type="button" class="btn small" data-coach-page="${esc(c.id)}">Voir le profil</button><button type="button" class="btn small primary" data-add="${esc(c.id)}">Choisir ce coach</button></div>
     </div>`;
   }
   function viewFindCoach() {
-    const me = myCoach();
+    if (A.viewCoach) {
+      const c = coachById(A.viewCoach);
+      if (c) return `<section class="screen ENTER"><button type="button" class="btn small ghost" data-act="coach-back" style="align-self:flex-start">← Coachs</button><div class="coach-page">${coachPageHTML(c)}</div></section>`;
+      A.viewCoach = null;
+    }
+    const me = myCoach(), r = me ? ratingOf(me.id) : null;
     const sports = ["Tous", ...new Set(A.coaches.map(c => c.sport).filter(Boolean))];
     return `<section class="screen ENTER">
       ${me ? `<div class="eyebrow">Mon coach</div>
       <div class="card">
-        <div class="row"><div class="avatar volt">${esc(initials(me.name))}</div>
-          <div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">@${esc(me.handle)} · ${esc(me.sport || "")}${me.city ? " · " + esc(me.city) : ""}</div></div>
-          <span class="chip volt">Actif</span></div>
-        <button type="button" class="btn small" data-goto="chat" style="align-self:flex-start">💬 Écrire à ${esc(first(me.name))}</button>
-        <div class="split"><span class="muted">Coaching mensuel</span><b class="num">${euro(A.program.coachFee)} / mois</b></div>
+        <button type="button" class="cc-main" data-coach-page="${esc(me.id)}">${avatar(me, "volt")}
+          <div class="grow"><h3>${esc(me.name)}${me.ai ? ` <span class="chip volt">IA</span>` : ""}</h3><div class="muted" style="font-size:13px">${r.n ? `<span class="star1">★</span> ${note1(r.avg)} (${r.n}) · ` : ""}${esc(me.sport || "")}</div></div>
+          <span class="chip volt">Actif</span></button>
+        ${me.ai ? `<p class="muted" style="margin:0;font-size:13px">Vaultr, le coach IA gratuit, crée ton programme et valide tes preuves en quelques secondes. Envie d'un humain ? Choisis un coach ci-dessous.</p>` : `<div class="split"><span class="muted">Coaching mensuel</span><b class="num">${euro(A.program.coachFee)} / mois</b></div>`}
+        <div class="row"><button type="button" class="btn small" data-goto="chat">💬 Écrire à ${esc(first(me.name))}</button><button type="button" class="btn small ghost" data-coach-page="${esc(me.id)}">Voir sa page</button></div>
       </div>` : ""}
-      <h2>Trouver un coach</h2>
-      <div class="search"><input id="coachSearch" type="search" placeholder="Nom, ville, sport ou @tag" value="${esc(A.coachQuery)}" aria-label="Rechercher un coach"></div>
-      ${sports.length > 2 ? `<div class="tabs-inline" id="sportFilter">${sports.map(s => `<button type="button" data-sport="${esc(s)}" aria-pressed="${s === A.coachFilter}">${esc(s)}</button>`).join("")}</div>` : ""}
+      <h2>${me?.ai ? "Choisir un coach humain" : "Trouver un coach"}</h2>
+      <div class="search"><input id="coachSearch" type="search" placeholder="Nom, ville, sport, salle ou @tag" value="${esc(A.coachQuery)}" aria-label="Rechercher un coach"></div>
+      ${sports.length > 2 ? `<div class="tabs-inline" id="sportFilter">${sports.map(x => `<button type="button" data-sport="${esc(x)}" aria-pressed="${x === A.coachFilter}">${esc(x)}</button>`).join("")}</div>` : ""}
       <div class="list" id="coachList">${coachListHTML()}</div>
+      ${me && !me.ai ? `<button type="button" class="card ai-card" data-coach-page="${AI_ID}">${avatar(AI_COACH)}<div class="grow" style="text-align:left"><h3>Vaultr · coach IA</h3><div class="muted" style="font-size:13px">Gratuit · programme et validation automatiques</div></div><span class="chip volt">IA</span></button>` : ""}
       <p class="note">Ton coach n'est pas sur Vaultr ? Envoie-lui le lien de l'appli : il crée son profil coach gratuitement, et tu le retrouves avec son <b>@tag</b>. Un ami peut aussi jouer ce rôle.</p>
     </section>`;
+  }
+
+  /* ---------- Page publique d'un coach ---------- */
+  function avGrid(av, edit) {
+    av = av || {};
+    return `<div class="av-grid ${edit ? "edit" : ""}" role="${edit ? "group" : "table"}" aria-label="Disponibilités"><div></div>${DAYS.map(([, l]) => `<div class="av-h">${l}</div>`).join("")}
+      ${SLOTS.map(([sl, lab]) => `<div class="av-s">${lab}</div>${DAYS.map(([d, dl]) => { const on = (av[d] || []).includes(sl);
+        return edit ? `<button type="button" class="av-c ${on ? "on" : ""}" data-av="${d}:${sl}" aria-pressed="${on}" aria-label="${dl} ${lab}"></button>` : `<div class="av-c ${on ? "on" : ""}" aria-label="${dl} ${lab} : ${on ? "disponible" : "indisponible"}"></div>`; }).join("")}`).join("")}</div>`;
+  }
+  const reviewHTML = rv => `<div class="review"><div class="split"><b>${esc(rv.name || "Client")}</b><span class="stars">${starStr(rv.rating)}</span></div>${rv.text ? `<p>${esc(rv.text)}</p>` : ""}<span class="muted" style="font-size:12px">${new Date(rv.ts).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}</span></div>`;
+  function coachPageHTML(c, { self = false } = {}) {
+    const r = ratingOf(c.id), isAth = A.profile.role === "athlete", mine = isAth && A.program?.coachId === c.id;
+    const places = (c.places || []).filter(x => x.label), specs = c.specialties || [], gal = c.ai ? [] : (A.gallery[c.id] || []);
+    const hasAv = DAYS.some(([d]) => (c.availability?.[d] || []).length);
+    if (!self && !c.ai) openGallerySub(c.id);
+    const counts = [5, 4, 3, 2, 1].map(n => r.list.filter(x => x.rating === n).length);
+    let form = "";
+    if (mine) {
+      const myRv = r.list.find(x => x.athleteId === A.myId);
+      if (A.reviewDraft?.cid !== c.id) A.reviewDraft = { cid: c.id, rating: myRv?.rating || 0, text: myRv?.text || "" };
+      const dr = A.reviewDraft;
+      form = `<div class="card review-form"><h3>${myRv ? "Ton avis" : `Laisse un avis à ${esc(first(c.name))}`}</h3>
+        <div class="star-pick" role="group" aria-label="Note">${[1, 2, 3, 4, 5].map(n => `<button type="button" data-star="${n}" class="${n <= dr.rating ? "on" : ""}" aria-label="${n} étoile${n > 1 ? "s" : ""}" aria-pressed="${n <= dr.rating}">★</button>`).join("")}</div>
+        <textarea id="rvText" data-rv maxlength="400" rows="3" placeholder="Comment se passent tes séances ?">${esc(dr.text)}</textarea>
+        <button type="button" class="btn small primary" data-act="review-save" ${dr.rating ? "" : "disabled"}>${myRv ? "Mettre à jour mon avis" : "Publier mon avis"}</button></div>`;
+    }
+    return `<div class="cp-hero">${avatar(c, "xl volt")}
+        <div class="cp-id"><h2>${esc(c.name)}</h2>
+          <div class="muted" style="font-size:13px">@${esc(c.handle)}${c.city ? " · " + esc(c.city) : ""}</div>
+          <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px">${c.ai ? `<span class="chip volt">Coach IA</span>` : `<span class="chip">${esc(c.sport || "Coach")}</span>`}${c.pro ? `<span class="chip volt">PRO</span>` : ""}${(c.boostedUntil || 0) > now() ? `<span class="chip volt">⚡ Mis en avant</span>` : ""}</div></div></div>
+      <div class="cp-facts">
+        <div><b>${c.price ? euro(c.price) : "Gratuit"}</b><span>${c.price ? "par mois" : "toujours"}</span></div>
+        <div><b>${c.ai ? "24h/24" : c.experience ? `${esc(c.experience)} an${c.experience > 1 ? "s" : ""}` : "—"}</b><span>${c.ai ? "disponible" : "d'expérience"}</span></div>
+        <div><b>${r.n ? `${note1(r.avg)} ★` : "—"}</b><span>${r.n} avis</span></div>
+      </div>
+      ${!self && isAth ? `<div class="row cp-actions">${mine ? `<span class="chip volt">✓ C'est ton coach</span><button type="button" class="btn small" data-goto="chat">💬 Écrire</button>`
+        : `<button type="button" class="btn primary" data-add="${esc(c.id)}" style="flex:1">${c.ai ? "Revenir au coach IA" : "Choisir ce coach"}${c.price ? ` · ${euro(c.price)}/mois` : ""}</button>`}</div>
+        ${c.trial && !mine ? `<p class="note" style="margin:0">🎁 Première séance d'essai offerte.</p>` : ""}` : ""}
+      <div class="cp-sec"><h3>À propos</h3>${c.bio ? `<p class="bio">${esc(c.bio)}</p>` : `<p class="muted">${self ? "Ajoute une présentation pour donner envie aux sportifs." : "Pas encore de présentation."}</p>`}
+        ${specs.length ? `<div class="row" style="flex-wrap:wrap;gap:6px">${specs.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}
+        ${c.diplomas ? `<p class="muted" style="margin:0;font-size:13px">🎓 ${esc(c.diplomas)}</p>` : ""}</div>
+      ${c.ai ? `<div class="cp-sec"><h3>Comment ça marche</h3><ol class="steps"><li>Tu choisis ta mise du mois.</li><li>Vaultr crée ton programme et répartit ta mise.</li><li>Tu envoies une photo ou une vidéo après chaque exercice.</li><li>Vaultr vérifie en quelques secondes et l'argent revient dans ton coffre.</li></ol></div>` : ""}
+      <div class="cp-sec"><h3>Où s'entraîner</h3>${places.length ? `<div class="list" style="gap:8px">${places.map(x => `<div class="place"><span class="pi">${PLACE_TYPES[x.type]?.[0] || "📍"}</span><div><b>${esc(x.label)}</b><div class="muted" style="font-size:12px">${PLACE_TYPES[x.type]?.[1] || ""}</div></div></div>`).join("")}</div>` : `<p class="muted">${self ? "Ajoute ta salle, tes lieux en extérieur ou la visio." : "Lieux non précisés."}</p>`}</div>
+      <div class="cp-sec"><h3>Disponibilités</h3>${hasAv ? avGrid(c.availability, false) : `<p class="muted">${self ? "Indique tes créneaux pour que les sportifs sachent quand te réserver." : "Disponibilités non précisées."}</p>`}</div>
+      ${gal.length ? `<div class="cp-sec"><h3>Photos</h3><div class="gal">${gal.map((g, i) => `<button type="button" class="gal-item" data-gal-view="${esc(c.id)}:${i}"><img src="${esc(g.img)}" alt="Photo ${i + 1} de ${esc(c.name)}"></button>`).join("")}</div></div>` : self ? `<div class="cp-sec"><h3>Photos</h3><p class="muted">Ajoute des photos de ta salle ou de tes séances.</p></div>` : ""}
+      <div class="cp-sec"><h3>Avis</h3>
+        ${r.n ? `<div class="rating-sum"><div class="big"><b>${note1(r.avg)}</b><span class="stars">${starStr(r.avg)}</span><span class="muted" style="font-size:12px">${r.n} avis</span></div>
+          <div class="bars">${counts.map((n, i) => `<div class="bar-row"><span>${5 - i}</span><div class="bar"><i style="width:${r.n ? n / r.n * 100 : 0}%"></i></div><span class="muted">${n}</span></div>`).join("")}</div></div>
+          ${form}<div class="list">${r.list.map(reviewHTML).join("")}</div>` : `${form}<p class="muted">${self ? "Tes clients pourront te laisser un avis depuis ta page." : "Pas encore d'avis."}</p>`}</div>`;
   }
 
   /* ---------- Sportif : paiements ---------- */
@@ -1097,7 +1414,7 @@ video.proof-img{background:#000;object-fit:contain}
     return `<section class="screen ENTER">
       <div class="eyebrow">${esc(monthName())}</div><h2>Mon mois</h2>
       ${p?.coachId ? `<div class="card">
-        <div class="split"><span>Coaching · ${esc(first(coach?.name) || "coach")}</span><b class="num">${euro(p.coachFee)}</b></div>
+        <div class="split"><span>Coaching · ${esc(first(coach?.name) || "coach")}${coach?.ai ? " (IA)" : ""}</span><b class="num">${p.coachFee ? euro(p.coachFee) : "Gratuit"}</b></div>
         <div class="split"><span>Ma mise de motivation</span><b class="num" style="color:var(--volt)">${euro(p.mise)}</b></div>
         <div class="hr"></div>
         <div class="split"><b>Total du mois</b><b class="num" style="font-size:20px">${euro((p.coachFee || 0) + (p.mise || 0))}</b></div>
@@ -1142,17 +1459,26 @@ video.proof-img{background:#000;object-fit:contain}
     if (A.openClient) return viewClient(A.openClient);
     const cl = A.clients;
     const pend = A.proofsCoach.filter(p => p.status === "pending").length;
+    const me = { ...A.profile, id: A.myId }, r = ratingOf(A.myId), comp = completion(me), unread = A.chats.filter(chatUnread).length;
+    const boosted = (me.boostedUntil || 0) > now();
     return `<section class="screen ENTER">
-      <div class="eyebrow">Coach ${esc(first(A.profile.name))} · ${esc(monthName())}</div><h2>Mes clients</h2>
-      <div class="vault-stats">
-        <div class="stat"><b>${cl.length}</b><span>Clients</span></div>
-        <div class="stat"><b>${euro(cl.reduce((a, c) => a + (c.coachFee || 0), 0))}</b><span>Coaching / mois</span></div>
-        <div class="stat"><b>${pend}</b><span>Preuves à voir</span></div>
+      <div class="row">${avatar(me, "volt")}<div class="grow"><div class="eyebrow">Tableau de bord · ${esc(monthName())}</div><h2>Salut ${esc(first(me.name))} 👋</h2></div>${me.pro ? `<span class="chip volt">PRO</span>` : ""}</div>
+      <div class="kpis">
+        <div class="kpi"><span>Revenus coaching</span><b>${euro(cl.reduce((a, c) => a + (c.coachFee || 0), 0))}</b><small>par mois</small></div>
+        <div class="kpi"><span>Clients</span><b>${cl.length}</b><small>${cl.filter(c => c.mise).length} avec une mise</small></div>
+        <button type="button" class="kpi" data-ctab="pro"><span>Ma note</span><b>${r.n ? `${note1(r.avg)} <i class="star1">★</i>` : "—"}</b><small>${r.n} avis</small></button>
+        <button type="button" class="kpi ${pend + unread ? "hot" : ""}" data-ctab="${pend ? "proofs" : "chat"}"><span>À traiter</span><b>${pend + unread}</b><small>${pend} preuve${pend > 1 ? "s" : ""} · ${unread} message${unread > 1 ? "s" : ""}</small></button>
       </div>
+      ${comp.pct < 100 ? `<div class="card"><div class="split"><h3>Ta page est complète à ${comp.pct} %</h3></div><div class="bar"><i style="width:${comp.pct}%"></i></div>
+        <p class="muted" style="margin:0;font-size:13px">Il manque : ${comp.missing.join(", ")}. Une page complète inspire confiance et attire plus de clients.</p>
+        <button type="button" class="btn small primary" data-act="edit-open" style="align-self:flex-start">Compléter ma page</button></div>` : ""}
+      ${boosted ? `<p class="note">⚡ Boost actif encore ${Math.ceil((me.boostedUntil - now()) / 86400000)} jours : tu apparais en tête de la recherche.</p>` : ""}
+      ${r.n ? `<div class="card"><div class="split"><h3>Derniers avis</h3><button type="button" class="link" data-ctab="pro">Voir ma page</button></div>${r.list.slice(0, 2).map(reviewHTML).join("")}</div>` : ""}
+      <h2>Mes clients</h2>
       ${cl.length ? `<div class="list">${cl.map(c => {
         const rec = recovered(c), a = A.athletes[c.id];
         return `<button type="button" class="card" style="text-align:left" data-client="${esc(c.id)}">
-          <div class="row"><div class="avatar volt">${esc(initials(a?.name))}</div>
+          <div class="row">${avatar(a, "volt")}
             <div class="grow"><h3>${esc(athleteName(c.id))}</h3><div class="muted" style="font-size:13px">${esc(a?.goal || "")}${!c.mise ? " · mise pas encore choisie" : !c.tasks?.length ? " · programme à créer" : ""}</div></div>
             <div style="text-align:right"><div class="price" style="font-size:17px">${euro(rec)}</div><div class="muted num" style="font-size:11px">sur ${euro(c.mise)}</div></div></div>
           <div class="bar"><i style="width:${c.mise ? Math.min(100, (rec / c.mise) * 100) : 0}%"></i></div>
@@ -1193,7 +1519,7 @@ video.proof-img{background:#000;object-fit:contain}
     const l = d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
     return l.charAt(0).toUpperCase() + l.slice(1);
   }
-  function chatScreen({ name, sub, backBtn }) {
+  function chatScreen({ name, sub, backBtn, who }) {
     const other = A.chat?.readBy ? Object.entries(A.chat.readBy).filter(([k]) => k !== A.myId).reduce((m, [, v]) => Math.max(m, v || 0), 0) : 0;
     const mine = A.msgs.filter(m => m.from === A.myId);
     const lastMine = mine[mine.length - 1];
@@ -1206,9 +1532,10 @@ video.proof-img{background:#000;object-fit:contain}
     }
     const seen = lastMine && other >= lastMine.ts && A.msgs[A.msgs.length - 1] === lastMine;
     return `<section class="screen ENTER chat-screen">
-      <div class="chat-head">${backBtn || ""}<div class="avatar volt">${esc(initials(name))}</div><div class="grow"><h3>${esc(name)}</h3><div class="muted" style="font-size:12px">${esc(sub)}</div></div></div>
+      <div class="chat-head">${backBtn || ""}${avatar(who || { name }, "volt")}<div class="grow"><h3>${esc(name)}</h3><div class="muted" style="font-size:12px">${esc(sub)}</div></div></div>
       <div class="msgs" id="msgs">${html || `<div class="chat-empty">Dis bonjour à ${esc(first(name))} 👋<br><span class="muted">Organisez vos séances, posez vos questions, motivez-vous.</span></div>`}
-        ${seen ? `<div class="seen-line">Vu</div>` : ""}</div>
+        ${seen && !A.aiTyping ? `<div class="seen-line">Vu</div>` : ""}
+        ${A.aiTyping && A.profile.role === "athlete" ? `<div class="bubble them typing" aria-label="Vaultr écrit"><span></span><span></span><span></span></div>` : ""}</div>
       <form class="composer" id="composer" autocomplete="off">
         <input type="text" id="chatInput" maxlength="1000" placeholder="Message" aria-label="Écrire un message" enterkeyhint="send">
         <button type="submit" class="send" aria-label="Envoyer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4l17.5-7.5a1 1 0 0 0 0-1.8L3.4 3.6a.9.9 0 0 0-1.3 1L4 11l9 1-9 1-1.9 6.4a.9.9 0 0 0 1.3 1z"/></svg></button>
@@ -1218,12 +1545,12 @@ video.proof-img{background:#000;object-fit:contain}
   function viewChatAthlete() {
     const coach = myCoach();
     if (!A.program?.coachId) return `<section class="screen ENTER"><h2>Messages</h2><div class="card empty"><h3>Pas encore de coach</h3><p class="muted" style="margin:0">Choisis ton coach pour pouvoir lui écrire.</p><button type="button" class="btn primary" data-goto="coach">Trouver mon coach</button></div></section>`;
-    return chatScreen({ name: coach?.name || "Ton coach", sub: `Coach${coach?.sport ? " · " + coach.sport : ""}` });
+    return chatScreen({ name: coach?.name || "Ton coach", who: coach, sub: coach?.ai ? "Coach IA · répond en quelques secondes" : `Coach${coach?.sport ? " · " + coach.sport : ""}` });
   }
   function viewChatsCoach() {
     if (A.chatWith) {
       const a = A.athletes[A.chatWith];
-      return chatScreen({ name: athleteName(A.chatWith), sub: `Client${a?.goal ? " · " + a.goal : ""}`, backBtn: `<button type="button" class="icon-btn" data-chat-back aria-label="Retour aux conversations">←</button>` });
+      return chatScreen({ name: athleteName(A.chatWith), who: a, sub: `Client${a?.goal ? " · " + a.goal : ""}`, backBtn: `<button type="button" class="icon-btn" data-chat-back aria-label="Retour aux conversations">←</button>` });
     }
     const byAthlete = Object.fromEntries(A.chats.map(c => [c.athleteId, c]));
     const rows = A.clients.map(c => ({ aid: c.id, chat: byAthlete[c.id] })).sort((x, y) => (y.chat?.lastTs || 0) - (x.chat?.lastTs || 0));
@@ -1232,7 +1559,7 @@ video.proof-img{background:#000;object-fit:contain}
       ${rows.length ? `<div class="list chat-list">${rows.map(({ aid, chat }) => {
         const un = chat && chatUnread(chat);
         return `<button type="button" class="chat-row ${un ? "unread" : ""}" data-chat="${esc(aid)}">
-          <div class="avatar volt">${esc(initials(A.athletes[aid]?.name))}</div>
+          ${avatar(A.athletes[aid], "volt")}
           <div class="grow"><div class="split"><b>${esc(athleteName(aid))}</b><span class="muted" style="font-size:12px">${chat?.lastTs ? (dayLabel(chat.lastTs) === "Aujourd'hui" ? hhmm(chat.lastTs) : dayLabel(chat.lastTs)) : ""}</span></div>
             <div class="preview">${chat ? (chat.lastFrom === A.myId ? "Toi : " : "") + esc(chat.lastMsg) : `<span class="muted">Pas encore de message</span>`}</div></div>
           ${un ? `<span class="dot" aria-label="Non lu"></span>` : ""}
@@ -1305,13 +1632,68 @@ video.proof-img{background:#000;object-fit:contain}
   }
 
   /* ---------- Coach : visibilité / Pro ---------- */
+  function startEdit() {
+    const p = A.profile;
+    A.draft = { photo: p.photo || "", name: p.name || "", city: p.city || "", sport: p.sport || SPORTS[0], specialties: [...(p.specialties || [])], bio: p.bio || "",
+      experience: p.experience ?? "", diplomas: p.diplomas || "", price: p.price ?? 0, trial: !!p.trial, places: (p.places || []).map(x => ({ ...x })),
+      availability: JSON.parse(JSON.stringify(p.availability || {})) };
+    A.editing = true; A.tab.coach = "pro"; render(); $main.scrollTop = 0;
+  }
+  function viewProfileEdit() {
+    const d = A.draft, gal = A.gallery[A.myId] || [];
+    const specs = [...new Set([...SPECIALTIES, ...d.specialties])];
+    return `<section class="screen ENTER">
+      <div class="split edit-bar"><button type="button" class="btn small ghost" data-act="edit-cancel">Annuler</button><b>Modifier ma page</b><button type="button" class="btn small primary" data-act="edit-save">Enregistrer</button></div>
+      <div class="card"><h3>Photo de profil</h3><div class="row">${avatar({ photo: d.photo, name: d.name }, "xl volt")}
+        <div class="grow" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><label class="btn small"><input type="file" accept="image/*" data-upload="photo" hidden>📷 ${d.photo ? "Changer la photo" : "Ajouter une photo"}</label>${d.photo ? `<button type="button" class="btn small ghost" data-act="photo-del">Retirer</button>` : ""}</div></div></div>
+      <div class="card"><h3>Infos</h3>
+        <div class="field"><label for="pfName">Nom affiché</label><input type="text" id="pfName" data-f="name" maxlength="40" value="${esc(d.name)}"></div>
+        <div class="row" style="flex-wrap:wrap;align-items:flex-start">
+          <div class="field" style="flex:1;min-width:130px"><label for="pfCity">Ville</label><input type="text" id="pfCity" data-f="city" maxlength="40" value="${esc(d.city)}"></div>
+          <div class="field" style="flex:1;min-width:130px"><label for="pfSport">Spécialité principale</label><select id="pfSport" data-f="sport">${SPORTS.map(x => `<option ${x === d.sport ? "selected" : ""}>${esc(x)}</option>`).join("")}</select></div></div>
+        <div class="row" style="flex-wrap:wrap;align-items:flex-start">
+          <div class="field" style="flex:1;min-width:130px"><label for="pfPrice">Prix (€ / mois)</label><input type="number" id="pfPrice" data-f="price" min="0" step="5" value="${esc(d.price)}"></div>
+          <div class="field" style="flex:1;min-width:130px"><label for="pfExp">Années d'expérience</label><input type="number" id="pfExp" data-f="experience" min="0" max="60" value="${esc(d.experience)}"></div></div>
+        <div class="field"><label for="pfDipl">Diplômes et certifications</label><input type="text" id="pfDipl" data-f="diplomas" maxlength="120" value="${esc(d.diplomas)}" placeholder="Ex. BPJEPS AF, Licence STAPS"></div>
+        <label class="check"><input type="checkbox" id="pfTrial" data-f="trial" ${d.trial ? "checked" : ""}> Première séance d'essai offerte</label></div>
+      <div class="card"><h3>Présentation</h3>
+        <textarea id="pfBio" data-f="bio" maxlength="600" rows="5" placeholder="Ton parcours, ta méthode, pour qui tu es fait…">${esc(d.bio)}</textarea>
+        <span class="muted" style="font-size:12px;align-self:flex-end" id="bioCount">${d.bio.length}/600</span></div>
+      <div class="card"><h3>Spécialités</h3>
+        <div class="row" style="flex-wrap:wrap;gap:6px">${specs.map(x => `<button type="button" class="tog" data-spec="${esc(x)}" aria-pressed="${d.specialties.includes(x)}">${esc(x)}</button>`).join("")}</div>
+        <div class="search"><input type="text" id="specNew" maxlength="30" placeholder="Autre spécialité"><button type="button" class="btn small" data-act="spec-add">Ajouter</button></div></div>
+      <div class="card"><h3>Lieux de travail</h3>
+        ${d.places.map((pl, i) => `<div class="place-edit"><select id="plt${i}" data-pf="${i}:type" aria-label="Type de lieu">${Object.entries(PLACE_TYPES).map(([k, [ic, l]]) => `<option value="${k}" ${pl.type === k ? "selected" : ""}>${ic} ${l}</option>`).join("")}</select>
+          <input type="text" id="pll${i}" data-pf="${i}:label" maxlength="60" value="${esc(pl.label)}" placeholder="Ex. Basic-Fit Nice Gare" aria-label="Nom du lieu"><button type="button" class="del" data-place-del="${i}" aria-label="Supprimer ce lieu">×</button></div>`).join("")}
+        ${d.places.length < 5 ? `<button type="button" class="btn small" data-act="place-add" style="align-self:flex-start">+ Ajouter un lieu</button>` : ""}</div>
+      <div class="card"><h3>Disponibilités</h3><p class="muted" style="margin:0;font-size:13px">Touche les créneaux où tu peux coacher.</p>${avGrid(d.availability, true)}</div>
+      <div class="card"><h3>Photos</h3>
+        <div class="gal">${gal.map(g => `<div class="gal-item"><img src="${esc(g.img)}" alt=""><button type="button" class="gal-del" data-gal-del="${esc(g.id)}" aria-label="Supprimer la photo">×</button></div>`).join("")}
+          ${gal.length < 6 ? `<label class="gal-add"><input type="file" accept="image/*" data-upload="gallery" hidden><span>+</span>Ajouter</label>` : ""}</div>
+        <p class="muted" style="margin:0;font-size:12px">Jusqu'à 6 photos : ta salle, tes séances, ton matériel. Elles sont enregistrées tout de suite.</p></div>
+      <button type="button" class="btn primary wide" data-act="edit-save">Enregistrer ma page</button>
+    </section>`;
+  }
+  async function saveProfileDraft() {
+    const d = A.draft;
+    if (!d.name.trim()) throw { ui: "Indique ton nom." };
+    await A.db.doc("profiles/" + A.myId).update({
+      photo: d.photo, name: d.name.trim().slice(0, 40), city: d.city.trim().slice(0, 40), sport: d.sport, specialties: d.specialties.slice(0, 12), bio: d.bio.trim().slice(0, 600),
+      experience: d.experience === "" ? "" : Math.max(0, Math.round(+d.experience || 0)), diplomas: d.diplomas.trim().slice(0, 120), price: Math.max(0, Math.round(+d.price || 0)), trial: !!d.trial,
+      places: d.places.filter(x => x.label.trim()).map(x => ({ type: x.type, label: x.label.trim().slice(0, 60) })), availability: d.availability
+    });
+    A.editing = false; A.draft = null;
+  }
   function viewPro() {
-    const me = A.profile, boosted = (me.boostedUntil || 0) > now();
+    if (A.editing && A.draft) return viewProfileEdit();
+    const me = { ...A.profile, id: A.myId }, boosted = (me.boostedUntil || 0) > now(), comp = completion(me);
     const daysB = boosted ? Math.ceil((me.boostedUntil - now()) / 86400000) : 0;
     return `<section class="screen ENTER">
-      <div class="eyebrow">Mon profil coach</div>
-      <div class="card"><div class="row"><div class="avatar volt">${esc(initials(me.name))}</div><div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">${esc(me.sport || "")}${me.city ? " · " + esc(me.city) : ""} · ${euro(me.price || 0)}/mois</div></div>${me.pro ? `<span class="chip volt">PRO</span>` : ""}</div>
+      <div class="card preview-bar">
+        <div class="split"><div><div class="eyebrow">Ma page publique</div><b>Voici ce que voient les sportifs</b></div><button type="button" class="btn small primary" data-act="edit-open">✏️ Modifier</button></div>
+        ${comp.pct < 100 ? `<div class="bar"><i style="width:${comp.pct}%"></i></div><span class="muted" style="font-size:12px">Complète à ${comp.pct} % · il manque : ${comp.missing.join(", ")}</span>` : `<span class="chip volt" style="align-self:flex-start">✓ Page complète</span>`}
         ${copyTag()}</div>
+      <div class="coach-page self">${coachPageHTML(me, { self: true })}</div>
       <div class="card">
         <div class="split"><h3>⚡ Booster ma visibilité</h3><b class="num">9,90 €</b></div>
         <p class="muted" style="margin:0;font-size:14px">Apparais en tête de « Trouver un coach » pendant 30 jours, avec le badge « Mis en avant ». Paiement unique, sans abonnement.</p>
@@ -1331,7 +1713,7 @@ video.proof-img{background:#000;object-fit:contain}
   function sheetSettings() {
     const me = A.profile;
     openSheet(`<div class="grab"></div><h2>Mon compte</h2>
-      <div class="card"><div class="row"><div class="avatar volt">${esc(initials(me.name))}</div><div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">@${esc(me.handle)} · ${me.role === "coach" ? "Coach" : "Sportif"}</div></div></div></div>
+      <div class="card"><div class="row">${avatar(me, "volt")}<div class="grow"><h3>${esc(me.name)}</h3><div class="muted" style="font-size:13px">@${esc(me.handle)} · ${me.role === "coach" ? "Coach" : "Sportif"}</div></div></div></div>
       ${A.mode === "live" ? `
         <button type="button" class="btn wide" data-s="switch">Passer en profil ${me.role === "coach" ? "sportif" : "coach"}</button>
         <button type="button" class="btn wide ghost" data-s="demo">Essayer la démo (Léa et Karim)</button>`
@@ -1354,7 +1736,7 @@ video.proof-img{background:#000;object-fit:contain}
         closeSheet();
         if (s === "logout") return logout();
         if (s === "delete-yes") return guard(async () => {
-          const id = A.myId;
+          const id = A.myId; A.deleting = true;
           if (me.role === "athlete") await A.db.doc("programs/" + id).delete();
           await A.db.doc("profiles/" + id).delete();
           if (A.mode === "demo") { const acc = (await A.db.collection("accounts").where("uid", "==", id).get()).docs[0]; if (acc) await A.db.doc("accounts/" + acc.id).delete(); logout(); }
@@ -1458,7 +1840,7 @@ video.proof-img{background:#000;object-fit:contain}
   $settings.addEventListener("click", sheetSettings);
   $tabbar.addEventListener("click", e => {
     const b = e.target.closest("button[data-tab]"); if (!b) return;
-    A.tab[A.profile.role] = b.dataset.tab; A.openClient = null;
+    A.tab[A.profile.role] = b.dataset.tab; A.openClient = null; A.viewCoach = null; closeGallerySub();
     if (A.profile.role === "coach" && A.chatWith) { A.chatWith = null; closeChatSub(); }
     render(); if (b.dataset.tab !== "chat") $main.scrollTop = 0;
   });
@@ -1484,10 +1866,30 @@ video.proof-img{background:#000;object-fit:contain}
     if (d.act === "social") return toast(`La connexion avec ${d.p} arrive avec la version App Store`);
     if (d.act === "demo-on") { startDemo(); return; }
     if (d.goto) { A.tab.athlete = d.goto; render(); return; }
+    if (d.coachPage) { A.viewCoach = d.coachPage; A.tab.athlete = "coach"; A.reviewDraft = null; render(); $main.scrollTop = 0; return; }
+    if (d.act === "coach-back") { A.viewCoach = null; closeGallerySub(); render(); $main.scrollTop = 0; return; }
+    if (d.ctab) { A.tab.coach = d.ctab; A.openClient = null; render(); $main.scrollTop = 0; return; }
+    if (d.act === "ai-build") return aiBuildProgram();
+    if (d.star) { A.reviewDraft.rating = +d.star; render(); return; }
+    if (d.act === "review-save") { const cid = A.viewCoach; return guard(() => saveReview(cid), "Merci pour ton avis !"); }
+    if (d.galView) {
+      const [cid, i] = d.galView.split(":"), g = (A.gallery[cid] || [])[+i]; if (!g) return;
+      openSheet(`<div class="grab"></div><img class="gal-big" src="${esc(g.img)}" alt="">`); return;
+    }
+    if (d.act === "edit-open") return startEdit();
+    if (d.act === "edit-cancel") { A.editing = false; A.draft = null; render(); $main.scrollTop = 0; return; }
+    if (d.act === "edit-save") return guard(async () => { try { await saveProfileDraft(); } catch (x) { if (x?.ui) { toast(x.ui); return; } throw x; } render(); $main.scrollTop = 0; toast("Ta page est à jour ✨"); });
+    if (d.act === "photo-del") { A.draft.photo = ""; render(); return; }
+    if (d.spec) { const l = A.draft.specialties, i = l.indexOf(d.spec); if (i >= 0) l.splice(i, 1); else l.push(d.spec); t.setAttribute("aria-pressed", String(i < 0)); return; }
+    if (d.act === "spec-add") { const inp = document.getElementById("specNew"), v = inp.value.trim().slice(0, 30); if (v && !A.draft.specialties.includes(v)) A.draft.specialties.push(v); inp.value = ""; render(); return; }
+    if (d.act === "place-add") { A.draft.places.push({ type: "gym", label: "" }); render(); document.getElementById("pll" + (A.draft.places.length - 1))?.focus(); return; }
+    if (d.placeDel) { A.draft.places.splice(+d.placeDel, 1); render(); return; }
+    if (d.av) { const [day, sl] = d.av.split(":"), l = A.draft.availability[day] || (A.draft.availability[day] = []), i = l.indexOf(sl); if (i >= 0) l.splice(i, 1); else l.push(sl); t.classList.toggle("on", i < 0); t.setAttribute("aria-pressed", String(i < 0)); return; }
+    if (d.galDel) return guard(() => A.db.doc(`profiles/${A.myId}/gallery/${d.galDel}`).delete(), "Photo supprimée");
     if (d.chat) { A.tab.coach = "chat"; A.chatWith = d.chat; A.openClient = null; openChatSub(chatId(d.chat, A.myId)); render(); return; }
     if ("chatBack" in d) { A.chatWith = null; closeChatSub(); render(); return; }
     if (d.sport) { A.coachFilter = d.sport; render(); return; }
-    if (d.add) { const c = A.coaches.find(x => x.id === d.add); if (c) guard(() => addCoach(c), `${first(c.name)} est maintenant ton coach`); return; }
+    if (d.add) { const c = coachById(d.add); if (c) guard(async () => { await addCoach(c); A.viewCoach = null; }, c.ai ? "Vaultr, ton coach IA, reprend la main 🤖" : `${first(c.name)} est maintenant ton coach`); return; }
     if (d.open === "mise") return sheetMise();
     if (d.open === "program") return sheetProgram(A.openClient);
     if (d.client) { A.openClient = d.client; render(); $main.scrollTop = 0; return; }
@@ -1519,6 +1921,21 @@ video.proof-img{background:#000;object-fit:contain}
     }
   });
 
+  $main.addEventListener("input", e => {
+    const el = e.target;
+    if (el.dataset.f && A.draft) { A.draft[el.dataset.f] = el.type === "checkbox" ? el.checked : el.value; if (el.id === "pfBio") { const c = document.getElementById("bioCount"); if (c) c.textContent = el.value.length + "/600"; } }
+    if (el.dataset.pf && A.draft) { const [i, k] = el.dataset.pf.split(":"); A.draft.places[+i][k] = el.value; }
+    if ("rv" in el.dataset && A.reviewDraft) A.reviewDraft.text = el.value;
+  });
+  // Photos du profil coach
+  $main.addEventListener("change", async e => {
+    const inp = e.target.closest("input[data-upload]"); if (!inp || !inp.files[0]) return;
+    const f = inp.files[0], kind = inp.dataset.upload; inp.value = "";
+    try {
+      if (kind === "photo") { A.draft.photo = await compressImage(f, 320, .8, true); render(); }
+      else await guard(async () => { const img = await compressImage(f, 900, .7, false); await A.db.collection(`profiles/${A.myId}/gallery`).add({ img, ts: now() }); }, "Photo ajoutée");
+    } catch (x) { toast(x?.ui || "Cette image n'a pas pu être ajoutée."); }
+  });
   // Envoi d'une preuve : photo réduite, ou vidéo compressée sur le téléphone puis envoyée en morceaux
   $main.addEventListener("change", e => {
     const inp = e.target.closest("input[data-proof]"); if (!inp || !inp.files[0]) return;

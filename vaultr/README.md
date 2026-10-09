@@ -15,6 +15,15 @@ sa mise. Les montants non validés en fin de mois restent à Vaultr.
 
 ## Fonctionnement
 
+- **Coach IA « Vaultr »** : attribué d'office à chaque nouveau sportif (gratuit). Il crée le
+  programme quand la mise est choisie, vérifie les photos/vidéos (image envoyée à Claude via
+  la capacité `sample`) et répond dans la messagerie. Sans accès à Claude (démo hors
+  claude.ai), il utilise des programmes types et des réponses simples. Le sportif peut
+  choisir un coach humain à tout moment.
+- **Pages coach** : photo, présentation, spécialités, diplômes, expérience, lieux de travail,
+  disponibilités (grille semaine), galerie (`profiles/<id>/gallery/*`), prix, séance d'essai,
+  avis notés (`reviews/<sportif>` : chacun n'écrit que les siens). Éditeur « Ma page » et
+  tableau de bord coach (revenus, note, à traiter, page complète à X %).
 - **Vrais comptes** (sur claude.ai) : chacun crée son profil sportif ou coach avec un
   `@tag`. Les données sont partagées en direct :
   - `profiles/<id>` : profil (chacun ne modifie que le sien) ;
