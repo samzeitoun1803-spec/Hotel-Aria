@@ -52,3 +52,8 @@ Mêmes fonctionnalités que `vaultr/maquette.html`, nouvelle direction artistiqu
   bloc « Ta marque ici » qui présente l'offre aux annonceurs (ciblage ville / sport / objectif, tarif indicatif).
   Les annonceurs de la démo sont des marques fictives ; les annonces sont une simple liste (`ADS`)
   à remplacer par une collection alimentée par les vrais annonceurs.
+- **Adresse et coachs proches** : à l'inscription, le sportif indique son adresse (ou touche
+  « 📍 Ma position »). Elle est reconnue sans service externe (quartiers de Nice, villes de la Côte
+  d'Azur et grandes villes françaises, codes postaux) et **seul le quartier ou la ville est enregistré**,
+  jamais la rue. La liste « Trouver un coach » est triée par distance (« 🏅 Le plus proche · à 800 m »),
+  après les coachs boostés. Adresse modifiable dans ⚙️ et depuis la liste des coachs.

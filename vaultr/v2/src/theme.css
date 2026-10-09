@@ -618,3 +618,17 @@ h2{font-size:30px}
 .ad-dots i.on{width:20px;background:var(--volt)}
 .ad-track{padding:8px 18px 30px;margin-bottom:-22px}
 .ad{box-shadow:0 10px 18px rgba(0,0,0,.2)}
+
+/* ---------- Adresse et coachs proches ---------- */
+.addr{display:flex;gap:8px}
+.addr input{flex:1;min-width:0;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.addr .btn{flex:none;white-space:nowrap}
+.addr-hint{font-size:12px;line-height:1.4;color:var(--muted)}
+.addr-hint.ok{color:var(--ok);font-weight:600}
+.addr-hint.warn{color:var(--volt)}
+.near-line{margin:-4px 0 0;font-size:13px;color:var(--muted)}
+.near-line b{color:var(--hi)}
+.near-card{flex-direction:row;align-items:center;gap:12px;border-color:color-mix(in srgb,var(--volt) 45%,var(--line))}
+.chip.dist{color:var(--fg)}
+.chip.dist.near{background:var(--brass);color:#1A1205;font-weight:700}
+.coach-card>.cc-main{width:auto}
