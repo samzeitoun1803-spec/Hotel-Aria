@@ -1174,6 +1174,14 @@ h2{font-size:30px}
 .chip.dist{color:var(--fg)}
 .chip.dist.near{background:var(--brass);color:#1A1205;font-weight:700}
 .coach-card>.cc-main{width:auto}
+
+/* ---------- Classement « Top x % » dans le partage ---------- */
+.rank-hl{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--brass);color:#1A1205;box-shadow:0 10px 26px rgba(227,176,75,.28);animation:rkIn .6s cubic-bezier(.3,1.6,.5,1) both}
+.rank-hl b{display:block;font-family:var(--display);font-weight:900;font-size:22px;line-height:1;text-transform:uppercase}
+.rank-hl span:last-child{font-size:13.5px;line-height:1.35}
+.rank-hl em{font-style:normal;font-weight:800}
+.rk-emoji{font-size:34px;line-height:1;animation:adBob 2.6s ease-in-out .6s infinite}
+@keyframes rkIn{from{opacity:0;transform:scale(.85) translateY(10px)}}
 </style>
 </head>
 <body>
@@ -1386,7 +1394,7 @@ h2{font-size:30px}
   /* =====================================================================
      Base locale pour le mode démo (même interface que la vraie base)
      ===================================================================== */
-  const DEMO_KEY = "vaultr-demo-v8";
+  const DEMO_KEY = "vaultr-demo-v9";
   function demoSeed() {
     const t0 = now() - 86400000 * 9;
     const P = {};
@@ -1447,6 +1455,11 @@ h2{font-size:30px}
       task("Marche rapide 30 min", "", 1.5, 6, 1, false), task("20 squats", "", 2.25, 6, 2, true)] };
     P["programs/demo_yanis"] = { athleteId: "demo_yanis", coachId: "demo_karim", mise: 80, coachFee: 150, createdAt: t0, tasks: [
       task("Développé couché 4 × 10", "", 5, 2, 3, true), task("Tractions 3 × 8", "", 5, 2, 3, false)] };
+    // Autres sportifs de la communauté (suivis par les autres coachs) : ils servent au classement « Top x % »
+    const crowd = [.42, .55, .61, .35, .33, .31, .3, .28, .27, .26, .25, .24, .22, .21, .2, .19, .18, .17, .16, .15, .14, .13, .12, .11, .1, .1, .09, .08, .07, .06, .06, .05, .04, .04, .03, .02, .02, .01, 0, 0];
+    const others = ["demo_ines", "demo_theo", "demo_nadia", "demo_jade"];
+    crowd.forEach((r, i) => { const mise = [30, 40, 50, 60, 80, 100][i % 6], v = mise / 16, k = Math.round(r * 16);
+      P["programs/demo_m" + i] = { athleteId: "demo_m" + i, coachId: others[i % 4], mise, coachFee: 0, createdAt: t0, tasks: [{ id: "t" + i, name: "Séance", detail: "", value: v, target: 16, done: k, earned: v * k, diff: 2, weak: false }] }; });
     const ev = (aid, label, amount, ago) => P["events/" + rid()] = { athleteId: aid, coachId: "demo_karim", label, amount, ts: now() - ago };
     ev("demo_lea", "Mise + coaching du mois (simulé)", -200, 86400000 * 9);
     const chat = (aid, msgs) => {
@@ -3973,9 +3986,20 @@ h2{font-size:30px}
     const rg = x.createRadialGradient(cx, cy, 40, cx, cy, 720); rg.addColorStop(0, d.full ? "rgba(227,176,75,.42)" : "rgba(227,176,75,.22)"); rg.addColorStop(1, "rgba(227,176,75,0)");
     x.fillStyle = rg; x.fillRect(0, 0, W, H);
     x.textAlign = "center"; x.textBaseline = "alphabetic";
-    x.fillStyle = "#F2EEE6"; x.font = `900 84px ${BS}`; ls("14px"); x.fillText("VAULTR", cx, 190);
+    const hy = d.rank ? -46 : 0;
+    x.fillStyle = "#F2EEE6"; x.font = `900 84px ${BS}`; ls("14px"); x.fillText("VAULTR", cx, 190 + hy);
     x.fillStyle = "#E3B04B"; x.font = `600 30px ${MONO}`; ls("8px");
-    x.fillText((d.kind === "recap" ? `Recap · ${d.month}` : d.full ? `Coffre ouvert · ${d.month}` : `Mon coffre · ${d.month}`).toUpperCase(), cx, 250);
+    x.fillText((d.kind === "recap" ? `Recap · ${d.month}` : d.full ? `Coffre ouvert · ${d.month}` : `Mon coffre · ${d.month}`).toUpperCase(), cx, 250 + hy);
+    if (d.rank) {
+      // bandeau « Avancée spectaculaire · Top 12 % » : la première chose qu'on lit
+      const bw = 900, bh = 96, bx = cx - bw / 2, by = 254;
+      x.save(); x.shadowColor = "rgba(227,176,75,.55)"; x.shadowBlur = 40;
+      const gb = x.createLinearGradient(bx, by, bx + bw, by + bh); gb.addColorStop(0, "#FFE7A8"); gb.addColorStop(.5, "#E3B04B"); gb.addColorStop(1, "#B98321");
+      x.fillStyle = gb; rr(x, bx, by, bw, bh, 48); x.fill(); x.restore();
+      x.fillStyle = "#1A1205"; ls("3px"); fit(`${d.rank.emoji} ${d.rank.label} · Top ${d.rank.top} %`.toUpperCase(), 900, 52, BS, bw - 70);
+      x.fillText(`${d.rank.emoji} ${d.rank.label} · Top ${d.rank.top} %`.toUpperCase(), cx, by + 66);
+      ls("0px");
+    }
     x.lineCap = "round";
     for (let i = 0; i < 72; i++) { const a = i / 72 * Math.PI * 2, r2 = i % 6 ? 384 : 398; x.strokeStyle = "#3A404A"; x.lineWidth = 3; x.beginPath(); x.moveTo(cx + Math.cos(a) * 372, cy + Math.sin(a) * 372); x.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2); x.stroke(); }
     const dg = x.createRadialGradient(cx - 120, cy - 140, 20, cx, cy, 360); dg.addColorStop(0, "#30353E"); dg.addColorStop(.55, "#181B20"); dg.addColorStop(1, "#0D0F12");
@@ -4018,17 +4042,31 @@ h2{font-size:30px}
     setTimeout(() => URL.revokeObjectURL(url), 5000);
     toast("Image enregistrée 📥 Publie-la en story !");
   }
+  // Classement honnête : part de la mise déjà récupérée, comparée à tous les sportifs qui ont une mise ce mois-ci
+  async function progressRank(ratio) {
+    try {
+      if (!(ratio > 0)) return null;
+      const q = await A.db.collection("programs").get();
+      const vals = q.docs.map(x => x.data()).filter(p => p.mise > 0).map(p => Math.min(1, recovered(p) / p.mise));
+      if (vals.length < 10) return null;   // trop peu de monde pour un classement qui veut dire quelque chose
+      const better = vals.filter(v => v > ratio + 1e-9).length;
+      const top = Math.max(1, Math.round((better + 1) / vals.length * 100));
+      if (top > 50) return null;
+      return { top, label: top <= 15 ? "Avancée spectaculaire" : top <= 30 ? "Grosse avancée" : "Belle avancée", emoji: top <= 15 ? "🚀" : top <= 30 ? "🔥" : "💪" };
+    } catch { return null; }
+  }
   function openShare(kind, R) {
     R = R || computeRecap(0);
     const p = A.program || {}, me = A.profile;
     const amount = kind === "recap" ? R.money : recovered(p), mise = kind === "recap" ? R.mise : p.mise || 0;
     const d = { kind, handle: me.handle, month: R.month, amount, mise, pct: mise ? Math.min(100, Math.round(amount / mise * 100)) : 0,
       n: kind === "recap" ? R.n : liveTasks(p).reduce((a, t) => a + t.done, 0), streak: R.streak, persona: R.persona, full: kind === "victory" || (kind === "recap" && R.pct >= 100) };
-    const cap = kind === "victory" ? `J'ai récupéré mes ${euro(amount)} ce mois-ci en validant ${d.n} séances 💪🔐 #Vaultr #TonEffortTeRembourse`
+    let cap = kind === "victory" ? `J'ai récupéré mes ${euro(amount)} ce mois-ci en validant ${d.n} séances 💪🔐 #Vaultr #TonEffortTeRembourse`
       : kind === "recap" ? `Mon recap ${deM(d.month)} : ${d.persona.title.toLowerCase()} ${d.persona.emoji} · ${d.n} séances · ${euro(amount)} récupérés 💪 #VaultrRecap`
       : `Déjà ${euro(amount)} récupérés sur ${euro(mise)} ce mois-ci 💪 Le coffre n'a qu'à bien se tenir. #Vaultr`;
     openSheet(`<div class="grab"></div><h2>${kind === "victory" ? "Partage ta victoire" : kind === "recap" ? "Partage ton recap" : "Partage ta progression"}</h2>
       <p class="muted" style="margin:0">Enregistre l'image, puis publie-la en story Instagram. Pense à identifier ton coach 😉</p>
+      <div class="rank-hl" id="shareRank" hidden></div>
       <div class="share-prev" id="sharePrev"><div class="dots"><span></span><span></span><span></span></div></div>
       <button type="button" class="btn money big wide" id="shareSave" disabled>📥 Enregistrer l'image</button>
       <div class="field"><label>Légende à coller</label><div class="copy"><code id="shareCap">${esc(cap)}</code><button type="button" class="btn small" id="shareCopy">Copier</button></div></div>`, async sh => {
@@ -4040,6 +4078,13 @@ h2{font-size:30px}
       let blob = null;
       sh.querySelector("#shareSave").addEventListener("click", () => blob && saveShareImage(blob, `vaultr-${kind}-${monthKey(new Date())}.png`));
       try {
+        d.rank = (kind === "recap" && R.off < 0) ? null : await progressRank(mise ? amount / mise : 0);
+        if (d.rank) {
+          const hl = sh.querySelector("#shareRank");
+          if (hl) { hl.hidden = false; hl.innerHTML = `<span class="rk-emoji" aria-hidden="true">${d.rank.emoji}</span><span><b>${d.rank.label}</b>Tu fais partie du <em>top ${d.rank.top} %</em> de Vaultr ce mois-ci</span>`; }
+          cap = cap.replace(/ (#Vaultr)/, ` ${d.rank.emoji} ${d.rank.label} : top ${d.rank.top} % sur Vaultr ce mois-ci ! $1`);
+          const ce = sh.querySelector("#shareCap"); if (ce) ce.textContent = cap;
+        }
         const cv = await makeShareCard(d);
         blob = await new Promise(res => cv.toBlob(res, "image/png"));
         const box = sh.querySelector("#sharePrev"); if (box) box.innerHTML = `<img src="${cv.toDataURL("image/png")}" alt="Carte de partage Vaultr : ${esc(cap)}">`;

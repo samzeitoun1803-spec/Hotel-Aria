@@ -632,3 +632,11 @@ h2{font-size:30px}
 .chip.dist{color:var(--fg)}
 .chip.dist.near{background:var(--brass);color:#1A1205;font-weight:700}
 .coach-card>.cc-main{width:auto}
+
+/* ---------- Classement « Top x % » dans le partage ---------- */
+.rank-hl{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--brass);color:#1A1205;box-shadow:0 10px 26px rgba(227,176,75,.28);animation:rkIn .6s cubic-bezier(.3,1.6,.5,1) both}
+.rank-hl b{display:block;font-family:var(--display);font-weight:900;font-size:22px;line-height:1;text-transform:uppercase}
+.rank-hl span:last-child{font-size:13.5px;line-height:1.35}
+.rank-hl em{font-style:normal;font-weight:800}
+.rk-emoji{font-size:34px;line-height:1;animation:adBob 2.6s ease-in-out .6s infinite}
+@keyframes rkIn{from{opacity:0;transform:scale(.85) translateY(10px)}}

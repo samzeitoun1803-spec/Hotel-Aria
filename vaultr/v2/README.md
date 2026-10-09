@@ -57,3 +57,8 @@ Mêmes fonctionnalités que `vaultr/maquette.html`, nouvelle direction artistiqu
   d'Azur et grandes villes françaises, codes postaux) et **seul le quartier ou la ville est enregistré**,
   jamais la rue. La liste « Trouver un coach » est triée par distance (« 🏅 Le plus proche · à 800 m »),
   après les coachs boostés. Adresse modifiable dans ⚙️ et depuis la liste des coachs.
+- **Classement au partage** : la carte Instagram et la feuille de partage affichent en grand
+  « 🚀 Avancée spectaculaire · Top 12 % ». Calcul réel : part de la mise récupérée comparée à tous
+  les sportifs qui ont une mise ce mois-ci ; affiché seulement dans le top 50 % et s'il y a au moins
+  10 sportifs (sinon rien). Libellés : ≤ 15 % spectaculaire, ≤ 30 % grosse avancée, ≤ 50 % belle avancée.
+  La démo contient 40 autres sportifs pour que le classement ait du sens.
