@@ -1,5 +1,4 @@
 const { chromium } = require('playwright');
-const fs = require('fs');
 const [out, file] = process.argv.slice(2);
 const wait = ms => new Promise(r => setTimeout(r, ms));
 (async () => { const b = await chromium.launch();
@@ -8,35 +7,12 @@ await c.addInitScript(() => localStorage.setItem('vaultr-notif-skip', '1'));
 const p = await c.newPage(); await p.goto('file://' + file); await wait(3000);
 await p.click('[data-demo-login="demo_lea"]'); await wait(1500);
 await p.click('[data-tab="wallet"]'); await wait(300); await p.click('[data-open="mise"]'); await wait(300);
-await p.locator('#miseRange').fill('300'); await p.dispatchEvent('#miseRange', 'input'); await wait(200); await p.click('#miseOk'); await wait(800);
-await p.click('[data-tab="vault"]'); await wait(300);
-// démo : mise de 300 €, pompes à 30 € la séance
-await p.evaluate(() => {
-  const k = 'vaultr-v3-demo-v1', d = JSON.parse(localStorage.getItem(k)); const pr = d['programs/demo_lea'];
-  pr.mise = 300; const [run, push, core] = pr.tasks;
-  Object.assign(run, { value: 10, target: 8, done: 3, earned: 30 });
-  Object.assign(push, { value: 30, target: 5, done: 2, earned: 60 });
-  Object.assign(core, { value: 8.75, target: 8, done: 3, earned: 26.25 });
-  Object.keys(d).filter(x => x.startsWith('events/') && d[x].athleteId === 'demo_lea' && d[x].amount < 0 && d[x].ts > Date.now() - 600000).forEach(x => delete d[x]);
-  Object.keys(d).filter(x => x.startsWith('events/') && d[x].athleteId === 'demo_lea' && d[x].amount > 0).forEach(x => { const l = d[x].label; d[x].amount = l.startsWith('15 pompes') ? 30 : l.startsWith('Course') ? 10 : 8.75; });
-  localStorage.setItem(k, JSON.stringify(d));
-});
-await p.reload(); await wait(3200);
-await p.locator('[data-act="resume"]').click({ timeout: 2500 }).catch(() => {}); await wait(2600); await p.screenshot({ path: out + '/vault.png' });
-await p.evaluate(() => document.getElementById('main').scrollTo(0, 560)); await wait(900); await p.screenshot({ path: out + '/tasks.png' });
-await p.evaluate(() => document.getElementById('main').scrollTo(0, 0)); await wait(300);
-await p.click('.share-link'); await p.waitForSelector('#sharePrev img', { timeout: 9000 }); await wait(500);
-fs.writeFileSync(out + '/card.png', Buffer.from((await p.getAttribute('#sharePrev img', 'src')).split(',')[1], 'base64'));
-console.log('rang:', (await p.textContent('#shareRank')).trim());
-await p.keyboard.press('Escape'); await wait(300);
-await p.click('#roleSwitch [data-role="coach"]'); await wait(1400); await p.screenshot({ path: out + '/dash.png' });
+await p.locator('#miseRange').fill('50'); await p.dispatchEvent('#miseRange', 'input'); await wait(200); await p.click('#miseOk'); await wait(800);
+await p.evaluate(() => { const k = 'vaultr-v3-demo-v1', d = JSON.parse(localStorage.getItem(k)); d['programs/demo_lea'].tasks[1].value = 30; localStorage.setItem(k, JSON.stringify(d)); });
+await p.reload(); await wait(3200); await p.locator('[data-act="resume"]').click({ timeout: 2500 }).catch(() => {}); await wait(1500);
+await p.click('#roleSwitch [data-role="coach"]'); await wait(1200);
 await p.click('[data-tab="clients"]'); await wait(300); await p.click('[data-client="demo_lea"]'); await wait(400);
 await p.click('[data-validate] >> nth=1'); await wait(500);
-await p.click('#roleSwitch [data-role="athlete"]'); await wait(2700); await p.screenshot({ path: out + '/cele.png' });
-await p.click('[data-cele-ok]'); await wait(1200);
-await p.click('#roleSwitch [data-role="coach"]'); await wait(900);
-await p.click('[data-tab="clients"]'); await wait(300); await p.click('[data-client="demo_lea"]'); await wait(400);
-for (let i = 0; i < 40; i++) { const v = p.locator('[data-validate]:not([disabled])'); if (!(await v.count())) break; await v.first().click(); await wait(120); }
-await p.click('#roleSwitch [data-role="athlete"]'); await wait(1800); await p.click('[data-cele-ok]'); await wait(6000);
-await p.screenshot({ path: out + '/open.png' });
+await p.click('#roleSwitch [data-role="athlete"]'); await wait(2800); await p.screenshot({ path: out + '/cele30.png' });
+console.log(await p.textContent('.cele-card'));
 await b.close(); })();

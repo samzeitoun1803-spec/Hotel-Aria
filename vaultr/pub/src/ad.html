@@ -11,7 +11,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 .dust i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);animation:dust var(--du) linear 0s both}
 @keyframes dust{from{transform:translate(0,0)}to{transform:translate(var(--dx),var(--dy))}}
 /* scènes */
-.sc{position:absolute;inset:0;visibility:hidden;animation:vis var(--len) linear var(--at) none}
+.sc{position:absolute;inset:0;opacity:0}
 @keyframes vis{from{visibility:visible}to{visibility:visible}}
 .push{position:absolute;inset:0;animation:push var(--len) linear var(--at) both}
 @keyframes push{from{transform:scale(1)}to{transform:scale(1.07)}}
@@ -82,110 +82,147 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 @keyframes fb{to{opacity:1}}
 .grain{position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .bars::before,.bars::after{content:"";position:absolute;left:0;right:0;height:0;background:#000;z-index:50}
+
+.step{position:absolute;left:80px;top:96px;display:flex;align-items:center;gap:16px;font-weight:600;font-size:34px;letter-spacing:.02em;color:#A1A1A6;animation:in 1s cubic-bezier(.16,1,.3,1) var(--d) both}
+.step b{display:grid;place-items:center;width:60px;height:60px;border-radius:50%;background:var(--flame);color:#fff;font-size:30px}
+.lock{position:absolute;left:50%;top:640px;width:460px;height:560px;margin-left:-230px}
+.lock .sh{animation:shut .7s cubic-bezier(.5,0,.3,1.6) var(--d) both}
+@keyframes shut{from{transform:translateY(-90px)}}
+.redglow{position:absolute;left:50%;top:50%;width:1500px;height:1500px;margin:-750px 0 0 -750px;border-radius:50%;background:radial-gradient(circle,rgba(255,40,60,.4),transparent 58%);animation:glowIn 1.2s ease var(--d) both,breathe 1.2s ease-in-out calc(var(--d) + 1.2s) 3 alternate}
+.tiles{position:absolute;left:60px;right:60px;top:560px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.tile{padding:40px 34px;border-radius:44px;background:rgba(40,40,46,.55);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(24px);box-shadow:0 30px 70px rgba(0,0,0,.5);animation:chip 1s cubic-bezier(.16,1,.3,1) var(--d) both}
+.tile span{display:block;font-size:76px;margin-bottom:18px}
+.tile b{display:block;font-size:46px;font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.tile i{display:block;margin-top:10px;font-style:normal;font-size:32px;font-weight:500;color:#A1A1A6;line-height:1.25}
+.who{display:inline-block;margin:0 6px;padding:6px 22px;border-radius:999px;border:1.5px solid rgba(255,255,255,.25)}
 </style></head>
 <body><div id="film">
 <div class="dust" id="dust"></div>
 
-<!-- 1 · 0 → 3 -->
-<section class="sc" style="--at:0s;--len:3s"><div class="push" style="--at:0s;--len:3s">
-  <div class="t in fo" style="--d:.3s;--o:2.3s;top:800px;font-size:92px">Chaque année,</div>
-  <div class="t in fo" style="--d:1.05s;--o:2.35s;top:920px;font-size:92px">on paie pour<br>se motiver.</div>
+<!-- 1 · 0 → 3 · le problème -->
+<section class="sc" data-at="0" data-len="3"><div class="push" style="--at:0s;--len:3.4s">
+  <div class="t in" style="--d:.3s;top:800px;font-size:92px">Chaque année,</div>
+  <div class="t in" style="--d:1.0s;top:920px;font-size:92px">on paie pour<br>se motiver.</div>
 </div></section>
-
 <!-- 2 · 3 → 6.5 -->
-<section class="sc" style="--at:3s;--len:3.5s"><div class="push" style="--at:3s;--len:3.5s">
-  <div class="t in fo grey" style="--d:3.2s;--o:4.8s;top:800px;font-size:92px">Et chaque année,</div>
-  <div class="t in fo" style="--d:3.9s;--o:4.85s;top:920px;font-size:92px">on abandonne.</div>
-  <div class="t inS fl" style="--d:5.25s;top:850px;font-size:120px;font-weight:800">Jusqu'à maintenant.</div>
+<section class="sc" data-at="3" data-len="3.5"><div class="push" style="--at:3s;--len:3.8s">
+  <div class="t in fo grey" style="--d:3.2s;--o:4.9s;top:800px;font-size:92px">Et chaque année,</div>
+  <div class="t in fo" style="--d:3.9s;--o:4.95s;top:920px;font-size:92px">on abandonne.</div>
+  <div class="t inS fl" style="--d:5.3s;top:850px;font-size:120px;font-weight:800">Jusqu'à maintenant.</div>
 </div></section>
-
-<!-- 3 · 6.5 → 10 : apparition -->
-<section class="sc" style="--at:6.5s;--len:3.5s"><div class="push" style="--at:6.5s;--len:3.5s">
+<!-- 3 · 6.5 → 10.5 · le produit -->
+<section class="sc" data-at="6.5" data-len="4"><div class="push" style="--at:6.5s;--len:4.4s">
   <div class="glow" style="--d:6.5s;--y:45%"></div>
-  <div class="t inS fl" style="--d:6.6s;top:120px;font-size:300px;font-weight:900;letter-spacing:-.06em">Vaultr.</div>
-  <div class="cam" style="top:470px"><div class="ph reveal" style="--d:6.6s"><div class="rim" style="--d:7.4s"></div><div class="scr"><img src="vault.png"><div class="sweep" style="--sw:8.2s"></div></div><div class="isl"></div></div></div>
-  <div class="t in" style="--d:8.6s;top:1835px;font-size:52px;font-weight:600;color:#C7C7CC">Ton effort te rembourse.</div>
+  <div class="t inS fl" style="--d:6.6s;top:110px;font-size:300px;font-weight:900;letter-spacing:-.06em">Vaultr.</div>
+  <div class="cam" style="top:470px"><div class="ph reveal" style="--d:6.6s"><div class="rim" style="--d:7.4s"></div><div class="scr"><img src="vault.png"><div class="sweep" style="--sw:8.4s"></div></div><div class="isl"></div></div></div>
+  <div class="t in" style="--d:8.8s;top:1830px;font-size:54px;font-weight:600;color:#E5E5EA">L'appli de sport où <span class="gd">ton argent te motive.</span></div>
 </div></section>
-
-<!-- 4 · 10 → 14 : la mise -->
-<section class="sc" style="--at:10s;--len:4s"><div class="push" style="--at:10s;--len:4s">
-  <div class="glow" style="--d:10s;--y:62%;--c:rgba(255,214,10,.22)"></div>
-  <div class="t l huge wipe" style="--d:10.1s;top:120px">Mise.</div>
-  <div class="t l in grey" style="--d:10.7s;top:380px;font-size:54px;font-weight:600;right:200px">Mets ton argent en jeu.<br><span style="color:#F5F5F7">Il t'attend dans ton coffre.</span></div>
-  <div class="cam" style="top:640px"><div class="ph turn" style="--at:10s;--len:4s;--r0:22deg;--r1:-10deg;--y0:200px;--y1:20px"><div class="scr"><img class="zoom" src="vault.png" style="--at:10s;--len:4s;--z:1.18;transform-origin:50% 22%"><div class="sweep" style="--sw:11.2s"></div></div><div class="isl"></div></div></div>
-  <div class="chip" style="--d:11.6s;right:40px;top:1500px">🔒 Mise du mois <b>300 €</b></div>
+<!-- 4 · 10.5 → 15 · étape 1 -->
+<section class="sc" data-at="10.5" data-len="4.5"><div class="push" style="--at:10.5s;--len:4.9s">
+  <div class="glow" style="--d:10.5s;--y:62%;--c:rgba(255,214,10,.22)"></div>
+  <div class="step" style="--d:10.6s"><b>1</b>Comment ça marche</div>
+  <div class="t l huge wipe" style="--d:10.7s;top:190px">Mise.</div>
+  <div class="t l in grey" style="--d:11.3s;top:450px;font-size:50px;font-weight:600;right:120px">Choisis ton coach, ou notre coach IA.<br><span style="color:#F5F5F7">Puis mets de l'argent en jeu : ta mise.</span></div>
+  <div class="cam" style="top:700px"><div class="ph turn" style="--at:10.5s;--len:4.5s;--r0:22deg;--r1:-10deg;--y0:200px;--y1:20px"><div class="scr"><img class="zoom" src="vault.png" style="--at:10.5s;--len:4.5s;--z:1.18;transform-origin:50% 22%"><div class="sweep" style="--sw:12s"></div></div><div class="isl"></div></div></div>
+  <div class="chip" style="--d:12.4s;right:40px;top:1560px">🔒 Ma mise du mois <b>50 €</b></div>
 </div></section>
-
-<!-- 5 · 14 → 18 : bouger -->
-<section class="sc" style="--at:14s;--len:4s"><div class="push" style="--at:14s;--len:4s">
-  <div class="glow" style="--d:14s;--y:60%;--c:rgba(60,227,255,.18)"></div>
-  <div class="t l huge wipe" style="--d:14.1s;top:120px">Bouge.</div>
-  <div class="t l in grey" style="--d:14.6s;top:380px;font-size:54px;font-weight:600;right:200px">Ton coach fixe tes séances.<br><span style="color:#F5F5F7">Chacune vaut de l'argent.</span></div>
-  <div class="cam" style="top:640px"><div class="ph turn" style="--at:14s;--len:4s;--r0:-20deg;--r1:12deg;--y0:180px;--y1:30px"><div class="scr"><img class="scroll" src="tasks.png" style="--d:14.4s;--sy:-360px"><div class="sweep" style="--sw:15.4s"></div></div><div class="isl"></div></div></div>
-  <div class="chip" style="--d:15.0s;left:30px;top:900px">🏃 Course <b>10 €</b></div>
-  <div class="chip" style="--d:15.5s;right:30px;top:1180px">💪 15 pompes <b>30 €</b></div>
-  <div class="chip" style="--d:16.0s;left:30px;top:1460px">🧘 Gainage <b>8,75 €</b></div>
+<!-- 5 · 15 → 19.5 · étape 2 -->
+<section class="sc" data-at="15" data-len="4.5"><div class="push" style="--at:15s;--len:4.9s">
+  <div class="glow" style="--d:15s;--y:60%;--c:rgba(60,227,255,.18)"></div>
+  <div class="step" style="--d:15.1s"><b>2</b>Comment ça marche</div>
+  <div class="t l huge wipe" style="--d:15.2s;top:190px">Bouge.</div>
+  <div class="t l in grey" style="--d:15.8s;top:450px;font-size:50px;font-weight:600;right:120px">Ton coach fixe tes séances du mois.<br><span style="color:#F5F5F7">Chacune vaut une part de ta mise.</span></div>
+  <div class="cam" style="top:700px"><div class="ph turn" style="--at:15s;--len:4.5s;--r0:-20deg;--r1:12deg;--y0:180px;--y1:30px"><div class="scr"><img class="scroll" src="tasks.png" style="--d:15.5s;--sy:-360px"><div class="sweep" style="--sw:16.6s"></div></div><div class="isl"></div></div></div>
+  <div class="chip" style="--d:16.4s;left:30px;top:960px">🏃 Course 15 min</div>
+  <div class="chip" style="--d:16.9s;right:30px;top:1230px">💪 15 pompes</div>
+  <div class="chip" style="--d:17.4s;left:30px;top:1500px">🧘 Gainage</div>
 </div></section>
-
-<!-- 6 · 18 → 22 : récupère -->
-<section class="sc" style="--at:18s;--len:4s"><div class="push" style="--at:18s;--len:4s">
-  <div class="rays" style="--d:18.3s;top:22%"></div>
-  <div class="flood" style="--d:18.3s;top:22%"></div>
-  <div class="t l huge wipe" style="--d:18.05s;top:120px;font-size:196px">Récupère.</div>
+<!-- 6 · 19.5 → 24 · étape 3 -->
+<section class="sc" data-at="19.5" data-len="4.5"><div class="push" style="--at:19.5s;--len:4.9s">
+  <div class="rays" style="--d:19.8s;top:24%"></div><div class="flood" style="--d:19.8s;top:24%"></div>
+  <div class="step" style="--d:19.55s"><b>3</b>Comment ça marche</div>
+  <div class="t l huge wipe" style="--d:19.6s;top:190px;font-size:196px">Récupère.</div>
   <div id="coins"></div>
-  <div class="count gd" style="--d:18.45s;top:330px"></div>
-  <div class="shock" style="--d:19.95s;--y:500px"></div><div class="shock" style="--d:20.25s;--y:500px"></div>
-  <div class="cam" style="top:760px"><div class="ph rise" style="--d:18.6s"><div class="scr"><img src="cele.png"><div class="sweep" style="--sw:19.8s"></div></div><div class="isl"></div></div></div>
-  <div class="t in" style="--d:20.3s;top:1830px;font-size:46px;font-weight:600;color:#C7C7CC">Validé en salle, en photo ou en vidéo.</div>
+  <div class="count gd" style="--d:19.95s;top:420px"></div>
+  <div class="shock" style="--d:21.45s;--y:590px"></div><div class="shock" style="--d:21.75s;--y:590px"></div>
+  <div class="cam" style="top:800px"><div class="ph rise" style="--d:20.1s"><div class="scr"><img src="cele30.png"><div class="sweep" style="--sw:21.3s"></div></div><div class="isl"></div></div></div>
+  <div class="t in" style="--d:21.6s;top:1790px;font-size:44px;font-weight:600;color:#E5E5EA">Séance validée en salle, en photo ou en vidéo :<br><span class="gd">l'argent te revient tout de suite.</span></div>
 </div></section>
-
-<!-- 7 · 22 → 25.5 : le coffre s'ouvre -->
-<section class="sc" style="--at:22s;--len:3.5s"><div class="push" style="--at:22s;--len:3.5s">
-  <div class="t in fo" style="--d:22.1s;--o:23.2s;top:860px;font-size:120px;font-weight:800">Tout validé ?</div>
-  <div class="flood" style="--d:23.3s;top:48%"></div><div class="rays" style="--d:23.3s;top:48%"></div>
-  <div class="cam" style="top:380px"><div class="ph reveal" style="--d:23.2s"><div class="scr"><img src="open.png"><div class="sweep" style="--sw:24.2s"></div></div><div class="isl"></div></div></div>
-  <div class="t inS gd" style="--d:23.8s;top:1750px;font-size:120px;font-weight:800">Le coffre s'ouvre.</div>
+<!-- 7 · 24 → 28 · tout validé -->
+<section class="sc" data-at="24" data-len="4"><div class="push" style="--at:24s;--len:4.4s">
+  <div class="flood" style="--d:24.6s;top:46%"></div><div class="rays" style="--d:24.6s;top:46%"></div>
+  <div class="t in" style="--d:24.15s;top:120px;font-size:110px;font-weight:800">Tout fait ?</div>
+  <div class="cam" style="top:330px"><div class="ph reveal" style="--d:24.4s"><div class="scr"><img src="open.png"><div class="sweep" style="--sw:25.6s"></div></div><div class="isl"></div></div></div>
+  <div class="t inS gd" style="--d:25.3s;top:1720px;font-size:96px;font-weight:800">Tu récupères tout.</div>
 </div></section>
-
-<!-- 8 · 25.5 → 29 : partage -->
-<section class="sc" style="--at:25.5s;--len:3.5s"><div class="push" style="--at:25.5s;--len:3.5s">
-  <div class="glow" style="--d:25.5s;--y:48%"></div>
-  <div class="t huge wipe fl" style="--d:25.55s;top:110px;font-size:220px">Partage.</div>
-  <div class="card" style="--d:25.8s"><img src="card.png"></div>
-  <div class="badge" style="--d:27.0s;left:70px;top:1500px">🚀 Top 12 %</div>
-  <div class="t in" style="--d:27.4s;top:1720px;font-size:46px;font-weight:600;color:#C7C7CC;text-align:right">Et ton Recap du mois, façon story.</div>
+<!-- 8 · 28 → 32 · la règle -->
+<section class="sc" data-at="28" data-len="4"><div class="push" style="--at:28s;--len:4.4s">
+  <div class="redglow" style="--d:28.6s"></div>
+  <div class="t in" style="--d:28.15s;top:220px;font-size:140px;font-weight:800">Tu lâches ?</div>
+  <svg class="lock" viewBox="0 0 230 280" style="--d:28.9s"><g class="sh" style="--d:28.9s"><path d="M55 120V80a60 60 0 0 1 120 0v40" fill="none" stroke="#FF3B5C" stroke-width="22" stroke-linecap="round"/></g><rect x="20" y="118" width="190" height="150" rx="34" fill="#FF3B5C"/><circle cx="115" cy="185" r="20" fill="#2A0008"/><rect x="107" y="190" width="16" height="40" rx="8" fill="#2A0008"/></svg>
+  <div class="t in" style="--d:29.4s;top:1260px;font-size:84px;font-weight:800"><span style="color:#FF3B5C">L'argent reste au coffre.</span></div>
+  <div class="t in grey" style="--d:30.2s;top:1430px;font-size:46px;font-weight:600">On déteste perdre de l'argent deux fois plus<br>qu'on aime en gagner.<br><span style="color:#F5F5F7">Vaultr s'en sert pour te faire bouger.</span></div>
 </div></section>
-
-<!-- 9 · 29 → 32 : coachs -->
-<section class="sc" style="--at:29s;--len:3s"><div class="push" style="--at:29s;--len:3s">
-  <div class="glow" style="--d:29s;--y:58%;--c:rgba(140,80,255,.3)"></div>
-  <div class="t in" style="--d:29.05s;top:140px;font-size:96px;font-weight:800">Et pour les coachs.</div>
-  <div class="cam" style="top:420px"><div class="ph turn" style="--at:29s;--len:3s;--r0:16deg;--r1:-8deg;--y0:160px;--y1:0px"><div class="scr"><img src="dash.png"><div class="sweep" style="--sw:29.8s"></div></div><div class="isl"></div></div></div>
-  <div class="chip" style="--d:29.6s;left:30px;top:820px">📈 Des clients motivés</div>
-  <div class="chip" style="--d:30.0s;right:30px;top:1100px">💳 Paiements intégrés</div>
-  <div class="chip" style="--d:30.4s;left:30px;top:1380px">⚡ Programmes en 2 touches</div>
+<!-- 9 · 32 → 36 · partage -->
+<section class="sc" data-at="32" data-len="4"><div class="push" style="--at:32s;--len:4.4s">
+  <div class="glow" style="--d:32s;--y:48%"></div>
+  <div class="t huge wipe fl" style="--d:32.1s;top:110px;font-size:220px">Partage.</div>
+  <div class="card" style="--d:32.4s"><img src="card.png"></div>
+  <div class="badge" style="--d:33.6s;left:70px;top:1500px">🚀 Top 12 %</div>
+  <div class="t in" style="--d:34.0s;top:1700px;font-size:46px;font-weight:600;color:#E5E5EA;text-align:right">Tes progrès en story, ton Recap<br>chaque mois. Et tout le monde le voit.</div>
 </div></section>
-
-<!-- 10 · 32 → 36 : signature -->
-<section class="sc" style="--at:32s;--len:4.2s"><div class="push" style="--at:32s;--len:4.2s">
-  <div class="logoGlow" style="--d:32.1s"></div>
-  <svg class="logo" style="--d:32.1s" viewBox="0 0 120 120"><defs><linearGradient id="fl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2E7E"/><stop offset=".55" stop-color="#FF5A3C"/><stop offset="1" stop-color="#FF9A1A"/></linearGradient></defs><circle cx="60" cy="60" r="56" fill="url(#fl)"/><circle cx="60" cy="60" r="44" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/><g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"><circle cx="60" cy="60" r="22"/><line x1="60" y1="60" x2="60" y2="36"/><line x1="60" y1="60" x2="81" y2="72"/><line x1="60" y1="60" x2="39" y2="72"/></g><circle cx="60" cy="60" r="6" fill="#fff"/></svg>
-  <div class="t inS" style="--d:32.8s;top:1010px;font-size:190px;font-weight:800;letter-spacing:-.05em">Vaultr</div>
-  <div class="t in fl" style="--d:33.4s;top:1230px;font-size:76px;font-weight:700">Ton effort te rembourse.</div>
-  <div class="t in grey" style="--d:34.2s;top:1400px;font-size:44px;font-weight:500">Bientôt sur iOS et Android.</div>
+<!-- 10 · 36 → 40.5 · coachs -->
+<section class="sc" data-at="36" data-len="4.5"><div class="push" style="--at:36s;--len:4.9s">
+  <div class="glow" style="--d:36s;--y:58%;--c:rgba(140,80,255,.3)"></div>
+  <div class="t in" style="--d:36.1s;top:110px;font-size:96px;font-weight:800">Tu es coach ?</div>
+  <div class="t in grey" style="--d:36.6s;top:240px;font-size:48px;font-weight:600">Tes clients ont enfin une raison de venir.</div>
+  <div class="cam" style="top:420px"><div class="ph turn" style="--at:36s;--len:4.5s;--r0:16deg;--r1:-8deg;--y0:160px;--y1:0px"><div class="scr"><img src="dash.png"><div class="sweep" style="--sw:37s"></div></div><div class="isl"></div></div></div>
+  <div class="chip" style="--d:37.2s;left:30px;top:820px">📈 Des clients motivés</div>
+  <div class="chip" style="--d:37.7s;right:30px;top:1080px">💳 Paiement dans l'appli</div>
+  <div class="chip" style="--d:38.2s;left:30px;top:1340px">⚡ Programmes en 2 touches</div>
+  <div class="chip" style="--d:38.7s;right:30px;top:1600px">📍 Visible près de chez toi</div>
 </div></section>
-
-<div class="fade-black" style="--d:35.3s"></div>
+<!-- 11 · 40.5 → 45 · le modèle -->
+<section class="sc" data-at="40.5" data-len="4.5"><div class="push" style="--at:40.5s;--len:4.9s">
+  <div class="glow" style="--d:40.5s;--y:55%;--c:rgba(255,214,10,.18)"></div>
+  <div class="t l huge wipe" style="--d:40.6s;top:150px;font-size:200px">Le modèle.</div>
+  <div class="t l in grey" style="--d:41.1s;top:400px;font-size:50px;font-weight:600">Gratuit pour les sportifs. Quatre sources de revenus.</div>
+  <div class="tiles">
+    <div class="tile" style="--d:41.6s"><span>🔒</span><b>Mises non récupérées</b><i>restent à Vaultr</i></div>
+    <div class="tile" style="--d:41.9s"><span>⭐</span><b>Coach Pro</b><i>abonnement mensuel</i></div>
+    <div class="tile" style="--d:42.2s"><span>⚡</span><b>Mise en avant</b><i>des coachs qui veulent plus de clients</i></div>
+    <div class="tile" style="--d:42.5s"><span>📣</span><b>Annonces locales</b><i>salles, courses, marques de sport</i></div>
+  </div>
+  <div class="t in" style="--d:43.2s;top:1640px;font-size:50px;font-weight:700">Et chaque mois, <span class="fl">tout recommence.</span></div>
+</div></section>
+<!-- 12 · 45 → 50.5 · signature -->
+<section class="sc" data-at="45" data-len="5.5"><div class="push" style="--at:45s;--len:5.9s">
+  <div class="logoGlow" style="--d:45.1s;top:690px"></div>
+  <svg class="logo" style="--d:45.1s;top:520px" viewBox="0 0 120 120"><defs><linearGradient id="fl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2E7E"/><stop offset=".55" stop-color="#FF5A3C"/><stop offset="1" stop-color="#FF9A1A"/></linearGradient></defs><circle cx="60" cy="60" r="56" fill="url(#fl)"/><circle cx="60" cy="60" r="44" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/><g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"><circle cx="60" cy="60" r="22"/><line x1="60" y1="60" x2="60" y2="36"/><line x1="60" y1="60" x2="81" y2="72"/><line x1="60" y1="60" x2="39" y2="72"/></g><circle cx="60" cy="60" r="6" fill="#fff"/></svg>
+  <div class="t inS" style="--d:45.8s;top:920px;font-size:190px;font-weight:800;letter-spacing:-.05em">Vaultr</div>
+  <div class="t in fl" style="--d:46.4s;top:1140px;font-size:76px;font-weight:700">Ton effort te rembourse.</div>
+  <div class="t in" style="--d:47.2s;top:1330px;font-size:40px;font-weight:600;color:#E5E5EA"><span class="who">Sportifs</span><span class="who">Coachs</span><span class="who">Investisseurs</span></div>
+  <div class="t in" style="--d:47.6s;top:1430px;font-size:50px;font-weight:700">Rejoignez l'aventure.</div>
+  <div class="t in grey" style="--d:48.2s;top:1540px;font-size:40px;font-weight:500">Bientôt sur iOS et Android.</div>
+</div></section>
+<div class="fade-black" style="--d:49.6s"></div>
 <div class="grain"></div>
 </div>
 <script>
+  // fondus enchaînés entre scènes (0,7 s), légère sortie en zoom flou
+  document.querySelectorAll(".sc").forEach(sc => {
+    const at = +sc.dataset.at, len = +sc.dataset.len, X = .35, tot = len + 2 * X, first = at === 0;
+    sc.animate([{ opacity: first ? 1 : 0, filter: first ? "blur(0px)" : "blur(12px)", offset: 0 }, { opacity: 1, filter: "blur(0px)", offset: (2 * X) / tot }, { opacity: 1, filter: "blur(0px)", offset: len / tot }, { opacity: 0, filter: "blur(14px)", offset: 1 }],
+      { duration: tot * 1000, delay: (at - X) * 1000, fill: "both", easing: "linear" });
+  });
+
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const dust = document.getElementById("dust");
   for (let i = 0; i < 38; i++) { const d = document.createElement("i"), s = 6 + rnd() * 26; Object.assign(d.style, { left: rnd() * 1080 + "px", top: rnd() * 1920 + "px", width: s + "px", height: s + "px", opacity: (.15 + rnd() * .4).toFixed(2) });
-    d.style.setProperty("--du", "36s"); d.style.setProperty("--dx", ((rnd() - .5) * 300).toFixed(0) + "px"); d.style.setProperty("--dy", (-200 - rnd() * 500).toFixed(0) + "px"); dust.appendChild(d); }
+    d.style.setProperty("--du", "51s"); d.style.setProperty("--dx", ((rnd() - .5) * 300).toFixed(0) + "px"); d.style.setProperty("--dy", (-200 - rnd() * 500).toFixed(0) + "px"); dust.appendChild(d); }
   const coins = document.getElementById("coins");
   for (let i = 0; i < 40; i++) { const c = document.createElement("div"); c.className = "coin"; c.textContent = "€"; c.style.left = (rnd() * 1000 - 20) + "px";
-    c.style.setProperty("--d", (18.5 + rnd() * 2.6).toFixed(2) + "s"); c.style.setProperty("--du", (1.4 + rnd() * 1.2).toFixed(2) + "s"); c.style.setProperty("--r", ((rnd() - .5) * 900).toFixed(0) + "deg"); c.style.scale = (.5 + rnd() * .7).toFixed(2); coins.appendChild(c); }
+    c.style.setProperty("--d", (20.0 + rnd() * 2.8).toFixed(2) + "s"); c.style.setProperty("--du", (1.4 + rnd() * 1.2).toFixed(2) + "s"); c.style.setProperty("--r", ((rnd() - .5) * 900).toFixed(0) + "deg"); c.style.scale = (.5 + rnd() * .7).toFixed(2); coins.appendChild(c); }
   window.seek = t => { document.getAnimations().forEach(a => { a.pause(); a.currentTime = t * 1000; }); };
   window.ready = document.fonts.ready.then(() => Promise.all([...document.images].map(i => i.decode().catch(() => {})))).then(() => true);
 </script>
