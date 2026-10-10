@@ -1,5 +1,5 @@
 import numpy as np, wave, sys
-SR = 44100; DUR = 50.5; N = int(SR * DUR)
+SR = 44100; DUR = 46; N = int(SR * DUR)
 rng = np.random.default_rng(5)
 L = np.zeros(N); R = np.zeros(N)
 def add(sig, t0, gain=1.0, pan=0.0):
@@ -61,7 +61,7 @@ def boom(size=1.0):
 
 
 CH = [(57, 60, 64), (53, 57, 60), (55, 60, 64), (55, 59, 62)]; RT = [45, 41, 48, 43]
-SEC = [(6.5, 10.5, "reveal"), (10.5, 19.5, "build"), (19.5, 24, "drop"), (24, 28, "lift"), (28, 32, "tension"), (32, 40.5, "groove"), (40.5, 45, "light"), (45, 51, "end")]
+SEC = [(6.5, 10.5, "reveal"), (10.5, 19.5, "build"), (19.5, 24, "drop"), (24, 28, "lift"), (28, 32, "tension"), (32, 40.5, "groove"), (40.5, 47, "end")]
 def sec(t):
     for a, b, k in SEC:
         if a <= t < b: return k
@@ -73,13 +73,13 @@ for tt, ch in ((0.3, (45, 52)), (3.2, (41, 48)), (5.3, (48, 55, 60))): [add(reve
 for k in range(5): add(kick(.6), 3.0 + k * .7, .35); add(kick(.5), 3.0 + k * .7 + .22, .22)
 add(pad((57, 64, 69), 4.0, 900), 3.0, .25)
 # accords et nappes continus (2 s), du dévoilement à la fin
-for k in range(int((45 - 6.5) / 2) + 1):
+for k in range(int((40.5 - 6.5) / 2) + 1):
     t0 = 6.5 + 2 * k; s = sec(t0)
     ch = CH[k % 4] if s != "tension" else [(57, 60, 64), (52, 56, 59)][k % 2]
     br = {"reveal": 2200, "build": 1600, "drop": 3600, "lift": 2800, "tension": 900, "groove": 3000, "light": 2200}.get(s, 2000)
     add(reverb(pad(ch + (ch[0] + 12,), 2.3, br), 2.2, .45), t0, .3 if s != "tension" else .36)
 # rythmique par temps (0,5 s)
-for b in range(int((45 - 6.5) / .5)):
+for b in range(int((40.5 - 6.5) / .5)):
     t = 6.5 + b * .5; s = sec(t); k = b % 4; ch = CH[(b // 4) % 4]; rt = RT[(b // 4) % 4]
     if s == "tension": rt = [45, 40][(b // 4) % 2]
     if s in ("reveal", "build", "lift", "light"):  # arpège de piano
@@ -106,18 +106,18 @@ for b in range(int((45 - 6.5) / .5)):
         if k == 0: add(kick(.8), t, .6); add(kick(.6), t + .25, .35)
         add(bass(rt - 12, .45), t, .55)
 # impacts et montées, toujours annoncés
-for tt, g in ((6.5, 1.2), (19.5, 1.4), (24.4, .9), (28.0, 1.0), (32.0, 1.1), (45.0, 1.3)): add(boom(g), tt, .85)
-for st, d, g in ((5.0, 1.5, .55), (9.5, 1.0, .35), (17.5, 2.0, .7), (31.0, 1.0, .5), (43.5, 1.5, .6)): add(riser(d), st, g)
+for tt, g in ((6.5, 1.2), (19.5, 1.4), (24.4, .9), (28.0, 1.0), (32.0, 1.1), (40.5, 1.3)): add(boom(g), tt, .85)
+for st, d, g in ((5.0, 1.5, .55), (9.5, 1.0, .35), (17.5, 2.0, .7), (31.0, 1.0, .5), (39.0, 1.5, .6)): add(riser(d), st, g)
 for i in range(12): add(clap(), 18.5 + (1 - (1 - i / 12) ** 1.7), .2 + .5 * i / 12)
 pent = [76, 79, 81, 84, 86, 88, 91, 93]
 for i in range(30): add(bell(pent[rng.integers(len(pent))]), 20.0 + rng.random() * 2.8, .16, rng.random() * 2 - 1)
 for i, m in enumerate((69, 72, 76, 81)): add(reverb(piano(m, 3, .8), 3, .5), 24.4 + i * .18, .55)
 # fin : piano, nappe, cloches
-for m in (45, 57, 60, 64, 71): add(reverb(piano(m, 5, .8), 4, .55), 45.0, .55)
-add(reverb(pad((57, 64, 71, 76), 5.5, 1800), 4, .6), 45.0, .4)
-add(reverb(bell(88, 2.5), 3, .6), 45.8, .35); add(reverb(bell(93, 2.5), 3, .6), 46.4, .25)
+for m in (45, 57, 60, 64, 71): add(reverb(piano(m, 5, .8), 4, .55), 40.5, .55)
+add(reverb(pad((57, 64, 71, 76), 5.5, 1800), 4, .6), 40.5, .4)
+add(reverb(bell(88, 2.5), 3, .6), 41.3, .35); add(reverb(bell(93, 2.5), 3, .6), 41.9, .25)
 # automation de volume aux transitions progressives (aucune marche brutale)
-pts = [(0, .32), (2.6, .34), (3.4, .45), (6.0, .55), (6.6, .85), (10.2, .75), (10.8, .72), (19.0, .9), (19.6, 1.0), (23.6, 1.0), (24.4, .8), (27.6, .82), (28.4, .75), (31.6, .78), (32.4, .9), (40.2, .9), (40.8, .8), (44.6, .8), (45.4, .62), (50.5, .55)]
+pts = [(0, .32), (2.6, .34), (3.4, .45), (6.0, .55), (6.6, .85), (10.2, .75), (10.8, .72), (19.0, .9), (19.6, 1.0), (23.6, 1.0), (24.4, .8), (27.6, .82), (28.4, .75), (31.6, .78), (32.4, .9), (40.1, .9), (40.9, .62), (46, .55)]
 auto = np.interp(np.arange(N) / SR, [p[0] for p in pts], [p[1] for p in pts]); L *= auto; R *= auto
 for ch in (L, R): ch[:] = np.tanh(ch * .9)
 fn = int(2.0 * SR); fade = np.ones(N); fade[-fn:] = np.linspace(1, 0, fn) ** 1.5; L *= fade; R *= fade
