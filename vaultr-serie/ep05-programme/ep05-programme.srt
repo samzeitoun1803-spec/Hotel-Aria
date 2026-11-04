@@ -1,0 +1,43 @@
+1
+00:00:00,350 --> 00:00:04,172
+MAX : J'ai envie de m'y mettre… mais je sais même pas quoi faire comme exercices.
+
+2
+00:00:04,222 --> 00:00:07,472
+IA : Normal. Personne t'a jamais fait un programme pour toi.
+
+3
+00:00:07,522 --> 00:00:10,053
+IA : Sur Vaultr, tu réponds à quelques questions.
+
+4
+00:00:10,103 --> 00:00:13,051
+IA : Ton matériel, ce que t'aimes, tes douleurs.
+
+5
+00:00:13,301 --> 00:00:16,327
+MAX : Et au bout d'une semaine, je lâche. Comme d'hab.
+
+6
+00:00:16,577 --> 00:00:18,997
+IA : Pas cette fois. Tu mets une mise en jeu.
+
+7
+00:00:19,247 --> 00:00:21,177
+IA : Chaque séance validée te rend une partie.
+
+8
+00:00:21,227 --> 00:00:22,971
+IA : Tout fait ? Tout récupéré.
+
+9
+00:00:23,021 --> 00:00:25,878
+MAX : Un programme pour moi… et une vraie raison d'y aller.
+
+10
+00:00:26,128 --> 00:00:27,878
+IA : Vaultr. Ton effort te rembourse.
+
+11
+00:00:27,878 --> 00:00:30,478
+VAULTR — Ton effort te rembourse. Bientôt sur iOS et Android

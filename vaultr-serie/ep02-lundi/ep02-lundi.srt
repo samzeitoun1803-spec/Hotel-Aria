@@ -1,0 +1,55 @@
+1
+00:00:00,350 --> 00:00:04,005
+MAX : Bon. Lundi, je m'y mets. Pour de vrai, cette fois.
+
+2
+00:00:04,055 --> 00:00:06,339
+IA : Frérot. Tu dis ça chaque dimanche.
+
+3
+00:00:06,389 --> 00:00:10,207
+IA : Regarde. Lundi, lundi, lundi. Jamais commencé.
+
+4
+00:00:10,457 --> 00:00:13,202
+MAX : Ouais… je sais. J'ai pas de motivation.
+
+5
+00:00:13,252 --> 00:00:15,622
+IA : Alors on va pas compter sur ta motivation.
+
+6
+00:00:15,672 --> 00:00:18,865
+IA : On va compter sur ton argent. Ça s'appelle Vaultr.
+
+7
+00:00:18,915 --> 00:00:21,810
+IA : Tu mets une mise. Chaque séance validée t'en rend une partie.
+
+8
+00:00:21,860 --> 00:00:23,892
+IA : Toutes faites ? Tout récupéré.
+
+9
+00:00:23,942 --> 00:00:25,902
+MAX : Et si lundi, j'y vais pas ?
+
+10
+00:00:26,252 --> 00:00:28,371
+IA : Alors ta mise reste dans le coffre.
+
+11
+00:00:28,721 --> 00:00:31,041
+MAX : Ok. Lundi, je commence.
+
+12
+00:00:31,091 --> 00:00:32,645
+IA : Non. Demain.
+
+13
+00:00:32,895 --> 00:00:34,645
+IA : Vaultr. Ton effort te rembourse.
+
+14
+00:00:34,645 --> 00:00:37,245
+VAULTR — Ton effort te rembourse. Bientôt sur iOS et Android

@@ -1,0 +1,186 @@
+{
+ "badge": "Max & son IA · ép. 4",
+ "hook": [
+  "Les 3 excuses qu'on dit tous",
+  "avant le sport."
+ ],
+ "lines": [
+  {
+   "id": "m1",
+   "speaker": "MAX",
+   "tts": "Ce soir, il pleut, je suis crevé. J'irai demain.",
+   "sub": "Ce soir… il pleut, j'suis crevé… j'irai demain."
+  },
+  {
+   "id": "a1",
+   "speaker": "IA",
+   "tts": "Trois excuses en une phrase. Joli.",
+   "sub": "Trois excuses en une phrase. Joli."
+  },
+  {
+   "id": "m2",
+   "speaker": "MAX",
+   "tts": "Rigole pas. C'est dur de se motiver tout seul.",
+   "sub": "Rigole pas. C'est dur de se motiver tout seul."
+  },
+  {
+   "id": "a2",
+   "speaker": "IA",
+   "tts": "Alors arrête d'être tout seul. Essaie Volteur.",
+   "sub": "Alors arrête d'être tout seul. Essaie Vaultr."
+  },
+  {
+   "id": "a3",
+   "speaker": "IA",
+   "tts": "Tu mets une mise en jeu pour tes séances du mois.",
+   "sub": "Tu mets une mise en jeu pour tes séances du mois."
+  },
+  {
+   "id": "a4",
+   "speaker": "IA",
+   "tts": "Il pleut ?",
+   "sub": "Il pleut ?"
+  },
+  {
+   "id": "a5",
+   "speaker": "IA",
+   "tts": "T'es crevé ?",
+   "sub": "T'es crevé ?"
+  },
+  {
+   "id": "a6",
+   "speaker": "IA",
+   "tts": "Demain ?",
+   "sub": "Demain ?"
+  },
+  {
+   "id": "m3",
+   "speaker": "MAX",
+   "tts": "Attends. Chaque excuse me coûte ?",
+   "sub": "Attends… chaque excuse me coûte ?"
+  },
+  {
+   "id": "a7",
+   "speaker": "IA",
+   "tts": "Chaque séance ratée reste dans le coffre.",
+   "sub": "Chaque séance ratée reste dans le coffre."
+  },
+  {
+   "id": "a8",
+   "speaker": "IA",
+   "tts": "Et chaque séance faite te rembourse.",
+   "sub": "Et chaque séance faite te rembourse."
+  },
+  {
+   "id": "m4",
+   "speaker": "MAX",
+   "tts": "Bon. J'ai plus d'excuse.",
+   "sub": "Bon… j'ai plus d'excuse."
+  },
+  {
+   "id": "a9",
+   "speaker": "IA",
+   "tts": "Volteur. Ton effort te rembourse.",
+   "sub": "Vaultr. Ton effort te rembourse."
+  }
+ ],
+ "beats": [
+  {
+   "shot": "hook",
+   "lines": [
+    "m1"
+   ],
+   "max": "sad",
+   "music": "sad"
+  },
+  {
+   "shot": "buddy",
+   "lines": [
+    "a1"
+   ],
+   "ia": "smile",
+   "music": "sad"
+  },
+  {
+   "shot": "max",
+   "lines": [
+    "m2"
+   ],
+   "max": "guilty",
+   "music": "sad"
+  },
+  {
+   "shot": "reveal",
+   "lines": [
+    "a2"
+   ],
+   "holo": "name",
+   "music": "warm"
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a3"
+   ],
+   "holo": "stake",
+   "music": "warm",
+   "gap": 0.5
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a4",
+    "a5",
+    "a6"
+   ],
+   "holo": "excuses",
+   "items": [
+    "il pleut",
+    "je suis crevé",
+    "demain"
+   ],
+   "music": "warm",
+   "between": 0.55,
+   "gap": 0.6
+  },
+  {
+   "shot": "max",
+   "lines": [
+    "m3"
+   ],
+   "max": "surprised",
+   "music": "silence",
+   "gap": 0.5
+  },
+  {
+   "shot": "buddy",
+   "lines": [
+    "a7"
+   ],
+   "ia": "serious",
+   "music": "silence",
+   "gap": 0.6
+  },
+  {
+   "shot": "friend",
+   "lines": [
+    "a8",
+    "m4"
+   ],
+   "max": "smile",
+   "ia": "smile",
+   "music": "resolve",
+   "between": 0.4,
+   "gap": 0.5
+  },
+  {
+   "shot": "end",
+   "lines": [
+    "a9"
+   ],
+   "music": "end",
+   "min": 4.6
+  }
+ ],
+ "tagline": "Ton effort te rembourse."
+}

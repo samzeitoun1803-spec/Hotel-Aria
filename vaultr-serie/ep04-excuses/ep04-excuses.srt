@@ -1,0 +1,55 @@
+1
+00:00:00,350 --> 00:00:04,102
+MAX : Ce soir… il pleut, j'suis crevé… j'irai demain.
+
+2
+00:00:04,152 --> 00:00:06,371
+IA : Trois excuses en une phrase. Joli.
+
+3
+00:00:06,421 --> 00:00:09,253
+MAX : Rigole pas. C'est dur de se motiver tout seul.
+
+4
+00:00:09,303 --> 00:00:12,137
+IA : Alors arrête d'être tout seul. Essaie Vaultr.
+
+5
+00:00:12,187 --> 00:00:14,852
+IA : Tu mets une mise en jeu pour tes séances du mois.
+
+6
+00:00:15,102 --> 00:00:16,131
+IA : Il pleut ?
+
+7
+00:00:16,181 --> 00:00:17,279
+IA : T'es crevé ?
+
+8
+00:00:17,329 --> 00:00:18,337
+IA : Demain ?
+
+9
+00:00:18,687 --> 00:00:20,865
+MAX : Attends… chaque excuse me coûte ?
+
+10
+00:00:21,115 --> 00:00:23,772
+IA : Chaque séance ratée reste dans le coffre.
+
+11
+00:00:24,122 --> 00:00:26,018
+IA : Et chaque séance faite te rembourse.
+
+12
+00:00:26,068 --> 00:00:27,976
+MAX : Bon… j'ai plus d'excuse.
+
+13
+00:00:28,226 --> 00:00:29,976
+IA : Vaultr. Ton effort te rembourse.
+
+14
+00:00:29,976 --> 00:00:32,576
+VAULTR — Ton effort te rembourse. Bientôt sur iOS et Android

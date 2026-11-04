@@ -1,0 +1,186 @@
+{
+ "badge": "Max & son IA · ép. 2",
+ "hook": [
+  "Toi aussi tu dis « je commence lundi » ?",
+  "Écoute ça."
+ ],
+ "lines": [
+  {
+   "id": "m1",
+   "speaker": "MAX",
+   "tts": "Bon. Lundi, je m'y mets. Pour de vrai, cette fois.",
+   "sub": "Bon. Lundi, je m'y mets. Pour de vrai, cette fois."
+  },
+  {
+   "id": "a1",
+   "speaker": "IA",
+   "tts": "Frérot. Tu dis ça chaque dimanche.",
+   "sub": "Frérot. Tu dis ça chaque dimanche."
+  },
+  {
+   "id": "a2",
+   "speaker": "IA",
+   "tts": "Regarde. Lundi, lundi, lundi. Jamais commencé.",
+   "sub": "Regarde. Lundi, lundi, lundi. Jamais commencé."
+  },
+  {
+   "id": "m2",
+   "speaker": "MAX",
+   "tts": "Ouais, je sais. J'ai pas de motivation.",
+   "sub": "Ouais… je sais. J'ai pas de motivation."
+  },
+  {
+   "id": "a3",
+   "speaker": "IA",
+   "tts": "Alors on va pas compter sur ta motivation.",
+   "sub": "Alors on va pas compter sur ta motivation."
+  },
+  {
+   "id": "a4",
+   "speaker": "IA",
+   "tts": "On va compter sur ton argent. Ça s'appelle, Volteur.",
+   "sub": "On va compter sur ton argent. Ça s'appelle Vaultr."
+  },
+  {
+   "id": "a5",
+   "speaker": "IA",
+   "tts": "Tu mets une mise. Chaque séance validée t'en rend une partie.",
+   "sub": "Tu mets une mise. Chaque séance validée t'en rend une partie."
+  },
+  {
+   "id": "a6",
+   "speaker": "IA",
+   "tts": "Toutes faites ? Tout récupéré.",
+   "sub": "Toutes faites ? Tout récupéré."
+  },
+  {
+   "id": "m3",
+   "speaker": "MAX",
+   "tts": "Et si lundi, j'y vais pas ?",
+   "sub": "Et si lundi, j'y vais pas ?"
+  },
+  {
+   "id": "a7",
+   "speaker": "IA",
+   "tts": "Alors ta mise reste dans le coffre.",
+   "sub": "Alors ta mise reste dans le coffre."
+  },
+  {
+   "id": "m4",
+   "speaker": "MAX",
+   "tts": "Ok. Lundi, je commence.",
+   "sub": "Ok. Lundi, je commence."
+  },
+  {
+   "id": "a8",
+   "speaker": "IA",
+   "tts": "Non. Demain.",
+   "sub": "Non. Demain."
+  },
+  {
+   "id": "a9",
+   "speaker": "IA",
+   "tts": "Volteur. Ton effort te rembourse.",
+   "sub": "Vaultr. Ton effort te rembourse."
+  }
+ ],
+ "beats": [
+  {
+   "shot": "hook",
+   "lines": [
+    "m1"
+   ],
+   "max": "sad",
+   "music": "sad"
+  },
+  {
+   "shot": "buddy",
+   "lines": [
+    "a1"
+   ],
+   "ia": "serious",
+   "music": "sad"
+  },
+  {
+   "shot": "reveal",
+   "lines": [
+    "a2"
+   ],
+   "holo": "calendar",
+   "music": "sad",
+   "gap": 0.5
+  },
+  {
+   "shot": "max",
+   "lines": [
+    "m2"
+   ],
+   "max": "guilty",
+   "music": "sad"
+  },
+  {
+   "shot": "buddy",
+   "lines": [
+    "a3"
+   ],
+   "ia": "calm",
+   "music": "warm"
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a4"
+   ],
+   "holo": "name",
+   "music": "warm"
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a5",
+    "a6"
+   ],
+   "holo": "sessions",
+   "music": "warm"
+  },
+  {
+   "shot": "max",
+   "lines": [
+    "m3"
+   ],
+   "max": "worried",
+   "music": "silence",
+   "gap": 0.6
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a7"
+   ],
+   "holo": "lock",
+   "music": "silence",
+   "gap": 0.6
+  },
+  {
+   "shot": "friend",
+   "lines": [
+    "m4",
+    "a8"
+   ],
+   "max": "smile",
+   "ia": "smile",
+   "music": "resolve",
+   "between": 0.45,
+   "gap": 0.5
+  },
+  {
+   "shot": "end",
+   "lines": [
+    "a9"
+   ],
+   "music": "end",
+   "min": 4.6
+  }
+ ],
+ "tagline": "Ton effort te rembourse."
+}

@@ -1,0 +1,51 @@
+1
+00:00:00,350 --> 00:00:03,837
+MAX : 35 € par mois… pour une salle où je mets jamais les pieds.
+
+2
+00:00:03,887 --> 00:00:06,500
+IA : Ouais. Et chaque mois, tu paies quand même.
+
+3
+00:00:06,950 --> 00:00:08,869
+MAX : Je sais même plus pourquoi je paie.
+
+4
+00:00:08,919 --> 00:00:12,471
+IA : Parce que payer, ça t'oblige à rien. Il te faut l'inverse.
+
+5
+00:00:12,521 --> 00:00:16,092
+IA : Avec Vaultr, ton argent, c'est toi qui le récupères.
+
+6
+00:00:16,142 --> 00:00:18,997
+IA : Tu mets une mise. 50 €, par exemple.
+
+7
+00:00:19,247 --> 00:00:22,392
+IA : Tu fais ta séance, tu envoies une photo ou une vidéo.
+
+8
+00:00:22,442 --> 00:00:25,799
+IA : Ton coach valide, et une partie de ton argent revient.
+
+9
+00:00:25,849 --> 00:00:27,392
+MAX : Et si je fais rien ?
+
+10
+00:00:27,742 --> 00:00:30,188
+IA : Alors là, ta mise reste dans le coffre.
+
+11
+00:00:30,538 --> 00:00:33,217
+MAX : Bon. Cette fois, c'est moi qui gagne.
+
+12
+00:00:33,467 --> 00:00:35,217
+IA : Vaultr. Ton effort te rembourse.
+
+13
+00:00:35,217 --> 00:00:37,817
+VAULTR — Ton effort te rembourse. Bientôt sur iOS et Android

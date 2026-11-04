@@ -1,0 +1,146 @@
+{
+ "badge": "Max & son IA · ép. 5",
+ "hook": [
+  "Tu sais jamais quoi faire",
+  "comme exercices ?"
+ ],
+ "lines": [
+  {
+   "id": "m1",
+   "speaker": "MAX",
+   "tts": "J'ai envie de m'y mettre, mais je sais même pas quoi faire comme exercices.",
+   "sub": "J'ai envie de m'y mettre… mais je sais même pas quoi faire comme exercices."
+  },
+  {
+   "id": "a1",
+   "speaker": "IA",
+   "tts": "Normal. Personne t'a jamais fait un programme pour toi.",
+   "sub": "Normal. Personne t'a jamais fait un programme pour toi."
+  },
+  {
+   "id": "a2",
+   "speaker": "IA",
+   "tts": "Sur Volteur, tu réponds à quelques questions.",
+   "sub": "Sur Vaultr, tu réponds à quelques questions."
+  },
+  {
+   "id": "a3",
+   "speaker": "IA",
+   "tts": "Ton matériel, ce que t'aimes, tes douleurs.",
+   "sub": "Ton matériel, ce que t'aimes, tes douleurs."
+  },
+  {
+   "id": "m2",
+   "speaker": "MAX",
+   "tts": "Et au bout d'une semaine, je lâche. Comme d'habitude.",
+   "sub": "Et au bout d'une semaine, je lâche. Comme d'hab."
+  },
+  {
+   "id": "a4",
+   "speaker": "IA",
+   "tts": "Pas cette fois. Tu mets une mise en jeu.",
+   "sub": "Pas cette fois. Tu mets une mise en jeu."
+  },
+  {
+   "id": "a5",
+   "speaker": "IA",
+   "tts": "Chaque séance validée te rend une partie.",
+   "sub": "Chaque séance validée te rend une partie."
+  },
+  {
+   "id": "a6",
+   "speaker": "IA",
+   "tts": "Tout fait ? Tout récupéré.",
+   "sub": "Tout fait ? Tout récupéré."
+  },
+  {
+   "id": "m3",
+   "speaker": "MAX",
+   "tts": "Un programme pour moi, et une vraie raison d'y aller.",
+   "sub": "Un programme pour moi… et une vraie raison d'y aller."
+  },
+  {
+   "id": "a7",
+   "speaker": "IA",
+   "tts": "Volteur. Ton effort te rembourse.",
+   "sub": "Vaultr. Ton effort te rembourse."
+  }
+ ],
+ "beats": [
+  {
+   "shot": "hook",
+   "lines": [
+    "m1"
+   ],
+   "max": "sad",
+   "music": "sad"
+  },
+  {
+   "shot": "buddy",
+   "lines": [
+    "a1"
+   ],
+   "ia": "calm",
+   "music": "sad"
+  },
+  {
+   "shot": "reveal",
+   "lines": [
+    "a2",
+    "a3"
+   ],
+   "holo": "program",
+   "items": [
+    "ton matériel",
+    "tes goûts",
+    "tes douleurs"
+   ],
+   "music": "warm",
+   "gap": 0.5
+  },
+  {
+   "shot": "max",
+   "lines": [
+    "m2"
+   ],
+   "max": "skeptic",
+   "music": "silence",
+   "gap": 0.5
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a4"
+   ],
+   "holo": "stake",
+   "music": "warm",
+   "gap": 0.5
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a5",
+    "a6"
+   ],
+   "holo": "sessions",
+   "music": "warm"
+  },
+  {
+   "shot": "smile",
+   "lines": [
+    "m3"
+   ],
+   "music": "resolve",
+   "gap": 0.5
+  },
+  {
+   "shot": "end",
+   "lines": [
+    "a7"
+   ],
+   "music": "end",
+   "min": 4.6
+  }
+ ],
+ "tagline": "Ton effort te rembourse."
+}

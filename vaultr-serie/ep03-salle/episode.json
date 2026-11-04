@@ -1,0 +1,178 @@
+{
+ "badge": "Max & son IA · ép. 3",
+ "hook": [
+  "Tu paies une salle de sport…",
+  "où tu vas jamais ?"
+ ],
+ "lines": [
+  {
+   "id": "m1",
+   "speaker": "MAX",
+   "tts": "Trente-cinq euros par mois, pour une salle où je mets jamais les pieds.",
+   "sub": "35 € par mois… pour une salle où je mets jamais les pieds."
+  },
+  {
+   "id": "a1",
+   "speaker": "IA",
+   "tts": "Ouais. Et chaque mois, tu paies quand même.",
+   "sub": "Ouais. Et chaque mois, tu paies quand même."
+  },
+  {
+   "id": "m2",
+   "speaker": "MAX",
+   "tts": "Je sais même plus pourquoi je paie.",
+   "sub": "Je sais même plus pourquoi je paie."
+  },
+  {
+   "id": "a2",
+   "speaker": "IA",
+   "tts": "Parce que payer, ça t'oblige à rien. Il te faut l'inverse.",
+   "sub": "Parce que payer, ça t'oblige à rien. Il te faut l'inverse."
+  },
+  {
+   "id": "a3",
+   "speaker": "IA",
+   "tts": "Avec Volteur, ton argent, c'est toi qui le récupères.",
+   "sub": "Avec Vaultr, ton argent, c'est toi qui le récupères."
+  },
+  {
+   "id": "a4",
+   "speaker": "IA",
+   "tts": "Tu mets une mise. Cinquante euros, par exemple.",
+   "sub": "Tu mets une mise. 50 €, par exemple."
+  },
+  {
+   "id": "a5",
+   "speaker": "IA",
+   "tts": "Tu fais ta séance, tu envoies une photo ou une vidéo.",
+   "sub": "Tu fais ta séance, tu envoies une photo ou une vidéo."
+  },
+  {
+   "id": "a6",
+   "speaker": "IA",
+   "tts": "Ton coach valide, et une partie de ton argent revient.",
+   "sub": "Ton coach valide, et une partie de ton argent revient."
+  },
+  {
+   "id": "m3",
+   "speaker": "MAX",
+   "tts": "Et si je fais rien ?",
+   "sub": "Et si je fais rien ?"
+  },
+  {
+   "id": "a7",
+   "speaker": "IA",
+   "tts": "Alors là, ta mise reste dans le coffre.",
+   "sub": "Alors là, ta mise reste dans le coffre."
+  },
+  {
+   "id": "m4",
+   "speaker": "MAX",
+   "tts": "Bon. Cette fois, c'est moi qui gagne.",
+   "sub": "Bon. Cette fois, c'est moi qui gagne."
+  },
+  {
+   "id": "a8",
+   "speaker": "IA",
+   "tts": "Volteur. Ton effort te rembourse.",
+   "sub": "Vaultr. Ton effort te rembourse."
+  }
+ ],
+ "beats": [
+  {
+   "shot": "hook",
+   "lines": [
+    "m1"
+   ],
+   "max": "sad",
+   "music": "sad"
+  },
+  {
+   "shot": "reveal",
+   "lines": [
+    "a1"
+   ],
+   "holo": "gym",
+   "ia": "serious",
+   "music": "sad",
+   "gap": 0.7
+  },
+  {
+   "shot": "max",
+   "lines": [
+    "m2"
+   ],
+   "max": "down",
+   "music": "sad"
+  },
+  {
+   "shot": "buddy",
+   "lines": [
+    "a2"
+   ],
+   "ia": "calm",
+   "music": "warm"
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a3"
+   ],
+   "holo": "name",
+   "music": "warm"
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a4"
+   ],
+   "holo": "stake",
+   "music": "warm",
+   "gap": 0.5
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a5",
+    "a6"
+   ],
+   "holo": "proof",
+   "music": "warm"
+  },
+  {
+   "shot": "max",
+   "lines": [
+    "m3"
+   ],
+   "max": "skeptic",
+   "music": "silence",
+   "gap": 0.6
+  },
+  {
+   "shot": "holo",
+   "lines": [
+    "a7"
+   ],
+   "holo": "lock",
+   "music": "silence",
+   "gap": 0.6
+  },
+  {
+   "shot": "smile",
+   "lines": [
+    "m4"
+   ],
+   "music": "resolve",
+   "gap": 0.5
+  },
+  {
+   "shot": "end",
+   "lines": [
+    "a8"
+   ],
+   "music": "end",
+   "min": 4.6
+  }
+ ],
+ "tagline": "Ton effort te rembourse."
+}
