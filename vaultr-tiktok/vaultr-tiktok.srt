@@ -1,55 +1,59 @@
 1
-00:00:00,300 --> 00:00:02,900
-MAX : j'veux faire du sport mais je suis motivé qu'une fois par mois 😩
+00:00:00,000 --> 00:00:00,340
+Si t'abandonnes toujours le sport… écoute ça.
 
 2
-00:00:04,800 --> 00:00:06,550
-IA : Une fois par mois. D'accord.
+00:00:00,350 --> 00:00:04,138
+MAX : Frérot… pourquoi j'arrive jamais à m'y tenir ?
 
 3
-00:00:06,550 --> 00:00:08,750
-IA : J'ai exactement ce qu'il te faut.
+00:00:04,400 --> 00:00:08,800
+MAX : Un jour j'suis motivé… et le lendemain, plus rien.
 
 4
-00:00:08,750 --> 00:00:10,150
-IA : Une appli qui te prend de l'argent.
+00:00:08,850 --> 00:00:10,204
+MAX : Regarde-moi.
 
 5
-00:00:10,150 --> 00:00:11,000
-MAX : QUOI ?!
+00:00:10,900 --> 00:00:13,522
+IA : T'inquiète. J'ai la solution pour toi.
 
 6
-00:00:11,700 --> 00:00:14,659
-IA : Tu mets une mise. Disons 50 €.
+00:00:13,750 --> 00:00:15,988
+IA : Ça s'appelle Vaultr.
 
 7
-00:00:15,350 --> 00:00:18,120
-IA : Chaque séance validée te rend une partie.
+00:00:16,100 --> 00:00:19,950
+IA : Tu mets de l'argent en jeu. 50 €, par exemple.
 
 8
-00:00:20,750 --> 00:00:23,050
-IA : Tu fais tout ? Tu récupères tout.
+00:00:20,000 --> 00:00:23,100
+IA : Chaque séance que tu fais te rend une partie.
 
 9
-00:00:23,550 --> 00:00:25,427
-IA : Et si tu lâches…
+00:00:23,150 --> 00:00:25,509
+IA : Tu fais tout ? Tu récupères tout.
 
 10
-00:00:26,050 --> 00:00:28,150
-IA : …l'argent reste au coffre.
+00:00:25,800 --> 00:00:27,376
+MAX : Et si je lâche ?
 
 11
-00:00:28,150 --> 00:00:29,950
-MAX : …c'est quoi le nom 👀
+00:00:27,700 --> 00:00:29,852
+IA : L'argent reste dans le coffre.
 
 12
-00:00:30,000 --> 00:00:31,800
-IA : Vaultr.
+00:00:30,000 --> 00:00:33,550
+IA : Crois-moi… tu vas plus jamais sauter une séance.
 
 13
-00:00:32,000 --> 00:00:33,836
-IA : Alors… motivé ?
+00:00:33,600 --> 00:00:35,650
+MAX : Vaultr… c'est ça ?
 
 14
-00:00:34,500 --> 00:00:37,500
+00:00:35,700 --> 00:00:38,300
+IA : Vaultr. Ton effort te rembourse.
+
+15
+00:00:38,300 --> 00:00:41,000
 VAULTR — Ton effort te rembourse. Bientôt sur iOS et Android

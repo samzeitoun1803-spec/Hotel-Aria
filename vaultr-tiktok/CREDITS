@@ -1,12 +1,15 @@
-Vaultr — « Motivé une fois par mois » (TikTok, 9:16)
+Vaultr — « J'ai la solution pour toi » (TikTok, 9:16)
 
 Image, animation, musique et bruitages : créés en code pour ce film (aucune banque d'images, de sons ni de musique).
 Moteur de dessin : toon.js, adapté du style « Sci-Fi Sitcom Toon » de la bibliothèque Lemo-Opuscar (github.com/lemomo-ai/lemo-opuscar).
 
-Voix de l'IA : synthèse vocale Kokoro (kokoro-onnx, modèle Kokoro-82M, licence Apache 2.0), voix « ff_siwis »
-  (entraînée sur le corpus SIWIS French Speech Synthesis Database, CC BY 4.0).
+Voix de Max et de l'IA : synthèse vocale Piper, modèle « fr_FR-upmc-medium », locuteur « pierre »
+  (corpus UPMC « pierre », github.com/marytts/upmc-pierre-data, licence CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0/).
+  Hauteur et timbre modifiés pour chaque personnage. L'enregistrement des voix dérivé de ce modèle est partagé
+  sous la même licence CC BY-SA 4.0.
+  Phonétisation : espeak-ng (via phonemizer) ; inférence : onnxruntime.
 
 Polices (Google Fonts, SIL Open Font License 1.1) :
-  Baloo 2 — Ek Type ; Bungee — David Jonathan Ross ; VT323 — Peter Hull.
+  Baloo 2 — Ek Type ; Bungee — David Jonathan Ross.
 
 Rendu : Chromium headless via Playwright ; encodage : FFmpeg.

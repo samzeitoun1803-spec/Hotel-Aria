@@ -1,5 +1,5 @@
-# Traite chaque réplique de l'IA (compression douce, présence, pièce) et écrit les enveloppes de synchro labiale (24 Hz)
-import json, os, sys, numpy as np, soundfile as sf
+# Hauteur par personnage (rubberband : Max plus grave, l'IA plus petite), puis traite chaque réplique (compression douce, présence, pièce) et écrit les enveloppes de synchro labiale (24 Hz)
+import json, os, subprocess, sys, numpy as np, soundfile as sf
 HERE = os.path.dirname(os.path.abspath(__file__))
 lines = json.load(open(os.path.join(HERE, 'lines.json'), encoding='utf-8'))
 os.makedirs(os.path.join(HERE, 'out', 'vo'), exist_ok=True)
@@ -14,7 +14,9 @@ def comp(x, thr=.25, ratio=3.0):
     gain = np.where(env > thr, (thr + (env - thr) / ratio) / env, 1.0); return x * gain
 env_out, dur = {}, {}
 for L in lines:
-    x, sr = sf.read(os.path.join(HERE, 'out', 'raw', L['id'] + '.wav'))
+    src = os.path.join(HERE, 'out', 'raw', L['id'] + '.wav'); dst = os.path.join(HERE, 'out', 'raw', L['id'] + '.p.wav')
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', src, '-af', 'rubberband=pitch=%.5f:pitchq=quality' % 2 ** (L.get('pitch', 0) / 12), dst], check=True)
+    x, sr = sf.read(dst)
     if x.ndim > 1: x = x.mean(1)
     x = resample(x, sr); x = shelf(x, 3500, 3); x = comp(x / (np.abs(x).max() + 1e-9) * .9)
     x = np.concatenate([np.zeros(int(.02 * SR)), x, np.zeros(int(.05 * SR))])

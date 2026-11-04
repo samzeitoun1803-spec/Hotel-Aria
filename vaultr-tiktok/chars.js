@@ -51,6 +51,7 @@ const P0 = { neck: [0, -230], head: [0, -335], shF: [35, -205], shB: [-35, -205]
 export const POSE = {
   stand: P0,
   sit: { neck: [-25, -215], head: [-15, -322], shF: [15, -195], shB: [-60, -195], elF: [55, -105], haF: [70, -165], elB: [-30, -100], haB: [30, -160], knF: [165, -5], ftF: [175, 165], knB: [150, -15], ftB: [150, 160] },
+  slumpHand: { neck: [-60, -190], head: [-55, -295], shF: [-20, -175], shB: [-95, -170], elF: [40, -120], haF: [70, -60], elB: [-40, -90], haB: [20, -145], knF: [170, 0], ftF: [185, 165], knB: [155, -10], ftB: [160, 160] },
   slump: { neck: [-60, -190], head: [-55, -295], shF: [-20, -175], shB: [-95, -170], elF: [30, -95], haF: [55, -150], elB: [-40, -90], haB: [20, -145], knF: [170, 0], ftF: [185, 165], knB: [155, -10], ftB: [160, 160] },
   cheer: { neck: [0, -232], head: [0, -340], shF: [35, -210], shB: [-35, -210], elF: [95, -300], haF: [115, -395], elB: [-95, -300], haB: [-115, -395], knF: [45, 140], ftF: [50, 290], knB: [-45, 140], ftB: [-55, 290] },
   pushUp: { neck: [225, -40], head: [325, -60], shF: [200, -40], shB: [190, -50], elF: [205, 25], haF: [215, 95], elB: [185, 22], haB: [190, 95], knF: [-150, 50], ftF: [-305, 95], knB: [-150, 45], ftB: [-300, 95] },
@@ -83,6 +84,8 @@ export function max(P) {
   shape(ell(J.neck[0] - 35, J.neck[1] + 10, 70, 46, 30), { fill: PAL.hoodS });
   shape(noodle(hip, J.neck, -8, 190, 165), { fill: PAL.hood, shade: () => fillOnly(noodle([hip[0] - 40, hip[1]], [J.neck[0] - 40, J.neck[1]], -8, 90, 70), PAL.hoodS, { boil: .4 }) });
   stroke(quad([J.neck[0] - 10, J.neck[1] + 70], [J.neck[0] + 30, J.neck[1] + 110], [J.neck[0] + 10, J.neck[1] + 150]), 5);
+  // ventre (il s'est un peu laissé aller)
+  if (P.belly) shape(ell(J.neck[0] * .3 + 48, J.neck[1] * .3 - 4, 92 * P.belly, 84 * P.belly, 30), { fill: PAL.hood, shade: () => fillOnly(ell(J.neck[0] * .3 + 30, J.neck[1] * .3 + 40, 80 * P.belly, 50 * P.belly, 24), PAL.hoodS, { boil: .4 }) });
   // jambe avant
   limb([10, 12], J.knF, 68, 62, PAL.jean); limb(J.knF, J.ftF, 60, 54, PAL.jean);
   shoe(J.ftF, J.knF);
@@ -184,4 +187,49 @@ export function portal(cx, cy, R, k, t, { wash = true } = {}) {
   for (let i = 0; i < 7; i++) { const a = i / 7 * TAU + t * 1.3; dot(Math.cos(a) * R * 1.3, Math.sin(a) * R * 1.3, 5, PAL.portalCore); }
   pop();
   if (wash) { g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = .07 * clamp(k); g.fillStyle = PAL.portal; g.fillRect(0, 0, 1080, 1920); g.globalAlpha = 1; }
+}
+
+// —— l'IA : petite mascotte ronde, meilleur pote de Max (assise sur le coussin) ——
+// M : { x, y (bas du corps), r, o (bouche), look, blink, sm, lid, tilt, armL (lève la main gauche 0..1), glow (antenne allumée 0..1) }
+export function mascot(M) {
+  const r = M.r || 110, look = M.look || [0, 0];
+  push(); translate(M.x, M.y); rotate(M.tilt || 0);
+  // petits pieds qui pendent du coussin
+  shape(ell(-r * .4, -r * .02, r * .2, r * .14, 16), { fill: PAL.aiS }); shape(ell(r * .35, -r * .02, r * .2, r * .14, 16), { fill: PAL.aiS });
+  // bras droit (posé)
+  shape(ell(r * .98, -r * .62, r * .17, r * .26, 16), { fill: PAL.ai });
+  // corps : une boule douce un peu aplatie en bas
+  const body = Array.from({ length: 14 }, (_, i) => { const a = i / 14 * TAU; return [Math.cos(a) * r * (1 + .02 * Math.sin(i * 2.1)), -r * .95 + Math.sin(a) * r * (Math.sin(a) > 0 ? .92 : 1.02)]; });
+  shape(spline(body), { fill: PAL.ai, shade: () => { fillOnly(ell(r * .38, -r * .5, r * .78, r * .62, 30), PAL.aiS, { boil: .4 }); fillOnly(ell(-r * .45, -r * 1.45, r * .2, r * .11, 14), '#ff9cc2', { boil: .3 }); } });
+  // antenne
+  stroke(quad([r * .05, -r * 1.9], [r * .12, -r * 2.25], [r * .3, -r * 2.38]), 6);
+  shape(ell(r * .32, -r * 2.4, r * .13, r * .13, 16), { fill: M.glow ? '#fff1d6' : '#ffd77a', lw: 5 });
+  // joues
+  fillOnly(ell(-r * .62, -r * .78, r * .14, r * .08, 14), '#ff8fb5', { boil: .3 }); fillOnly(ell(r * .62, -r * .78, r * .14, r * .08, 14), '#ff8fb5', { boil: .3 });
+  // grands yeux
+  const blink = M.blink, lid = blink ? .98 : (M.lid ?? .05);
+  eye(-r * .33, -r * 1.08, r * .25, r * .32, { lid, look, pupil: r * .1, skin: PAL.ai, lw: 6 });
+  eye(r * .33, -r * 1.08, r * .25, r * .32, { lid, look, pupil: r * .1, skin: PAL.ai, lw: 6 });
+  if (!blink) { dot(-r * .33 + look[0] * r * .14 + r * .05, -r * 1.16 + look[1] * r * .1, r * .035, '#ffffff'); dot(r * .33 + look[0] * r * .14 + r * .05, -r * 1.16 + look[1] * r * .1, r * .035, '#ffffff'); }
+  mouth(0, -r * .6, r * .32, { o: M.o || 0, sm: M.sm ?? .3, lw: 6 });
+  // bras gauche : posé, ou levé (main ouverte vers l'hologramme / vers Max)
+  const k = M.armL || 0;
+  push(); translate(-r * .92, -r * .7); rotate(-k * 2.1); shape(ell(0, r * .12, r * .17, r * .27, 16), { fill: PAL.ai }); pop();
+  pop();
+}
+
+// —— la table basse du canapé : sodas, frites, emballages ——
+export function snacks(x, y, s = 1) {
+  push(); translate(x, y); scale(s);
+  // canette couchée
+  push(); translate(-250, -18); rotate(1.5); shape(rr(-26, -48, 52, 96, 12), { fill: '#d8433f', shade: () => fillOnly(rect(-30, -10, 60, 18), '#f4f1ea', { boil: .3 }) }); pop();
+  // deux canettes debout
+  for (const [cx, c] of [[-150, '#d8433f'], [210, '#3f7dd8']]) shape(rr(cx - 28, -112, 56, 112, 12), { fill: c, shade: () => { fillOnly(rect(cx - 30, -70, 60, 20), '#f4f1ea', { boil: .3 }); fillOnly(rect(cx + 8, -112, 22, 112), '#00000033', { boil: .2 }); } });
+  // cornet de frites
+  for (let i = 0; i < 7; i++) shape(rr(-20 + i * 17 - 6, -170 + (i % 3) * 14, 15, 90, 5), { fill: '#ffd23f', lw: 5 });
+  shape(spline([[-40, -100], [110, -100], [92, 0], [-22, 0]]), { fill: '#e8574e', shade: () => fillOnly(ell(35, -55, 26, 26, 18), '#ffd23f', { boil: .3 }) });
+  // emballage froissé + frites tombées
+  shape(spline([[300, -20], [340, -50], [380, -30], [370, 0], [310, 0]]), { fill: '#f4f1ea', lw: 5 });
+  for (let i = 0; i < 3; i++) { push(); translate(70 + i * 40, -6); rotate(.3 + i * .5); shape(rr(-30, -6, 60, 12, 5), { fill: '#ffd23f', lw: 4 }); pop(); }
+  pop();
 }

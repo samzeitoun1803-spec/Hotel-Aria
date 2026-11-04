@@ -1,12 +1,15 @@
 [
- {"id":"ai1","speaker":"IA","text":"Une fois par mois. D'accord.","sub":"Une fois par mois. D'accord.","voice":"ff_siwis","lang":"fr-fr","speed":0.95},
- {"id":"ai2","speaker":"IA","text":"J'ai exactement ce qu'il te faut.","sub":"J'ai exactement ce qu'il te faut.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
- {"id":"ai3","speaker":"IA","text":"Une appli qui te prend de l'argent.","sub":"Une appli qui te prend de l'argent.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
- {"id":"ai4","speaker":"IA","text":"Tu mets une mise. Disons, cinquante euros.","sub":"Tu mets une mise. Disons 50 €.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
- {"id":"ai5","speaker":"IA","text":"Chaque séance validée te rend une partie.","sub":"Chaque séance validée te rend une partie.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
- {"id":"ai6","speaker":"IA","text":"Tu fais tout ? Tu récupères tout.","sub":"Tu fais tout ? Tu récupères tout.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
- {"id":"ai7","speaker":"IA","text":"Et si tu lâches...","sub":"Et si tu lâches…","voice":"ff_siwis","lang":"fr-fr","speed":0.9},
- {"id":"ai8","speaker":"IA","text":"l'argent reste au coffre.","sub":"…l'argent reste au coffre.","voice":"ff_siwis","lang":"fr-fr","speed":0.92},
- {"id":"ai9","speaker":"IA","text":"Voltr.","sub":"Vaultr.","voice":"ff_siwis","lang":"fr-fr","speed":0.9},
- {"id":"ai10","speaker":"IA","text":"Alors... motivé ?","sub":"Alors… motivé ?","voice":"ff_siwis","lang":"fr-fr","speed":0.95}
+ {"id": "m1", "speaker": "MAX", "tts": "Frérot... pourquoi j'arrive jamais, à m'y tenir ?", "sub": "Frérot… pourquoi j'arrive jamais à m'y tenir ?", "voice": "upmc", "sid": 1, "speed": 0.86, "ns": 0.75, "pitch": -2.0},
+ {"id": "m2", "speaker": "MAX", "tts": "Un jour, je suis motivé... et le lendemain... plus rien.", "sub": "Un jour j'suis motivé… et le lendemain, plus rien.", "voice": "upmc", "sid": 1, "speed": 0.84, "ns": 0.75, "pitch": -2.0},
+ {"id": "m3", "speaker": "MAX", "tts": "Regarde-moi.", "sub": "Regarde-moi.", "voice": "upmc", "sid": 1, "speed": 0.8, "ns": 0.7, "pitch": -2.0},
+ {"id": "a1", "speaker": "IA", "tts": "T'inquiète. J'ai la solution pour toi.", "sub": "T'inquiète. J'ai la solution pour toi.", "voice": "upmc", "sid": 1, "speed": 0.88, "ns": 0.6, "pitch": 2.5},
+ {"id": "a2", "speaker": "IA", "tts": "Ça s'appelle, Volteur.", "sub": "Ça s'appelle Vaultr.", "voice": "upmc", "sid": 1, "speed": 0.85, "ns": 0.6, "pitch": 2.5},
+ {"id": "a3", "speaker": "IA", "tts": "Tu mets de l'argent en jeu. Cinquante euros, par exemple.", "sub": "Tu mets de l'argent en jeu. 50 €, par exemple.", "voice": "upmc", "sid": 1, "speed": 0.92, "ns": 0.6, "pitch": 2.5},
+ {"id": "a4", "speaker": "IA", "tts": "Chaque séance que tu fais, te rend une partie.", "sub": "Chaque séance que tu fais te rend une partie.", "voice": "upmc", "sid": 1, "speed": 0.92, "ns": 0.6, "pitch": 2.5},
+ {"id": "a5", "speaker": "IA", "tts": "Tu fais tout ? Tu récupères tout.", "sub": "Tu fais tout ? Tu récupères tout.", "voice": "upmc", "sid": 1, "speed": 0.9, "ns": 0.6, "pitch": 2.5},
+ {"id": "m4", "speaker": "MAX", "tts": "Et si je lâche ?", "sub": "Et si je lâche ?", "voice": "upmc", "sid": 1, "speed": 0.85, "ns": 0.75, "pitch": -2.0},
+ {"id": "a6", "speaker": "IA", "tts": "L'argent reste dans le coffre.", "sub": "L'argent reste dans le coffre.", "voice": "upmc", "sid": 1, "speed": 0.8, "ns": 0.55, "pitch": 2.5},
+ {"id": "a7", "speaker": "IA", "tts": "Crois-moi... tu vas plus jamais sauter une séance.", "sub": "Crois-moi… tu vas plus jamais sauter une séance.", "voice": "upmc", "sid": 1, "speed": 0.88, "ns": 0.6, "pitch": 2.5},
+ {"id": "m5", "speaker": "MAX", "tts": "Volteur... c'est ça ?", "sub": "Vaultr… c'est ça ?", "voice": "upmc", "sid": 1, "speed": 0.85, "ns": 0.75, "pitch": -2.0},
+ {"id": "a8", "speaker": "IA", "tts": "Volteur. Ton effort te rembourse.", "sub": "Vaultr. Ton effort te rembourse.", "voice": "upmc", "sid": 1, "speed": 0.85, "ns": 0.6, "pitch": 2.5}
 ]
