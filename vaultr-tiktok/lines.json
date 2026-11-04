@@ -1,0 +1,12 @@
+[
+ {"id":"ai1","speaker":"IA","text":"Une fois par mois. D'accord.","sub":"Une fois par mois. D'accord.","voice":"ff_siwis","lang":"fr-fr","speed":0.95},
+ {"id":"ai2","speaker":"IA","text":"J'ai exactement ce qu'il te faut.","sub":"J'ai exactement ce qu'il te faut.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
+ {"id":"ai3","speaker":"IA","text":"Une appli qui te prend de l'argent.","sub":"Une appli qui te prend de l'argent.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
+ {"id":"ai4","speaker":"IA","text":"Tu mets une mise. Disons, cinquante euros.","sub":"Tu mets une mise. Disons 50 €.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
+ {"id":"ai5","speaker":"IA","text":"Chaque séance validée te rend une partie.","sub":"Chaque séance validée te rend une partie.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
+ {"id":"ai6","speaker":"IA","text":"Tu fais tout ? Tu récupères tout.","sub":"Tu fais tout ? Tu récupères tout.","voice":"ff_siwis","lang":"fr-fr","speed":1.0},
+ {"id":"ai7","speaker":"IA","text":"Et si tu lâches...","sub":"Et si tu lâches…","voice":"ff_siwis","lang":"fr-fr","speed":0.9},
+ {"id":"ai8","speaker":"IA","text":"l'argent reste au coffre.","sub":"…l'argent reste au coffre.","voice":"ff_siwis","lang":"fr-fr","speed":0.92},
+ {"id":"ai9","speaker":"IA","text":"Voltr.","sub":"Vaultr.","voice":"ff_siwis","lang":"fr-fr","speed":0.9},
+ {"id":"ai10","speaker":"IA","text":"Alors... motivé ?","sub":"Alors… motivé ?","voice":"ff_siwis","lang":"fr-fr","speed":0.95}
+]

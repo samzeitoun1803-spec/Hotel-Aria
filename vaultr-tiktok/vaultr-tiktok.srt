@@ -1,0 +1,55 @@
+1
+00:00:00,300 --> 00:00:02,900
+MAX : j'veux faire du sport mais je suis motivé qu'une fois par mois 😩
+
+2
+00:00:04,800 --> 00:00:06,550
+IA : Une fois par mois. D'accord.
+
+3
+00:00:06,550 --> 00:00:08,750
+IA : J'ai exactement ce qu'il te faut.
+
+4
+00:00:08,750 --> 00:00:10,150
+IA : Une appli qui te prend de l'argent.
+
+5
+00:00:10,150 --> 00:00:11,000
+MAX : QUOI ?!
+
+6
+00:00:11,700 --> 00:00:14,659
+IA : Tu mets une mise. Disons 50 €.
+
+7
+00:00:15,350 --> 00:00:18,120
+IA : Chaque séance validée te rend une partie.
+
+8
+00:00:20,750 --> 00:00:23,050
+IA : Tu fais tout ? Tu récupères tout.
+
+9
+00:00:23,550 --> 00:00:25,427
+IA : Et si tu lâches…
+
+10
+00:00:26,050 --> 00:00:28,150
+IA : …l'argent reste au coffre.
+
+11
+00:00:28,150 --> 00:00:29,950
+MAX : …c'est quoi le nom 👀
+
+12
+00:00:30,000 --> 00:00:31,800
+IA : Vaultr.
+
+13
+00:00:32,000 --> 00:00:33,836
+IA : Alors… motivé ?
+
+14
+00:00:34,500 --> 00:00:37,500
+VAULTR — Ton effort te rembourse. Bientôt sur iOS et Android
