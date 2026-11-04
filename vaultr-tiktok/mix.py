@@ -8,6 +8,7 @@ E = json.load(open(os.path.join(HERE, 'events.json')))
 DUR = E['dur'] + .3; N = int(DUR * SR); T = np.arange(N) / SR
 rng = np.random.default_rng(11)
 mus, sfx, vox, amb = [np.zeros((N, 2)) for _ in range(4)]
+K = 0.78   # même resserrement que l'image : la partition est écrite en temps « long »
 mf = lambda m: 440 * 2 ** ((m - 69) / 12)
 
 def put(buf, x, t, g=1.0, pan=0.0):
@@ -22,6 +23,7 @@ def lp(x, fc):
 def hp(x, fc):
     X = np.fft.rfft(x); f = np.fft.rfftfreq(len(x), 1 / SR); X /= np.sqrt(1 + (fc / np.maximum(f, 1)) ** 4); return np.fft.irfft(X, len(x))
 
+def putm(x, t, g=1.0, pan=0.0): put(mus, x, t * K, g, pan)
 # —— instruments ——
 def piano(m, t, v=.5, d=None, pan=0.0):   # partiels légèrement inharmoniques, aigus qui meurent vite, marteau feutré
     f0 = mf(m); d = d or (5.0 if m < 52 else 3.5 if m < 64 else 2.4); n = int(d * SR); tt = np.arange(n) / SR
@@ -32,27 +34,27 @@ def piano(m, t, v=.5, d=None, pan=0.0):   # partiels légèrement inharmoniques,
         x += np.sin(TAU * fk * tt + rng.uniform(0, TAU)) * (1 / k ** 1.3) * np.exp(-tt * (.5 + .6 * k) * (f0 / 220) ** .35)
     x += lp(rng.standard_normal(n), 2500) * env(n, .0005, .012) * .15   # marteau
     x *= np.minimum(1, tt / .004) * np.minimum(1, (d - tt) / .3)
-    put(mus, lp(x, 1200 + 3000 * v) * v * .35, t, 1, pan)
+    putm(lp(x, 1200 + 3000 * v) * v * .35, t, 1, pan)
 def pad(ms, t, d, g=.08, bright=900):   # nappe : scies désaccordées, attaque lente
     n = int(d * SR); tt = np.arange(n) / SR; x = np.zeros(n)
     for m in ms:
         for dt in (.996, 1.0, 1.004): x += 2 * ((tt * mf(m) * dt + rng.random()) % 1) - 1
     x = lp(x / (3 * len(ms)), bright) * np.minimum(1, tt / 1.2) * np.minimum(1, (d - tt) / 1.2)
-    put(mus, x * g, t, 1, rng.uniform(-.3, .3))
+    putm(x * g, t, 1, rng.uniform(-.3, .3))
 def sub(m, t, d, g=.35):
     n = int(d * SR); tt = np.arange(n) / SR
-    put(mus, np.sin(TAU * mf(m) * tt) * np.minimum(1, tt / .4) * np.minimum(1, (d - tt) / .6) * g, t)
+    putm(np.sin(TAU * mf(m) * tt) * np.minimum(1, tt / .4) * np.minimum(1, (d - tt) / .6) * g, t)
 def heart(t, g=.5):   # pouls feutré « boum-boum »
     for dt, gg in ((0, 1), (.2, .6)):
         n = int(.4 * SR); tt = np.arange(n) / SR; f = 42 + 50 * np.exp(-tt / .03)
-        put(mus, np.sin(np.cumsum(f) / SR * TAU) * env(n, .002, .12) * g * gg, t + dt)
+        putm(np.sin(np.cumsum(f) / SR * TAU) * env(n, .002, .12) * g * gg, t + dt)
 def boom(t, g=.8):
     n = int(3.0 * SR); tt = np.arange(n) / SR; f = 34 + 40 * np.exp(-tt / .15)
     x = np.sin(np.cumsum(f) / SR * TAU) * env(n, .003, 1.0) + lp(rng.standard_normal(n), 300) * env(n, .003, .4) * .3
-    put(mus, np.tanh(x * 1.2) * g, t)
+    putm(np.tanh(x * 1.2) * g, t)
 def swell(t, d=1.2, g=.25):   # souffle qui monte (bruit filtré inversé)
     n = int(d * SR); tt = np.arange(n) / SR; x = lp(hp(rng.standard_normal(n), 300), 3000) * (tt / d) ** 3
-    put(mus, x * g, t)
+    putm(x * g, t)
 
 A, F, C, G, Em, Dm = (45, 52, 57, 60, 64), (41, 48, 53, 57, 60), (36, 48, 52, 55, 60), (43, 50, 55, 59, 62), (40, 52, 55, 59, 64), (38, 50, 53, 57, 62)
 def bar(ch, t, d, v=.45, arp=False, pg=.07, bright=900):
@@ -76,7 +78,7 @@ for t0, ch in seq: bar(ch, t0, 2.5, .4, arp=t0 >= 15.5, pg=.08, bright=1300 if t
 for i in range(int((25.5 - 13.9) / .833)): heart(13.9 + i * .833, .38 if i < 6 else .5)
 for t0, m in ((11.2, 72), (12.4, 74), (16.6, 76), (18.6, 79), (21.0, 77), (23.5, 79), (24.4, 81)): piano(m, t0, .25, pan=.2)
 # C. le silence (25.5 → 29.6) : la musique s'arrête net. Seul un grondement sous le cadenas.
-mus[int(25.55 * SR):] *= 0
+mus[int(25.55 * K * SR):] *= 0
 boom(28.5, .55)
 # D. la promesse (29.8 → fin) : majeur, ample, résout sur le titre
 swell(28.6, 1.2, .18)
@@ -90,8 +92,8 @@ n = int(2.8 * SR); tt = np.arange(n) / SR
 for ch in range(2):
     ir = lp(rng.standard_normal(n), 4500) * np.exp(-tt / .65); ir /= np.sqrt((ir ** 2).sum())
     mus[:, ch] = mus[:, ch] * .7 + fftconvolve(mus[:, ch], ir)[:N] * .45
-mus[int(25.55 * SR):int(28.45 * SR)] *= 0   # silence vrai (pas de queue de réverbe)
-fade = np.ones(N); i0 = int(39.6 * SR); fade[i0:] = np.linspace(1, 0, N - i0) ** 2; mus *= fade[:, None]
+mus[int(25.55 * K * SR):int(28.45 * K * SR)] *= 0   # silence vrai (pas de queue de réverbe)
+fade = np.ones(N); i0 = int(39.6 * K * SR); fade[i0:] = np.linspace(1, 0, N - i0) ** 2; mus *= fade[:, None]
 
 # —— bruitages (discrets) ——
 def clink(f=2600):
@@ -126,7 +128,7 @@ vox = v
 # —— ambiance : ronron du frigo, horloge (bien audible dans le silence) ——
 room = lp(rng.standard_normal(N), 160) * .02 + np.sin(TAU * 60 * T) * .003
 amb[:, 0] += room; amb[:, 1] += room
-for k in range(41): put(amb, tick() * (1.0 if 25.5 <= k + .3 < 29.8 else .35), k + .3, .5, .4)
+for k in range(33): put(amb, tick() * (1.0 if 25.5 * K <= k + .3 < 29.8 * K else .35), k + .3, .5, .4)
 
 # —— mixage : musique baissée sous les voix ——
 venv = np.convolve(np.abs(vox[:, 0]), np.ones(int(.08 * SR)) / int(.08 * SR), 'same')

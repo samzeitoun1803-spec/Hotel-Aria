@@ -1,59 +1,59 @@
 1
-00:00:00,000 --> 00:00:00,340
+00:00:00,000 --> 00:00:00,273
 Si t'abandonnes toujours le sport… écoute ça.
 
 2
-00:00:00,350 --> 00:00:04,138
+00:00:00,273 --> 00:00:03,294
 MAX : Frérot… pourquoi j'arrive jamais à m'y tenir ?
 
 3
-00:00:04,400 --> 00:00:08,800
+00:00:03,432 --> 00:00:06,853
 MAX : Un jour j'suis motivé… et le lendemain, plus rien.
 
 4
-00:00:08,850 --> 00:00:10,204
+00:00:06,903 --> 00:00:08,071
 MAX : Regarde-moi.
 
 5
-00:00:10,900 --> 00:00:13,522
+00:00:08,502 --> 00:00:10,675
 IA : T'inquiète. J'ai la solution pour toi.
 
 6
-00:00:13,750 --> 00:00:15,988
+00:00:10,725 --> 00:00:12,508
 IA : Ça s'appelle Vaultr.
 
 7
-00:00:16,100 --> 00:00:19,950
+00:00:12,558 --> 00:00:15,550
 IA : Tu mets de l'argent en jeu. 50 €, par exemple.
 
 8
-00:00:20,000 --> 00:00:23,100
+00:00:15,600 --> 00:00:18,007
 IA : Chaque séance que tu fais te rend une partie.
 
 9
-00:00:23,150 --> 00:00:25,509
+00:00:18,057 --> 00:00:20,014
 IA : Tu fais tout ? Tu récupères tout.
 
 10
-00:00:25,800 --> 00:00:27,376
+00:00:20,124 --> 00:00:21,514
 MAX : Et si je lâche ?
 
 11
-00:00:27,700 --> 00:00:29,852
+00:00:21,606 --> 00:00:23,350
 IA : L'argent reste dans le coffre.
 
 12
-00:00:30,000 --> 00:00:33,550
+00:00:23,400 --> 00:00:26,158
 IA : Crois-moi… tu vas plus jamais sauter une séance.
 
 13
-00:00:33,600 --> 00:00:35,650
+00:00:26,208 --> 00:00:27,796
 MAX : Vaultr… c'est ça ?
 
 14
-00:00:35,700 --> 00:00:38,300
+00:00:27,846 --> 00:00:29,874
 IA : Vaultr. Ton effort te rembourse.
 
 15
-00:00:38,300 --> 00:00:41,000
+00:00:29,874 --> 00:00:31,980
 VAULTR — Ton effort te rembourse. Bientôt sur iOS et Android

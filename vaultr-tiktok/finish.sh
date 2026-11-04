@@ -12,5 +12,5 @@ if ! sh core/render/mux.sh "$HERE/out/video.mp4" "$HERE/out/mix.wav" "$HERE/vaul
     -af "loudnorm=I=-14:TP=-1.2:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true" \
     -c:a aac -b:a 192k -ar 48000 -movflags +faststart -shortest "$HERE/vaultr-tiktok.mp4"
 fi
-ffmpeg -loglevel error -y -ss 14.8 -i "$HERE/vaultr-tiktok.mp4" -frames:v 1 -q:v 2 "$HERE/poster.jpg"
+ffmpeg -loglevel error -y -ss 11.5 -i "$HERE/vaultr-tiktok.mp4" -frames:v 1 -q:v 2 "$HERE/poster.jpg"
 echo "$HERE/vaultr-tiktok.mp4"

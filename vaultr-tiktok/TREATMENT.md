@@ -1,7 +1,7 @@
 # Vaultr — « J'ai la solution pour toi » (TikTok, 9:16)
 
 Style : Sci-Fi Sitcom Toon, version calme (contours épais qui « bouillonnent » doucement, aplats, grands yeux, dessin sur deux).
-Format : 1080 × 1920, 24 i/s, 41 s, français, sous-titres incrustés + `.srt`.
+Format : 1080 × 1920, 24 i/s, 32 s, français, sous-titres incrustés + `.srt`.
 
 ## 1. Idée
 
@@ -57,3 +57,5 @@ musique baissée sous les voix ; master −14 LUFS.
 
 En bas au centre, Baloo 2 ExtraBold blanc cerné de noir sur un bandeau sombre, pastille du locuteur : « MAX » moutarde,
 « IA » rose. Zones sûres TikTok respectées (haut 150 px, bas ~420 px, droite ~140 px).
+
+Note de montage : les voix ont ensuite été accélérées (×1,45 environ) et tout le film resserré d'un facteur 0,78 (K dans main.js, mix.py, srt.py) : les temps ci-dessus sont ceux du découpage « long » ; durée finale 32 s.

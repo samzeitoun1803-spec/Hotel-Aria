@@ -8,6 +8,8 @@ const LINES = await fetch('lines.json').then(r => r.json());
 const SUB = Object.fromEntries(LINES.map(L => [L.id, L.sub])), WHO = Object.fromEntries(LINES.map(L => [L.id, L.speaker]));
 const VO = [['m1', .35], ['m2', 4.4], ['m3', 8.85], ['a1', 10.9], ['a2', 13.75], ['a3', 16.1], ['a4', 20.0], ['a5', 23.15], ['m4', 25.8], ['a6', 27.7], ['a7', 30.0], ['m5', 33.6], ['a8', 35.7]];
 const DUR = 41.0;
+const K = 0.78;   // tout le film est resserré (voix accélérées) : le découpage est écrit en temps « long », rendu en t/K
+let TR = 0;       // temps réel de la vidéo (pour la synchro labiale)
 const SHOTS = [0, 4.2, 10.5, 13.5, 16.0, 19.8, 25.5, 27.5, 29.8, 33.4, 35.5];
 const step12 = t => Math.floor(t * 12) / 12;
 
@@ -15,7 +17,7 @@ const step12 = t => Math.floor(t * 12) / 12;
 function talk(t, who) {
   for (const [id, t0] of VO) {
     if (WHO[id] !== who) continue; const e = LS.env[id]; if (!e) continue;
-    const i = Math.floor((t - t0) * 12) * 2; if (i >= 0 && i < e.length) return e[i];
+    const i = Math.floor((TR - t0 * K) * 12) * 2; if (i >= 0 && i < e.length) return e[i];
   }
   return 0;
 }
@@ -208,7 +210,7 @@ function wrap(txt, maxW, font) {
   for (const w of words) { const tr = cur ? cur + ' ' + w : w; if (g.measureText(tr).width > maxW && cur) { out.push(cur); cur = w; } else cur = tr; }
   if (cur) out.push(cur); g.restore(); return out;
 }
-export function cueList() { return VO.map(([id, t0], i) => { const d = LS.dur[id] || 1.5, nxt = VO[i + 1] ? VO[i + 1][1] : DUR; return { id, t0, t1: Math.min(nxt - .05, t0 + d + .5) }; }); }
+export function cueList() { return VO.map(([id, t0], i) => { const d = LS.dur[id] || 1.5, nxt = VO[i + 1] ? VO[i + 1][1] : DUR; return { id, t0, t1: Math.min(nxt - .05, t0 + (d + .5) / K) }; }); }
 function subtitle(t) {
   if (t >= 35.5) return;
   const c = cueList().filter(c => t >= c.t0 && t < c.t1).pop(); if (!c) return;
@@ -227,8 +229,9 @@ function subtitle(t) {
 // —— rendu ——
 const cv = document.getElementById('c'); init(cv);
 const PLAN = [shotHook, shotTwo, shotBuddy, shotReveal, shotHolo(holoStake), shotHolo(holoSessions), shotFear, shotHolo(holoLock), shotFriend, shotSmile, endCard];
-window.DUR = DUR;
-window.render = t => {
+window.DUR = DUR * K;
+window.render = tr => {
+  TR = tr; const t = tr / K;
   let i = SHOTS.length - 1; while (i > 0 && t < SHOTS[i]) i--;
   g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
   PLAN[i](t);
@@ -243,5 +246,5 @@ EV.push({ t: 14.0, type: 'holoOn' }, { t: 28.2, type: 'lockDrop' }, { t: 28.5, t
 for (let i = 0; i < 5; i++) EV.push({ t: 17.2 + i * .28 + .7, type: 'coinIn' });
 DAYS.forEach(d => EV.push({ t: d, type: 'tick' }, { t: d + .55, type: 'clink' }));
 SHOTS.forEach(t => t > 0 && EV.push({ t, type: 'cut' }));
-window.EV = EV.sort((a, b) => a.t - b.t);
+window.EV = EV.map(e => ({ ...e, t: e.t * K })).sort((a, b) => a.t - b.t);
 document.fonts.load('800 56px "Baloo 2"').then(() => document.fonts.load('400 100px "Bungee"')).then(() => document.fonts.ready).then(() => { window.READY = true; });
