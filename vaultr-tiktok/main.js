@@ -236,7 +236,7 @@ function shot9(t) {   // insert : « c'est quoi le nom ? » → Vaultr
       const s = back(seg(t, 30.0, 30.3), 1.3);
       push(); translate(540, 1080); scale(s);
       shape(rr(-150, -150, 300, 300, 70), { fill: PAL.portal, lw: 8, shade: () => fillOnly(rr(-150, 40, 300, 110, 0), PAL.portalB, { boil: .3 }) });
-      shape(ell(0, 0, 80, 80, 30), { lw: 14, line: '#ffffff' }); for (let i = 0; i < 3; i++) { const a = -Math.PI / 2 + i * TAU / 3; stroke([[0, 0], [Math.cos(a) * 70, Math.sin(a) * 70]], 14, { line: '#ffffff' }); }
+      shape(ell(0, 0, 62, 62, 30), { lw: 14, line: '#ffffff' }); for (let i = 0; i < 3; i++) { const a = -Math.PI / 2 + i * TAU / 3; stroke([[0, 0], [Math.cos(a) * 98, Math.sin(a) * 98]], 14, { line: '#ffffff' }); dot(Math.cos(a) * 104, Math.sin(a) * 104, 17, '#ffffff'); } dot(0, 0, 24, '#ffffff'); dot(0, 0, 10, PAL.portal);
       pop();
       if (t > 30.25) { push(); translate(540, 1330); scale(back(seg(t, 30.25, 30.5), 1.3)); text('VAULTR', 0, 0, { font: '400 100px "Bungee"', fill: INK }); pop(); }
     }
@@ -275,6 +275,7 @@ function endCard(t) {   // carton final
 function subtitle(t) {
   const cur = VO.map(([id, t0], i) => { const d = LS.dur[id] || 1.5, nxt = VO[i + 1] ? VO[i + 1][1] : DUR; return { id, t0, t1: Math.min(nxt, t0 + Math.max(1.8, d + .6)) }; }).filter(c => t >= c.t0 && t < c.t1);
   if (t >= 34.4 || !cur.length) return;
+  if (cur[cur.length - 1].id === 'ai9') return;   // le nom est déjà écrit en grand sur l'écran
   const c = cur[cur.length - 1];
   g.setTransform(1, 0, 0, 1, 0, 0);
   const L = wrap(SUB[c.id], 760, '800 54px "Baloo 2"'), y0 = 1450 - (L.length - 1) * 30;
