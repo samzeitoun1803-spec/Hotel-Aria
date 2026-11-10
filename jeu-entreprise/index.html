@@ -1359,9 +1359,9 @@ function resize() {
   fitCam(true);
 }
 function fitCam(snap) {
-  const c = cols(), span = c + ROWS + 1.5;
-  const a = clamp(Math.min((W - 24) / span, (H - 230) / (span * .5 + 3.2)), 14, 64);
-  cam.ta = a; cam.tx = c / 2 + .2; cam.ty = ROWS / 2 - 1.1 - (W < 620 ? .3 : 0);
+  const c = cols(), span = EXP[0].cols + ROWS + 1.5;
+  const a = clamp(Math.min((W - 24) / span, (H - 230) / (span * .5 + 3.2)), 18, 64);
+  cam.ta = a; cam.tx = Math.min(c, EXP[0].cols + 2) / 2 + .2; cam.ty = ROWS / 2 - 1.1 - (W < 620 ? .3 : 0);
   if (snap) { cam.a = a; cam.x = cam.tx; cam.y = cam.ty; }
 }
 function screenToTile(sx, sy) {
