@@ -169,7 +169,7 @@ h3 small{font-weight:500;font-size:12.5px;color:var(--muted)}
 .talk-head b{display:block;font-size:18px;font-weight:700;line-height:1.1}
 .talk-head small{display:block;color:var(--muted);font-size:12.5px;margin:2px 0 6px}
 .mood{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
-.say{position:relative;margin:0;background:var(--panel2);border-radius:18px;padding:12px 14px;font-size:16px;line-height:1.4;min-height:3.2em;user-select:text}
+.say{position:relative;margin:0;max-height:32vh;overflow:auto;background:var(--panel2);border-radius:18px;padding:12px 14px;font-size:16px;line-height:1.4;min-height:3.2em;user-select:text}
 .say::before{content:"";position:absolute;left:28px;top:-9px;border:10px solid transparent;border-top:0;border-bottom-color:var(--panel2)}
 .choices{display:flex;flex-direction:column;gap:8px}
 .choice{border:0;border-radius:15px;background:var(--violet);color:#fff;box-shadow:0 4px 0 var(--violetD);padding:10px 14px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:600;font-size:14.5px;animation:tin .3s ease backwards}
@@ -276,7 +276,8 @@ h3 small{font-weight:500;font-size:12.5px;color:var(--muted)}
   <div class="sh-body" id="sh-build">
     <div class="cats" id="cats"></div>
     <div class="items" id="items"></div>
-    <div class="row"><button type="button" class="btn coral small" data-act="sell">Revendre un meuble</button></div>
+    <div class="row"><button type="button" class="btn violet small" data-act="upgrade">Améliorer un meuble</button><button type="button" class="btn coral small" data-act="sell">Revendre un meuble</button></div>
+    <p class="note">Chaque meuble peut monter jusqu’au niveau 3 : il devient plus beau et ses effets augmentent de 50 % par niveau.</p>
     <div class="stack" id="expand"></div>
   </div>
   <div class="sh-body" id="sh-team" hidden><div class="stack" id="staffList"></div><div class="stack" id="recruit"></div></div>
@@ -339,6 +340,19 @@ const ITEMS = {
   piano:      { name: "Piano", a: "un piano", fun: true, cost: 4200, w: 2, h: 1, lvl: 3, cat: "fun", desc: "+12 moral pour tous.", g: 12 },
   bigtree:    { name: "Arbre d’intérieur", a: "un arbre d’intérieur", cost: 3800, w: 2, h: 2, lvl: 3, cat: "deco", desc: "+12 moral à 3 cases.", aura: { r: 3, m: 12 } },
   robot:      { name: "Robot barista", a: "un robot barista", cost: 5000, w: 1, h: 1, lvl: 3, cat: "break", desc: "Recharge éclair, +10 moral pour tous.", brk: 3.2, g: 10 },
+  printer3d:  { name: "Imprimante 3D", a: "une imprimante 3D", cost: 2800, w: 1, h: 1, fl: 2, cat: "work", desc: "+12 % design à 2 cases." },
+  visio:      { name: "Salle de visio", a: "une salle de visio", cost: 3500, w: 2, h: 1, fl: 2, cat: "work", desc: "+20 % pour commerciaux, support et marketing de l’étage." },
+  kitchen:    { name: "Cuisine équipée", a: "une cuisine équipée", cost: 4200, w: 2, h: 1, fl: 3, cat: "break", desc: "Grosse recharge, +10 moral.", brk: 2.8, g: 10 },
+  greenwall:  { name: "Mur végétal", a: "un mur végétal", cost: 2600, w: 2, h: 1, fl: 3, cat: "deco", desc: "+10 moral à 3 cases.", aura: { r: 3, m: 10 } },
+  gym:        { name: "Salle de sport", a: "une salle de sport", cost: 6000, w: 2, h: 2, fl: 4, cat: "fun", fun: true, desc: "+12 moral, recharge l’énergie.", g: 12, brk: 2.5 },
+  studio:     { name: "Studio photo", a: "un studio photo", cost: 5200, w: 2, h: 2, fl: 5, cat: "work", desc: "+20 % design sur l’étage." },
+  datacenter: { name: "Mini data center", a: "un mini data center", cost: 9000, w: 2, h: 1, fl: 6, cat: "work", desc: "+20 % code sur l’étage." },
+  smoothie:   { name: "Bar à smoothies", a: "un bar à smoothies", cost: 4800, w: 2, h: 1, fl: 7, cat: "break", desc: "Recharge express, +12 moral.", brk: 3.4, g: 12 },
+  vr:         { name: "Salle VR", a: "une salle VR", cost: 8000, w: 2, h: 2, fl: 8, cat: "fun", fun: true, desc: "+15 moral pour tous.", g: 15 },
+  slide:      { name: "Toboggan", a: "un toboggan", cost: 12000, w: 2, h: 2, fl: 10, cat: "fun", fun: true, desc: "+18 moral, +1 réputation par jour.", g: 18 },
+  statue:     { name: "Statue du fondateur", a: "une statue du fondateur", cost: 20000, w: 1, h: 1, fl: 12, cat: "deco", desc: "+2 réputation par jour (2 max)." },
+  conf:       { name: "Auditorium", a: "un auditorium", cost: 30000, w: 2, h: 2, fl: 14, cat: "work", desc: "+10 % de production dans tout l’immeuble." },
+  throne:     { name: "Bureau présidentiel", a: "un bureau présidentiel", cost: 60000, w: 2, h: 2, fl: 17, cat: "work", maxAll: 1, desc: "+20 moral pour tout l’immeuble." },
   trophy:     { name: "Vitrine à trophées", a: "une vitrine à trophées", cost: 3000, w: 1, h: 1, cat: "deco", lvl: 2, desc: "+0,5 réputation par jour (3 max)." },
 };
 const CATS = [["all", "Tout"], ["work", "Travail"], ["break", "Pauses"], ["fun", "Détente"], ["deco", "Déco"]];
@@ -350,7 +364,8 @@ const TRAITS = {
   sociable:  { name: "Sociable", likes: ["sofa", "beanbag", "fridge"] },
   geek:      { name: "Geek", likes: ["server", "arcade", "lamp", "robot"] },
 };
-const locked = D => !!(D.lvl && Math.max(...S.floors.map(f => f.exp)) < D.lvl);
+const locked = D => !!((D.lvl && Math.max(...S.floors.map(f => f.exp)) < D.lvl) || (D.fl && S.floors.length < D.fl));
+const unlockedByFloor = n => ({ items: Object.values(ITEMS).filter(D => D.fl === n).map(D => D.name), roles: Object.values(ROLES).filter(R => R.fl === n).map(R => R.long) });
 const unlockedBy = n => Object.values(ITEMS).filter(D => D.lvl === n).map(D => D.name);
 const ISSUES = { slack: "Traîne au coin détente", late: "Retards à répétition", sleep: "S’endort au bureau", dispute: "En conflit" };
 const isSeated = e => (e.state === "work" || e.state === "sleep") && !e.path.length;
@@ -359,14 +374,26 @@ const plvl = () => levelInfo().L;
 const SEC_LVL = 3, SECP_LVL = 5, MONTH = 10;
 const isSec = e => e.role === "secretary";
 const POLS = [["gen", "Généreuse", "dit souvent oui, coûte plus cher"], ["bal", "Équilibrée", "compromis entre moral et budget"], ["eco", "Économe", "protège la trésorerie"]];
+const workOf = e => ROLES[e.role] ? ROLES[e.role].work : null;
+const isCadre = e => !!(e.founder || (ROLES[e.role] && ROLES[e.role].cadre));
+const pw = it => 1 + 0.5 * (((it && it.lv) || 1) - 1);
+let GB = {};
 const isDesk = t => !!(ITEMS[t] && ITEMS[t].desk);
 const capFirst = t => t.charAt(0).toUpperCase() + t.slice(1);
 const ROLES = {
-  dev:     { name: "Dev", long: "Développeur·se", base: 170, doing: "Code un projet" },
-  design:  { name: "Design", long: "Designer", base: 150, doing: "Dessine des maquettes" },
-  sales:   { name: "Commercial", long: "Commercial·e", base: 140, doing: "Prospecte des clients" },
-  support: { name: "Support", long: "Support client", base: 110, doing: "Chouchoute les clients" },
-  secretary: { name: "Secrétariat", long: "Secrétaire de direction", base: 220, doing: "Gère les demandes de l’équipe" },
+  dev:     { name: "Dev", long: "Développeur·se", base: 170, doing: "Code un projet", work: "dev", perk: "fait avancer le code des projets" },
+  design:  { name: "Design", long: "Designer", base: 150, doing: "Dessine des maquettes", work: "design", perk: "fait avancer le design des projets" },
+  sales:   { name: "Commercial", long: "Commercial·e", base: 140, doing: "Prospecte des clients", work: "sales", perk: "trouve des offres et négocie +5 %" },
+  support: { name: "Support", long: "Support client", base: 110, doing: "Chouchoute les clients", work: "support", perk: "fait monter la réputation" },
+  pm:      { name: "Chef de projet", long: "Chef·fe de projet", base: 230, doing: "Coordonne l’étage", work: null, fl: 2, perk: "+8 % de production pour son étage (3 max)" },
+  data:    { name: "Data", long: "Data scientist", base: 240, doing: "Analyse les données", work: "dev", mult: 1.35, fl: 3, perk: "code 35 % plus vite qu’un dev" },
+  marketing: { name: "Marketing", long: "Responsable marketing", base: 200, doing: "Fait briller la marque", work: "rep", fl: 4, perk: "réputation + offres mieux payées" },
+  hr:      { name: "RH", long: "Responsable RH", base: 190, doing: "Prend soin de l’équipe", work: null, fl: 5, perk: "+5 moral pour son étage, moins d’écarts" },
+  lawyer:  { name: "Juriste", long: "Juriste", base: 260, doing: "Relit les contrats", work: null, fl: 6, perk: "pénalités de retard divisées par 2, −8 % d’impôts" },
+  accountant: { name: "Compta", long: "Comptable", base: 210, doing: "Optimise les comptes", work: null, fl: 8, perk: "−12 % d’impôts chacun" },
+  artdir:  { name: "DA", long: "Directeur·rice artistique", base: 280, doing: "Signe les créations", work: "design", mult: 1.45, fl: 10, perk: "design 45 % plus rapide" },
+  secretary: { name: "Secrétariat", long: "Secrétaire de direction", base: 220, doing: "Gère les demandes de l’équipe", work: null, cadre: true },
+  manager: { name: "Direction", long: "Directeur·rice d’étage", base: 600, doing: "Dirige l’étage", work: null, cadre: true },
 };
 const SKINS = ["#F6D3B3", "#E8B48F", "#C98E64", "#9A6440", "#6E4428", "#F2C9A0"];
 const HAIRS = ["#2B1D14", "#5A3825", "#C98A3B", "#E8C26A", "#1E1E2E", "#B34A2B", "#8A8A9A", "#6B5BFF"];
@@ -475,9 +502,16 @@ function mkStaff(role, skill) {
     home: false, acc: 0, accT: 0, timer: 0, idle: false, coffeeCd: 0,
     skin: pick(SKINS), hair: pick(HAIRS), hs: ri(0, 2), trait: pick(Object.keys(TRAITS)), mood: 0, perm: 0, reqCd: rnd(200, 700), req: null, quest: null, lazy: Math.random() < .35 ? rnd(.4, .9) : rnd(0, .3), issue: null, funCd: rnd(90, 240) };
 }
+function rolePool() {
+  const n = S.floors ? S.floors.length : 1, pool = [["dev", 30], ["design", 20], ["sales", 15], ["support", 10]];
+  for (const [k, R] of Object.entries(ROLES)) if (R.fl && R.fl <= n && !R.cadre) pool.push([k, R.fl === n ? 18 : 10]);
+  return pool;
+}
+function pickRole() { const pool = rolePool(), tot = pool.reduce((a, q) => a + q[1], 0); let x = Math.random() * tot; for (const [k, w] of pool) { if ((x -= w) < 0) return k; } return "dev"; }
 function genCands(first) {
   const roles = first ? ["design", "sales", "dev"] : [];
-  while (roles.length < 3) { const r = Math.random(); roles.push(r < .35 ? "dev" : r < .6 ? "design" : r < .8 ? "sales" : "support"); }
+  const nb = 3 + Math.min(3, (S.floors ? S.floors.length : 1) - 1);
+  while (roles.length < nb) roles.push(pickRole());
   S.cands = roles.map(r => mkStaff(r, clamp(Math.round(rnd(1, 3.2) + S.rep / 30), 1, 5)));
   S.candsDay = S.day;
 }
@@ -488,7 +522,7 @@ function newOffer(starter) {
   const j = starter ? pick(JOBS.slice(0, 3)) : pick(pool.slice(-4));
   const m = starter ? 1 : (1 + S.rep / 90) * (1 + Math.min(0.6, S.staff.length * 0.04)) * rnd(0.8, 1.25);
   const dev = Math.round(j.dev * m), design = Math.round(j.design * m);
-  const bonus = 1 + Math.min(0.3, S.staff.filter(e => e.role === "sales").length * 0.05);
+  const bonus = 1 + Math.min(0.4, S.staff.filter(e => e.role === "sales" || e.role === "marketing").length * 0.05);
   const reward = Math.round((dev * 45 + design * 40) * rnd(0.9, 1.2) * bonus / 50) * 50;
   const days = Math.max(2, Math.ceil((dev + design) / 45) + ri(1, 2));
   const o = { id: nid(), client: pick(CLIENTS), name: j.n, need: { dev, design }, reward, days, expires: S.day + 3 };
@@ -499,7 +533,7 @@ function newOffer(starter) {
 function newGame() {
   S = { v: 3, cash: 12000, rep: 5, day: 1, t: 480, speed: 1, floors: [{ num: 12, exp: 0, items: [] }], view: 0, ms: [], staff: [], offers: [], active: [], cands: [], candsDay: 1,
     nextId: 1, leadMeter: 0, debtDays: 0, closing: false, todayIn: 0, idleWarned: 0, goalsDone: [], over: false, seenGoals: 0,
-    stats: { done: 0, failed: 0, earned: 0, spent: 0, tax: 0, signed: 0, maxSigned: 0, streak: 0 }, log: [], month: { in: 0, out: 0 }, nextTax: MONTH, taxDebt: 0, pending: [], secPol: "bal", secAuto: true, visitor: null };
+    stats: { done: 0, failed: 0, earned: 0, spent: 0, tax: 0, signed: 0, maxSigned: 0, streak: 0 }, log: [], month: { in: 0, out: 0 }, nextTax: MONTH, taxDebt: 0, pending: [], esc: [], secPol: "bal", secAuto: true, visitor: null };
   installFloorProps(S); occs = []; setFloor(0);
   const d1 = addItem("desk", 2, 2); addItem("desk", 4, 2); addItem("desk", 2, 4);
   addItem("plant", 0, 0); addItem("coffee", 6, 0); addItem("plant", 6, 8); addItem("sofa", 3, 8); addItem("rug", 1, 4);
@@ -582,7 +616,7 @@ function goFun(e) {
   if (!p || !p.length) return false;
   const last = p[p.length - 1];
   e.funTile = last.x + "," + last.y; e.funItem = it.id; e.path = p; e.state = "tofun";
-  e.slacking = !e.founder && Math.random() < (e.lazy || 0) * 0.6;
+  e.slacking = !isCadre(e) && Math.random() < (e.lazy || 0) * 0.6 * (S.staff.some(o => o.role === "hr" && (o.floor | 0) === (e.floor | 0)) ? 0.5 : 1);
   e.timer = e.slacking ? rnd(130, 210) : rnd(15, 35); e.funT = 0;
   return true;
 }
@@ -617,11 +651,12 @@ function arrived(e) {
   if (e.state === "arriving") e.state = "work";
   else if (e.state === "tofun") { e.state = "fun"; const it = itemById(e.funItem); if (it) e.face = (it.x + it.w / 2) - (it.y + it.h / 2) > e.x - e.y ? 1 : -1; }
   else if (e.state === "tointerview") e.state = "interview";
+  else if (e.state === "tomeet") { e.state = "meeting"; e.timer = 50; const it = itemById(e.meetRoom); if (it) e.face = (it.x + it.w / 2) - (it.y + it.h / 2) > e.x - e.y ? 1 : -1; }
   else if (e.state === "toargue") e.state = "argue";
   else if (e.state === "tocoffee") {
     e.state = "coffee"; e.timer = 30;
     const sp = S.items.filter(i => ITEMS[i.type].brk && rectDist(i, { x: Math.round(e.x), y: Math.round(e.y), w: 1, h: 1 }) <= 1);
-    e.brk = sp.length ? Math.max(...sp.map(i => ITEMS[i.type].brk)) : 1.2;
+    e.brk = sp.length ? Math.max(...sp.map(i => ITEMS[i.type].brk * pw(i))) : 1.2;
   }
   else if (e.state === "leaving") { e.state = "away"; elevOpen = Math.max(elevOpen, 1); }
 }
@@ -629,15 +664,19 @@ function arrived(e) {
 /* ================= Simulation ================= */
 function moraleTarget(e) {
   let m = 45, aura = 0, glob = 0;
-  const d = itemById(e.deskId), seen = new Set();
+  const d = itemById(e.deskId), best = {};
   for (const it of S.items) {
     const D = ITEMS[it.type];
-    if (D.g && !seen.has(it.type)) { seen.add(it.type); glob += D.g; }
-    if (D.aura && d && rectDist(it, d) <= D.aura.r) aura += D.aura.m;
+    if (D.g) best[it.type] = Math.max(best[it.type] || 0, D.g * pw(it));
+    if (D.aura && d && rectDist(it, d) <= D.aura.r) aura += D.aura.m * pw(it);
   }
-  m += Math.min(30, glob) + Math.min(25, aura);
-  if (d && ITEMS[d.type].desk && ITEMS[d.type].desk.m) m += ITEMS[d.type].desk.m;
+  for (const k in best) glob += best[k];
+  m += Math.min(36, glob) + Math.min(30, aura);
+  if (d && ITEMS[d.type].desk && ITEMS[d.type].desk.m) m += ITEMS[d.type].desk.m * pw(d);
   if (d && S.items.some(i => i.type === "meeting" && rectDist(i, d) <= 3)) m += 4;
+  let hrs = 0; for (const o of S.staff) if (o.role === "hr" && (o.floor | 0) === (e.floor | 0)) hrs++;
+  m += Math.min(10, 5 * hrs);
+  if (GB.throne) m += 20;
   const T = TRAITS[e.trait]; if (T && T.likes.some(has)) m += 6;
   m += (e.mood || 0) + (e.perm || 0);
   if (S.cash < 0) m -= 20;
@@ -645,17 +684,28 @@ function moraleTarget(e) {
 }
 function rate(e) {
   let r = (1.2 + e.skill * 0.9) * (0.5 + e.morale / 100) * (e.energy < 20 ? 0.45 : 1);
-  const d = itemById(e.deskId);
+  const W = workOf(e), d = itemById(e.deskId);
   if (d) {
-    let p = 0, wb = 0;
-    if (S.items.some(i => i.type === "meeting" && rectDist(i, d) <= 3)) p += 0.15;
-    for (const it of S.items) if (it.type === "whiteboard" && rectDist(it, d) <= 2 && wb < 2) { wb++; p += 0.06; }
-    if (ITEMS[d.type].desk && ITEMS[d.type].desk.p) p += ITEMS[d.type].desk.p;
+    let p = 0, wb = 0, pr = 0, mt = 0;
+    for (const it of S.items) {
+      if (it.type === "meeting" && rectDist(it, d) <= 3) mt = Math.max(mt, pw(it));
+      else if (it.type === "whiteboard" && rectDist(it, d) <= 2 && wb < 2) { wb++; p += 0.06 * pw(it); }
+      else if (it.type === "printer3d" && W === "design" && rectDist(it, d) <= 2 && pr < 2) { pr++; p += 0.12 * pw(it); }
+    }
+    p += 0.15 * mt;
+    if (ITEMS[d.type].desk && ITEMS[d.type].desk.p) p += ITEMS[d.type].desk.p * pw(d);
     r *= 1 + p;
   }
-  if (e.role === "dev") r *= 1 + 0.08 * Math.min(4, count("server"));
+  const floorMax = t => { let m = 0; for (const it of S.items) if (it.type === t) m = Math.max(m, pw(it)); return m; };
+  if (W === "dev") { let sv = 0, k = 0; for (const it of S.items) if (it.type === "server" && k++ < 4) sv += pw(it); r *= (1 + 0.08 * sv) * (1 + 0.2 * floorMax("datacenter")); }
+  if (W === "design") r *= 1 + 0.2 * floorMax("studio");
+  if (W === "sales" || W === "support" || W === "rep") { let pb = 0, k = 0; for (const it of S.items) if (it.type === "phonebooth" && k++ < 2) pb += pw(it); r *= (1 + 0.15 * pb) * (1 + 0.2 * floorMax("visio")); }
+  let pms = 0; for (const o of S.staff) if (o.role === "pm" && (o.floor | 0) === (e.floor | 0)) pms++;
+  r *= 1 + Math.min(0.24, 0.08 * pms);
+  r *= 1 + 0.1 * (GB.conf || 0);
+  r *= 1 + (e.tb || 0);
+  r *= (ROLES[e.role] && ROLES[e.role].mult) || 1;
   if (e.rushDay === S.day) r *= 1.1;
-  if (e.role === "sales" || e.role === "support") r *= 1 + 0.15 * Math.min(2, count("phonebooth"));
   return r;
 }
 function addWork(kind, pts) {
@@ -676,24 +726,26 @@ function complete(c) {
 function floatText(x, y, text, color, big) { floats.push({ x, y, z: 1.5, text, color, life: big ? 2.2 : 1.5, max: big ? 2.2 : 1.5, big }); }
 
 function produce(e, dtMin, factor) {
-  if (isSec(e)) { e.idle = false; return; }
+  const W = workOf(e);
+  if (!W) { e.idle = false; return; }
   const r = rate(e) * factor * dtMin / 60;
   let ok = true;
-  if (e.role === "dev" || e.role === "design") ok = addWork(e.role, r);
-  else if (e.role === "sales") {
+  if (W === "dev" || W === "design") ok = addWork(W, r);
+  else if (W === "sales") {
     S.leadMeter += r;
     if (S.leadMeter >= LEAD) {
       S.leadMeter -= LEAD;
       if (S.offers.length < maxOffers()) { const o = newOffer(); if (e.state !== "away") floatText(e.x, e.y, "Nouveau client !", C.sales, false); log(`${e.name} a décroché une offre : ${o.name}.`); }
     }
-  } else if (e.role === "support") S.rep = Math.min(100, S.rep + r * 0.012);
+  } else if (W === "support") S.rep = Math.min(100, S.rep + r * 0.012);
+  else if (W === "rep") S.rep = Math.min(100, S.rep + r * 0.009);
   e.idle = !ok;
   if (ok) { e.acc += r; e.skill = Math.min(5, e.skill + r * 0.0012); }
   e.accT += dtMin;
   if (e.accT >= 60) {
     if (e.state !== "away") {
-      if (e.acc > 0.05 && (e.role === "dev" || e.role === "design")) floatText(e.x, e.y, "+" + e.acc.toFixed(1), C[e.role]);
-      if (e.acc > 0.05 && e.role === "support") floatText(e.x, e.y, "+" + (e.acc * 0.012).toFixed(2) + " ★", C.support);
+      if (e.acc > 0.05 && (W === "dev" || W === "design")) floatText(e.x, e.y, "+" + e.acc.toFixed(1), C[e.role] || C[W]);
+      if (e.acc > 0.05 && (W === "support" || W === "rep")) floatText(e.x, e.y, "+" + (e.acc * (W === "rep" ? .009 : .012)).toFixed(2) + " ★", C[e.role]);
     }
     e.acc = 0; e.accT = 0;
   }
@@ -711,12 +763,12 @@ function updStaff(e, dtg, dtMin) {
     e.energy = Math.max(0, e.energy - dtMin * 7 / 60);
     e.coffeeCd = Math.max(0, e.coffeeCd - dtMin);
     if (e.energy < 30 && !e.coffeeCd && hasBreak() && S.t < 1050) goCoffee(e);
-    else if (e.energy < 10 && !e.founder) { e.state = "sleep"; e.sleepT = 0; }
+    else if (e.energy < 10 && !isCadre(e)) { e.state = "sleep"; e.sleepT = 0; }
     else {
       e.funCd = (e.funCd == null ? rnd(90, 240) : e.funCd) - dtMin;
       if (e.funCd <= 0 && S.t > 570 && S.t < 1000 && !e.issue) { e.funCd = rnd(160, 340); if (Math.random() < .75) goFun(e); }
     }
-    if (!e.founder && !isSec(e) && !e.req) {
+    if (!isCadre(e) && !e.req) {
       e.reqCd = (e.reqCd == null ? rnd(200, 700) : e.reqCd) - dtMin;
       if (e.reqCd <= 0 && S.t < 1040) { e.req = makeRequest(e); e.req.t = S.t; log(`${e.name} aimerait vous parler.`); }
     }
@@ -741,11 +793,17 @@ function updStaff(e, dtg, dtMin) {
     if (e.timer <= 0) { e.arguing = 0; const o = S.staff.find(x => x.id === (e.issue && e.issue.with)); if (o) o.arguing = 0; goDesk(e); }
     return;
   } else if (e.state === "interview") return;
+  else if (e.state === "meeting") {
+    e.timer -= dtMin; e.morale = Math.min(100, e.morale + dtMin * 0.03);
+    if (e.timer <= 0) { e.meet = null; goDesk(e); }
+    return;
+  }
   e.morale += (moraleTarget(e) - e.morale) * Math.min(1, dtMin * 0.004);
 }
 function step(dtg) {
   const dtMin = dtg * MIN_PER_SEC;
   S.t += dtMin;
+  { const all = allItems(); let cf = 0; for (const it of all) if (it.type === "conf") cf = Math.max(cf, pw(it)); GB = { throne: all.some(i => i.type === "throne"), conf: cf }; }
   const closingNow = S.t >= 1080 && !S.closing;
   for (let f = 0; f < S.floors.length; f++) {
     setFloor(f);
@@ -755,7 +813,9 @@ function step(dtg) {
     }
   }
   setFloor(S.view);
+  managerTick(dtMin);
   secretaryTick(dtMin);
+  meetingTick();
   if (S.visitor) {
     const v = S.visitor;
     if (v.path.length) withFloor(v.fl, () => { move(v, dtg * 2.2); if (!v.path.length) { if (v.state === "leaving") S.visitor = null; else v.state = "wait"; } });
@@ -769,7 +829,7 @@ function step(dtg) {
     S.disputeDone = true;
     const fl = pick(S.floors.map((_, i) => i));
     withFloor(fl, () => {
-    const cand = S.staff.filter(e => (e.floor | 0) === fl && !e.founder && !isSec(e) && e.state === "work" && !e.path.length && !e.issue);
+    const cand = S.staff.filter(e => (e.floor | 0) === fl && !isCadre(e) && e.state === "work" && !e.path.length && !e.issue);
     if (cand.length >= 2 && Math.random() < 0.12 + 0.02 * cand.length) {
       cand.sort((a, b) => a.morale - b.morale);
       const a = cand[0], b = cand[1], db = itemById(b.deskId);
@@ -799,7 +859,7 @@ function endDay() {
   const today = S.todayIn;
   for (const c of [...S.active]) if (S.day >= c.deadline) {
     S.active = S.active.filter(a => a !== c); S.stats.failed++; S.stats.streak = 0;
-    const pen = S.staff.some(e => e.role === "support") ? 3 : 6;
+    const pen = Math.ceil((S.staff.some(e => e.role === "support") ? 3 : 6) / (S.staff.some(e => e.role === "lawyer") ? 2 : 1));
     S.rep = Math.max(0, S.rep - pen);
     log(`Délai dépassé pour ${c.client} : contrat annulé, −${pen} de réputation.`, "bad");
   }
@@ -811,7 +871,13 @@ function endDay() {
     if (e.quest && S.day >= e.quest.until) { log(`${e.name} est déçu·e : ${ITEMS[e.quest.item].a} promis·e n’est jamais arrivé·e.`, "bad"); e.quest = null; e.mood = clamp((e.mood || 0) - 10, -25, 25); }
     e.mood = (e.mood || 0) * 0.75;
   }
-  S.rep = Math.min(100, S.rep + Math.min(3, allItems().filter(i => i.type === "trophy").length) * 0.5);
+  { let rp = 0, tr = 0, st = 0, sl = 0;
+    for (const it of allItems()) {
+      if (it.type === "trophy" && tr++ < 3) rp += 0.5 * pw(it);
+      if (it.type === "statue" && st++ < 2) rp += 2 * pw(it);
+      if (it.type === "slide" && sl++ < 1) rp += 1 * pw(it);
+    }
+    S.rep = Math.min(100, S.rep + rp); }
   for (const e of [...S.staff]) if (!e.founder && e.morale < 22 && Math.random() < 0.4) {
     S.staff = S.staff.filter(x => x !== e); log(`${e.name} a démissionné : le moral était trop bas.`, "bad");
   }
@@ -821,7 +887,7 @@ function endDay() {
   S.day++; S.t = 480; S.closing = false; S.todayIn = 0;
   for (const e of S.staff) {
     Object.assign(e, { energy: 100, home: false, state: "away", path: [], x: -1, y: DOOR.y, arrive: 480 + rnd(0, 45), acc: 0, accT: 0, coffeeCd: 0, sit: 0, lateToday: false, slacking: false, funCd: rnd(90, 240) });
-    if (!e.founder && !e.flex && Math.random() < (e.lazy || 0) * 0.35) { e.arrive = 555 + rnd(10, 80); e.lateToday = true; }
+    if (!isCadre(e) && !e.flex && Math.random() < (e.lazy || 0) * 0.35) { e.arrive = 555 + rnd(10, 80); e.lateToday = true; }
     if (e.flex) e.arrive = 540 + rnd(0, 30);
     if (e.offDay === S.day) e.home = true;
     if (e.issue && S.day - e.issue.since >= 2) { if (e.issue.kind === "slack") e.lazy = Math.min(1, (e.lazy || 0) + 0.1); e.issue = null; e.mood = clamp((e.mood || 0) - 3, -25, 25); }
@@ -877,7 +943,7 @@ function load(data) {
 }
 
 /* ================= Rendu isométrique ================= */
-const C = { secretary: "#A259FF", visitor: "#59607A", dev: "#4C6FFF", design: "#FF5FA2", sales: "#FFA41B", support: "#13B89B", good: "#25B865", bad: "#F0473E", gold: "#FFC23D", ink: "#2A2550" };
+const C = { secretary: "#A259FF", visitor: "#59607A", pm: "#FF8A3D", data: "#00A3C4", marketing: "#E040B0", hr: "#7CB342", lawyer: "#8D6E63", accountant: "#546E7A", artdir: "#D81B60", manager: "#3B3561", builder: "#FFB300", rep: "#E040B0", dev: "#4C6FFF", design: "#FF5FA2", sales: "#FFA41B", support: "#13B89B", good: "#25B865", bad: "#F0473E", gold: "#FFC23D", ink: "#2A2550" };
 const cv = $("#cv"), ctx = cv.getContext("2d");
 let W = 0, H = 0, DPR = 1;
 const cam = { x: 3.5, y: 4, a: 34, tx: 3.5, ty: 4, ta: 34 };
@@ -1264,6 +1330,121 @@ function drawItem(it, opts) {
       blob(x + 1.82, y + .22, .45, .17, "#38B565"); box(x + 1.74, y + .14, .16, .16, .3, 0, "#E9785D");
       break;
     }
+    case "printer3d": {
+      box(x + .16, y + .16, .68, .68, .3, 0, "#3A3654");
+      g.globalAlpha *= .4; box(x + .18, y + .18, .64, .64, .7, .3, "#CFE8FF"); g.globalAlpha /= .4;
+      const nz = .5 + Math.sin(t * 3) * .18;
+      blob(x + .5, y + .5, .42, .1, "#FF5FA2");
+      box(x + nz - .05, y + .45, .1, .1, .1, .75, "#FFC23D");
+      box(x + .16, y + .16, .68, .68, .06, 1.0, "#2A2550");
+      break;
+    }
+    case "visio": {
+      box(x + .3, y + .55, 1.4, .35, .06, .42, "#F8F4EC");
+      box(x + .35, y + .6, .06, .25, .42, 0, "#9A95B8"); box(x + 1.59, y + .6, .06, .25, .42, 0, "#9A95B8");
+      box(x + .5, y + .12, 1.0, .06, .7, .5, "#2A2550");
+      poly([P(x + .55, y + .181, 1.15), P(x + 1.45, y + .181, 1.15), P(x + 1.45, y + .181, .58), P(x + .55, y + .181, .58)], `hsl(${(t * 20) % 360},60%,60%)`, false);
+      box(x + .95, y + .12, .1, .06, .5, 0, "#2A2550");
+      for (const cx of [.6, 1.0, 1.4]) box(x + cx - .12, y + .92, .24, .06, .22, 0, "#FF6B5A");
+      break;
+    }
+    case "kitchen": {
+      box(x + .06, y + .12, w - .12, .7, .78, 0, "#F3F4FA");
+      box(x + .04, y + .1, w - .08, .74, .06, .78, "#3A3654");
+      poly([P(x + .25, y + .821, .65), P(x + .9, y + .821, .65), P(x + .9, y + .821, .1), P(x + .25, y + .821, .1)], "#E4E2EE");
+      poly([P(x + 1.05, y + .821, .65), P(x + 1.75, y + .821, .65), P(x + 1.75, y + .821, .1), P(x + 1.05, y + .821, .1)], "#E4E2EE");
+      blob(x + .45, y + .45, .86, .1, "#FF5D5D"); blob(x + .75, y + .45, .86, .1, "#FF5D5D");
+      box(x + 1.2, y + .3, .4, .35, .03, .84, "#BFC6E0");
+      box(x + 1.0, y + .2, .14, .14, .2, .84, "#FFC23D");
+      break;
+    }
+    case "greenwall": {
+      box(x + .06, y + .2, w - .12, .2, 1.8, 0, "#6E4428");
+      for (let i = 0; i < 18; i++) { const u = .15 + (i % 6) * (w - .3) / 5, z = .3 + Math.floor(i / 6) * .55 + ((i * 7) % 3) * .08; blob(x + u + Math.sin(t + i) * .01, y + .44, z, .17, ["#2E9E57", "#38B565", "#45C873", "#2A8F4F"][i % 4]); }
+      break;
+    }
+    case "gym": {
+      poly([P(x + .06, y + .06, .006), P(x + w - .06, y + .06, .006), P(x + w - .06, y + h - .06, .006), P(x + .06, y + h - .06, .006)], "#3D3A5C", false);
+      box(x + .15, y + .15, .5, 1.2, .2, 0, "#2A2550"); box(x + .15, y + .15, .5, .15, .9, .2, "#4C6FFF");
+      box(x + .2, y + .35, .4, .9, .04, .2, "#1E1B33");
+      box(x + 1.1, y + .3, .7, .3, .35, 0, "#FF6B5A");
+      box(x + 1.0, y + 1.2, .9, .08, .08, .55, "#9A95B8");
+      blob(x + 1.0, y + 1.24, .55, .14, "#2A2550"); blob(x + 1.9, y + 1.24, .55, .14, "#2A2550");
+      box(x + 1.4, y + 1.1, .08, .3, .55, 0, "#9A95B8");
+      break;
+    }
+    case "studio": {
+      box(x + .1, y + .1, 1.8, .12, 1.8, 0, "#FFFFFF");
+      poly([P(x + .1, y + .22, .02), P(x + 1.9, y + .22, .02), P(x + 1.9, y + 1.1, .02), P(x + .1, y + 1.1, .02)], "#F3F1FA", false);
+      for (const lx of [.25, 1.65]) { box(x + lx, y + 1.3, .05, .05, 1.3, 0, "#3A3654"); box(x + lx - .2, y + 1.2, .45, .25, .4, 1.25, "#FFF4C2"); }
+      box(x + .95, y + 1.5, .05, .05, .8, 0, "#3A3654"); box(x + .85, y + 1.42, .26, .2, .18, .8, "#2A2550");
+      blob(x + 1.0, y + .7, .35, .2, "#FF5FA2");
+      break;
+    }
+    case "datacenter": {
+      for (const ox of [.08, 1.04]) {
+        box(x + ox, y + .12, .88, .76, 1.75, 0, "#23263F");
+        for (let i = 0; i < 7; i++) {
+          const z = .2 + i * .21, on = (Math.floor(t * 4 + i * 1.3 + ox * 5) % 3) !== 0;
+          poly([P(x + ox + .08, y + .881, z + .1), P(x + ox + .8, y + .881, z + .1), P(x + ox + .8, y + .881, z), P(x + ox + .08, y + .881, z)], "#353A5E", false);
+          const [lx, ly] = P(x + ox + .72, y + .881, z + .05); g.fillStyle = on ? (i % 2 ? "#4CF0A0" : "#59B7FF") : "#1E2036"; g.beginPath(); g.arc(lx, ly, R.A * .03, 0, 7); g.fill();
+        }
+      }
+      break;
+    }
+    case "smoothie": {
+      box(x + .06, y + .3, w - .12, .55, .85, 0, "#FF8A7A");
+      box(x + .04, y + .28, w - .08, .59, .06, .85, "#FFFFFF");
+      const fr = ["#FFC23D", "#FF5D5D", "#7CB342", "#FF8A3D", "#E040B0"];
+      fr.forEach((c, i) => blob(x + .3 + i * .12, y + .45, .98, .07, c));
+      box(x + 1.4, y + .45, .16, .16, .35, .91, "#BFE3FF"); blob(x + 1.48, y + .53, 1.1, .07, "#FF5FA2");
+      for (const cx of [.5, 1.0, 1.5]) box(x + cx - .1, y + .95, .2, .2, .45, 0, "#3A3654");
+      break;
+    }
+    case "vr": {
+      poly([P(x + .06, y + .06, .006), P(x + w - .06, y + .06, .006), P(x + w - .06, y + h - .06, .006), P(x + .06, y + h - .06, .006)], "#1E1B33", false);
+      const hue = (t * 40) % 360;
+      g.strokeStyle = `hsl(${hue},90%,60%)`; g.lineWidth = Math.max(2, R.A * .05);
+      const q = [P(x + .2, y + .2, .01), P(x + w - .2, y + .2, .01), P(x + w - .2, y + h - .2, .01), P(x + .2, y + h - .2, .01)];
+      g.beginPath(); g.moveTo(...q[0]); q.slice(1).forEach(pp => g.lineTo(...pp)); g.closePath(); g.stroke();
+      box(x + .85, y + .85, .3, .3, .7, 0, "#3A3654"); box(x + .8, y + .8, .4, .4, .16, .7, `hsl(${hue},80%,55%)`);
+      for (const [bx, by] of [[.4, .4], [1.6, 1.6]]) { box(x + bx - .05, y + by - .05, .1, .1, .9, 0, "#9A95B8"); blob(x + bx, y + by, 1.0, .08, `hsl(${(hue + 120) % 360},90%,60%)`); }
+      break;
+    }
+    case "slide": {
+      box(x + .15, y + .15, .7, .7, 1.9, 0, "#FFC23D");
+      box(x + .1, y + .1, .8, .8, .1, 1.9, "#FF6B5A");
+      for (let i = 0; i < 6; i++) box(x + .86, y + .2 + i * .1, .08, .06, .06, .3 + i * .3, "#2A2550");
+      poly([P(x + .9, y + .9, 1.9), P(x + .9, y + 1.25, 1.9), P(x + 1.9, y + 1.9, .1), P(x + 1.6, y + 1.9, .1)], "#4C6FFF");
+      poly([P(x + .9, y + 1.25, 1.95), P(x + 1.9, y + 1.9, .15), P(x + 1.9, y + 1.9, .1), P(x + .9, y + 1.25, 1.9)], "#2F4FD0");
+      break;
+    }
+    case "statue": {
+      box(x + .18, y + .18, .64, .64, .5, 0, "#E6E1F5");
+      box(x + .38, y + .4, .24, .2, .5, .5, "#E8B23A");
+      blob(x + .5, y + .5, 1.15, .14, "#F2C14E");
+      box(x + .3, y + .45, .1, .1, .35, .65, "#E8B23A"); box(x + .6, y + .45, .1, .1, .5, .75, "#E8B23A");
+      const [sx2, sy2] = P(x + .5, y + .5, 1.6 + Math.sin(t * 2) * .05); g.fillStyle = "#FFC23D"; g.font = `700 ${R.A * .3}px Fredoka, sans-serif`; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("✦", sx2, sy2);
+      break;
+    }
+    case "conf": {
+      box(x + .1, y + .08, 1.8, .45, .2, 0, "#6E4428");
+      box(x + .3, y + .08, 1.4, .06, .8, .2, "#2A2550");
+      poly([P(x + .35, y + .141, .95), P(x + 1.65, y + .141, .95), P(x + 1.65, y + .141, .3), P(x + .35, y + .141, .3)], "#59B7FF", false);
+      for (let row = 0; row < 3; row++) for (let c2 = 0; c2 < 4; c2++) { const cx = .3 + c2 * .42, cy = .8 + row * .4; box(x + cx, y + cy, .28, .26, .22, 0, "#C0392B"); box(x + cx, y + cy + .2, .28, .06, .45, 0, "#A93226"); }
+      break;
+    }
+    case "throne": {
+      poly([P(x + .06, y + .06, .006), P(x + w - .06, y + .06, .006), P(x + w - .06, y + h - .06, .006), P(x + .06, y + h - .06, .006)], "#8E1B1B", false);
+      poly([P(x + .2, y + .2, .008), P(x + w - .2, y + .2, .008), P(x + w - .2, y + h - .2, .008), P(x + .2, y + h - .2, .008)], "#B22222", false);
+      box(x + .7, y + .1, .6, .14, 1.2, 0, "#C9A227"); box(x + .7, y + .14, .6, .4, .4, 0, "#8E1B1B");
+      box(x + .25, y + .7, 1.5, .55, .1, .45, "#C9A227");
+      box(x + .3, y + .75, .1, .1, .45, 0, "#8B6914"); box(x + 1.6, y + .75, .1, .1, .45, 0, "#8B6914");
+      box(x + .8, y + .8, .4, .3, .02, .55, "#DCD6EE");
+      blob(x + 1.6, y + .9, .62, .1, "#38B565");
+      blob(x + 1.0, y + .17, 1.4, .12, "#FFD54F");
+      break;
+    }
     case "meeting": {
       poly([P(x + .08, y + .08, .01), P(x + w - .08, y + .08, .01), P(x + w - .08, y + h - .08, .01), P(x + .08, y + h - .08, .01)], "#8C9BFF", false);
       poly([P(x + .2, y + .2, .015), P(x + w - .2, y + .2, .015), P(x + w - .2, y + h - .2, .015), P(x + .2, y + h - .2, .015)], "#A3B0FF", false);
@@ -1286,7 +1467,7 @@ const easeBack = t => { const c = 1.7; return 1 + (c + 1) * Math.pow(t - 1, 3) +
 function drawChar(e, x, y, seated) {
   const g = R.g, A = R.A, [px, py0] = P(x, y, 0);
   if (REC && REC.pend) { const b = REC.pend; recGroup({ x0: b.x0 - .15, x1: b.x0 + .15, y0: b.y0 - .15, y1: b.y0 + .15, z0: .2, z1: 1.2 }); }
-  const walking = !seated && e.path && e.path.length, playing = e.state === "fun" || e.state === "argue";
+  const walking = !seated && e.path && e.path.length, playing = e.state === "fun" || e.state === "argue" || e.state === "meeting" || e.builder;
   const ph = (e.walk || 0) * 7;
   const bob = walking ? Math.abs(Math.sin(ph)) * A * .07 : playing ? Math.abs(Math.sin(time * (e.state === "argue" ? 11 : 7) + e.id)) * A * .06 : e.state === "sleep" ? 0 : seated ? Math.sin(time * 9 + e.id) * A * .012 : Math.sin(time * 2 + e.id) * A * .01;
   const py = seated ? py0 - A * .12 : py0;
@@ -1315,6 +1496,7 @@ function drawChar(e, x, y, seated) {
   if (e.hs === 0) { g.arc(px, hy - A * .02, A * .21, Math.PI * 1.02, Math.PI * 1.98); g.fill(); }
   else if (e.hs === 1) { g.arc(px, hy - A * .03, A * .22, Math.PI * .9, Math.PI * 2.1); g.fill(); g.beginPath(); g.roundRect(px - A * .22, hy - A * .05, A * .09, A * .3, A * .04); g.fill(); g.beginPath(); g.roundRect(px + A * .13, hy - A * .05, A * .09, A * .3, A * .04); g.fill(); }
   else { g.arc(px, hy - A * .02, A * .21, Math.PI * 1.02, Math.PI * 1.98); g.fill(); g.beginPath(); g.arc(px + A * .05, hy - A * .26, A * .1, 0, 7); g.fill(); }
+  if (e.helmet) { g.fillStyle = "#FFC23D"; g.beginPath(); g.arc(px, hy - A * .04, A * .23, Math.PI, 0); g.fill(); g.fillRect(px - A * .28, hy - A * .06, A * .56, A * .05); g.fillStyle = "#E0A100"; g.fillRect(px - A * .03, hy - A * .27, A * .06, A * .2); }
   if (e.hat) { g.fillStyle = "#2A2550"; g.beginPath(); g.ellipse(px, hy - A * .13, A * .28, A * .07, 0, 0, 7); g.fill(); g.beginPath(); g.roundRect(px - A * .16, hy - A * .36, A * .32, A * .24, A * .06); g.fill(); g.fillStyle = "#FF6B5A"; g.fillRect(px - A * .16, hy - A * .19, A * .32, A * .04); }
   if (isSec(e) && S.secPremium) { g.fillStyle = "#FFC23D"; g.beginPath(); g.arc(px - A * .12, by - A * .28, A * .05, 0, 7); g.fill(); }
   const blink = e.state === "sleep" || (Math.floor(time * 10 + e.id * 7) % 37) === 0;
@@ -1329,6 +1511,9 @@ function drawChar(e, x, y, seated) {
   if (e.noBubble) tag = null;
   else if (e.arguing) { tag = "#!?"; tc = C.bad; }
   else if (e.issue) { tag = "!!"; tc = C.bad; }
+  else if (e.builder) tag = "🔨";
+  else if (e.state === "meeting") tag = "💬";
+  else if (e.reportPending) { tag = "📋"; }
   else if (e.state === "sleep") tag = "zZ";
   else if (e.req) { tag = "!"; tc = C.gold; }
   else if (e.state === "fun") { const it = itemById(e.funItem); tag = it ? ({ piano: "♪", arcade: "★", hammock: "zZ", bookshelf: "📖", aquarium: "🐟" }[it.type] || "♥") : "♥"; }
@@ -1499,13 +1684,22 @@ function sceneDraw() {
   }
   for (const it of S.items) list.push({ k: ITEMS[it.type].flat ? -1 : (it.x + it.w - 1) + (it.y + it.h - 1), f: () => {
     const owner = isDesk(it.type) ? here.find(e => e.deskId === it.id) : null;
+    if ((it.lv || 1) >= 3) { const [gx, gy] = P(it.x + it.w / 2, it.y + it.h / 2, 0); ctx.fillStyle = `rgba(255,194,61,${.22 + Math.sin(time * 3 + it.id) * .08})`; ctx.beginPath(); ctx.ellipse(gx, gy, cam.a * (it.w + it.h) * .42, cam.a * (it.w + it.h) * .21, 0, 0, 7); ctx.fill(); }
     drawItem(it, { owner, seated: seatedBy.get(it.id), pop: clamp((time - (it.born || -9)) / .45, 0, 1) });
+    if ((it.lv || 1) >= 2) { const [sx, sy] = P(it.x + it.w / 2, it.y + it.h / 2, 1.35); const st = "★".repeat(it.lv - 1); ctx.font = `700 ${Math.max(10, cam.a * .3)}px Fredoka, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineWidth = 3; ctx.strokeStyle = "#7A4B00"; ctx.strokeText(st, sx, sy + Math.sin(time * 2 + it.id) * 2); ctx.fillStyle = "#FFC23D"; ctx.fillText(st, sx, sy + Math.sin(time * 2 + it.id) * 2); }
     if (owner && UI.sel === owner.id && !seatedBy.get(it.id)) { const p = P(it.x + .5, it.y + .5, 1.2); ctx.fillStyle = C.gold; ctx.beginPath(); ctx.arc(p[0], p[1], cam.a * .08, 0, 7); ctx.fill(); }
   } });
   for (const e of here) {
     if (e.state === "away" || seatedBy.get(e.deskId) === e || e.x < -.35) continue;
     list.push({ k: e.x + e.y + .01, f: () => drawChar(e, e.x + .5, e.y + .5, false) });
   }
+  if (UI.archPreview && UI.archPreview.fl === S.view) for (const it of UI.archPreview.items) {
+    const D = ITEMS[it.type], w = it.r % 2 ? D.h : D.w, h = it.r % 2 ? D.w : D.h, g = { type: it.type, x: it.x, y: it.y, w, h, r: it.r, lv: it.lv };
+    list.push({ k: D.flat ? -.9 : (it.x + w - 1) + (it.y + h - 1) - .01, f: () => {
+      poly([P(it.x, it.y, .012), P(it.x + w, it.y, .012), P(it.x + w, it.y + h, .012), P(it.x, it.y + h, .012)], "rgba(107,91,255,.18)", "rgba(107,91,255,.6)");
+      ctx.globalAlpha = .5 + Math.sin(time * 3) * .1; drawItem(g, {}); ctx.globalAlpha = 1; } });
+  }
+  if (S.build && S.build.fl === S.view) S.build.bs.forEach((w, i) => { if (w.x < -.35) return; const ent = Object.assign({ id: w.id, role: "builder", builder: true, helmet: true, hs: 0, morale: 80, energy: 100, path: w.done ? [] : [1], walk: w.walk, face: 1, state: "x" }, BUILDER_LOOK[i]); list.push({ k: w.x + w.y + .02, f: () => drawChar(ent, w.x + .5, w.y + .5, false) }); });
   if (S.visitor && S.visitor.fl === S.view && S.visitor.x > -.35) { const v = S.visitor; list.push({ k: v.x + v.y + .01, f: () => drawChar(v, v.x + .5, v.y + .5, false) }); }
   const hv = UI.hover;
   if (hv && UI.tool && UI.tool !== "sell") {
@@ -1516,9 +1710,12 @@ function sceneDraw() {
       ctx.globalAlpha = .7; drawItem({ type: UI.tool, x: hv.x, y: hv.y, w, h, r: UI.rot }, {}); ctx.globalAlpha = 1;
     } });
   }
-  if (hv && UI.tool === "sell" && idAt(hv.x, hv.y)) {
-    const it = itemById(idAt(hv.x, hv.y));
-    list.push({ k: 999, f: () => poly([P(it.x, it.y, .01), P(it.x + it.w, it.y, .01), P(it.x + it.w, it.y + it.h, .01), P(it.x, it.y + it.h, .01)], "rgba(240,71,62,.45)", "#F0473E") });
+  if (hv && (UI.tool === "sell" || UI.tool === "upgrade") && idAt(hv.x, hv.y)) {
+    const it = itemById(idAt(hv.x, hv.y)), up = UI.tool === "upgrade";
+    list.push({ k: 999, f: () => {
+      poly([P(it.x, it.y, .01), P(it.x + it.w, it.y, .01), P(it.x + it.w, it.y + it.h, .01), P(it.x, it.y + it.h, .01)], up ? "rgba(255,194,61,.45)" : "rgba(240,71,62,.45)", up ? "#D99A12" : "#F0473E");
+      if (up) { const [px, py] = P(it.x + it.w / 2, it.y + it.h / 2, 2.1); const tx = (it.lv || 1) >= 3 ? "Niveau max" : `Niv. ${(it.lv || 1) + 1} · ${eur(upCost(it))}`; ctx.font = `700 ${Math.max(11, cam.a * .3)}px Fredoka, sans-serif`; ctx.textAlign = "center"; ctx.lineWidth = 4; ctx.strokeStyle = "#fff"; ctx.strokeText(tx, px, py); ctx.fillStyle = "#2A2550"; ctx.fillText(tx, px, py); }
+    } });
   }
   list.sort((a, b) => a.k - b.k);
   for (const o of list) o.f();
@@ -1577,6 +1774,7 @@ function statusOf(e) {
     case "sleep": return "Dort à son bureau !";
     case "tointerview": return "Va dans votre bureau";
     case "interview": return "En entretien";
+    case "tomeet": case "meeting": return "En réunion d’équipe";
     case "toargue": case "argue": return "Se dispute !";
   }
   return "";
@@ -1614,12 +1812,12 @@ function openSheet(name) {
 }
 function renderBuild() {
   const next = EXP[S.exp + 1] || {};
-  const sig = JSON.stringify([S.exp, S.rep >= next.rep, S.cash >= next.cost, UI.cat, Math.floor(S.rep / 5)]);
+  const sig = JSON.stringify([S.exp, S.rep >= next.rep, S.cash >= next.cost, UI.cat, Math.floor(S.rep / 5), S.floors.length, Math.max(...S.floors.map(f => f.exp))]);
   if (UI.sigs.build === sig) return; UI.sigs.build = sig;
   $("#cats").innerHTML = CATS.map(([k, n]) => `<button type="button" class="cat" data-cat="${k}" aria-pressed="${UI.cat === k}">${n}</button>`).join("");
   $("#items").innerHTML = Object.entries(ITEMS).filter(([, it]) => UI.cat === "all" || it.cat === UI.cat).map(([k, it]) => {
     const lk = locked(it);
-    return `<button type="button" class="item" data-tool="${k}"><canvas data-icon="${k}" width="168" height="144"></canvas><b>${it.name}</b><p>${lk ? `Débloqué au ${it.lvl === 1 ? "1er" : it.lvl + "e"} agrandissement.` : it.desc}</p><span class="price ${lk ? "lock" : ""}">${lk ? "🔒 Agrandir" : eur(it.cost)}</span></button>`;
+    return `<button type="button" class="item" data-tool="${k}"><canvas data-icon="${k}" width="168" height="144"></canvas><b>${it.name}</b><p>${lk ? (it.fl && S.floors.length < it.fl ? `Débloqué avec ${it.fl} étages.` : `Débloqué au ${it.lvl === 1 ? "1er" : it.lvl + "e"} agrandissement.`) : it.desc}</p><span class="price ${lk ? "lock" : ""}">${lk ? (it.fl && S.floors.length < it.fl ? `🔒 ${it.fl} étages` : "🔒 Agrandir") : eur(it.cost)}</span></button>`;
   }).join("");
   document.querySelectorAll("[data-icon]").forEach(c => itemIcon(c, c.dataset.icon));
   const cur = EXP[S.exp], area = c => Math.round(c * ROWS * TILE_M * TILE_M);
@@ -1631,13 +1829,18 @@ function renderBuild() {
       <div class="chips"><span class="chip">${area(next.cols)} m² au total</span><span class="chip">loyer ${eur(next.rent)}/jour</span><span class="chip ${S.rep < next.rep ? "late" : ""}">réputation ${next.rep} requise</span></div>
       <div><button type="button" class="btn violet small" data-act="expand" ${S.rep < next.rep || S.cash < next.cost ? "disabled" : ""}>Signer le bail</button></div>
     </div>` : `<h3>Étage complet <small>${area(cur.cols)} m²</small></h3><p class="note">Vous occupez tout l’étage. Bravo !</p>`;
+  { const nf = S.floors.length + 1, u = unlockedByFloor(nf);
+    if (nf <= MAX_FLOORS && (u.items.length || u.roles.length)) $("#expand").insertAdjacentHTML("beforeend", `<div class="card"><b>Au ${nf}e étage</b><p class="note">${u.items.length ? `Nouveaux aménagements : ${u.items.join(", ")}. ` : ""}${u.roles.length ? `Nouveaux postes : ${u.roles.join(", ")}.` : ""}</p></div>`); }
 }
 function renderTeam() {
   const fd = freeDesks().length;
-  const sig = JSON.stringify([S.staff.map(e => [e.id, !!e.req, e.quest && e.quest.item, e.remoteDay === S.day + 1, e.issue && e.issue.kind]), S.cands.map(c => c.id), fd, UI.sel, UI.confirmFire, S.cash >= 300, S.candsDay, plvl() >= SEC_LVL, plvl() >= SECP_LVL, S.secPremium, S.secPol, S.secAuto, S.cash >= 3000]);
+  const sig = JSON.stringify([S.staff.map(e => [e.id, !!e.req, e.quest && e.quest.item, e.remoteDay === S.day + 1, e.issue && e.issue.kind]), S.cands.map(c => c.id), fd, UI.sel, UI.confirmFire, S.cash >= 300, S.candsDay, S.staff.map(e => [e.tr, S.cash >= trainCost(e)]), S.semDay === S.day, S.view, plvl() >= SEC_LVL, plvl() >= SECP_LVL, S.secPremium, S.secPol, S.secAuto, S.cash >= 3000]);
   if (UI.sigs.team === sig) return; UI.sigs.team = sig;
   const sal = S.staff.reduce((s, e) => s + e.salary, 0);
-  $("#staffList").innerHTML = `<h3>Vos collègues <small>${S.staff.length} pers. · ${eur(sal)}/jour</small></h3>` + S.staff.map(e => `
+  const flTeam = S.staff.filter(e => (e.floor | 0) === S.view && !isCadre(e)), semCost = 250 * flTeam.length;
+  $("#staffList").innerHTML = `<h3>Vos collègues <small>${S.staff.length} pers. · ${eur(sal)}/jour</small></h3>
+    <div class="card"><div class="job"><span>Séminaire d’équipe · étage ${S.floors[S.view].num}</span><span class="reward">${eur(semCost)}</span></div><p class="note">Une journée de formation collective : compétence +0,15 et moral +6 pour les ${flTeam.length} personnes de l’étage. Une fois tous les 5 jours.</p>
+    <div><button type="button" class="btn violet small" data-act="seminar" ${flTeam.length && S.cash >= semCost && !(S.semDay && S.day - S.semDay < 5) ? "" : "disabled"}>${S.semDay && S.day - S.semDay < 5 ? `Prochain au jour ${S.semDay + 5}` : "Organiser le séminaire"}</button></div></div>` + S.staff.map(e => `
     <article class="card ${UI.sel === e.id ? "sel" : ""}" data-staff="${e.id}" data-act="select" data-id="${e.id}">
       <div class="who"><div class="av"><canvas data-av="${e.id}" width="88" height="88"></canvas></div>
         <div><div class="name"><span>${esc(e.name)}</span><span class="sal">${e.salary ? eur(e.salary) + "/j" : "fondateur·rice"}</span></div>
@@ -1646,7 +1849,8 @@ function renderTeam() {
       ${e.founder ? "" : `<div class="chips"><span class="chip">${TRAITS[e.trait].name} · aime ${TRAITS[e.trait].likes.slice(0, 2).map(k => ITEMS[k].name.toLowerCase()).join(", ")}</span>${e.req ? `<span class="chip req">Veut vous parler</span>` : ""}${e.issue ? `<span class="chip late">${ISSUES[e.issue.kind]}${e.issue.kind === "dispute" ? " avec " + esc((S.staff.find(o => o.id === e.issue.with) || { name: "?" }).name) : ""}</span>` : ""}${e.quest ? `<span class="chip quest">Attend ${ITEMS[e.quest.item].a}${e.quest.near ? " près de son bureau" : ""} · J${e.quest.until}</span>` : ""}${e.remoteDay === S.day + 1 ? `<span class="chip">Télétravail demain</span>` : ""}</div>`}
       <div class="meters"><span>Moral</span><div class="bar"><i data-f="mor"></i></div><output data-f="morv"></output>
         <span>Énergie</span><div class="bar"><i data-f="en"></i></div><output data-f="env"></output></div>
-      ${e.founder ? "" : `<div class="foot"><span class="note">Recruté·e au niveau ${Math.round(e.skill)}</span>${UI.confirmFire === e.id
+      ${isCadre(e) ? "" : `<div class="foot"><span class="note">${ROLES[e.role].perk ? esc(ROLES[e.role].perk) : ""}</span>${(e.tr || 0) >= 6 ? `<span class="chip quest">Expert·e · 6 formations</span>` : `<button type="button" class="btn small" data-act="train" data-id="${e.id}" ${S.cash >= trainCost(e) ? "" : "disabled"}>Former · ${eur(trainCost(e))}</button>`}</div>`}
+      ${e.founder ? "" : `<div class="foot"><span class="note">${(e.tr || 0) ? `${e.tr} formation${e.tr > 1 ? "s" : ""} · +${Math.round((e.tb || 0) * 100)} % prod.` : "Aucune formation"}</span>${UI.confirmFire === e.id
         ? `<span class="row"><button type="button" class="btn ghost small" data-act="nofire">Garder</button><button type="button" class="btn coral small" data-act="fire" data-id="${e.id}">Confirmer</button></span>`
         : `<span class="row"><button type="button" class="btn ghost small" data-act="askfire" data-id="${e.id}">Licencier</button>${e.issue ? `<button type="button" class="btn coral small" data-act="convoke" data-id="${e.id}">Convoquer</button>` : ""}<button type="button" class="btn violet small" data-act="talk" data-id="${e.id}">Parler</button></span>`}</div>`}
     </article>`).join("");
@@ -1767,6 +1971,8 @@ function renderGoals() {
   $("#log").innerHTML = S.log.slice(0, 12).map(l => `<li><time>J${l.d} ${clock(l.t)}</time><span class="${l.cls}">${esc(l.text)}</span></li>`).join("");
   const rb = $("#resetBtn"); rb.textContent = UI.confirmReset ? "Confirmer : tout effacer" : "Nouvelle partie";
 }
+const upCost = it => Math.round(ITEMS[it.type].cost * 0.8 * (it.lv || 1) / 10) * 10;
+const trainCost = e => Math.round(400 * Math.pow(1.6, e.tr || 0) * (1 + e.skill / 4) / 50) * 50;
 function goToFloor(f) {
   if (f == null || !S.floors[f] || f === S.view) return;
   S.view = f; setFloor(f); UI.hover = null; UI.sigs = {}; elevOpen = 1.2; fitCam(false);
@@ -1789,19 +1995,22 @@ function chapterGoals(n) {
 const chapterDone = () => chapterGoals(S.floors.length).every(g => S.goalsDone.includes(g.k));
 const canBuyFloor = () => S.floors.length < MAX_FLOORS && chapterDone() && S.floors[S.floors.length - 1].exp >= 3;
 function renderTower() {
-  const sig = JSON.stringify([S.floors.map(f => [f.num, f.exp]), S.view, canBuyFloor(), S.cash >= floorCost(), S.staff.map(e => e.floor)]);
+  const sig = JSON.stringify([S.floors.map(f => [f.num, f.exp, f.items.length]), S.view, canBuyFloor(), S.cash >= floorCost(), S.cash >= MGR_FEE, S.staff.map(e => [e.floor, e.role])]);
   if (UI.sigs.tower === sig) return; UI.sigs.tower = sig;
   const nxt = nextFloorNum(), rows = [];
   for (let num = 17; num >= 1; num--) {
     const i = S.floors.findIndex(f => f.num === num);
     if (i >= 0) {
       const f = S.floors[i], ppl = S.staff.filter(e => (e.floor | 0) === i).length;
-      rows.push(`<button type="button" class="fl own ${i === S.view ? "cur" : ""}" data-act="gofloor" data-id="${i}"><span class="num">${num}</span><span><b>Étage ${num}</b><br><small>${ppl} pers. · ${Math.round(EXP[f.exp].cols * ROWS * TILE_M * TILE_M)} m² · ${f.items.length} meubles</small></span><small>${i === S.view ? "vous êtes ici" : "y aller"}</small></button>`);
+      const mg = mgrOf(i), fd = freeDesks().some(k => k.fl === i);
+      const mgHtml = mg ? `<small>Direction : ${esc(mg.name)}</small>` : S.floors.length >= MGR_FL ? `<button type="button" class="btn small violet" data-act="hiremgr" data-id="${i}" ${fd && S.cash >= MGR_FEE ? "" : "disabled"} title="${fd ? "" : "Il faut un bureau libre sur cet étage"}">Nommer un·e directeur·rice</button>` : "";
+      rows.push(`<div class="fl own ${i === S.view ? "cur" : ""}"><span class="num">${num}</span><span><b>Étage ${num}</b><br><small>${ppl} pers. · ${Math.round(EXP[f.exp].cols * ROWS * TILE_M * TILE_M)} m² · ${f.items.length} meubles</small>${mgHtml ? "<br>" + mgHtml : ""}</span><span class="stack" style="gap:6px">${i === S.view ? "<small>vous êtes ici</small>" : `<button type="button" class="btn small ghost" data-act="gofloor" data-id="${i}">Y aller</button>`}<button type="button" class="btn small" data-act="arch" data-id="${i}">Architecte</button></span></div>`);
     } else if (num === nxt) {
       rows.push(`<div class="fl next"><span class="num">${num}</span><span><b>Étage ${num} · ${eur(floorCost())}</b><br><small>${canBuyFloor() ? "Disponible à l’achat !" : "Terminez les objectifs et agrandissez entièrement votre dernier étage."}</small></span>${canBuyFloor() ? `<button type="button" class="btn small" data-act="buyfloor" ${S.cash >= floorCost() ? "" : "disabled"}>Acheter</button>` : "<small>🔒</small>"}</div>`);
     } else rows.push(`<div class="fl lock"><span class="num">${num}</span><span><b>Étage ${num}</b><br><small>Occupé par une autre société</small></span><small>🔒</small></div>`);
   }
-  $("#towerBody").innerHTML = `<p class="note">Vous possédez ${S.floors.length} étage${S.floors.length > 1 ? "s" : ""} sur ${MAX_FLOORS}. Chaque nouvel étage s’achète quand les objectifs du chapitre sont remplis.</p><div class="tower">${rows.join("")}</div>`;
+  const mgNote = S.floors.length >= MGR_FL ? `<p class="note">Un·e directeur·rice d’étage (${eur(MGR_FEE)} d’embauche, ${eur(600)}/jour) gère son étage à votre place : demandes, recadrages, petits achats et recrutements. Il ou elle ne vous sollicite que pour les décisions importantes.</p>` : `<p class="note">À partir de ${MGR_FL} étages, vous pourrez nommer un·e directeur·rice pour chaque étage.</p>`;
+  $("#towerBody").innerHTML = mgNote + `<p class="note">Vous possédez ${S.floors.length} étage${S.floors.length > 1 ? "s" : ""} sur ${MAX_FLOORS}. Chaque nouvel étage s’achète quand les objectifs du chapitre sont remplis.</p><div class="tower">${rows.join("")}</div>`;
 }
 function buyFloor() {
   if (!canBuyFloor() || S.cash < floorCost()) return;
@@ -1811,7 +2020,9 @@ function buyFloor() {
   const f = S.floors.length - 1;
   withFloor(f, () => { addItem("desk", 2, 2); addItem("desk", 4, 2); addItem("plant", 0, 0); addItem("watercooler", 6, 0); });
   goToFloor(f); openSheet(null);
+  setTimeout(() => { if (!S.build) openArch(f); }, 2200);
   log(`Vous achetez l’étage ${num} ! Nouveau chapitre : ${chapterGoals(S.floors.length).length} objectifs à remplir.`, "good");
+  { const u = unlockedByFloor(S.floors.length); if (u.items.length) log(`Nouveaux aménagements : ${u.items.join(", ")}.`, "good"); if (u.roles.length) log(`Nouveaux postes à recruter : ${u.roles.join(", ")}.`, "good"); genCands(); }
   showBanner(`Étage ${num} !`, S.floors.length >= MAX_FLOORS ? "toute la tour est à vous" : `${S.floors.length} étages sur ${MAX_FLOORS}`);
   save();
 }
@@ -1842,7 +2053,11 @@ function uiTick() {
   checkQuests();
   if (!UI.talk && !S.over) {
     if (S.visitor && S.visitor.state === "wait") openInspector();
-    else { const iv = S.staff.find(e => e.state === "interview"); if (iv) openTalk(iv); }
+    else {
+      const iv = S.staff.find(e => e.state === "interview");
+      if (iv) openTalk(iv);
+      else { const rp = S.staff.find(e => e.reportPending && !e.reportWalk && e.state !== "away" && e.state !== "leaving"); if (rp) openTalk(rp); }
+    }
   }
   renderInbox();
   const pb = $("#placebar");
@@ -1850,10 +2065,10 @@ function uiTick() {
   if (UI.talk || UI.tool) $("#inbox").hidden = true; $("#dock").hidden = !!UI.tool || !!UI.talk;
   if (UI.tool) {
     const key = UI.tool + UI.rot;
-    if (pb.dataset.k !== key) { pb.dataset.k = key; if (UI.tool !== "sell") itemIcon($("#pbIcon"), UI.tool, UI.rot); else $("#pbIcon").getContext("2d").clearRect(0, 0, 88, 88); }
-    $("#pbName").textContent = UI.tool === "sell" ? "Revendre" : ITEMS[UI.tool].name + " · " + eur(ITEMS[UI.tool].cost);
-    $("#pbInfo").textContent = UI.tool === "sell" ? "Touchez un meuble : remboursé à 50 %" : "Touchez une case libre pour poser";
-    pb.querySelector('[data-act="rotate"]').hidden = UI.tool === "sell";
+    if (pb.dataset.k !== key) { pb.dataset.k = key; if (ITEMS[UI.tool]) itemIcon($("#pbIcon"), UI.tool, UI.rot); else $("#pbIcon").getContext("2d").clearRect(0, 0, 88, 88); }
+    $("#pbName").textContent = UI.tool === "sell" ? "Revendre" : UI.tool === "upgrade" ? "Améliorer" : ITEMS[UI.tool].name + " · " + eur(ITEMS[UI.tool].cost);
+    $("#pbInfo").textContent = UI.tool === "sell" ? "Touchez un meuble : remboursé à 50 %" : UI.tool === "upgrade" ? "Touchez un meuble pour le passer au niveau supérieur" : "Touchez une case libre pour poser";
+    pb.querySelector('[data-act="rotate"]').hidden = UI.tool === "sell" || UI.tool === "upgrade";
   }
   renderPanels();
   if (UI.sheet === "team") updTeam();
@@ -1948,7 +2163,7 @@ function interviewScript(e) {
   if (is.kind === "slack") {
     const D = ITEMS[is.item] || { name: "coin détente" }, nm = D.name.toLowerCase();
     const why = () => {
-      const busy = S.active.some(c => (e.role === "dev" || e.role === "design") ? c.prog[e.role] < c.need[e.role] : true);
+      const W = workOf(e), busy = S.active.some(c => (W === "dev" || W === "design") ? c.prog[W] < c.need[W] : true);
       if (!busy) return { text: "Honnêtement ? Je n’ai rien à faire. Aucun projet n’a besoin de moi en ce moment.", opts: [
         { label: "Je te trouve du travail, promis", hint: "moral ↑", fx: () => { boost(e, 3); e.lazy = Math.max(0, (e.lazy || 0) - .2); clearIssue(e); return "Super, j’ai hâte !"; } },
         { label: "Forme-toi en attendant", hint: "compétence +0,2", fx: () => { e.skill = Math.min(5, e.skill + .2); e.lazy = Math.max(0, (e.lazy || 0) - .2); clearIssue(e); return "Bonne idée, je m’y mets."; } }] };
@@ -1996,6 +2211,7 @@ function interviewScript(e) {
   return { text: "Vous vouliez me voir ?", opts: [BYE] };
 }
 function scriptFor(e) {
+  if (e.reportPending) return reportScript(e);
   if (e.state === "interview") return interviewScript(e);
   if (e.issue) { const q = quickIssue(e); if (q) return q; }
   const r = e.req, other = r && r.other ? S.staff.find(o => o.id === r.other) : null;
@@ -2027,7 +2243,7 @@ function scriptFor(e) {
     { label: "On a une deadline, tiens bon", hint: "+10 % prod. aujourd’hui, moral ↓", alt: true, fx: () => { e.rushDay = S.day; boost(e, -6); clearReq(e); return "D’accord… mais je suis à bout."; } },
   ] };
   if (r && r.kind === "training") {
-    const what = { dev: "un nouveau langage de programmation", design: "le motion design", sales: "la négociation", support: "la relation client" }[e.role];
+    const what = { dev: "un nouveau langage de programmation", design: "le motion design", sales: "la négociation", support: "la relation client" }[e.role] || "son métier";
     return { text: `J’ai trouvé une formation sur ${what}. Vous accepteriez de la financer ? Je reviendrais bien plus efficace.`, opts: [
       { label: "Oui, je la finance", hint: "−1 500 €, compétence +0,5", dis: S.cash < 1500, fx: () => { S.cash -= 1500; S.stats.spent += 1500; e.skill = Math.min(5, e.skill + .5); boost(e, 6); clearReq(e); if (e.state !== "away" && e.state !== "leaving") goHome(e); return "Génial ! J’y vais tout de suite, vous allez voir la différence."; } },
       { label: "Plus tard peut-être", hint: "moral ↓", alt: true, fx: () => { boost(e, -4); clearReq(e); return "OK, une autre fois alors."; } },
@@ -2092,6 +2308,7 @@ function closeTalk() {
   if (UI.talkEnt && UI.talkEnt.visitor && !UI.talkEnt.done) return;
   const e = UI.talkEnt;
   UI.talk = null; UI.talkEnt = null; $("#talk").hidden = true; clearInterval(UI.tw); UI.sigs.team = null;
+  if (e && e.archEnt) { UI.archPreview = null; return; }
   if (e && e.visitor) { inspectorLeave(); return; }
   if (e && e.state === "interview") withFloor(e.floor, () => {
     if (e.upstairs) { e.upstairs = false; if (e.goHomeAfter || S.t >= 1080) { e.state = "away"; e.home = true; } else spawn(e); }
@@ -2102,8 +2319,8 @@ function closeTalk() {
 function showTalk(e, sc) {
   avatar($("#talkAv"), e, true);
   $("#talkName").textContent = e.name;
-  $("#talkMeta").textContent = e.visitor ? e.meta : (e.state === "interview" ? "Entretien · " : "") + `${ROLES[e.role].long} · ${TRAITS[e.trait].name}`;
-  $("#talkMoodRow").hidden = !!e.visitor;
+  $("#talkMeta").textContent = (e.visitor || e.archEnt) ? e.meta : (e.state === "interview" ? "Entretien · " : "") + `${ROLES[e.role].long} · ${TRAITS[e.trait].name}`;
+  $("#talkMoodRow").hidden = !!(e.visitor || e.archEnt);
   document.querySelector('#talk [data-act="talkclose"]').hidden = !!(e.visitor && !e.done);
   const mb = $("#talkMood"); mb.style.width = e.morale + "%"; mb.style.background = e.morale > 55 ? "var(--cash)" : e.morale > 30 ? "var(--gold)" : "var(--bad)";
   UI.talkOpts = sc.opts;
@@ -2121,7 +2338,7 @@ function finishTyping() { if (UI.typing) UI.typing(); }
 function choose(i) {
   const e = UI.talkEnt, o = UI.talkOpts[i];
   if (!e || !o || o.dis) { closeTalk(); return; }
-  const res = e.visitor ? o.fx() : withFloor(e.floor, () => o.fx());
+  const res = (e.visitor || e.archEnt) ? o.fx() : withFloor(e.floor, () => o.fx());
   UI.sigs = {};
   if (res === null || res === "close") { closeTalk(); uiTick(); return; }
   if (typeof res === "string") showTalk(e, { text: res, opts: [BYE] });
@@ -2192,7 +2409,7 @@ function secretaryTick(dtMin) {
   S.secCd = (S.secCd || 0) - dtMin;
   if (S.secCd > 0) return;
   S.secCd = 15;
-  const e = S.staff.find(o => o.req && !o.req.asked && o.id !== UI.talk && o.state !== "away" && (S.t - (o.req.t == null ? 0 : o.req.t) >= 30 || o.req.since < S.day));
+  const e = S.staff.find(o => o.req && !o.req.asked && !mgrOf(o.floor | 0) && o.id !== UI.talk && o.state !== "away" && (S.t - (o.req.t == null ? 0 : o.req.t) >= 30 || o.req.since < S.day));
   if (e) {
     if (e.req.kind === "item") {
       e.req.asked = true;
@@ -2219,7 +2436,7 @@ function secretaryTick(dtMin) {
 }
 function teamCapacity() {
   const cap2 = { dev: 0, design: 0 };
-  for (const e of S.staff) if (e.role === "dev" || e.role === "design") cap2[e.role] += withFloor(e.floor, () => rate(e)) * 8;
+  for (const e of S.staff) { const W = workOf(e); if (W === "dev" || W === "design") cap2[W] += withFloor(e.floor, () => rate(e)) * 8; }
   const load = { dev: 0, design: 0 };
   for (const c of S.active) for (const k of ["dev", "design"]) load[k] += Math.max(0, c.need[k] - c.prog[k]);
   return { cap: cap2, load };
@@ -2286,6 +2503,20 @@ function pendingAnswer(a, id) {
 function renderInbox() {
   S.pending = S.pending.filter(pn => { const e = S.staff.find(x => x.id === pn.staff); return e && e.req && e.req.kind === "item" && e.req.item === pn.item; });
   const box = $("#inbox"), pn = S.pending[0], sec = S.staff.find(isSec);
+  S.esc = (S.esc || []).filter(x => S.staff.some(o => o.id === x.staff) && S.staff.some(o => o.id === x.mgr));
+  if (!(pn && sec) && S.esc.length && !UI.talk && !UI.tool) {
+    const x = S.esc[0], m = S.staff.find(o => o.id === x.mgr), o = escOpts(x);
+    if (!o) { S.esc.shift(); return; }
+    box.hidden = false;
+    const key = "esc" + x.id + "|" + S.esc.length + "|" + Math.floor(S.cash / 500);
+    if (UI.ibKey === key) return; UI.ibKey = key;
+    avatar($("#ibAv"), m, false);
+    $("#ibName").textContent = `${m.name} · direction étage ${S.floors[m.manages].num}`;
+    $("#ibCount").textContent = S.esc.length > 1 ? `${S.esc.length} décisions en attente` : "Décision importante";
+    $("#ibText").textContent = o.text;
+    $("#ibBtns").innerHTML = o.opts.map((q, i) => `<button type="button" class="btn small ${q.cls || ""}" data-act="esc" data-id="${x.id}" data-i="${i}" ${q.dis ? "disabled" : ""}>${esc(q.label)}</button>`).join("");
+    return;
+  }
   const show = !!(pn && sec && !UI.talk && !UI.tool);
   box.hidden = !show;
   if (!show) { UI.ibKey = null; return; }
@@ -2299,10 +2530,322 @@ function renderInbox() {
   $("#ibBtns").innerHTML = `<button type="button" class="btn small" data-act="pyes" data-id="${pn.id}" ${S.cash >= D.cost ? "" : "disabled"}>Oui, installe-le</button><button type="button" class="btn ghost small" data-act="pself" data-id="${pn.id}">Je choisis l’endroit</button><button type="button" class="btn coral small" data-act="pno" data-id="${pn.id}">Refuser</button>`;
 }
 
+/* ================= Réunions ================= */
+function meetingTick() {
+  if (S.meeting) {
+    const m = S.meeting;
+    if (!S.staff.some(e => e.meet === m.id && (e.state === "tomeet" || e.state === "meeting"))) finishMeeting();
+    return;
+  }
+  if (S.t < 840 || S.t >= 900 || S.meetDay === S.day || S.day < (S.nextMeet || 3)) return;
+  S.meetDay = S.day;
+  const fls = S.floors.map((_, i) => i).filter(i => S.floors[i].items.some(it => it.type === "meeting" || it.type === "conf")).sort(() => Math.random() - .5);
+  for (const fl of fls) {
+    const team = S.staff.filter(e => (e.floor | 0) === fl && !isCadre(e) && e.state === "work" && !e.path.length && !e.issue);
+    if (team.length < 3) continue;
+    const ok = withFloor(fl, () => {
+      const room = S.items.find(it => it.type === "meeting" || it.type === "conf");
+      const taken = new Set(), ids = [], id = nid();
+      for (const e of team.sort(() => Math.random() - .5).slice(0, 4)) {
+        const p = bfs(e.x, e.y, (x, y) => !occ[y][x] && !taken.has(x + "," + y) && rectDist(room, { x, y, w: 1, h: 1 }) === 1);
+        if (!p || !p.length) continue;
+        const l = p[p.length - 1]; taken.add(l.x + "," + l.y);
+        e.path = p; e.state = "tomeet"; e.meet = id; e.meetRoom = room.id; ids.push(e.id);
+      }
+      if (ids.length < 2) { for (const e of S.staff) if (e.meet === id) { e.meet = null; goDesk(e); } return false; }
+      S.meeting = { id, fl, ids };
+      return true;
+    });
+    if (ok) { S.nextMeet = S.day + ri(3, 5); log(`Réunion d’équipe sur l’étage ${S.floors[fl].num} : on fait le point.`); return; }
+  }
+}
+function buildReport(fl) {
+  const team = S.staff.filter(e => (e.floor | 0) === fl && !isCadre(e)), n = Math.max(1, team.length);
+  const avgM = team.reduce((a, e) => a + e.morale, 0) / n, avgE = team.reduce((a, e) => a + e.energy, 0) / n;
+  const good = [], bad = [];
+  if (avgM >= 70) good.push("l’ambiance est excellente"); else if (avgM < 45) bad.push("le moral est en berne");
+  if (avgE < 45) bad.push("l’équipe est fatiguée, il manque des pauses");
+  const idle = team.filter(e => e.idle).length; if (idle) bad.push(`${idle} personne${idle > 1 ? "s n’ont" : " n’a"} rien à faire`);
+  const busy = S.active.length >= cap() && S.offers.length >= 2; if (busy) bad.push("on croule sous les projets, il faudrait recruter");
+  const late = S.active.filter(c => c.deadline - S.day <= 0); if (late.length) bad.push(`le projet « ${late[0].name} » risque d’être livré en retard`);
+  const iss = team.filter(e => e.issue).length; if (iss) bad.push(`il y a des tensions (${iss} souci${iss > 1 ? "s" : ""} en cours)`);
+  const tally = {}; for (const e of team) for (const k of missingLikes(e)) tally[k] = (tally[k] || 0) + 1;
+  const top = Object.entries(tally).sort((a, b) => b[1] - a[1])[0], want = top && top[1] >= 2 ? top[0] : null;
+  if (want) bad.push(`plusieurs collègues réclament ${ITEMS[want].a}`);
+  if ((S.stats.streak || 0) >= 3) good.push("on enchaîne les livraisons sans retard");
+  if (S.month.in > S.month.out) good.push("le mois est bénéficiaire");
+  if (team.some(e => e.tr)) good.push("les formations portent leurs fruits");
+  if (avgE >= 65) good.push("tout le monde est en forme");
+  if (!good.length) good.push("les projets avancent");
+  return { fl, good, bad, want, idle, tired: avgE < 45, low: avgM < 45, busy };
+}
+function finishMeeting() {
+  const m = S.meeting; S.meeting = null;
+  const rep = buildReport(m.fl);
+  const sec = S.staff.find(e => isSec(e) && e.state !== "away"), mgr = S.staff.find(e => e.role === "manager" && e.manages === m.fl && e.state !== "away");
+  const part = S.staff.find(e => m.ids.includes(e.id));
+  const msg = sec || mgr || part;
+  if (!msg) return;
+  msg.reportPending = rep;
+  msg.reportWalk = msg.state !== "away" && !!allItems().some(i => i.type === "office") && withFloor(msg.floor, () => goInterview(msg));
+  log(`${msg.name} vient vous faire le compte-rendu de la réunion.`);
+}
+function reportScript(e) {
+  const r = e.reportPending; e.reportPending = null; e.reportWalk = false;
+  const num = S.floors[r.fl] ? S.floors[r.fl].num : "?";
+  const team = S.staff.filter(o => (o.floor | 0) === r.fl && !isCadre(o));
+  const cf = t => t.charAt(0).toUpperCase() + t.slice(1);
+  const text = `Compte-rendu de la réunion de l’étage ${num}. Ce qui va : ${r.good.map(cf).join(". ")}. Ce qui ne va pas : ${r.bad.length ? r.bad.map(cf).join(". ") : "rien à signaler"}.`;
+  const opts = [];
+  if (r.want) { const D = ITEMS[r.want]; opts.push({ label: `Installer ${D.a}`, hint: "−" + eur(D.cost), dis: S.cash < D.cost || !team.length, fx: () => {
+    const it = withFloor(r.fl, () => autoPlace(r.want, team[0]));
+    if (!it) return "Hélas, il n’y a plus de place sur l’étage.";
+    S.cash -= D.cost; S.stats.spent += D.cost; for (const o of team) boost(o, 4, true);
+    return "Parfait, je préviens l’équipe, ils vont être ravis !"; } }); }
+  if (r.low || r.tired) { const c = 80 * team.length; opts.push({ label: "Afterwork pour l’étage", hint: `−${eur(c)}, moral et énergie ↑`, dis: S.cash < c, fx: () => { S.cash -= c; S.stats.spent += c; for (const o of team) { boost(o, 7, true); o.energy = Math.min(100, o.energy + 20); } log(`Afterwork sur l’étage ${num} : l’équipe recharge les batteries.`, "good"); return "Super, tout le monde va adorer !"; } }); }
+  if (r.idle) opts.push({ label: "Je signe des contrats", hint: "ouvre les contrats", fx: () => { closeTalk(); openSheet("deals"); return "close"; } });
+  if (r.busy) opts.push({ label: "Je vais recruter", hint: "ouvre l’équipe", fx: () => { closeTalk(); openSheet("team"); return "close"; } });
+  opts.splice(3);
+  opts.push({ label: "Merci, c’est noté", alt: true, fx: () => "Je vous tiens au courant de la suite." });
+  return { text, opts };
+}
+
+/* ================= Directeurs d’étage ================= */
+const MGR_FL = 3, MGR_FEE = 5000;
+const mgrOf = fl => S.staff.find(e => e.role === "manager" && e.manages === fl);
+function mkManager(fl) {
+  const c = mkStaff("manager", 4); c.salary = 600; c.lazy = 0; c.manages = fl; c.floor = fl;
+  c.name = pick(["Marc", "Hélène", "Julien", "Sandrine", "Thomas", "Fatou", "Olivier", "Claire"]) + " " + LASTI[ri(0, LASTI.length - 1)] + ".";
+  return c;
+}
+function escalate(m, e, kind, extra) {
+  if (S.esc.some(x => x.staff === e.id && x.kind === kind)) return;
+  S.esc.push(Object.assign({ id: nid(), kind, staff: e.id, mgr: m.id }, extra || {}));
+  log(`${m.name} a besoin de votre avis au sujet de ${e.name.replace(/\.$/, "")}.`);
+}
+function managerTick(dtMin) {
+  for (const m of S.staff) {
+    if (m.role !== "manager" || m.state === "away" || m.state === "leaving") continue;
+    m.mgrCd = (m.mgrCd || 0) - dtMin;
+    if (m.mgrCd > 0) continue;
+    m.mgrCd = 20;
+    const fl = m.manages, team = S.staff.filter(e => (e.floor | 0) === fl && !isCadre(e) && e.id !== UI.talk);
+    withFloor(fl, () => {
+      const bad = team.find(e => e.issue);
+      if (bad) {
+        if ((bad.strikes || 0) >= 2) { escalate(m, bad, "fire"); clearIssue(bad); return; }
+        bad.strikes = (bad.strikes || 0) + 1;
+        if (bad.issue.kind === "dispute") { const o = S.staff.find(x => x.id === bad.issue.with); boost(bad, 3); if (o) boost(o, 3); log(`${m.name} a fait une médiation entre ${bad.name}${o ? " et " + o.name : ""}.`); }
+        else { bad.lazy = Math.max(0, (bad.lazy || 0) - .3); boost(bad, -3); log(`${m.name} a recadré ${bad.name}.`); if (bad.state === "fun") { bad.funTile = null; goDesk(bad); } if (bad.state === "sleep") { bad.state = "work"; bad.energy = Math.min(100, bad.energy + 25); } }
+        clearIssue(bad); floatText(m.x, m.y, "✓ réglé", C.manager); return;
+      }
+      const sad = team.find(e => e.morale < 25 && e.quitEsc !== S.day);
+      if (sad) { sad.quitEsc = S.day; escalate(m, sad, "quit"); return; }
+      const e = team.find(o => o.req && !o.req.asked && o.state !== "away" && (S.t - (o.req.t == null ? 0 : o.req.t) >= 30 || o.req.since < S.day));
+      if (e) {
+        const r = e.req;
+        if (r.kind === "item") {
+          const D = ITEMS[r.item];
+          if (D.cost <= 2000 && S.cash >= D.cost * 5) {
+            const it = autoPlace(r.item, e);
+            if (it) { S.cash -= D.cost; S.stats.spent += D.cost; e.quest = { item: r.item, near: !!D.aura, until: S.day + 3 }; clearReq(e); log(`${m.name} a installé ${D.a} pour ${e.name}.`); return; }
+          }
+          r.asked = true; escalate(m, e, "buy", { item: r.item }); return;
+        }
+        if (r.kind === "raise") {
+          if (e.morale < 40) { r.asked = true; escalate(m, e, "raise"); return; }
+          if (S.cash >= 5000) { S.cash -= 500; S.stats.spent += 500; boost(e, 9); log(`${m.name} a accordé une prime de 500 € à ${e.name}.`); }
+          else { boost(e, -4); log(`${m.name} a repoussé la demande d’augmentation de ${e.name}.`); }
+          clearReq(e); return;
+        }
+        const kind = r.kind, iss = e.issue; e.issue = null;
+        const sc = scriptFor(e); e.issue = iss;
+        if (!e.req) return;
+        const pol = S.secPol; S.secPol = "bal"; const i = secChoice(kind, sc.opts); S.secPol = pol;
+        const o = sc.opts[i]; if (!o) return;
+        o.fx(); log(`${m.name} a répondu à ${e.name} : « ${o.label} ».`); floatText(m.x, m.y, "✓ réglé", C.manager); return;
+      }
+      if (m.hireDay !== S.day && S.cash > 15000 && S.cands.length) {
+        const d = freeDesks().find(k => k.fl === fl);
+        if (d) {
+          m.hireDay = S.day;
+          const c = S.cands.slice().sort((a, b) => b.skill - a.skill)[0];
+          c.deskId = d.id; c.floor = fl; c.state = "away"; c.home = S.t >= 1080; c.arrive = S.t < 1080 ? S.t : 480;
+          S.staff.push(c); S.cands = S.cands.filter(x => x !== c);
+          log(`${m.name} a recruté ${c.name} (${ROLES[c.role].long.toLowerCase()}) pour l’étage ${S.floors[fl].num}.`, "good");
+        }
+      }
+    });
+  }
+}
+function escOpts(x) {
+  const e = S.staff.find(o => o.id === x.staff); if (!e) return null;
+  const done = t => () => { log(t, "good"); };
+  switch (x.kind) {
+    case "buy": { const D = ITEMS[x.item]; return { text: `${e.name} voudrait ${D.a} (${eur(D.cost)}). C’est un gros achat, je préfère vous demander.`, opts: [
+      { label: "Oui, achète-le", dis: S.cash < D.cost, fx: () => { const it = withFloor(e.floor, () => autoPlace(x.item, e)); if (!it) { toast("Plus de place sur l’étage.", "bad"); return; } S.cash -= D.cost; S.stats.spent += D.cost; e.quest = { item: x.item, near: !!D.aura, until: S.day + 3 }; clearReq(e); } },
+      { label: "Refuser", cls: "coral", fx: () => { clearReq(e); boost(e, -6); } }] }; }
+    case "raise": { const inc = Math.round(e.salary * .15 / 10) * 10; return { text: `${e.name} réclame une augmentation et parle de partir. Je ne peux pas trancher seul·e.`, opts: [
+      { label: `+15 % (${eur(inc)}/j)`, fx: () => { e.salary += inc; e.perm = (e.perm || 0) + 10; boost(e, 12); clearReq(e); } },
+      { label: "Prime de 1 000 €", cls: "ghost", dis: S.cash < 1000, fx: () => { S.cash -= 1000; S.stats.spent += 1000; boost(e, 9); clearReq(e); } },
+      { label: "Refuser", cls: "coral", fx: () => { boost(e, -10); clearReq(e); } }] }; }
+    case "quit": { const inc = Math.round(e.salary * .2 / 10) * 10; return { text: `${e.name} a le moral à zéro et pense sérieusement à démissionner. Que fait-on ?`, opts: [
+      { label: `Augmentation de 20 %`, fx: () => { e.salary += inc; e.perm = (e.perm || 0) + 12; boost(e, 15); } },
+      { label: "Deux jours de repos", cls: "ghost", fx: () => { e.offDay = S.day + 1; boost(e, 15); e.mood = clamp((e.mood || 0) + 8, -25, 25); } },
+      { label: "Le laisser partir", cls: "coral", fx: () => { S.staff = S.staff.filter(o => o !== e); log(`${e.name} a quitté l’entreprise.`); } }] }; }
+    case "fire": return { text: `${e.name} accumule les problèmes malgré trois recadrages. Je propose un licenciement.`, opts: [
+      { label: "Licencier", cls: "coral", fx: () => { S.staff = S.staff.filter(o => o !== e); log(`${e.name} a été licencié·e.`); } },
+      { label: "Dernière chance (formation 1 500 €)", cls: "ghost", dis: S.cash < 1500, fx: () => { S.cash -= 1500; S.stats.spent += 1500; e.lazy = 0; e.strikes = 0; e.skill = Math.min(5, e.skill + .3); boost(e, 5); } }] };
+  }
+  void done; return null;
+}
+function escAnswer(id, i) {
+  const x = S.esc.find(q => q.id === id); if (!x) return;
+  const o = escOpts(x); S.esc = S.esc.filter(q => q !== x);
+  if (o && o.opts[i] && !o.opts[i].dis) o.opts[i].fx();
+  UI.ibKey = null; UI.sigs = {};
+}
+
+/* ================= Architectes ================= */
+const ARCH_NAMES = [["Atelier Lemaire", 1], ["Studio Nova", 2], ["Maison Arkadia", 3]];
+function archList() {
+  const f = 1 + 0.25 * (S.floors.length - 1);
+  return ARCH_NAMES.map(([n, st]) => ({ name: n, stars: st, fee: Math.round([1500, 5000, 14000][st - 1] * f / 100) * 100 }));
+}
+function archEnt(f, name) {
+  return { archEnt: true, id: -2, name: name || "Ordre des architectes", meta: `Aménagement de l’étage ${S.floors[f].num}`, role: "visitor", skin: "#E8B48F", hair: "#2B1D14", hs: 1, morale: 70, energy: 100, path: [], state: "x", floor: f };
+}
+function openArch(f) {
+  closeTalk(); if (UI.talk) return;
+  const fl = S.floors[f]; if (!fl) return;
+  goToFloor(f);
+  const ent = archEnt(f, fl.arch ? fl.arch.name : null);
+  UI.talk = "arch"; UI.talkEnt = ent; UI.tool = null; if (UI.sheet) openSheet(null);
+  $("#talk").hidden = false;
+  showTalk(ent, fl.arch ? archPlansScript(f) : archChoiceScript(f));
+  uiTick();
+}
+function archChoiceScript(f) {
+  const list = archList();
+  return { text: `Trois architectes peuvent aménager l’étage ${S.floors[f].num}. Plus ils sont réputés, plus leurs plans sont complets, soignés et bien négociés.`, opts: [
+    ...list.map(a => ({ label: `${a.name} ${"★".repeat(a.stars)}`, hint: `honoraires ${eur(a.fee)}`, dis: S.cash < a.fee, fx: () => {
+      S.cash -= a.fee; S.stats.spent += a.fee; S.floors[f].arch = { name: a.name, stars: a.stars };
+      UI.talkEnt.name = a.name; log(`${a.name} travaille sur les plans de l’étage ${S.floors[f].num}.`);
+      return archPlansScript(f); } })),
+    { label: "Je m’en occupe moi-même", alt: true, fx: () => null }] };
+}
+const PLAN_STYLES = [["prod", "Productif", "beaucoup de postes et d’outils de travail"], ["well", "Bien-être", "moins de postes, beaucoup de détente"], ["bal", "Équilibré", "un peu de tout"]];
+function archPlansScript(f) {
+  const a = S.floors[f].arch;
+  if (!a.plans) a.plans = PLAN_STYLES.map(([k]) => genPlan(f, k, a.stars));
+  UI.archPreview = null;
+  return { text: `${a.name} ${"★".repeat(a.stars)} : voici mes trois propositions pour l’étage ${S.floors[f].num}. Touchez un plan pour le voir en transparence sur place.`, opts: [
+    ...a.plans.map((pl, i) => ({ label: `Plan ${PLAN_STYLES[i][1]}`, hint: pl.items.length ? `${pl.items.length} meubles · ${eur(pl.cost)}` : "plus de place libre", dis: !pl.items.length, fx: () => planScript(f, i) })),
+    { label: "Je réfléchis", alt: true, fx: () => null }] };
+}
+function planSummary(pl) {
+  const c = {}; for (const it of pl.items) c[it.type] = (c[it.type] || 0) + 1;
+  return Object.entries(c).sort((x, y) => y[1] - x[1]).map(([k, n]) => `${n} × ${ITEMS[k].name.toLowerCase()}`).join(", ");
+}
+function planScript(f, i) {
+  const a = S.floors[f].arch, pl = a.plans[i];
+  UI.archPreview = { fl: f, items: pl.items };
+  const lux = pl.items.filter(it => (it.lv || 1) > 1).length;
+  return { text: `Plan ${PLAN_STYLES[i][1]} (${PLAN_STYLES[i][2]}) : ${planSummary(pl)}.${lux ? ` ${lux} meubles livrés en version améliorée.` : ""} Coût total, installation comprise : ${eur(pl.cost)}.`, opts: [
+    { label: `Valider ce plan`, hint: eur(pl.cost), dis: S.cash < pl.cost, fx: () => { startBuild(f, pl); return "Parfait ! Mon équipe de construction arrive tout de suite."; } },
+    { label: "Voir un autre plan", fx: () => archPlansScript(f) },
+    { label: "Je réfléchis", alt: true, fx: () => null }] };
+}
+function genPlan(f, style, stars) {
+  return withFloor(f, () => {
+    const free = (() => { let n = 0; for (let y = 0; y < ROWS; y++) for (let x = 0; x < cols(); x++) if (!occ[y][x]) n++; return n; })();
+    const ok = k => ITEMS[k] && !locked(ITEMS[k]) && !(ITEMS[k].maxAll && allItems().some(i => i.type === k)) && !(ITEMS[k].max && S.items.some(i => i.type === k));
+    const pickF = (...ks) => ks.filter(ok);
+    const deskK = stars >= 3 && ok("desk2") ? "desk2" : "desk";
+    const ratio = { prod: 6, well: 11, bal: 8 }[style];
+    const want = [];
+    const big = { prod: pickF("meeting", "datacenter", "studio", "visio", "conf", "office"), well: pickF("gym", "vr", "slide", "kitchen", "smoothie", "aquarium", "pingpong", "babyfoot", "sofa"), bal: pickF("meeting", "kitchen", "pingpong", "babyfoot", "sofa", "office") }[style];
+    const nBig = Math.min(big.length, [1, 2, 4][stars - 1] + (style === "well" ? 1 : 0));
+    want.push(...big.slice(0, nBig));
+    const nDesk = Math.max(2, Math.round(free / ratio));
+    for (let i = 0; i < nDesk; i++) want.push(stars === 2 && i % 2 && ok("desk2") ? "desk2" : deskK);
+    const small = { prod: pickF("whiteboard", "whiteboard", "server", "printer3d", "phonebooth", "coffee", "plant", "plant", "lamp"), well: pickF("coffee", "fridge", "beanbag", "beanbag", "arcade", "greenwall", "bookshelf", "plant", "plant", "plant", "lamp", "rug", "rug", "hammock"), bal: pickF("coffee", "whiteboard", "plant", "plant", "lamp", "beanbag", "arcade", "bookshelf", "rug", "fridge") }[style];
+    want.push(...small.slice(0, Math.round(small.length * [0.55, 0.8, 1][stars - 1])));
+    for (let i = 0; i < Math.floor(nDesk / 3); i++) if (ok("plant")) want.push("plant");
+    const added = [], placed = [];
+    const reach0 = S.items.filter(i => !ITEMS[i.type].flat && (isDesk(i.type) ? bfs(DOOR.x, DOOR.y, deskGoal(i)) : bfs(DOOR.x, DOOR.y, (gx, gy) => !occ[gy][gx] && rectDist(i, { x: gx, y: gy, w: 1, h: 1 }) === 1)));
+    const center = () => { const d = added.filter(i => isDesk(i.type)); if (!d.length) return [cols() / 2, ROWS / 2]; return [d.reduce((a, i) => a + i.x, 0) / d.length, d.reduce((a, i) => a + i.y, 0) / d.length]; };
+    for (const type of want) {
+      const D = ITEMS[type], cand = [];
+      const [cx, cy] = center();
+      for (let y = 0; y < ROWS; y++) for (let x = 0; x < cols(); x++) {
+        let sc;
+        if (isDesk(type)) sc = (x % 2 ? 0 : 50) + (y % 2 ? 0 : 50) + (y < 1 ? 80 : 0) + Math.hypot(x - cols() / 2, y - ROWS / 2) * .4;
+        else if (D.aura || D.flat) { const ds = added.filter(i => isDesk(i.type)); sc = ds.length ? Math.min(...ds.map(d => Math.hypot(d.x - x, d.y - y))) * 3 + (D.flat ? 0 : 1) : Math.hypot(x - cx, y - cy); }
+        else sc = Math.min(x, y) * 4 + Math.hypot(x - cx, y - cy) * .2 + (x === 0 && Math.abs(y - DOOR.y) < 2 ? 100 : 0);
+        cand.push([x, y, sc + Math.random() * .5]);
+      }
+      cand.sort((p1, p2) => p1[2] - p2[2]);
+      let done = false;
+      for (const [x, y] of cand) {
+        for (const r of [0, 1, 2, 3]) {
+          const w = r % 2 ? D.h : D.w, h = r % 2 ? D.w : D.h;
+          if (!canPlace(x, y, w, h, D.flat)) continue;
+          const it = addItem(type, x, y, r);
+          const chk = [...reach0, ...added, it];
+          const blocked = !D.flat && (chk.filter(i => isDesk(i.type)).some(k => !bfs(DOOR.x, DOOR.y, deskGoal(k))) || chk.filter(i => !ITEMS[i.type].flat && !isDesk(i.type)).some(k => !bfs(DOOR.x, DOOR.y, (gx, gy) => !occ[gy][gx] && rectDist(k, { x: gx, y: gy, w: 1, h: 1 }) === 1)));
+          if (blocked) { S.items.pop(); rebuildOcc(); continue; }
+          added.push(it); done = true; break;
+        }
+        if (done) break;
+      }
+    }
+    for (const it of added) placed.push({ type: it.type, x: it.x, y: it.y, r: it.r, lv: stars >= 3 && !isDesk(it.type) && !ITEMS[it.type].flat ? 2 : 1 });
+    S.items = S.items.filter(i => !added.includes(i)); rebuildOcc();
+    const disc = [0, 0.05, 0.15][stars - 1];
+    const furn = placed.reduce((a, it) => a + ITEMS[it.type].cost * (it.lv > 1 ? 1.8 : 1), 0);
+    return { style, items: placed, cost: Math.round(furn * (1 - disc) * 1.1 / 50) * 50 };
+  });
+}
+function startBuild(f, pl) {
+  S.cash -= pl.cost; S.stats.spent += pl.cost;
+  S.floors[f].arch = null; UI.archPreview = null;
+  S.build = { fl: f, queue: pl.items.slice(), t: 0, bs: [0, 1, 2].map(i => ({ x: -1, y: DOOR.y, tx: DOOR.x + 1, ty: DOOR.y - i, id: -10 - i })) };
+  goToFloor(f); elevOpen = 1.6;
+  log(`Chantier lancé sur l’étage ${S.floors[f].num} : ${pl.items.length} meubles à installer.`, "good");
+  showBanner("Chantier en cours !", `étage ${S.floors[f].num}`);
+}
+const BUILDER_LOOK = [{ skin: "#E8B48F", hair: "#5A3825" }, { skin: "#9A6440", hair: "#1E1E2E" }, { skin: "#F6D3B3", hair: "#C98A3B" }];
+function buildTick(dt) {
+  const b = S.build; if (!b) return;
+  b.t += dt;
+  for (const w of b.bs) { const dx = w.tx - w.x, dy = w.ty - w.y, d = Math.hypot(dx, dy), sp = dt * 6; if (d > .01) { const k = Math.min(1, sp / d); w.x += dx * k; w.y += dy * k; w.walk = (w.walk || 0) + sp; } }
+  if (b.done) { if (b.t > 1.4) { S.build = null; elevOpen = 1; } return; }
+  if (b.t < 0.8) return;
+  if (b.t - (b.last || 0) < 0.28) return;
+  b.last = b.t;
+  const it = b.queue.shift();
+  if (!it) {
+    b.done = true; b.t = 0; for (const w of b.bs) { w.tx = -1; w.ty = DOOR.y; } elevOpen = 1.6;
+    withFloor(b.fl, () => { for (const e of S.staff) if ((e.floor | 0) === b.fl && e.path.length && e.state === "arriving") goDesk(e); });
+    log(`L’étage ${S.floors[b.fl].num} est entièrement aménagé !`, "good"); showBanner("Chantier terminé !", `étage ${S.floors[b.fl].num}`); UI.sigs = {}; save();
+    return;
+  }
+  withFloor(b.fl, () => {
+    const D = ITEMS[it.type], w = it.r % 2 ? D.h : D.w, h = it.r % 2 ? D.w : D.h;
+    if (!canPlace(it.x, it.y, w, h, D.flat)) return;
+    const n = addItem(it.type, it.x, it.y, it.r); n.lv = it.lv || 1;
+    const wk = b.bs[(b.queue.length) % 3]; wk.tx = it.x + w; wk.ty = it.y + h - 1 + (it.y + h < ROWS ? 1 : -1) * 0;
+    if (b.fl === S.view) for (let k = 0; k < 3; k++) floats.push({ x: it.x + rnd(-.3, w - .7), y: it.y + rnd(-.3, h - .7), z: .4, text: "✦", color: "#C9C3E0", life: .7, max: .7 });
+  });
+  UI.sigs.tower = null;
+}
+
 /* ================= Impôts ================= */
 function taxDue() {
   const prof = S.month.in - S.month.out;
-  return { prof, tax: 300 + Math.round(Math.max(0, prof) * 0.25 / 10) * 10 + (S.taxDebt || 0) };
+  const red = Math.min(0.4, 0.08 * S.staff.filter(e => e.role === "lawyer").length + 0.12 * S.staff.filter(e => e.role === "accountant").length);
+  return { prof, red, tax: 300 + Math.round(Math.max(0, prof) * 0.25 * (1 - red) / 10) * 10 + (S.taxDebt || 0) };
 }
 function spawnInspector() {
   const off = allItems().find(i => i.type === "office"), me = S.staff.find(e => e.founder), d = off || (me && itemById(me.deskId));
@@ -2356,6 +2899,22 @@ function act(a, id) {
   if (a === "rotate") { UI.rot = ((UI.rot | 0) + 1) % 4; return; }
   if (a === "cancel") { UI.tool = null; return; }
   if (a === "sell") { UI.tool = "sell"; openSheet(null); UI.tool = "sell"; return; }
+  if (a === "train") {
+    const e = S.staff.find(x => x.id === id); if (!e || (e.tr || 0) >= 6) return;
+    const c = trainCost(e); if (S.cash < c) return;
+    S.cash -= c; S.stats.spent += c; e.tr = (e.tr || 0) + 1; e.tb = Math.min(0.36, (e.tb || 0) + 0.06); e.skill = Math.min(5, e.skill + 0.4);
+    e.salary = Math.round(e.salary * 1.05 / 10) * 10; boost(e, 5);
+    if (e.state !== "away" && e.state !== "leaving" && S.t < 1080) withFloor(e.floor, () => goHome(e));
+    log(`${e.name} part en formation (${e.tr}/6) : +6 % de production, compétence en hausse.`, "good"); return;
+  }
+  if (a === "seminar") {
+    const team = S.staff.filter(e => (e.floor | 0) === S.view && !isCadre(e)), c = 250 * team.length;
+    if (!team.length || S.cash < c || (S.semDay && S.day - S.semDay < 5)) return;
+    S.cash -= c; S.stats.spent += c; S.semDay = S.day;
+    for (const e of team) { e.skill = Math.min(5, e.skill + .15); boost(e, 6); }
+    log(`Séminaire d’équipe sur l’étage ${S.floors[S.view].num} : tout le monde progresse.`, "good"); showBanner("Séminaire !", `${team.length} personnes formées`); return;
+  }
+  if (a === "upgrade") { openSheet(null); UI.tool = "upgrade"; return; }
   if (a === "expand") {
     const n = EXP[S.exp + 1]; if (!n || S.cash < n.cost || S.rep < n.rep) return;
     S.cash -= n.cost; S.stats.spent += n.cost; S.exp++; rebuildOcc(); fitCam(false);
@@ -2364,6 +2923,14 @@ function act(a, id) {
     showBanner("Nouvel espace !", `${unlockedBy(S.exp).length} nouveaux meubles à découvrir`); UI.cat = "all"; save(); return;
   }
   if (a === "gofloor") { goToFloor(id); openSheet(null); return; }
+  if (a === "arch") { if (S.build) { toast("Un chantier est déjà en cours."); return; } openSheet(null); openArch(id); return; }
+  if (a === "hiremgr") {
+    if (S.floors.length < MGR_FL || mgrOf(id) || S.cash < MGR_FEE) return;
+    const d = freeDesks().find(k => k.fl === id); if (!d) { toast("Il faut un bureau libre sur cet étage.", "bad"); return; }
+    const c = mkManager(id); c.deskId = d.id; c.state = "away"; c.home = S.t >= 1080; c.arrive = S.t < 1080 ? S.t : 480;
+    S.cash -= MGR_FEE; S.stats.spent += MGR_FEE; S.staff.push(c);
+    log(`${c.name} prend la direction de l’étage ${S.floors[id].num}.`, "good"); showBanner("Nouveau directeur !", `${c.name} · étage ${S.floors[id].num}`); return;
+  }
   if (a === "buyfloor") { buyFloor(); return; }
   if (a === "hiresec") {
     const d = freeDesks()[0]; if (!d || plvl() < SEC_LVL || S.staff.some(isSec)) return;
@@ -2413,6 +2980,7 @@ document.addEventListener("click", ev => {
   if (b.id === "talkSay") { finishTyping(); return; }
   if (b.dataset.cat) { UI.cat = b.dataset.cat; UI.sigs.build = null; renderBuild(); return; }
   if (b.dataset.act === "choose") { choose(+b.dataset.i); return; }
+  if (b.dataset.act === "esc") { escAnswer(+b.dataset.id, +b.dataset.i); uiTick(); return; }
   if (b.id === "speedBtn") { S.speed = SPEEDS[(SPEEDS.indexOf(S.speed) + 1) % SPEEDS.length]; uiTick(); return; }
   if (b.dataset.sheet) { closeTalk(); openSheet(b.dataset.sheet); return; }
   if (b.dataset.tool) { if (b.disabled) return; const t = b.dataset.tool; openSheet(null); UI.tool = t; UI.rot = 0; uiTick(); return; }
@@ -2464,11 +3032,22 @@ function tap(sx, sy, type) {
     if (t.x >= cols() && t.x < MAXC && t.y >= 0 && t.y < ROWS) { toast("Cet espace n’est pas encore loué."); return; }
     if (!canPlace(t.x, t.y, w, h, d.flat)) { toast("Impossible de poser ici."); return; }
     if (S.cash < d.cost) { toast("Pas assez d’argent.", "bad"); return; }
-    if (d.max && count(UI.tool) >= d.max) { toast(`Vous avez déjà ${d.a}.`, "bad"); return; }
+    if (d.max && count(UI.tool) >= d.max) { toast(`Vous avez déjà ${d.a} sur cet étage.`, "bad"); return; }
+    if (d.maxAll && allItems().filter(i => i.type === UI.tool).length >= d.maxAll) { toast(`Vous avez déjà ${d.a}.`, "bad"); return; }
     S.cash -= d.cost; S.stats.spent += d.cost; addItem(UI.tool, t.x, t.y, UI.rot);
     floatText(t.x + (w - 1) / 2, t.y + (h - 1) / 2, "−" + eur(d.cost), C.bad);
     for (const e of S.staff) if (e.path.length) { if (e.state === "arriving") goDesk(e); }
     UI.sigs = {}; return;
+  }
+  if (UI.tool === "upgrade") {
+    if (!idAt(t.x, t.y)) return;
+    const it = itemById(idAt(t.x, t.y));
+    if (type !== "mouse" && (!UI.hover || UI.hover.x !== t.x || UI.hover.y !== t.y)) { UI.hover = t; return; }
+    if ((it.lv || 1) >= 3) { toast(`${ITEMS[it.type].name} est déjà au niveau maximum.`); return; }
+    const c = upCost(it); if (S.cash < c) { toast("Pas assez d’argent.", "bad"); return; }
+    S.cash -= c; S.stats.spent += c; it.lv = (it.lv || 1) + 1; it.born = time;
+    floatText(it.x + (it.w - 1) / 2, it.y + (it.h - 1) / 2, `Niveau ${it.lv} !`, C.gold, true);
+    log(`${ITEMS[it.type].name} amélioré au niveau ${it.lv}.`, "good"); UI.sigs = {}; return;
   }
   if (UI.tool === "sell") {
     if (!idAt(t.x, t.y)) return;
@@ -2509,6 +3088,7 @@ function frame(now) {
   const dt = Math.min(0.1, (now - last) / 1000); last = now; time += dt; dtCache = dt;
   if (!S.over && S.speed > 0 && !UI.talk) step(dt * S.speed);
   elevOpen = Math.max(0, elevOpen - dt);
+  buildTick(dt);
   const k = 1 - Math.pow(0.0015, dt);
   cam.x = lerp(cam.x, cam.tx, k); cam.y = lerp(cam.y, cam.ty, k); cam.a = lerp(cam.a, cam.ta, k);
   for (const f of floats) { f.life -= dt; f.z += dt * .7; }
@@ -2535,6 +3115,7 @@ function start(data) {
   if (!S.secPol) S.secPol = "bal";
   if (S.secAuto == null) S.secAuto = true;
   if (S.stats.tax == null) S.stats.tax = 0;
+  if (!S.esc) S.esc = [];
   setFloor(S.view);
   resize(); uiTick();
   window.addEventListener("resize", resize);
