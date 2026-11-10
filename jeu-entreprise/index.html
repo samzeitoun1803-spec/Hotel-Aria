@@ -201,6 +201,12 @@ h3 small{font-weight:500;font-size:12.5px;color:var(--muted)}
 .fl.cur{box-shadow:0 0 0 3px var(--gold)}
 .fl.next{background:#FFF6DD}
 .fl.lock{opacity:.5}
+.pros,.cons{display:flex;flex-wrap:wrap;gap:5px}
+.pros .chip{color:var(--cashD);border-color:#A6E8C2;background:#E8FFF1}
+.cons .chip{color:var(--bad);border-color:#FFC4C0;background:#FFF0EF}
+.advice{background:#F3EDFF;border-radius:18px;padding:12px;display:flex;gap:10px;align-items:flex-start}
+.advice canvas{width:44px;height:44px;border-radius:14px;flex:none}
+.advice p{margin:0;font-size:14px;line-height:1.4}
 .chapter{background:linear-gradient(135deg,var(--violet),#8E7BFF);color:#fff;border-radius:18px;padding:12px 14px}
 .chapter b{display:block;font-size:17px}
 .chapter small{opacity:.85;font-size:12.5px}
@@ -308,7 +314,7 @@ h3 small{font-weight:500;font-size:12.5px;color:var(--muted)}
 if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h) { this.rect(x, y, w, h); };
 
 /* ================= Données ================= */
-const ROWS = 9, MAXC = 16, DOOR = { x: 0, y: 6 }, TILE_M = 1.5, MIN_PER_SEC = 8, LEAD = 22, SAVE_KEY = "etage12-v5";
+const ROWS = 9, MAXC = 16, DOOR = { x: 0, y: 6 }, TILE_M = 1.5, MIN_PER_SEC = 8, LEAD = 22, SAVE_KEY = "etage12-v6";
 const EXP = [
   { cols: 7, rent: 180, cost: 0, rep: 0 },
   { cols: 10, rent: 420, cost: 6000, rep: 10 },
@@ -532,7 +538,7 @@ function newOffer(starter) {
 
 /* ================= Partie ================= */
 function newGame() {
-  S = { v: 5, cash: 12000, rep: 5, day: 1, t: 480, speed: 1, floors: [{ num: 12, exp: 0, items: [] }], view: 0, ms: [], staff: [], offers: [], active: [], cands: [], candsDay: 1,
+  S = { v: 6, cash: 12000, rep: 5, day: 1, t: 480, speed: 1, floors: [{ num: 12, exp: 0, items: [] }], view: 0, ms: [], staff: [], offers: [], active: [], cands: [], candsDay: 1,
     nextId: 1, leadMeter: 0, debtDays: 0, closing: false, todayIn: 0, idleWarned: 0, goalsDone: [], over: false, seenGoals: 0,
     stats: { done: 0, failed: 0, earned: 0, spent: 0, tax: 0, signed: 0, maxSigned: 0, streak: 0 }, log: [], month: { in: 0, out: 0 }, nextTax: MONTH, taxDebt: 0, pending: [], esc: [], recQ: [], recAuto: true, secPol: "bal", secAuto: true, visitor: null };
   installFloorProps(S); occs = []; setFloor(0);
@@ -883,6 +889,12 @@ function endDay() {
   for (const e of [...S.staff]) if (!e.founder && e.morale < 22 && Math.random() < 0.4) {
     S.staff = S.staff.filter(x => x !== e); log(`${e.name} a démissionné : le moral était trop bas.`, "bad");
   }
+  for (const m of S.staff) if (m.role === "manager") {
+    const team = S.staff.filter(e => (e.floor | 0) === m.manages && !isCadre(e)), n = team.length;
+    const v = n ? (team.reduce((a, e) => a + e.morale, 0) / n / 100) * .5 + (1 - team.filter(e => e.idle || e.issue).length / n) * .3 + Math.min(1, (m.mgrQ || .8)) * .2 : .5 + (m.mgrQ || .8) * .2;
+    m.perf = m.perf == null ? v : m.perf * .6 + v * .4;
+    if (m.perf < .5 && S.floors[m.manages]) log(`L’étage ${S.floors[m.manages].num} n’avance pas sous la direction de ${m.name}. Vous pouvez le convoquer depuis l’immeuble.`, "bad");
+  }
   S.debtDays = S.cash < 0 ? S.debtDays + 1 : 0;
   if (S.debtDays >= 5) { gameOver(); return; }
   if (S.cash < 0) log(`Trésorerie dans le rouge depuis ${S.debtDays} jour(s). Faillite au bout de 5.`, "bad");
@@ -928,9 +940,9 @@ function valuation() {
 try { for (const k of Object.keys(localStorage)) if (k.startsWith("etage12-") && k !== SAVE_KEY) localStorage.removeItem(k); } catch (_) {}
 function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (_) {} }
 function load(data) {
-  let d = data && data.v === 5 ? data : null;
+  let d = data && data.v === 6 ? data : null;
   if (!d) { try { d = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); } catch (_) { d = null; } }
-  if (d && d.v === 5 && Array.isArray(d.staff) && !d.over) {
+  if (d && d.v === 6 && Array.isArray(d.staff) && !d.over) {
     if (!d.floors) { d.floors = [{ num: 12, exp: d.exp || 0, items: d.items || [] }]; delete d.items; delete d.exp; d.view = 0; }
     S = d; installFloorProps(S); occs = [];
     S.floors.forEach((f, i) => f.items.forEach(it => { it.fl = i; if (it.r == null) it.r = it.w !== ITEMS[it.type].w ? 1 : 0; }));
@@ -1856,7 +1868,7 @@ function renderTeam() {
       ${isCadre(e) ? "" : `<div class="foot"><span class="note">${ROLES[e.role].perk ? esc(ROLES[e.role].perk) : ""}</span>${(e.tr || 0) >= 6 ? `<span class="chip quest">Expert·e · 6 formations</span>` : `<button type="button" class="btn small" data-act="train" data-id="${e.id}" ${S.cash >= trainCost(e) ? "" : "disabled"}>Former · ${eur(trainCost(e))}</button>`}</div>`}
       ${e.founder ? "" : `<div class="foot"><span class="note">${(e.tr || 0) ? `${e.tr} formation${e.tr > 1 ? "s" : ""} · +${Math.round((e.tb || 0) * 100)} % prod.` : "Aucune formation"}</span>${UI.confirmFire === e.id
         ? `<span class="row"><button type="button" class="btn ghost small" data-act="nofire">Garder</button><button type="button" class="btn coral small" data-act="fire" data-id="${e.id}">Confirmer</button></span>`
-        : `<span class="row"><button type="button" class="btn ghost small" data-act="askfire" data-id="${e.id}">Licencier</button>${e.issue ? `<button type="button" class="btn coral small" data-act="convoke" data-id="${e.id}">Convoquer</button>` : ""}<button type="button" class="btn violet small" data-act="talk" data-id="${e.id}">Parler</button></span>`}</div>`}
+        : `<span class="row"><button type="button" class="btn ghost small" data-act="askfire" data-id="${e.id}">Licencier</button>${e.issue ? `<button type="button" class="btn coral small" data-act="convoke" data-id="${e.id}">Convoquer</button>` : ""}${e.role === "manager" ? `<button type="button" class="btn coral small" data-act="convmgr" data-id="${e.id}">Convoquer</button>` : ""}<button type="button" class="btn violet small" data-act="talk" data-id="${e.id}">Parler</button></span>`}</div>`}
     </article>`).join("");
   $("#recruit").innerHTML = secretaryHTML(fd) + recruiterHTML(fd) + `<h3>Candidat·es <small>nouveaux CV au jour ${S.candsDay + 5}</small></h3>
     ${fd ? `<p class="note">${fd} bureau${fd > 1 ? "x" : ""} libre${fd > 1 ? "s" : ""}.</p>` : `<p class="note warn">Aucun bureau libre : posez un bureau dans Aménager pour recruter.</p>`}
@@ -1975,6 +1987,35 @@ function renderGoals() {
   $("#log").innerHTML = S.log.slice(0, 12).map(l => `<li><time>J${l.d} ${clock(l.t)}</time><span class="${l.cls}">${esc(l.text)}</span></li>`).join("");
   const rb = $("#resetBtn"); rb.textContent = UI.confirmReset ? "Confirmer : tout effacer" : "Nouvelle partie";
 }
+function signOffer(o, who) {
+  S.offers = S.offers.filter(x => x !== o);
+  S.active.push(Object.assign(o, { prog: { dev: 0, design: 0 }, deadline: S.day + o.days - 1 }));
+  S.stats.signed++; S.stats.maxSigned = Math.max(S.stats.maxSigned, o.reward);
+  log(who ? `${who} a signé ${o.name} avec ${o.client} (${eur(o.reward)}).` : `Contrat signé avec ${o.client} !`, "good");
+}
+function doTrain(e, who) {
+  const c = trainCost(e); if (S.cash < c || (e.tr || 0) >= 6) return false;
+  S.cash -= c; S.stats.spent += c; e.tr = (e.tr || 0) + 1; e.tb = Math.min(0.36, (e.tb || 0) + 0.06); e.skill = Math.min(5, e.skill + 0.4);
+  e.salary = Math.round(e.salary * 1.05 / 10) * 10; boost(e, 5);
+  if (e.state !== "away" && e.state !== "leaving" && S.t < 1080) withFloor(e.floor, () => goHome(e));
+  log(`${who ? who + " envoie" : ""}${who ? " " : ""}${e.name} ${who ? "en formation" : "part en formation"} (${e.tr}/6).`, "good");
+  return true;
+}
+function doUpgrade(it, who) {
+  const c = upCost(it); if (S.cash < c || (it.lv || 1) >= 3) return false;
+  S.cash -= c; S.stats.spent += c; it.lv = (it.lv || 1) + 1; it.born = time;
+  if (it.fl === S.view) floatText(it.x + (it.w - 1) / 2, it.y + (it.h - 1) / 2, `Niveau ${it.lv} !`, C.gold, true);
+  log(`${who ? who + " a amélioré" : "Amélioration :"} ${ITEMS[it.type].name.toLowerCase()} au niveau ${it.lv}.`, "good");
+  return true;
+}
+function doExpand(fl, who) {
+  return withFloor(fl, () => {
+    const n = EXP[S.exp + 1]; if (!n || S.cash < n.cost || S.rep < n.rep) return false;
+    S.cash -= n.cost; S.stats.spent += n.cost; S.exp++; rebuildOcc();
+    log(`${who ? who + " a signé le bail" : "Bail signé"} : l’étage ${S.floors[fl].num} passe à ${Math.round(n.cols * ROWS * TILE_M * TILE_M)} m² !`, "good");
+    return true;
+  });
+}
 const upCost = it => Math.round(ITEMS[it.type].cost * 0.8 * (it.lv || 1) / 10) * 10;
 const trainCost = e => Math.round(400 * Math.pow(1.6, e.tr || 0) * (1 + e.skill / 4) / 50) * 50;
 function goToFloor(f) {
@@ -1999,7 +2040,15 @@ function chapterGoals(n) {
 const chapterDone = () => chapterGoals(S.floors.length).every(g => S.goalsDone.includes(g.k));
 const canBuyFloor = () => S.floors.length < MAX_FLOORS && chapterDone() && S.floors[S.floors.length - 1].exp >= 3;
 function renderTower() {
-  const sig = JSON.stringify([S.floors.map(f => [f.num, f.exp, f.items.length]), S.view, canBuyFloor(), S.cash >= floorCost(), S.cash >= MGR_FEE, S.staff.map(e => [e.floor, e.role])]);
+  if (UI.mgrPick != null && S.floors[UI.mgrPick]) {
+    const sig2 = JSON.stringify(["pick", UI.mgrPick, S.staff.map(e => [e.id, e.floor, e.role, Math.round(e.morale / 10)]), S.cash >= MGR_FEE]);
+    if (UI.sigs.tower === sig2) return; UI.sigs.tower = sig2;
+    $("#towerBody").innerHTML = mgrPickerHTML(UI.mgrPick);
+    document.querySelectorAll("#towerBody [data-av]").forEach(c => { const e = S.staff.find(x => x.id === +c.dataset.av); if (e) avatar(c, e, true); });
+    document.querySelectorAll("#towerBody [data-avadv]").forEach(c => { const e = S.staff.find(x => x.id === +c.dataset.avadv); if (e) avatar(c, e, false); });
+    return;
+  }
+  const sig = JSON.stringify([S.staff.map(e => [e.role, e.mgrMode, Math.round((e.perf || 0) * 10)]), S.floors.map(f => [f.num, f.exp, f.items.length]), S.view, canBuyFloor(), S.cash >= floorCost(), S.cash >= MGR_FEE, S.staff.map(e => [e.floor, e.role])]);
   if (UI.sigs.tower === sig) return; UI.sigs.tower = sig;
   const nxt = nextFloorNum(), rows = [];
   for (let num = 17; num >= 1; num--) {
@@ -2007,13 +2056,14 @@ function renderTower() {
     if (i >= 0) {
       const f = S.floors[i], ppl = S.staff.filter(e => (e.floor | 0) === i).length;
       const mg = mgrOf(i), fd = freeDesks().some(k => k.fl === i);
-      const mgHtml = mg ? `<small>Direction : ${esc(mg.name)}</small>` : S.floors.length >= MGR_FL ? `<button type="button" class="btn small violet" data-act="hiremgr" data-id="${i}" ${fd && S.cash >= MGR_FEE ? "" : "disabled"} title="${fd ? "" : "Il faut un bureau libre sur cet étage"}">Nommer un·e directeur·rice</button>` : "";
+      void fd;
+      const mgHtml = mg ? `<small>Direction : ${esc(mg.name)} · potentiel ${pctMgr(mg.mgrQ || .8)} % · performance ${perfLabel(mg)} · ${mg.mgrMode === "partial" ? "contrôle partiel" : "carte blanche"}</small><br><button type="button" class="btn small coral" data-act="convmgr" data-id="${mg.id}">Convoquer</button>` : S.floors.length >= MGR_FL ? `<button type="button" class="btn small violet" data-act="mgrpick" data-id="${i}">Nommer un·e directeur·rice</button>` : "";
       rows.push(`<div class="fl own ${i === S.view ? "cur" : ""}"><span class="num">${num}</span><span><b>Étage ${num}</b><br><small>${ppl} pers. · ${Math.round(EXP[f.exp].cols * ROWS * TILE_M * TILE_M)} m² · ${f.items.length} meubles</small>${mgHtml ? "<br>" + mgHtml : ""}</span><span class="stack" style="gap:6px">${i === S.view ? "<small>vous êtes ici</small>" : `<button type="button" class="btn small ghost" data-act="gofloor" data-id="${i}">Y aller</button>`}<button type="button" class="btn small" data-act="arch" data-id="${i}">Architecte</button></span></div>`);
     } else if (num === nxt) {
       rows.push(`<div class="fl next"><span class="num">${num}</span><span><b>Étage ${num} · ${eur(floorCost())}</b><br><small>${canBuyFloor() ? "Disponible à l’achat !" : "Terminez les objectifs et agrandissez entièrement votre dernier étage."}</small></span>${canBuyFloor() ? `<button type="button" class="btn small" data-act="buyfloor" ${S.cash >= floorCost() ? "" : "disabled"}>Acheter</button>` : "<small>🔒</small>"}</div>`);
     } else rows.push(`<div class="fl lock"><span class="num">${num}</span><span><b>Étage ${num}</b><br><small>Occupé par une autre société</small></span><small>🔒</small></div>`);
   }
-  const mgNote = S.floors.length >= MGR_FL ? `<p class="note">Un·e directeur·rice d’étage (${eur(MGR_FEE)} d’embauche, ${eur(600)}/jour) gère son étage à votre place : demandes, recadrages, petits achats et recrutements. Il ou elle ne vous sollicite que pour les décisions importantes.</p>` : `<p class="note">À partir de ${MGR_FL} étages, vous pourrez nommer un·e directeur·rice pour chaque étage.</p>`;
+  const mgNote = S.floors.length >= MGR_FL ? `<p class="note">Un·e directeur·rice d’étage gère son étage comme vous : demandes, recadrages, achats, formations, améliorations, contrats et recrutements. Il ou elle ne vous sollicite que pour les décisions importantes. Promouvez un employé ou recrutez un profil externe ; convoquez-le si l’étage n’avance pas.</p>` : `<p class="note">À partir de ${MGR_FL} étages, vous pourrez nommer un·e directeur·rice pour chaque étage.</p>`;
   $("#towerBody").innerHTML = mgNote + `<p class="note">Vous possédez ${S.floors.length} étage${S.floors.length > 1 ? "s" : ""} sur ${MAX_FLOORS}. Chaque nouvel étage s’achète quand les objectifs du chapitre sont remplis.</p><div class="tower">${rows.join("")}</div>`;
 }
 function buyFloor() {
@@ -2216,6 +2266,7 @@ function interviewScript(e) {
 }
 function scriptFor(e) {
   if (e.reportPending) return reportScript(e);
+  if (e.mgrReview) return mgrReviewScript(e);
   if (e.state === "interview") return interviewScript(e);
   if (e.issue) { const q = quickIssue(e); if (q) return q; }
   const r = e.req, other = r && r.other ? S.staff.find(o => o.id === r.other) : null;
@@ -2680,32 +2731,109 @@ function reportScript(e) {
 }
 
 /* ================= Directeurs d’étage ================= */
+function mgrReviewScript(m) {
+  m.mgrReview = false;
+  const fl = m.manages, num = S.floors[fl] ? S.floors[fl].num : "?";
+  const team = S.staff.filter(e => (e.floor | 0) === fl && !isCadre(e)), n = Math.max(1, team.length);
+  const avgM = Math.round(team.reduce((a, e) => a + e.morale, 0) / n), idle = team.filter(e => e.idle).length, iss = team.filter(e => e.issue).length;
+  const q = m.mgrQ || .8;
+  const self = q >= .9 ? "Je pense que l’étage tourne bien et j’ai encore des idées pour le faire progresser." : q >= .65 ? "Je fais de mon mieux, mais il y a des choses à améliorer." : "Pour être honnête, j’ai du mal à tout gérer en ce moment…";
+  const opts = [{ label: "Je vous garde, continuez", hint: "moral ↑", fx: () => { boost(m, 5); return "Merci pour votre confiance, je ne vous décevrai pas."; } }];
+  if (m.mgrMode === "partial") opts.push({ label: "Je vous redonne carte blanche", hint: "il décide seul, sauf décisions importantes", fx: () => { m.mgrMode = "full"; boost(m, 6); log(`${m.name} retrouve carte blanche sur l’étage ${num}.`); return "Merci ! Je reprends les rênes."; } });
+  else opts.push({ label: "Je reprends partiellement le contrôle", hint: "il vous demandera avant chaque décision", fx: () => { m.mgrMode = "partial"; boost(m, -5); log(`Contrôle partiel sur l’étage ${num} : ${m.name} vous consultera avant de décider.`); return "Entendu. Je vous soumettrai mes décisions avant d’agir."; } });
+  if (m.prevRole) opts.push({ label: "Retour à votre ancien poste", hint: "rétrogradation, moral ↓↓", fx: () => { m.role = m.prevRole; m.salary = m.prevSalary || ROLES[m.role].base; delete m.manages; m.mgrMode = null; boost(m, -12); log(`${m.name} redevient ${ROLES[m.role].long.toLowerCase()}.`); return "…Très bien. Je retourne à mon poste."; } });
+  opts.push({ label: "Licenciement", hint: "l’étage n’a plus de direction", alt: true, fx: () => { S.staff = S.staff.filter(o => o !== m); log(`${m.name} quitte l’entreprise.`); return "Je comprends. Je rassemble mes affaires."; } });
+  return { text: `Vous vouliez me voir ? Bilan de l’étage ${num} : moral moyen ${avgM}, ${idle} personne${idle > 1 ? "s" : ""} sans travail, ${iss} souci${iss > 1 ? "s" : ""} en cours. Performance ${perfLabel(m)}. ${self}`, opts };
+}
 const MGR_FL = 3, MGR_FEE = 5000;
 const mgrOf = fl => S.staff.find(e => e.role === "manager" && e.manages === fl);
+function evalMgr(e) {
+  const pros = [], cons = [];
+  const lazy = e.lazy || 0;
+  if (e.skill >= 4) pros.push("Très compétent·e"); else if (e.skill <= 2) cons.push("Manque d’expérience");
+  if (lazy < .2) pros.push("Sérieux·se et fiable"); else if (lazy > .5) cons.push("A tendance à traîner");
+  if (e.morale >= 70) pros.push("Très motivé·e"); else if (e.morale < 45) cons.push("Démotivé·e en ce moment");
+  if ((e.tr || 0) >= 2) pros.push("Bien formé·e");
+  if (e.trait === "ambitieux") pros.push("Ambitieux·se, veut faire ses preuves");
+  if (e.trait === "sociable") pros.push("Excellent relationnel");
+  if (e.trait === "joueur") cons.push("Un peu dissipé·e");
+  if (e.trait === "geek") cons.push("Préfère la technique au management");
+  if (e.strikes) cons.push(`Déjà recadré·e ${e.strikes} fois`);
+  if (e.issue) cons.push("Un problème en cours");
+  if (e.role === "pm") pros.push("Déjà habitué·e à coordonner");
+  if (e.role === "hr") pros.push("Connaît bien les équipes");
+  let q = 0.35 + e.skill * 0.1 + (1 - lazy) * 0.25 + Math.min(6, e.tr || 0) * 0.03 + (e.morale - 50) / 400;
+  q += { ambitieux: .08, sociable: .06, joueur: -.06, geek: -.04 }[e.trait] || 0;
+  q += { pm: .1, hr: .06 }[e.role] || 0;
+  q -= (e.strikes || 0) * .06 + (e.issue ? .05 : 0);
+  return { q: clamp(q, .3, 1.3), pros, cons };
+}
+const pctMgr = q => Math.round(clamp(q / 1.3, 0, 1) * 100);
+const perfLabel = m => m.perf == null ? "à évaluer" : m.perf >= .7 ? "bonne" : m.perf >= .5 ? "moyenne" : "faible";
+function promote(e, fl) {
+  const ev = evalMgr(e);
+  e.prevRole = e.role; e.prevSalary = e.salary; e.role = "manager"; e.manages = fl; e.mgrQ = ev.q; e.mgrMode = "full";
+  e.salary = Math.max(400, Math.round(e.salary * 1.6 / 10) * 10); e.req = null; e.issue = null; e.perf = null;
+  if ((e.floor | 0) !== fl) { const d = freeDesks().find(k => k.fl === fl); if (d) moveDesk(e, d); }
+  boost(e, 15);
+  log(`${e.name} est promu·e à la direction de l’étage ${S.floors[fl].num} !`, "good");
+  showBanner("Nouvelle direction !", `${e.name} · étage ${S.floors[fl].num}`);
+}
+function mgrPickerHTML(fl) {
+  const num = S.floors[fl].num, list = S.staff.filter(e => (e.floor | 0) === fl && !isCadre(e)).map(e => ({ e, ...evalMgr(e) })).sort((a, b) => b.q - a.q);
+  const sec = S.staff.find(isSec), best = list[0], worst = list[list.length - 1];
+  let advice;
+  if (!sec) advice = `<div class="advice"><p>Sans secrétaire, personne pour vous conseiller : fiez-vous aux points forts et faibles de chacun.</p></div>`;
+  else {
+    let t;
+    if (!best) t = "Personne ne travaille encore sur cet étage. Je vous conseille de recruter un profil externe.";
+    else if (best.q < .65) t = `Honnêtement, personne n’a vraiment le profil ici. ${best.e.name} serait le moins risqué, mais un recrutement externe serait plus sûr.`;
+    else t = `Je vous conseille ${best.e.name} : ${best.pros.slice(0, 2).join(", ").toLowerCase() || "un profil solide"}.${worst && worst !== best && worst.q < .55 ? ` Évitez plutôt ${worst.e.name} (${(worst.cons[0] || "peu adapté·e").toLowerCase()}).` : ""}`;
+    advice = `<div class="advice"><canvas data-avadv="${sec.id}" width="88" height="88"></canvas><p><b>${esc(sec.name)}, secrétaire</b><br>« ${esc(t)} »</p></div>`;
+  }
+  const fd = freeDesks().some(k => k.fl === fl);
+  return `<div class="row"><button type="button" class="btn ghost small" data-act="mgrback">← Retour à l’immeuble</button></div>
+    <h3>Direction de l’étage ${num}</h3>${advice}` +
+    (list.length ? list.map(({ e, q, pros, cons }) => `<article class="card ${best && e === best.e && sec ? "sel" : ""}">
+      <div class="who"><div class="av"><canvas data-av="${e.id}" width="88" height="88"></canvas></div><div><div class="name"><span>${esc(e.name)}</span><span class="sal">→ ${eur(Math.max(400, Math.round(e.salary * 1.6 / 10) * 10))}/j</span></div>
+      <div class="meta"><span class="role" style="background:${C[e.role]}">${ROLES[e.role].name}</span>${stars(e.skill)}</div></div></div>
+      <div class="meters"><span>Potentiel</span><div class="bar"><i style="width:${pctMgr(q)}%;background:${q >= .8 ? "var(--cash)" : q >= .6 ? "var(--gold)" : "var(--bad)"}"></i></div><output>${pctMgr(q)}</output></div>
+      ${pros.length ? `<div class="pros">${pros.map(t => `<span class="chip">+ ${esc(t)}</span>`).join("")}</div>` : ""}
+      ${cons.length ? `<div class="cons">${cons.map(t => `<span class="chip">− ${esc(t)}</span>`).join("")}</div>` : ""}
+      <div><button type="button" class="btn small" data-act="promote" data-id="${e.id}">Promouvoir</button></div></article>`).join("")
+      : `<div class="empty">Aucun employé sur cet étage pour l’instant.</div>`) +
+    `<article class="card"><div class="job"><span>Recruter un profil externe</span><span class="reward">${eur(MGR_FEE)}</span></div>
+      <p class="note">${eur(600)}/jour · profil inconnu, souvent expérimenté. Il faut un bureau libre sur l’étage.</p>
+      <div><button type="button" class="btn violet small" data-act="hiremgr" data-id="${fl}" ${fd && S.cash >= MGR_FEE ? "" : "disabled"}>${fd ? "Recruter" : "Il faut un bureau libre"}</button></div></article>`;
+}
 function mkManager(fl) {
-  const c = mkStaff("manager", 4); c.salary = 600; c.lazy = 0; c.manages = fl; c.floor = fl;
+  const c = mkStaff("manager", 4); c.salary = 600; c.lazy = 0; c.manages = fl; c.floor = fl; c.mgrQ = rnd(.55, 1.05); c.mgrMode = "full";
   c.name = pick(["Marc", "Hélène", "Julien", "Sandrine", "Thomas", "Fatou", "Olivier", "Claire"]) + " " + LASTI[ri(0, LASTI.length - 1)] + ".";
   return c;
 }
 function escalate(m, e, kind, extra) {
-  if (S.esc.some(x => x.staff === e.id && x.kind === kind)) return;
+  if (S.esc.some(x => x.staff === e.id && x.kind === kind && x.what === (extra && extra.what))) return;
   S.esc.push(Object.assign({ id: nid(), kind, staff: e.id, mgr: m.id }, extra || {}));
   log(`${m.name} a besoin de votre avis au sujet de ${e.name.replace(/\.$/, "")}.`);
 }
 function managerTick(dtMin) {
+  const now = S.day * 1440 + S.t;
   for (const m of S.staff) {
-    if (m.role !== "manager" || m.state === "away" || m.state === "leaving") continue;
+    if (m.role !== "manager" || m.state === "away" || m.state === "leaving" || m.state === "interview" || m.state === "tointerview" || m.id === UI.talk) continue;
     m.mgrCd = (m.mgrCd || 0) - dtMin;
     if (m.mgrCd > 0) continue;
-    m.mgrCd = 20;
+    const q = m.mgrQ || .8, partial = m.mgrMode === "partial";
+    m.mgrCd = 20 / Math.max(.3, q);
+    const sloppy = () => Math.random() < (1 - Math.min(1, q)) * 0.5;
     const fl = m.manages, team = S.staff.filter(e => (e.floor | 0) === fl && !isCadre(e) && e.id !== UI.talk);
     withFloor(fl, () => {
       const bad = team.find(e => e.issue);
       if (bad) {
         if ((bad.strikes || 0) >= 2) { escalate(m, bad, "fire"); clearIssue(bad); return; }
+        if (sloppy()) return;
         bad.strikes = (bad.strikes || 0) + 1;
         if (bad.issue.kind === "dispute") { const o = S.staff.find(x => x.id === bad.issue.with); boost(bad, 3); if (o) boost(o, 3); log(`${m.name} a fait une médiation entre ${bad.name}${o ? " et " + o.name : ""}.`); }
-        else { bad.lazy = Math.max(0, (bad.lazy || 0) - .3); boost(bad, -3); log(`${m.name} a recadré ${bad.name}.`); if (bad.state === "fun") { bad.funTile = null; goDesk(bad); } if (bad.state === "sleep") { bad.state = "work"; bad.energy = Math.min(100, bad.energy + 25); } }
+        else { bad.lazy = Math.max(0, (bad.lazy || 0) - .3 * q); boost(bad, -3); log(`${m.name} a recadré ${bad.name}.`); if (bad.state === "fun") { bad.funTile = null; goDesk(bad); } if (bad.state === "sleep") { bad.state = "work"; bad.energy = Math.min(100, bad.energy + 25); } }
         clearIssue(bad); floatText(m.x, m.y, "✓ réglé", C.manager); return;
       }
       const sad = team.find(e => e.morale < 25 && e.quitEsc !== S.day);
@@ -2715,37 +2843,63 @@ function managerTick(dtMin) {
         const r = e.req;
         if (r.kind === "item") {
           const D = ITEMS[r.item];
-          if (D.cost <= 2000 && S.cash >= D.cost * 5) {
+          if (!partial && D.cost <= 2000 && S.cash >= D.cost * 5) {
             const it = autoPlace(r.item, e);
             if (it) { S.cash -= D.cost; S.stats.spent += D.cost; e.quest = { item: r.item, near: !!D.aura, until: S.day + 3 }; clearReq(e); log(`${m.name} a installé ${D.a} pour ${e.name}.`); return; }
           }
           r.asked = true; escalate(m, e, "buy", { item: r.item }); return;
         }
+        if (r.kind === "raise" && (e.morale < 40 || partial)) { r.asked = true; escalate(m, e, "raise"); return; }
         if (r.kind === "raise") {
-          if (e.morale < 40) { r.asked = true; escalate(m, e, "raise"); return; }
-          if (S.cash >= 5000) { S.cash -= 500; S.stats.spent += 500; boost(e, 9); log(`${m.name} a accordé une prime de 500 € à ${e.name}.`); }
+          if (S.cash >= 5000 && !sloppy()) { S.cash -= 500; S.stats.spent += 500; boost(e, 9); log(`${m.name} a accordé une prime de 500 € à ${e.name}.`); }
           else { boost(e, -4); log(`${m.name} a repoussé la demande d’augmentation de ${e.name}.`); }
           clearReq(e); return;
         }
+        if (partial) { r.asked = true; escalate(m, e, "req"); return; }
         const kind = r.kind, iss = e.issue; e.issue = null;
         const sc = scriptFor(e); e.issue = iss;
         if (!e.req) return;
-        const pol = S.secPol; S.secPol = "bal"; const i = secChoice(kind, sc.opts); S.secPol = pol;
+        const pol = S.secPol; S.secPol = "bal"; let i = secChoice(kind, sc.opts); S.secPol = pol;
+        if (sloppy()) { for (let k = sc.opts.length - 1; k >= 0; k--) if (!sc.opts[k].dis) { i = k; break; } }
         const o = sc.opts[i]; if (!o) return;
         o.fx(); log(`${m.name} a répondu à ${e.name} : « ${o.label} ».`); floatText(m.x, m.y, "✓ réglé", C.manager); return;
+      }
+      if (now - (m.lastSign || 0) >= 120 && S.active.length < cap() && S.offers.length) {
+        const idleK = new Set(team.filter(o => o.idle && o.state === "work").map(workOf).filter(k => k === "dev" || k === "design"));
+        if (idleK.size) {
+          const { cap: cp, load } = teamCapacity();
+          const fit = S.offers.filter(o => [...idleK].some(k => o.need[k] > 0) && Math.max(o.need.dev ? (load.dev + o.need.dev) / Math.max(.1, cp.dev) : 0, o.need.design ? (load.design + o.need.design) / Math.max(.1, cp.design) : 0) <= o.days - .4).sort((a, b) => b.reward - a.reward)[0];
+          if (fit) { m.lastSign = now; if (partial) escalate(m, m, "ask", { what: "sign", offer: fit.id }); else signOffer(fit, m.name); return; }
+        }
+      }
+      if (m.trainDay !== S.day && S.cash > 40000) {
+        const t = team.filter(o => (o.tr || 0) < 6 && trainCost(o) < S.cash * .05 && o.state === "work").sort((a, b) => a.skill - b.skill)[0];
+        if (t && Math.random() < q) { m.trainDay = S.day; if (partial) escalate(m, t, "ask", { what: "train" }); else doTrain(t, m.name); return; }
+      }
+      if (m.upDay !== S.day && S.cash > 80000) {
+        const it = S.items.filter(i => (i.lv || 1) < 3 && upCost(i) < S.cash * .03).sort((a, b) => upCost(a) - upCost(b))[0];
+        if (it && Math.random() < q) { m.upDay = S.day; if (partial) escalate(m, m, "ask", { what: "upgrade", item: it.id }); else doUpgrade(it, m.name); return; }
+      }
+      if (m.expDay == null || S.day - m.expDay >= 3) {
+        const nx = EXP[S.exp + 1];
+        if (nx && !freeDesks().some(k => k.fl === fl) && S.rep >= nx.rep && S.cash >= nx.cost * 2) { m.expDay = S.day; escalate(m, m, "expand"); return; }
       }
       if (m.hireDay !== S.day && S.cash > 15000 && S.cands.length) {
         const d = freeDesks().find(k => k.fl === fl);
         if (d) {
           m.hireDay = S.day;
-          const c = S.cands.slice().sort((a, b) => b.skill - a.skill)[0];
-          c.deskId = d.id; c.floor = fl; c.state = "away"; c.home = S.t >= 1080; c.arrive = S.t < 1080 ? S.t : 480;
-          S.staff.push(c); S.cands = S.cands.filter(x => x !== c);
-          log(`${m.name} a recruté ${c.name} (${ROLES[c.role].long.toLowerCase()}) pour l’étage ${S.floors[fl].num}.`, "good");
+          const c = S.cands.slice().sort((a, b) => (b.skill - a.skill) * q + (Math.random() - .5) * (1.3 - q) * 3)[0];
+          if (partial) { escalate(m, m, "ask", { what: "hire", cand: c.id }); return; }
+          hireCand(c, d, m.name);
         }
       }
     });
   }
+}
+function hireCand(c, d, who) {
+  c.deskId = d.id; c.floor = d.fl; c.state = "away"; c.home = S.t >= 1080; c.arrive = S.t < 1080 ? S.t : 480;
+  S.staff.push(c); S.cands = S.cands.filter(x => x !== c);
+  log(`${who ? who + " a recruté" : "Recrutement :"} ${c.name} (${ROLES[c.role].long.toLowerCase()}) pour l’étage ${S.floors[d.fl].num}.`, "good");
 }
 function escOpts(x) {
   const e = S.staff.find(o => o.id === x.staff); if (!e) return null;
@@ -2762,6 +2916,34 @@ function escOpts(x) {
       { label: `Augmentation de 20 %`, fx: () => { e.salary += inc; e.perm = (e.perm || 0) + 12; boost(e, 15); } },
       { label: "Deux jours de repos", cls: "ghost", fx: () => { e.offDay = S.day + 1; boost(e, 15); e.mood = clamp((e.mood || 0) + 8, -25, 25); } },
       { label: "Le laisser partir", cls: "coral", fx: () => { S.staff = S.staff.filter(o => o !== e); log(`${e.name} a quitté l’entreprise.`); } }] }; }
+    case "req": {
+      if (!e.req || e.reportPending || e.state === "interview") return null;
+      const sc = withFloor(e.floor, () => { const iss = e.issue; e.issue = null; const r2 = scriptFor(e); e.issue = iss; return r2; });
+      if (!e.req) return null;
+      const pol = S.secPol; S.secPol = "bal"; const i = secChoice(e.req.kind, sc.opts); S.secPol = pol;
+      const o = sc.opts[i]; if (!o) return null;
+      return { text: `${e.name} demande : « ${sc.text.length > 130 ? sc.text.slice(0, 127) + "…" : sc.text} » Je propose : « ${o.label} ».`, opts: [
+        { label: "D’accord", fx: () => { withFloor(e.floor, () => o.fx()); } },
+        { label: "Je lui parle moi-même", cls: "ghost", fx: () => { e.req.asked = false; e.req.t = -999; openTalk(e); } },
+        { label: "Refuser", cls: "coral", fx: () => { clearReq(e); boost(e, -4); } }] };
+    }
+    case "ask": {
+      const m = e;
+      if (x.what === "sign") { const o = S.offers.find(q2 => q2.id === x.offer); if (!o || S.active.length >= cap()) return null; return { text: `Une partie de l’équipe n’a rien à faire. Je propose de signer « ${o.name} » avec ${o.client} (${eur(o.reward)}, ${o.days} jours).`, opts: [
+        { label: "Oui, signe-le", fx: () => signOffer(o, m.name) }, { label: "Non", cls: "coral", fx: () => {} }] }; }
+      if (x.what === "train") { if ((e.tr || 0) >= 6) return null; return { text: `Je propose d’envoyer ${e.name} en formation (${eur(trainCost(e))}) : +6 % de production.`, opts: [
+        { label: "Oui", dis: S.cash < trainCost(e), fx: () => doTrain(e, mgrOf(e.floor | 0) ? mgrOf(e.floor | 0).name : null) }, { label: "Non", cls: "coral", fx: () => {} }] }; }
+      if (x.what === "upgrade") { const it = itemById(x.item); if (!it || (it.lv || 1) >= 3) return null; return { text: `Je propose d’améliorer ${ITEMS[it.type].a} au niveau ${(it.lv || 1) + 1} (${eur(upCost(it))}).`, opts: [
+        { label: "Oui", dis: S.cash < upCost(it), fx: () => doUpgrade(it, m.name) }, { label: "Non", cls: "coral", fx: () => {} }] }; }
+      if (x.what === "hire") { const c = S.cands.find(q2 => q2.id === x.cand), d = freeDesks().find(k => k.fl === m.manages); if (!c || !d) return null; return { text: `Je propose de recruter ${c.name}, ${ROLES[c.role].long.toLowerCase()} ${"★".repeat(Math.round(c.skill))}, pour ${eur(c.salary)}/jour.`, opts: [
+        { label: "Oui, recrute", fx: () => hireCand(c, d, m.name) }, { label: "Non", cls: "coral", fx: () => {} }] }; }
+      return null;
+    }
+    case "expand": {
+      const fl = e.manages, nx = withFloor(fl, () => EXP[S.exp + 1]); if (!nx) return null;
+      return { text: `L’étage ${S.floors[fl].num} est plein. Je propose de louer plus d’espace : ${eur(nx.cost)}, loyer ${eur(nx.rent)}/jour.`, opts: [
+        { label: "Oui, signe le bail", dis: S.cash < nx.cost, fx: () => doExpand(fl, e.name) }, { label: "Pas maintenant", cls: "coral", fx: () => {} }] };
+    }
     case "fire": return { text: `${e.name} accumule les problèmes malgré trois recadrages. Je propose un licenciement.`, opts: [
       { label: "Licencier", cls: "coral", fx: () => { S.staff = S.staff.filter(o => o !== e); log(`${e.name} a été licencié·e.`); } },
       { label: "Dernière chance (formation 1 500 €)", cls: "ghost", dis: S.cash < 1500, fx: () => { S.cash -= 1500; S.stats.spent += 1500; e.lazy = 0; e.strikes = 0; e.skill = Math.min(5, e.skill + .3); boost(e, 5); } }] };
@@ -2969,12 +3151,7 @@ function act(a, id) {
   if (a === "cancel") { UI.tool = null; return; }
   if (a === "sell") { UI.tool = "sell"; openSheet(null); UI.tool = "sell"; return; }
   if (a === "train") {
-    const e = S.staff.find(x => x.id === id); if (!e || (e.tr || 0) >= 6) return;
-    const c = trainCost(e); if (S.cash < c) return;
-    S.cash -= c; S.stats.spent += c; e.tr = (e.tr || 0) + 1; e.tb = Math.min(0.36, (e.tb || 0) + 0.06); e.skill = Math.min(5, e.skill + 0.4);
-    e.salary = Math.round(e.salary * 1.05 / 10) * 10; boost(e, 5);
-    if (e.state !== "away" && e.state !== "leaving" && S.t < 1080) withFloor(e.floor, () => goHome(e));
-    log(`${e.name} part en formation (${e.tr}/6) : +6 % de production, compétence en hausse.`, "good"); return;
+    const e = S.staff.find(x => x.id === id); if (e) doTrain(e); return;
   }
   if (a === "seminar") {
     const team = S.staff.filter(e => (e.floor | 0) === S.view && !isCadre(e)), c = 250 * team.length;
@@ -2985,18 +3162,32 @@ function act(a, id) {
   }
   if (a === "upgrade") { openSheet(null); UI.tool = "upgrade"; return; }
   if (a === "expand") {
-    const n = EXP[S.exp + 1]; if (!n || S.cash < n.cost || S.rep < n.rep) return;
-    S.cash -= n.cost; S.stats.spent += n.cost; S.exp++; rebuildOcc(); fitCam(false);
-    log(`Bail signé : l’étage passe à ${Math.round(n.cols * ROWS * TILE_M * TILE_M)} m² !`, "good");
+    if (!doExpand(S.view)) return; fitCam(false);
     log(`Nouveaux meubles disponibles : ${unlockedBy(S.exp).join(", ")}.`, "good");
     showBanner("Nouvel espace !", `${unlockedBy(S.exp).length} nouveaux meubles à découvrir`); UI.cat = "all"; save(); return;
   }
   if (a === "gofloor") { goToFloor(id); openSheet(null); return; }
   if (a === "arch") { if (S.build) { toast("Un chantier est déjà en cours."); return; } openSheet(null); openArch(id); return; }
+  if (a === "mgrpick") { UI.mgrPick = id; UI.sigs.tower = null; return; }
+  if (a === "mgrback") { UI.mgrPick = null; UI.sigs.tower = null; return; }
+  if (a === "promote") {
+    const e = S.staff.find(x => x.id === id), fl = UI.mgrPick;
+    if (!e || fl == null || mgrOf(fl) || isCadre(e)) return;
+    promote(e, fl); UI.mgrPick = null; UI.sigs = {}; return;
+  }
+  if (a === "convmgr") {
+    const m = S.staff.find(x => x.id === id); if (!m) return;
+    if (m.state === "away" || m.state === "leaving") { toast(`${m.name} n’est pas au bureau en ce moment.`); return; }
+    m.mgrReview = true; openSheet(null);
+    const walk = allItems().some(i => i.type === "office") && withFloor(m.floor, () => goInterview(m));
+    if (!walk) openTalk(m);
+    log(`${m.name} est convoqué·e pour faire le point.`); return;
+  }
   if (a === "hiremgr") {
     if (S.floors.length < MGR_FL || mgrOf(id) || S.cash < MGR_FEE) return;
+    UI.mgrPick = null;
     const d = freeDesks().find(k => k.fl === id); if (!d) { toast("Il faut un bureau libre sur cet étage.", "bad"); return; }
-    const c = mkManager(id); c.deskId = d.id; c.state = "away"; c.home = S.t >= 1080; c.arrive = S.t < 1080 ? S.t : 480;
+    const c = mkManager(id); c.deskId = d.id; c.floor = id; c.state = "away"; c.home = S.t >= 1080; c.arrive = S.t < 1080 ? S.t : 480;
     S.cash -= MGR_FEE; S.stats.spent += MGR_FEE; S.staff.push(c);
     log(`${c.name} prend la direction de l’étage ${S.floors[id].num}.`, "good"); showBanner("Nouveau directeur !", `${c.name} · étage ${S.floors[id].num}`); return;
   }
@@ -3051,10 +3242,7 @@ function act(a, id) {
   if (a === "select") { UI.sel = UI.sel === id ? null : id; const e = S.staff.find(x => x.id === UI.sel); if (e && e.state !== "away") { cam.tx = e.x + .5; cam.ty = e.y - .5; } return; }
   if (a === "accept") {
     const o = S.offers.find(x => x.id === id); if (!o || S.active.length >= cap()) return;
-    S.offers = S.offers.filter(x => x !== o);
-    S.active.push(Object.assign(o, { prog: { dev: 0, design: 0 }, deadline: S.day + o.days - 1 }));
-    S.stats.signed++; S.stats.maxSigned = Math.max(S.stats.maxSigned, o.reward);
-    log(`Contrat signé avec ${o.client} !`, "good"); return;
+    signOffer(o); return;
   }
   if (a === "decline") { S.offers = S.offers.filter(x => x.id !== id); return; }
   if (a === "reset") { if (!UI.confirmReset) { UI.confirmReset = true; return; } UI.confirmReset = false; newGame(); save(); fitCam(true); openSheet(null); return; }
