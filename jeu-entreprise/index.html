@@ -308,7 +308,7 @@ h3 small{font-weight:500;font-size:12.5px;color:var(--muted)}
 if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h) { this.rect(x, y, w, h); };
 
 /* ================= Données ================= */
-const ROWS = 9, MAXC = 16, DOOR = { x: 0, y: 6 }, TILE_M = 1.5, MIN_PER_SEC = 8, LEAD = 22, SAVE_KEY = "etage12-v4";
+const ROWS = 9, MAXC = 16, DOOR = { x: 0, y: 6 }, TILE_M = 1.5, MIN_PER_SEC = 8, LEAD = 22, SAVE_KEY = "etage12-v5";
 const EXP = [
   { cols: 7, rent: 180, cost: 0, rep: 0 },
   { cols: 10, rent: 420, cost: 6000, rep: 10 },
@@ -394,6 +394,7 @@ const ROLES = {
   artdir:  { name: "DA", long: "Directeur·rice artistique", base: 280, doing: "Signe les créations", work: "design", mult: 1.45, fl: 10, perk: "design 45 % plus rapide" },
   secretary: { name: "Secrétariat", long: "Secrétaire de direction", base: 220, doing: "Gère les demandes de l’équipe", work: null, cadre: true },
   manager: { name: "Direction", long: "Directeur·rice d’étage", base: 600, doing: "Dirige l’étage", work: null, cadre: true },
+  recruiter: { name: "Recrutement", long: "Recruteur·se", base: 450, doing: "Cherche des talents", work: null, cadre: true },
 };
 const SKINS = ["#F6D3B3", "#E8B48F", "#C98E64", "#9A6440", "#6E4428", "#F2C9A0"];
 const HAIRS = ["#2B1D14", "#5A3825", "#C98A3B", "#E8C26A", "#1E1E2E", "#B34A2B", "#8A8A9A", "#6B5BFF"];
@@ -531,9 +532,9 @@ function newOffer(starter) {
 
 /* ================= Partie ================= */
 function newGame() {
-  S = { v: 4, cash: 12000, rep: 5, day: 1, t: 480, speed: 1, floors: [{ num: 12, exp: 0, items: [] }], view: 0, ms: [], staff: [], offers: [], active: [], cands: [], candsDay: 1,
+  S = { v: 5, cash: 12000, rep: 5, day: 1, t: 480, speed: 1, floors: [{ num: 12, exp: 0, items: [] }], view: 0, ms: [], staff: [], offers: [], active: [], cands: [], candsDay: 1,
     nextId: 1, leadMeter: 0, debtDays: 0, closing: false, todayIn: 0, idleWarned: 0, goalsDone: [], over: false, seenGoals: 0,
-    stats: { done: 0, failed: 0, earned: 0, spent: 0, tax: 0, signed: 0, maxSigned: 0, streak: 0 }, log: [], month: { in: 0, out: 0 }, nextTax: MONTH, taxDebt: 0, pending: [], esc: [], secPol: "bal", secAuto: true, visitor: null };
+    stats: { done: 0, failed: 0, earned: 0, spent: 0, tax: 0, signed: 0, maxSigned: 0, streak: 0 }, log: [], month: { in: 0, out: 0 }, nextTax: MONTH, taxDebt: 0, pending: [], esc: [], recQ: [], recAuto: true, secPol: "bal", secAuto: true, visitor: null };
   installFloorProps(S); occs = []; setFloor(0);
   const d1 = addItem("desk", 2, 2); addItem("desk", 4, 2); addItem("desk", 2, 4);
   addItem("plant", 0, 0); addItem("coffee", 6, 0); addItem("plant", 6, 8); addItem("sofa", 3, 8); addItem("rug", 1, 4);
@@ -814,6 +815,7 @@ function step(dtg) {
   }
   setFloor(S.view);
   managerTick(dtMin);
+  recruiterTick(dtMin);
   secretaryTick(dtMin);
   meetingTick();
   if (S.visitor) {
@@ -896,6 +898,7 @@ function endDay() {
   for (let k = 0; k < walkIns; k++) if (Math.random() < 0.7 && S.offers.length < maxOffers()) newOffer();
   S.disputeDone = false;
   if (S.day === S.nextTax - 1) log(`Demain, l’inspecteur des impôts passe. Montant estimé : ${eur(taxDue().tax)}.`, "bad");
+  if (plvl() >= REC_LVL && !S.recMsg) { S.recMsg = true; log("Niveau 20 atteint : vous pouvez embaucher un·e recruteur·se (onglet Équipe) !", "good"); showBanner("Recruteur·se disponible !", "il recrutera pour chaque nouveau bureau"); }
   if (plvl() >= SEC_LVL && !S.secMsg) { S.secMsg = true; log("Niveau 3 atteint : vous pouvez embaucher une secrétaire (onglet Équipe) !", "good"); }
   if (S.day - S.candsDay >= 5) { genCands(); log("De nouveaux CV sont arrivés."); }
   randomEvent();
@@ -925,9 +928,9 @@ function valuation() {
 try { for (const k of Object.keys(localStorage)) if (k.startsWith("etage12-") && k !== SAVE_KEY) localStorage.removeItem(k); } catch (_) {}
 function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (_) {} }
 function load(data) {
-  let d = data && data.v === 4 ? data : null;
+  let d = data && data.v === 5 ? data : null;
   if (!d) { try { d = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); } catch (_) { d = null; } }
-  if (d && d.v === 4 && Array.isArray(d.staff) && !d.over) {
+  if (d && d.v === 5 && Array.isArray(d.staff) && !d.over) {
     if (!d.floors) { d.floors = [{ num: 12, exp: d.exp || 0, items: d.items || [] }]; delete d.items; delete d.exp; d.view = 0; }
     S = d; installFloorProps(S); occs = [];
     S.floors.forEach((f, i) => f.items.forEach(it => { it.fl = i; if (it.r == null) it.r = it.w !== ITEMS[it.type].w ? 1 : 0; }));
@@ -944,7 +947,7 @@ function load(data) {
 }
 
 /* ================= Rendu isométrique ================= */
-const C = { secretary: "#A259FF", visitor: "#59607A", pm: "#FF8A3D", data: "#00A3C4", marketing: "#E040B0", hr: "#7CB342", lawyer: "#8D6E63", accountant: "#546E7A", artdir: "#D81B60", manager: "#3B3561", builder: "#FFB300", rep: "#E040B0", dev: "#4C6FFF", design: "#FF5FA2", sales: "#FFA41B", support: "#13B89B", good: "#25B865", bad: "#F0473E", gold: "#FFC23D", ink: "#2A2550" };
+const C = { recruiter: "#00897B", secretary: "#A259FF", visitor: "#59607A", pm: "#FF8A3D", data: "#00A3C4", marketing: "#E040B0", hr: "#7CB342", lawyer: "#8D6E63", accountant: "#546E7A", artdir: "#D81B60", manager: "#3B3561", builder: "#FFB300", rep: "#E040B0", dev: "#4C6FFF", design: "#FF5FA2", sales: "#FFA41B", support: "#13B89B", good: "#25B865", bad: "#F0473E", gold: "#FFC23D", ink: "#2A2550" };
 const cv = $("#cv"), ctx = cv.getContext("2d");
 let W = 0, H = 0, DPR = 1;
 const cam = { x: 3.5, y: 4, a: 34, tx: 3.5, ty: 4, ta: 34 };
@@ -1835,7 +1838,7 @@ function renderBuild() {
 }
 function renderTeam() {
   const fd = freeDesks().length;
-  const sig = JSON.stringify([S.staff.map(e => [e.id, !!e.req, e.quest && e.quest.item, e.remoteDay === S.day + 1, e.issue && e.issue.kind]), S.cands.map(c => c.id), fd, UI.sel, UI.confirmFire, S.cash >= 300, S.candsDay, S.staff.map(e => [e.tr, S.cash >= trainCost(e)]), S.semDay === S.day, S.view, plvl() >= SEC_LVL, plvl() >= SECP_LVL, S.secPremium, S.secPol, S.secAuto, S.cash >= 3000]);
+  const sig = JSON.stringify([S.staff.map(e => [e.id, !!e.req, e.quest && e.quest.item, e.remoteDay === S.day + 1, e.issue && e.issue.kind]), S.cands.map(c => c.id), fd, UI.sel, UI.confirmFire, S.cash >= 300, S.candsDay, S.staff.map(e => [e.tr, S.cash >= trainCost(e)]), S.semDay === S.day, S.view, plvl() >= SEC_LVL, plvl() >= SECP_LVL, S.secPremium, S.secPol, S.secAuto, S.cash >= 3000, plvl() >= REC_LVL, S.recAuto, S.recQ.length, RECRUITERS.map(r => S.cash >= r.fee)]);
   if (UI.sigs.team === sig) return; UI.sigs.team = sig;
   const sal = S.staff.reduce((s, e) => s + e.salary, 0);
   const flTeam = S.staff.filter(e => (e.floor | 0) === S.view && !isCadre(e)), semCost = 250 * flTeam.length;
@@ -1855,7 +1858,7 @@ function renderTeam() {
         ? `<span class="row"><button type="button" class="btn ghost small" data-act="nofire">Garder</button><button type="button" class="btn coral small" data-act="fire" data-id="${e.id}">Confirmer</button></span>`
         : `<span class="row"><button type="button" class="btn ghost small" data-act="askfire" data-id="${e.id}">Licencier</button>${e.issue ? `<button type="button" class="btn coral small" data-act="convoke" data-id="${e.id}">Convoquer</button>` : ""}<button type="button" class="btn violet small" data-act="talk" data-id="${e.id}">Parler</button></span>`}</div>`}
     </article>`).join("");
-  $("#recruit").innerHTML = secretaryHTML(fd) + `<h3>Candidat·es <small>nouveaux CV au jour ${S.candsDay + 5}</small></h3>
+  $("#recruit").innerHTML = secretaryHTML(fd) + recruiterHTML(fd) + `<h3>Candidat·es <small>nouveaux CV au jour ${S.candsDay + 5}</small></h3>
     ${fd ? `<p class="note">${fd} bureau${fd > 1 ? "x" : ""} libre${fd > 1 ? "s" : ""}.</p>` : `<p class="note warn">Aucun bureau libre : posez un bureau dans Aménager pour recruter.</p>`}
     ${S.cands.length ? S.cands.map(c => `<article class="card">
       <div class="who"><div class="av"><canvas data-avc="${c.id}" width="88" height="88"></canvas></div>
@@ -2531,6 +2534,71 @@ function renderInbox() {
   $("#ibBtns").innerHTML = `<button type="button" class="btn small" data-act="pyes" data-id="${pn.id}" ${S.cash >= D.cost ? "" : "disabled"}>Oui, installe-le</button><button type="button" class="btn ghost small" data-act="pself" data-id="${pn.id}">Je choisis l’endroit</button><button type="button" class="btn coral small" data-act="pno" data-id="${pn.id}">Refuser</button>`;
 }
 
+/* ================= Recrutement automatique ================= */
+const REC_LVL = 20;
+const RECRUITERS = [
+  { tier: 1, label: "Junior", fee: 3000, salary: 250, min: 1, max: 3, lazy: [0, .9], desc: "profils moyens, rôle choisi au hasard" },
+  { tier: 2, label: "Confirmé·e", fee: 8000, salary: 450, min: 2, max: 4, lazy: [0, .5], desc: "bons profils, rôle adapté aux besoins" },
+  { tier: 3, label: "Expert·e", fee: 18000, salary: 800, min: 3, max: 5, lazy: [0, .15], desc: "les meilleurs talents, sérieux et motivés" },
+];
+const recruiterOf = () => S.staff.find(e => e.role === "recruiter");
+function onNewItem(it) {
+  if (!it || !isDesk(it.type)) return;
+  const r = recruiterOf();
+  if (r && S.recAuto) { S.recQ.push(it.id); r.recCd = Math.min(r.recCd || 0, 10); }
+}
+function neededRole() {
+  const { cap: cp, load } = teamCapacity();
+  const n = S.floors.length, have = k => S.staff.filter(e => e.role === k).length;
+  const score = { dev: load.dev / Math.max(10, cp.dev), design: load.design / Math.max(10, cp.design), sales: S.offers.length < 3 ? 1.2 : .3, support: S.rep < 60 ? .6 : .2 };
+  if (n >= 4) score.marketing = S.rep < 80 ? .7 : .25;
+  if (n >= 3) score.data = score.dev * 1.1;
+  if (n >= 10) score.artdir = score.design * 1.1;
+  if (n >= 2) for (let f = 0; f < n; f++) { const t = S.staff.filter(e => (e.floor | 0) === f && !isCadre(e)); if (t.length >= 6 && !t.some(e => e.role === "pm")) score.pm = 1.5; }
+  if (n >= 5 && S.staff.length >= 10 * (have("hr") + 1)) score.hr = 1.1;
+  if (n >= 6 && !have("lawyer")) score.lawyer = .9;
+  if (n >= 8 && have("accountant") < 2) score.accountant = 1;
+  return Object.entries(score).sort((a, b) => b[1] - a[1])[0][0];
+}
+function recruiterTick(dtMin) {
+  const r = recruiterOf();
+  if (!r || r.state === "away" || r.state === "leaving" || !S.recQ.length) return;
+  r.recCd = (r.recCd || 0) - dtMin;
+  if (r.recCd > 0) return;
+  r.recCd = 25;
+  const R = RECRUITERS[(r.recTier || 1) - 1];
+  while (S.recQ.length) {
+    const id = S.recQ[0], d = itemById(id);
+    if (!d || S.staff.some(e => e.deskId === id)) { S.recQ.shift(); continue; }
+    if (S.cash < 2000) { if (S.recWarn !== S.day) { S.recWarn = S.day; log(`${r.name} attend que la trésorerie remonte pour recruter.`); } return; }
+    S.recQ.shift();
+    const role = R.tier === 1 ? pickRole() : neededRole();
+    const skill = ri(R.min, R.max);
+    const c = mkStaff(role, skill);
+    c.lazy = rnd(R.lazy[0], R.lazy[1]);
+    if (R.tier === 3) c.morale = 85;
+    c.deskId = d.id; c.floor = d.fl; c.state = "away"; c.home = S.t >= 1080; c.arrive = S.t < 1080 ? S.t + 20 : 480;
+    S.staff.push(c);
+    log(`${r.name} a recruté ${c.name}, ${ROLES[role].long.toLowerCase()} ${"★".repeat(skill)}, pour le nouveau bureau (étage ${S.floors[d.fl].num}).`, "good");
+    floatText(r.x, r.y, "Recrutement !", C.recruiter, true);
+    UI.sigs = {};
+    return;
+  }
+}
+function recruiterHTML(fd) {
+  const r = recruiterOf();
+  let h = `<h3>Recrutement automatique <small>${plvl() < REC_LVL ? `débloqué au niveau ${REC_LVL}` : r ? RECRUITERS[(r.recTier || 1) - 1].label : "disponible"}</small></h3>`;
+  if (plvl() < REC_LVL) return h + `<div class="empty">Au niveau ${REC_LVL}, un·e recruteur·se pourra pourvoir chaque nouveau bureau que vous posez. Plus il ou elle est expérimenté·e, meilleurs sont les profils.</div>`;
+  if (!r) return h + RECRUITERS.map((R, i) => `<article class="card"><div class="job"><span>Recruteur·se ${R.label} ${"★".repeat(R.tier)}</span><span class="reward">${eur(R.fee)}</span></div>
+    <p class="note">${eur(R.salary)}/jour · ${R.desc} · compétence ${R.min} à ${R.max} étoiles.</p>
+    <div><button type="button" class="btn small" data-act="hirerec" data-id="${i}" ${fd && S.cash >= R.fee ? "" : "disabled"}>${fd ? "Embaucher" : "Il faut un bureau libre"}</button></div></article>`).join("");
+  const R = RECRUITERS[(r.recTier || 1) - 1], nx = RECRUITERS[R.tier];
+  return h + `<div class="card"><b>${esc(r.name)} · ${R.label} ${"★".repeat(R.tier)}</b>
+    <p class="note">${R.desc}. Chaque bureau que vous posez est pourvu dans l’heure${S.recQ.length ? ` · ${S.recQ.length} bureau${S.recQ.length > 1 ? "x" : ""} en attente` : ""}.</p>
+    <div class="foot"><span class="note">Recruter pour chaque nouveau bureau</span><button type="button" class="btn small ${S.recAuto ? "" : "ghost"}" data-act="recauto">${S.recAuto ? "Activé" : "Désactivé"}</button></div>
+    ${nx ? `<div class="foot"><span class="note">Passer ${nx.label.toLowerCase()} ${"★".repeat(nx.tier)} : ${nx.desc}, ${eur(nx.salary)}/jour.</span><button type="button" class="btn violet small" data-act="rectier" data-id="${nx.tier - 1}" ${S.cash >= nx.fee - R.fee ? "" : "disabled"}>Former · ${eur(nx.fee - R.fee)}</button></div>` : ""}</div>`;
+}
+
 /* ================= Réunions ================= */
 function meetingTick() {
   if (S.meeting) {
@@ -2835,7 +2903,7 @@ function buildTick(dt) {
   withFloor(b.fl, () => {
     const D = ITEMS[it.type], w = it.r % 2 ? D.h : D.w, h = it.r % 2 ? D.w : D.h;
     if (!canPlace(it.x, it.y, w, h, D.flat)) return;
-    const n = addItem(it.type, it.x, it.y, it.r); n.lv = it.lv || 1;
+    const n = addItem(it.type, it.x, it.y, it.r); n.lv = it.lv || 1; onNewItem(n);
     const wk = b.bs[(b.queue.length) % 3]; wk.tx = it.x + w; wk.ty = it.y + h - 1 + (it.y + h < ROWS ? 1 : -1) * 0;
     if (b.fl === S.view) for (let k = 0; k < 3; k++) floats.push({ x: it.x + rnd(-.3, w - .7), y: it.y + rnd(-.3, h - .7), z: .4, text: "✦", color: "#C9C3E0", life: .7, max: .7 });
   });
@@ -2933,6 +3001,23 @@ function act(a, id) {
     log(`${c.name} prend la direction de l’étage ${S.floors[id].num}.`, "good"); showBanner("Nouveau directeur !", `${c.name} · étage ${S.floors[id].num}`); return;
   }
   if (a === "buyfloor") { buyFloor(); return; }
+  if (a === "hirerec") {
+    const R = RECRUITERS[id], d = freeDesks()[0];
+    if (!R || !d || plvl() < REC_LVL || S.staff.some(e => e.role === "recruiter") || S.cash < R.fee) return;
+    const c = mkStaff("recruiter", R.tier + 2); c.salary = R.salary; c.lazy = 0; c.recTier = R.tier;
+    c.name = pick(["Aurélie", "Bruno", "Leïla", "Vincent", "Soraya", "Damien", "Elsa", "Gaël"]) + " " + LASTI[ri(0, LASTI.length - 1)] + ".";
+    c.deskId = d.id; c.floor = d.fl; c.state = "away"; c.home = S.t >= 1080; c.arrive = S.t < 1080 ? S.t : 480;
+    S.cash -= R.fee; S.stats.spent += R.fee; S.staff.push(c);
+    log(`${c.name} (${R.label.toLowerCase()}) rejoint l’entreprise : chaque nouveau bureau sera pourvu automatiquement.`, "good"); return;
+  }
+  if (a === "recauto") { S.recAuto = !S.recAuto; return; }
+  if (a === "rectier") {
+    const r = S.staff.find(e => e.role === "recruiter"), R = RECRUITERS[id];
+    if (!r || !R || R.tier <= r.recTier || S.cash < R.fee - RECRUITERS[r.recTier - 1].fee) return;
+    S.cash -= R.fee - RECRUITERS[r.recTier - 1].fee; S.stats.spent += R.fee - RECRUITERS[r.recTier - 1].fee;
+    r.recTier = R.tier; r.salary = R.salary; r.skill = Math.min(5, R.tier + 2);
+    log(`${r.name} passe ${R.label.toLowerCase()} : de meilleurs profils à chaque recrutement.`, "good"); return;
+  }
   if (a === "hiresec") {
     const d = freeDesks()[0]; if (!d || plvl() < SEC_LVL || S.staff.some(isSec)) return;
     const c = S.secCand || mkSec(); S.secCand = null;
@@ -3035,7 +3120,7 @@ function tap(sx, sy, type) {
     if (S.cash < d.cost) { toast("Pas assez d’argent.", "bad"); return; }
     if (d.max && count(UI.tool) >= d.max) { toast(`Vous avez déjà ${d.a} sur cet étage.`, "bad"); return; }
     if (d.maxAll && allItems().filter(i => i.type === UI.tool).length >= d.maxAll) { toast(`Vous avez déjà ${d.a}.`, "bad"); return; }
-    S.cash -= d.cost; S.stats.spent += d.cost; addItem(UI.tool, t.x, t.y, UI.rot);
+    S.cash -= d.cost; S.stats.spent += d.cost; onNewItem(addItem(UI.tool, t.x, t.y, UI.rot));
     floatText(t.x + (w - 1) / 2, t.y + (h - 1) / 2, "−" + eur(d.cost), C.bad);
     for (const e of S.staff) if (e.path.length) { if (e.state === "arriving") goDesk(e); }
     UI.sigs = {}; return;
@@ -3117,6 +3202,8 @@ function start(data) {
   if (S.secAuto == null) S.secAuto = true;
   if (S.stats.tax == null) S.stats.tax = 0;
   if (!S.esc) S.esc = [];
+  if (!S.recQ) S.recQ = [];
+  if (S.recAuto == null) S.recAuto = true;
   setFloor(S.view);
   resize(); uiTick();
   window.addEventListener("resize", resize);
