@@ -307,7 +307,7 @@ h3 small{font-weight:500;font-size:12.5px;color:var(--muted)}
 if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h) { this.rect(x, y, w, h); };
 
 /* ================= Données ================= */
-const ROWS = 9, MAXC = 16, DOOR = { x: 0, y: 6 }, TILE_M = 1.5, MIN_PER_SEC = 8, LEAD = 22, SAVE_KEY = "etage12-v2";
+const ROWS = 9, MAXC = 16, DOOR = { x: 0, y: 6 }, TILE_M = 1.5, MIN_PER_SEC = 8, LEAD = 22, SAVE_KEY = "etage12-v3";
 const EXP = [
   { cols: 7, rent: 180, cost: 0, rep: 0 },
   { cols: 10, rent: 420, cost: 6000, rep: 10 },
@@ -497,7 +497,7 @@ function newOffer(starter) {
 
 /* ================= Partie ================= */
 function newGame() {
-  S = { v: 2, cash: 12000, rep: 5, day: 1, t: 480, speed: 1, floors: [{ num: 12, exp: 0, items: [] }], view: 0, ms: [], staff: [], offers: [], active: [], cands: [], candsDay: 1,
+  S = { v: 3, cash: 12000, rep: 5, day: 1, t: 480, speed: 1, floors: [{ num: 12, exp: 0, items: [] }], view: 0, ms: [], staff: [], offers: [], active: [], cands: [], candsDay: 1,
     nextId: 1, leadMeter: 0, debtDays: 0, closing: false, todayIn: 0, idleWarned: 0, goalsDone: [], over: false, seenGoals: 0,
     stats: { done: 0, failed: 0, earned: 0, spent: 0, tax: 0, signed: 0, maxSigned: 0, streak: 0 }, log: [], month: { in: 0, out: 0 }, nextTax: MONTH, taxDebt: 0, pending: [], secPol: "bal", secAuto: true, visitor: null };
   installFloorProps(S); occs = []; setFloor(0);
@@ -805,9 +805,9 @@ function endDay() {
   }
   const before = S.offers.length;
   S.offers = S.offers.filter(o => o.expires > S.day);
-  if (S.offers.length < before) log(`${before - S.offers.length} offre(s) ont expiré.`);
+  if (S.offers.length < before) { const k = before - S.offers.length; log(k > 1 ? `${k} offres ont expiré.` : "Une offre a expiré."); }
   for (const e of S.staff) {
-    if (e.req && S.day - e.req.since >= 1) { e.req = null; e.reqCd = rnd(500, 1000); e.mood = clamp((e.mood || 0) - 4, -25, 25); log(`${e.name} s’est senti·e ignoré·e.`, "bad"); }
+    if (e.req && S.day - e.req.since >= 2) { e.req = null; e.reqCd = rnd(500, 1000); e.mood = clamp((e.mood || 0) - 4, -25, 25); log(`${e.name} s’est senti·e ignoré·e.`, "bad"); }
     if (e.quest && S.day >= e.quest.until) { log(`${e.name} est déçu·e : ${ITEMS[e.quest.item].a} promis·e n’est jamais arrivé·e.`, "bad"); e.quest = null; e.mood = clamp((e.mood || 0) - 10, -25, 25); }
     e.mood = (e.mood || 0) * 0.75;
   }
@@ -855,11 +855,12 @@ function valuation() {
   const furn = allItems().reduce((s, i) => s + ITEMS[i.type].cost, 0);
   return Math.max(0, S.cash + furn * 0.5 + S.rep * 1500 + S.staff.reduce((s, e) => s + e.skill * 800, 0));
 }
+try { for (const k of ["etage12-v1", "etage12-v2", "etage12-v1-tab"]) localStorage.removeItem(k); } catch (_) {}
 function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (_) {} }
 function load(data) {
-  let d = data && data.v === 2 ? data : null;
+  let d = data && data.v === 3 ? data : null;
   if (!d) { try { d = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); } catch (_) { d = null; } }
-  if (d && d.v === 2 && Array.isArray(d.staff) && !d.over) {
+  if (d && d.v === 3 && Array.isArray(d.staff) && !d.over) {
     if (!d.floors) { d.floors = [{ num: 12, exp: d.exp || 0, items: d.items || [] }]; delete d.items; delete d.exp; d.view = 0; }
     S = d; installFloorProps(S); occs = [];
     S.floors.forEach((f, i) => f.items.forEach(it => { it.fl = i; if (it.r == null) it.r = it.w !== ITEMS[it.type].w ? 1 : 0; }));
@@ -1831,7 +1832,7 @@ function uiTick() {
   $("#lvl").textContent = LI.max ? "MAX" : lvl; $("#lvl").classList.toggle("max", LI.max); $("#tierName").textContent = tierName();
   $("#floorName").textContent = "Étage " + S.floors[S.view].num;
   $("#nFloor").hidden = !canBuyFloor();
-  $("#lvlNext").textContent = LI.max ? "niveau maximum : la tour est à vous" : `niveau ${lvl + 1} : ${LI.xp - LI.a} / ${LI.b - LI.a} XP`;
+  $("#lvlNext").textContent = LI.max ? "niveau maximum : la tour est à vous" : `vers le niveau ${lvl + 1} · ${LI.xp - LI.a} / ${LI.b - LI.a} XP`;
   $("#xp").style.width = (LI.max ? 100 : clamp((LI.xp - LI.a) / (LI.b - LI.a) * 100, 0, 100)) + "%";
   $("#speedBtn").textContent = S.speed === 0 ? "❚❚ Pause" : "▶ ×" + S.speed;
   const n = $("#nOffers"); n.hidden = !S.offers.length; n.textContent = S.offers.length;
